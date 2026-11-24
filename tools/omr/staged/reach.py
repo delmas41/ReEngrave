@@ -167,11 +167,8 @@ KNOWN_GAPS: Dict[str, str] = {
     # `adjudicate_accidental_owner` reads the refusal literally and a refused
     # glyph owns no head. The entry was deleted when this tool reported it
     # STALE, not before.
-    Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO: (
-        "READ BY `export._family_refusals` THROUGH A LOOP THIS TOOL CANNOT "
-        "RESOLVE, and read by nothing else, because the `arpeggiato` family "
-        "reaches no MusicXML element on any path. See the block comment "
-        "above for both halves."),
+    # ROADMAP 2.339 (2026-11-23): `Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO` left this table when the quarter-rest rule went default ON:
+    # `adjudicate_unboxed_ink_is_a_rest` now reads it literally. Deleted when this tool reported it STALE.
     Q.GAP_BRIDGING: (
         "inert declaration, owned by `inventory --check`: the connectivity veto "
         "already ran in GATHER and `adjudicate_system_membership` reads the "

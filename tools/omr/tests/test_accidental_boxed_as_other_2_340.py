@@ -55,12 +55,12 @@ def verdict(name, with_accidentals):
     return PCN.rest_box_verdict(pm, index, raw, r["pb"], r["cls"], r["owner"], r["detail"], accs, heads)
 
 
-def test_flag_default_off():
+def test_flag_default_on():
     os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
-    assert PCN.accidental_boxed_as_other_enabled() is False
-    os.environ[PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER] = "1"
+    assert PCN.accidental_boxed_as_other_enabled() is True
+    os.environ[PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER] = "0"
     try:
-        assert PCN.accidental_boxed_as_other_enabled() is True
+        assert PCN.accidental_boxed_as_other_enabled() is False
     finally:
         os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
 
@@ -126,8 +126,11 @@ def test_the_rest_box_gather_found_on_a_sharp_is_refused_as_the_sharps_ink(subje
     # the real census rows the Litolff p2 / p9 gather filed (flag ON); without the flag nothing is connected (the control fails)
     cell = "cell/" + "/".join(subject.split("/")[1:5])
     b = _box(subject)
-    os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
-    assert PCN.accidental_rest_finding(_rows(), cell, b["bbox_page_px"]) is None
+    os.environ[PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER] = "0"
+    try:
+        assert PCN.accidental_rest_finding(_rows(), cell, b["bbox_page_px"]) is None
+    finally:
+        os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
     os.environ[PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER] = "1"
     try:
         hit = PCN.accidental_rest_finding(_rows(), cell, b["bbox_page_px"])
