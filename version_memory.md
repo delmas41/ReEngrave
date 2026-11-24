@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- `OMR_STROKE_SPACE_OWN_STAFF` ON (main 3881969e9; Sean "Do that"); overnight 20261123-night started
+- STAGED GATHER `stroke_map.LocalStaff` (2.342) default ON: a column's five lines are accepted only at the staff's own spacing. Fast tier 11,299 passed, 0 failed; no reader test changed its answer. Eleven switches on today in all.
+- Overnight `TAG=20261123-night THROUGH=infer REF=origin/main` started 22:45 MST on commit 3881969e9, default flags, both movements. Read it as CHANGES against 20261122-night (compare_20261029.sh); the first whole-movement run of all of today's switches and of the clef + part-join repair.
+
 ## 2026-11-23 -- 2.341 flag rule LANDED ON (main bc04836f9; Sean "Yes")
 - STAGED ADJUDICATE `rhythm.py`: `OMR_STEM_TIP_FLAG_WHEN_DECLINED` default ON -- in a bar with no accepted beam the stem tip is now looked at; a counted, shaped hook at a free tip makes an eighth; doubtful hooks keep the quarter, blue. Frozen sample: Brahms flags +14, red 126 -> 116; Litolff three right quarters turn blue; Sean's 12 tiles agree on all 12 values. `OMR_HOLLOW_HEAD_WINS` landed OFF (not ready: the gap between fused heads reads as an opening). Fast tier 11,295 passed; four doc-page failures fixed.
 - END OF DAY 2026-11-23: ten switches on today (dots by head ink, dropped-head spot, eighth rest boxed as other, relocate at export, far fold by ledger, fused accidentals, quarter rest boxed as other, accidental boxed as other, slash stem core, stem-tip flag) plus the clef + part-join repair. NONE measured on a whole movement; the next overnight is the first.
