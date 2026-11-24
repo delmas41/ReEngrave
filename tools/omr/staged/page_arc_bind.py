@@ -53,6 +53,122 @@ def write_enabled() -> bool:
     return _flag_on(ENV_WRITE)
 
 
+# ── ROADMAP 2.338: AN ARC BELONGS TO THE NOTE ITS INK REACHES ─────────────────────────────────────────────────────────────────────────────────
+#
+# THE RULE (our wording, put to Sean as the lane's brief; it joins page-facts "An arc ends at the notes standing where its ink ends", Sean 2026-11-15, and
+# CLAUDE §4 "joining and separating go by ink", Sean 2026-11-18): a slur or tie starts and stops at a note -- its end points at that note's head or, on the
+# stem side, at that note's stem. The end belongs to the note whose HEAD INK or STEM INK it reaches. Where two notes are both reached, or neither, we do not
+# choose. A tie sits beside the ONE head it ties; an end that reaches a chord member nobody read is no tie's end and reads no kind off another member (unread,
+# marked, never a tie). NEVER: an end over blank paper (no head or stem ink at it) binds nothing; another staff's note is never a candidate (the caller's).
+#
+# THE CAUSE it answers (2026-11-23 small test, FINDINGS): the binder measured how far an end stands from its note's BOX CENTRE (`END_BEYOND_HEAD_SPACES`,
+# r2's 2.0) and refused slurs that end at a stem (2-4 spaces from the head's centre, beside the stem's ink) and an end on a chord's outer member when the
+# member nearer it was not read (Sean's r8 tile 10, Brahms p0 run 76, 2.017 against 2.0). With the flag ON the refusals of the old binder -- and ONLY those --
+# are asked again by ink: an end the old binder bound is never moved (every arc written today stays exactly as written).
+ENV_END_BY_INK = "OMR_ARC_END_BY_INK"
+#: an end REACHES a note's ink when the gap from where the arc's ink ends to the head's ink box (its page-head ink centre, its box size) or to the line of
+#: its stem (head to free end) is at most this many spaces. Both sides measured (FINDINGS 2.338): written-right ends and Sean's judged arcs below it,
+#: ends at a barline the tracker stopped at / over blank paper above it. A cut-off: it only ever lets a REFUSED end bind where it holds, never moves a binding.
+INK_REACH_SPACES = 1.0
+
+
+def end_by_ink_enabled() -> bool:
+    """`OMR_ARC_END_BY_INK` (ROADMAP 2.338), default OFF."""
+    return _on(ENV_END_BY_INK)
+
+
+def _seg_gap(px: float, py: float, x: float, y0: float, y1: float) -> float:
+    lo, hi = min(y0, y1), max(y0, y1)
+    dy = 0.0 if lo <= py <= hi else min(abs(py - lo), abs(py - hi))
+    return ((px - x) ** 2 + dy ** 2) ** 0.5
+
+
+def ink_reach(key: str, heads: Sequence[Dict[str, Any]], points: Sequence[Tuple[float, float]], sp: float,
+              usable: Any = None) -> Tuple[float, Optional[str], Optional[str]]:
+    """ROADMAP 2.338: how near (spaces) the arc's ink end comes to the INK of the note whose head box is `key`: the note is the head's column (every head
+    box standing over it, a chord's members; `arc_claim.BIND_COLUMN_DX_WIDTHS`), its ink each member's head ink box (`arc_claim._to_head`: the head's ink
+    centre where the page head found one, its box size) and each member's STEM, the line from the head to the stem's free end (the stem-tip entries the
+    caller built, `arc_claim.stem_tips`). `points`: where the ink ends -- the run's own end and the traced ink's last point; the nearer counts.
+    Returns `(gap_spaces, how, member)`: `how` is `head` (a read head's ink), `stem` (a stem's ink) or `unread_member` (the ink of a member no reader
+    read as a note -- the chord is reached, its head is not)."""
+    from . import arc_claim as AC
+    ok = usable or (lambda _k: True)
+    by = {h["key"]: h for h in heads if not h.get("tip")}
+    hd = by.get(key)
+    if hd is None or sp <= 0:
+        return float("inf"), None, None
+    col = [h for h in by.values() if abs(h["cx"] - hd["cx"]) <= AC.BIND_COLUMN_DX_WIDTHS * max(h["w"], hd["w"])]
+    keys = {h["key"] for h in col}
+    best: Tuple[float, Optional[str], Optional[str]] = (float("inf"), None, None)
+    for ex, ey in points:
+        for h in col:
+            g = AC._to_head(h, ex, ey) / sp
+            if g < best[0]:
+                best = (g, "head" if ok(h["key"]) else "unread_member", h["key"])
+        for t in heads:
+            if t.get("tip") and t["key"] in keys:
+                g = _seg_gap(ex, ey, float(t["cx"]), float(by[t["key"]]["cy"]), float(t["cy"])) / sp
+                if g < best[0]:
+                    best = (g, "stem", t["key"])
+    return best
+
+
+def _end_points(d: Dict[str, Any], side: str) -> List[Tuple[float, float]]:
+    pts = [(float(d["x_%s_page" % side]), float(d["y_%s_page" % side]))]
+    if d.get("x_%s_ext" % side) is not None:
+        pts.append((float(d["x_%s_ext" % side]), float(d["y_%s_ext" % side])))
+    return pts
+
+
+def settle_by_ink(e: Dict[str, Any], heads: Sequence[Dict[str, Any]], d: Dict[str, Any], side: str, sp: float, usable: Any,
+                  unread: Optional[Sequence[Dict[str, Any]]]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.338: an end the binder REFUSED as two notes about equally near (`two_columns_at_end`) or as unread head ink at the end
+    (`unread_ink_at_end`), asked again by ink. Two columns: exactly ONE of them reached -> that note (its member nearest the end); both or neither -> None
+    (we do not choose). Unread ink: the bound note is reached and the unread ink is NOT -> that note; else None (cannot tell stands). Returns the new
+    end, `{"head", "by_ink", "reach_spaces", "reached", "was"}`, or None."""
+    from . import arc_claim as AC
+    why = e.get("unbound")
+    pts = _end_points(d, side)
+    ok = usable or (lambda _k: True)
+
+    def pick(col_keys: Sequence[str], r: Tuple[float, Optional[str], Optional[str]]) -> Optional[Dict[str, Any]]:
+        by = {h["key"]: h for h in heads if not h.get("tip")}
+        mem = [by[k] for k in dict.fromkeys(col_keys) if k in by and ok(k)]
+        if not mem:
+            return None
+        ex, ey = pts[0]
+        h = min(mem, key=lambda m: AC._to_head(m, ex, ey))
+        return {"head": h["key"], "column": len(mem), "by_rule": True, "by_ink": True, "reach_spaces": round(r[0], 3), "reached": r[1],
+                "reached_member": r[2], "was": why}
+    if why == "two_columns_at_end":
+        cols = [c if isinstance(c, list) else [c] for c in (e.get("candidates") or ())]
+        rs = [min((ink_reach(k, heads, pts, sp, usable) for k in c), key=lambda t: t[0]) if c else (float("inf"), None, None) for c in cols]
+        hit = [i for i, r in enumerate(rs) if r[0] <= INK_REACH_SPACES]
+        # ... and the other note's ink stands clearly farther (the binder's own "about equally near" margin, `BIND_COLUMN_MARGIN_SPACES`, no new number):
+        # a reach just inside the cut against one just outside it is still two notes about equally near (Litolff p11 run 26: 0.79 against 1.0)
+        if len(hit) == 1 and all(r[0] - rs[hit[0]][0] >= AC.BIND_COLUMN_MARGIN_SPACES for i, r in enumerate(rs) if i != hit[0]):
+            got = pick(cols[hit[0]], rs[hit[0]])
+            if got is not None:
+                got["was_two_columns"] = cols
+            return got
+        return None
+    if why == AC.UNREAD_INK_AT_END:
+        cands = e.get("candidates") or ()
+        col = cands[0] if cands and isinstance(cands[0], list) else []
+        if not col:
+            return None
+        r = min((ink_reach(k, heads, pts, sp, usable) for k in col), key=lambda t: t[0])
+        xy = e.get("unread_xy")
+        ub = None
+        if xy:
+            ub = min((u for u in (unread or ()) if not u.get("other_staff")), key=lambda u: abs(u["cx"] - xy[0]) + abs(u["cy"] - xy[1]), default=None)
+        ru = min(AC._to_head(ub, x, y) for x, y in pts) / sp if ub is not None else 0.0
+        if r[0] <= INK_REACH_SPACES and ru > INK_REACH_SPACES and ru - r[0] >= AC.BIND_COLUMN_MARGIN_SPACES:
+            return pick(col, r)
+        return None
+    return None
+
+
 #: ROADMAP 2.274 step 2 round 2 (cause b, measured on the develop pages before this was written; FINDINGS "2.274 step 2 round 2"): the tracker BRIDGES stretches of columns where it saw no
 #: ink (a blanked head, a stem, a barline, a dynamic); a run's thinned points then jump in x. Across the 370 written runs the OFF file already wrote whole, the largest bridge is under 2
 #: spaces but for one (3.1); a bridge of 2 spaces or more is where two arcs meet at a note (a tie A->B, then an arc B->C) or where a tail of the next arc was carried on through the
@@ -310,6 +426,7 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
 
     def binder(heads: List[Dict[str, Any]], sp: float, usable: Any, end_pitch: bool, alt: Any, d: Dict[str, Any],
                unread: Optional[Sequence[Dict[str, Any]]] = None) -> Dict[str, Any]:
+        by_ink = end_by_ink_enabled()          # ROADMAP 2.338
         side = AC.curve_side(d.get("trace"), sp)
         b = {"left": None, "right": None, "side": side, "by_rule": True}
         for s_, sgn, xk, yk in (("left", -1, "x_left_page", "y_left_page"), ("right", +1, "x_right_page", "y_right_page")):
@@ -341,8 +458,14 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
                     if on is not None:
                         b[s_] = {"head": on["key"], "column": 1, "by_rule": True, "ink_ends_on": True, "was_two_columns": sorted(cand),
                                  "distance_spaces": round(AC._to_head(on, ex, float(d[yk])) / sp, 3)}
+            if by_ink and b[s_].get("unbound") in ("two_columns_at_end", AC.UNREAD_INK_AT_END):
+                # ROADMAP 2.338: the refusal asked again by ink -- exactly one note's head or stem ink reached (two columns), or the note reached and the
+                # unread ink not (unread ink at the end); otherwise the refusal stands
+                got = settle_by_ink(b[s_], heads, d, s_, sp, usable, unread)
+                if got is not None:
+                    b[s_] = got
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
-            if hd is not None and side in ("above", "below") and not hd.get("tip") and not b[s_].get("via_stem_tip"):
+            if hd is not None and side in ("above", "below") and not hd.get("tip") and not b[s_].get("via_stem_tip") and not b[s_].get("by_ink"):
                 # ROADMAP 2.305 r2 (Sean's r1 tile 8, "it goes one extra note too far"; page-facts: an arc ends AT its note): the traced ink LANDS on a head
                 # INWARD of the one closest to its end -- it passes within `LAND_GAP_SPACES` of that head's near edge (a cap over its top, a cup under its
                 # bottom), within the look-behind of the end -- and the tracker then carried the end on to the next note. The head the ink lands on is the end's.
@@ -381,8 +504,17 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
                 # a stem's tip (the 2.75 rule) is a candidate in its own right and is exempt.
                 beyond = ((ey - hd["cy"]) if side == "below" else (hd["cy"] - ey) if side == "above" else abs(ey - hd["cy"])) / sp
                 if beyond > END_BEYOND_HEAD_SPACES and not hd.get("tip") and not b[s_].get("via_stem_tip"):
-                    b[s_] = {"unbound": "end_far_beyond_head", "candidates": [hd["key"]], "margin_spaces": round(END_BEYOND_HEAD_SPACES - beyond, 3)}
-                    continue
+                    reach = ink_reach(hd["key"], heads, _end_points(d, s_), sp, usable) if by_ink else None
+                    if reach is not None and reach[0] <= INK_REACH_SPACES:
+                        # ROADMAP 2.338: far from the head's box centre, but the ink reaches the note -- its stem (a slur at the stem side), its head's ink,
+                        # or a member of its chord nobody read (the chord is reached; `adjudicate_page_arc_binding` never lets such an end make a tie)
+                        b[s_] = dict(b[s_], by_ink=True, reach_spaces=round(reach[0], 3), reached=reach[1], reached_member=reach[2], was="end_far_beyond_head",
+                                     beyond_spaces=round(beyond, 3))
+                    else:
+                        b[s_] = {"unbound": "end_far_beyond_head", "candidates": [hd["key"]], "margin_spaces": round(END_BEYOND_HEAD_SPACES - beyond, 3)}
+                        if reach is not None:
+                            b[s_]["reach_spaces"] = round(reach[0], 3) if reach[0] != float("inf") else None
+                        continue
                 # ROADMAP 2.305 (page-facts: an arc is OVER its notes -- a cap stands above the heads it joins, a cup below): the head stands on the arc's FAR side of
                 # its end, as far as `END_BEYOND_HEAD_SPACES` (r2's own number, only declines): the ink is not this head's arc (Litolff p5 run 99: a cap over the lower
                 # staff bound to the upper staff's heads 5 sp above its ends). A stem tip, which stands on the far side by design, is exempt.
