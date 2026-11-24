@@ -296,7 +296,7 @@ def rests_enabled() -> bool:
 
 
 ENV_ACCIDENTAL_BOXED_AS_OTHER = "OMR_ACCIDENTAL_BOXED_AS_OTHER"
-#: ROADMAP 2.340 (flag `OMR_ACCIDENTAL_BOXED_AS_OTHER`, default OFF). THE RULE, as a musician says it: a sharp or a natural stands just left of the note it
+#: ROADMAP 2.340 (flag `OMR_ACCIDENTAL_BOXED_AS_OTHER`, default ON). THE RULE, as a musician says it: a sharp or a natural stands just left of the note it
 #: alters, on that note's line or space; whatever the detector called it, that ink is the note's accidental and never a rest. A rest stands alone in the staff.
 #: The boundary (a 16th rest before a note vs a filled-in sharp before a note): the accidental reader (2.285 / 2.336) names the ink a sharp or natural -- two
 #: uprights, or a block with an upright sticking out at an end -- AND a notehead stands just right of it with its centre on the accidental's own line or space
@@ -317,8 +317,8 @@ ACC_KINDS = ("sharp", "natural")
 
 
 def accidental_boxed_as_other_enabled() -> bool:
-    """`OMR_ACCIDENTAL_BOXED_AS_OTHER` (ROADMAP 2.340), default OFF; only "1"/"true"/"yes"/"on" enables."""
-    return os.environ.get(ENV_ACCIDENTAL_BOXED_AS_OTHER, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_BOXED_AS_OTHER` (ROADMAP 2.340; Sean 2026-11-23), default ON; "0"/"false"/"no"/"off" turns it off."""
+    return os.environ.get(ENV_ACCIDENTAL_BOXED_AS_OTHER, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _ink_inside(page_map: Any, ink: Dict[int, float], box: Sequence[float]) -> float:

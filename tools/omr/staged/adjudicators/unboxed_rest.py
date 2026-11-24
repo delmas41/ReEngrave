@@ -176,10 +176,10 @@ QUARTER_REST_BOXED_AS_OTHER_ENV = "OMR_QUARTER_REST_BOXED_AS_OTHER"
 
 
 def quarter_rest_boxed_as_other_enabled() -> bool:
-    """`OMR_QUARTER_REST_BOXED_AS_OTHER`, default OFF (ROADMAP 2.339); acts only with `OMR_REST_BOXED_AS_OTHER` on."""
+    """`OMR_QUARTER_REST_BOXED_AS_OTHER`, default ON (ROADMAP 2.339; Sean 2026-11-23); "0"/"false"/"no"/"off" turns it off; acts only with `OMR_REST_BOXED_AS_OTHER` on."""
     import os
-    return rest_boxed_as_other_enabled() and os.environ.get(QUARTER_REST_BOXED_AS_OTHER_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    return rest_boxed_as_other_enabled() and os.environ.get(QUARTER_REST_BOXED_AS_OTHER_ENV, "").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 def quarter_rest_shaped(d: Dict[str, Any]) -> bool:

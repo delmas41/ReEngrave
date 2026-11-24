@@ -2116,7 +2116,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         return refused
     box_row = _glyph_box_row(ev)
     if box_row is not None:
-        # ROADMAP 2.340 (`OMR_ACCIDENTAL_BOXED_AS_OTHER`, default OFF): a sharp or natural stands just left of its note at its height; whatever the
+        # ROADMAP 2.340 (`OMR_ACCIDENTAL_BOXED_AS_OTHER`, default ON): a sharp or natural stands just left of its note at its height; whatever the
         # detector called it, that ink is the note's accidental and never a rest. GATHER's rest-claim step found this box on such ink (and filed no
         # rest claim; the accidental reader claimed it): connected here, never re-measured.
         acc_rest = _rest_on_an_accidentals_ink(ev, box_row, detail)
@@ -2311,7 +2311,7 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     cf_row = _ledger_finding(ev, "arpeggiato")          # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
-    # ROADMAP 2.339 (OMR_QUARTER_REST_BOXED_AS_OTHER, default OFF): an arpeggiato box standing on ink with a quarter rest's shape, alone in
+    # ROADMAP 2.339 (OMR_QUARTER_REST_BOXED_AS_OTHER, default ON): an arpeggiato box standing on ink with a quarter rest's shape, alone in
     # the staff, is not an arpeggio. NEVER a real arpeggio: a wavy line standing immediately left of a chord (`quarter_rest_shaped` keeps
     # the 2.99 head-beside guard). The 2.99 ink reader then reads the rest.
     from . import unboxed_rest as _ur
