@@ -9,6 +9,11 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- batch 6 landed (main 1135948e6): two more rules ON, two built OFF
+- ON (Sean "Yes, both on"): `OMR_QUARTER_REST_BOXED_AS_OTHER` (2.339, STAGED ADJUDICATE: a quarter-rest-shaped mark standing alone is a quarter rest whatever it was boxed as, written blue) and `OMR_ACCIDENTAL_BOXED_AS_OTHER` (2.340, STAGED GATHER `rest_standing` + ADJUDICATE: a rest box on ink the accidental reader reads as a sharp or natural beside its note gives up its claim).
+- OFF: `OMR_STROKE_SPACE_OWN_STAFF` (2.342, `stroke_map.LocalStaff` accepts five lines only at the staff's own spacing) and `OMR_ARC_END_BY_INK` (2.338); the arc ranking row now counts each arc once.
+- One fast tier: 11,236 passed; 10 failures were old-default pins and doc rows, fixed and the five files re-run. Check 237. Eight switches went on today in all; none measured on a whole movement.
+
 ## 2026-11-23 -- 2.334 eighth-rest rule LANDED ON, and three more switches ON (main 7943ff2e7)
 - STAGED ADJUDICATE: `OMR_REST_BOXED_AS_OTHER` default ON (Sean "Land the rest switch on"): an eighth rest the detector boxes as a double sharp or a clef is refused as that kind (`eighth_rest_shaped_ink`) and read once by the 2.99 ink rest reader. Frozen sample: Litolff rests +16, red 153 -> 139; Brahms rests +9, red 130 -> 126; judged right->wrong 0.
 - STAGED EXPORT: `OMR_RELOCATE_AT_EXPORT` and `OMR_FOLD_FAR_BY_LEDGER` default ON (2.337; Sean "let's do what we need to to get the last 2 turned on"). STAGED GATHER+ADJUDICATE: `OMR_ACCIDENTAL_FUSED_INK` default ON (2.336; Sean's 12 tiles 12/12; "Turn it on whenever you can"). Known with it on: Litolff 6/1/8/11 a slash piece written as a C4 half until 2.335 lands.
