@@ -17,6 +17,13 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-11-24 (new manager session; main ≥ the commit naming this block)
+
+- Overnight `20261123-night` (commit 3881969e9) is read; compare vs `20261122-night` in `benchmarks/acceptance/overnight/20261123-night/README.txt`. Red bars Litolff 340 -> 277, Brahms 492 -> 429; Sean's judged marks right->wrong 0; two unwritten -> wrong being traced (Litolff 2.164-review tile 10, Brahms 2.78-phase2-review tile 5).
+- ON since 2026-11-23: 2.334, 2.335, 2.336, 2.337 (both), 2.339, 2.340, 2.341, 2.342, dots by head ink, dropped-head spot marks; 2.324 r11 clef + part-join repair (no flag).
+- Built OFF: stem reader by ink (2.306, `lane-2.306-r19` unlanded), 2.338 arc ends, `OMR_HOLLOW_HEAD_WINS`.
+- PROPOSED TO SEAN, NOT YET APPROVED: (1) sort last night's changes by the switch that caused them, read-only; (2) STAGED EXPORT `_record_tie_spans` marks a tie whose first note is unwritten instead of dropping it; (3) stem reader round 4, the one heavy lane; (4) read-only trace of the 26 arcs of 2.338 that do not reach the file. Nothing is dispatched without his yes; at most 4 lanes, Sonnet for small jobs, fresh agents.
+
 ## START HERE — after 2026-11-11 (overnight; main ≥ the commit naming this block)
 
 - **2.288 (rests claim their ink page-wide) LANDED ON 2026-11-11** (`OMR_PAGE_CLAIM_RESTS` default ON, `=0` opts out; Sean "Land what you can overnight"); the 2.285 private rest-box list is deleted and `OMR_PAGE_CLAIM_RESTS=0` implies no own-ink accidentals. Its open list is in the 2.288 row.
