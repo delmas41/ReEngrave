@@ -1,0 +1,15 @@
+judged tiles, litolff, today's scorer on BOTH records (index 2265 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            208         14          8          2         45        166
+  TAG             209         14          8          2         44        166
+  right/wrong/narrowed  BASE 208/14/8  ->  TAG 209/14/8
+  moves: right->wrong 0 (must be 0) | right->gone 0 | wrong->right 1 | unwritten->wrong 1 | unwritten->right 0 | tiles scored on both 399
+  status transitions that are not 'same' (BASE -> TAG: n):
+    not_found  -> wrong      1
+    wrong      -> right      1
+  RIGHT -> WRONG (0)
+  RIGHT -> GONE (0)
+  WRONG -> RIGHT (1):
+    2.99-review                tile 6    glyph/2/0/2/5/350000 
+  UNWRITTEN -> WRONG (1):
+    2.164-review               tile 10   glyph/3/1/5/15/2 the file writes a page arc here: slur (run obs:087551; an end of it is 0 px from the mark)

@@ -1,0 +1,3 @@
+litolff p2 2/0/1/3  accidental gained sharp
+litolff p2 2/0/1/3  blue gained guessed
+litolff p2 2/0/1/3  pitch changed F15 (was F5)

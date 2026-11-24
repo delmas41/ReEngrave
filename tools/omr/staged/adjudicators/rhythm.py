@@ -2516,6 +2516,11 @@ def _head_ink_reads_hollow_unread_black(ev: Evidence, hi: Optional[Dict[str, Any
         return False
     if head_first.get("fill") is not None or not head_first.get("not_head_sized"):
         return False
+    return _own_ink_hollow_guards_hold(ev, refusal)
+
+
+def _own_ink_hollow_guards_hold(ev: Evidence, refusal=None) -> bool:
+    """The guards the head's own hollow ink must pass before it may speak (2.159 / 2.327): not on a dynamic letter, no slash on the stem."""
     if ev.rows(Q.NOTEHEAD_LETTER_INK):
         return False
     # ROADMAP 2.327: the slash guard asks the head's OWN ink, never its box. 2.159's guard (a head's ink stands to one side of its
@@ -2532,6 +2537,43 @@ def _head_ink_reads_hollow_unread_black(ev: Evidence, hi: Optional[Dict[str, Any
         return not (sig.get("crossing_ok") or sig.get("read_by") == "stem_slash")
     return not (sig.get("would_fire") or sig.get("read_by") == "stem_slash"
                 or (sig.get("crossing_ok") and sig.get("position_ok")))
+
+
+def _head_reads_disagree(ev: Evidence, hi: Optional[Dict[str, Any]], head_first: Optional[Dict[str, Any]],
+                         refused: bool, refusal=None) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.341 (`OMR_HOLLOW_HEAD_WINS`): a head-sized box where the two readings of ONE head disagree -- 2.148 read the
+    detector BOX's middle rows black or between (fill black / None), while the head's OWN trimmed ink (`Q.HEAD_INK`, one head, the
+    2.159 / 2.327 guards holding) reads hollow. CAUSE (FINDINGS why-red-bars 2.341): on Litolff the detector box sits on the head's
+    upper rim (the ink's centre 0.1-0.4 sp below the box's), so the box's middle rows miss a half's slit, which runs diagonally
+    through the head's lower half -- on the page raster as on the cell raster (box share 0.00 on 12 of 12 halves looked at). The
+    box read answers for ink it never covered. Neither read is sure: the own-ink read also finds "openings" that are the paper
+    between a black head and a beam, a line or a fused head (9 of 12 such heads looked at carry a beam). So this never decides:
+    the caller NARROWS quarter-or-half (blue) where nothing stands on the stem. None where the reads agree or the guards fail."""
+    if hi is None or hi.get("value") != "hollow" or refused or head_first is None:
+        return None
+    if head_first.get("fill") == "hollow" or head_first.get("not_head_sized"):
+        return None
+    if not _own_ink_hollow_guards_hold(ev, refusal):
+        return None
+    return {"box_fill": head_first.get("fill"), "box_rows_share": head_first.get("rows_share"),
+            "own_ink": "hollow", "own_slit": hi.get("slit"), "own_extent_sp": hi.get("extent_sp"), "head_ink_row": hi.get("row")}
+
+
+HOLLOW_HEAD_WINS_ENV = "OMR_HOLLOW_HEAD_WINS"
+HEAD_READS_DISAGREE_RULE = "head_reads_disagree"
+
+
+def hollow_head_wins_enabled() -> bool:
+    """ROADMAP 2.341, `OMR_HOLLOW_HEAD_WINS`, default OFF (allow-list 1/true/yes/on)."""
+    return os.environ.get(HOLLOW_HEAD_WINS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+STEM_TIP_FLAG_WHEN_DECLINED_ENV = "OMR_STEM_TIP_FLAG_WHEN_DECLINED"
+
+
+def stem_tip_flag_when_declined_enabled() -> bool:
+    """ROADMAP 2.341, `OMR_STEM_TIP_FLAG_WHEN_DECLINED`, default ON (Sean 2026-11-23); off with 0/false/no/off."""
+    return os.environ.get(STEM_TIP_FLAG_WHEN_DECLINED_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 SLASH_GUARD_OWN_INK_ENV = "OMR_SLASH_GUARD_OWN_INK"
@@ -3459,6 +3501,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted",
              "tip_readers_disagree",
+             # ROADMAP 2.341 (OFF by default): the two head reads disagree; a hook seen at the tip in a beamless cell.
+             "head_reads_disagree", "flag_ink_in_beamless_cell",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs", "rest_hangs_from_own_line",
@@ -3622,6 +3666,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # so nothing below can make it a quarter or beam it (2.43: an open head is never beamed). No stem -> not decided here
     # (a whole or a half, the next step's question). Between the populations -> unchanged (rule 8), the margin recorded.
     head_first = None
+    head_reads_disagree = None      # ROADMAP 2.341: the box read and the head's own ink read disagree (narrowed below, never decided)
     # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`, default ON since 2026-10-29): the head's own trimmed ink, read ONCE, here, for every class.
     head_ink_read = _head_ink(ev) if head_ink_consumer_enabled() else None
     if head_fill_first_enabled() and base == _HEAD_BEATS["noteheadBlack"]:
@@ -3674,6 +3719,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 if bridged is not None:
                     first_stems = [bridged[0]]
                     used.append(bridged[0].id)
+        if hollow_head_wins_enabled():
+            head_reads_disagree = _head_reads_disagree(ev, head_ink_read, head_first, refused, refusal)
+            if head_reads_disagree is not None:
+                head_reads_disagree["has_stem"] = bool(first_stems)
         if head_first is not None and head_first["fill"] == "hollow" and first_stems:
             base = _HEAD_BEATS["noteheadHalf"]
             hollow = True
@@ -4027,9 +4076,46 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # from_ink`'s own territory below, tried in this ORDER on purpose
     # (`test_it_NEVER_FIRES_where_stem_tip_ink_ALREADY_narrowed`).
     tip_ink = tip_ink_rows = None
+    tip_in_beamless_cell = False
     if beam_evidence == "none_over_this_note" and not flag_levels \
             and not open_by_class:
         tip_ink, tip_ink_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
+    elif (beam_evidence == "reader_declined" and stem_tip_flag_when_declined_enabled() and not flag_levels and not open_by_class
+          and not levels and one_beam is not None and one_beam.get("state") == "read" and not one_beam_pending):
+        # ⚠️ ROADMAP 2.341 (`OMR_STEM_TIP_FLAG_WHEN_DECLINED`). `reader_declined` says only that the CELL holds no beam the page beam
+        # reader accepted -- a bar of flagged eighths and quarters -- not that anyone looked at THIS stem's tip; there the 2.18c look
+        # never ran, so an eighth whose flag the detector never boxed was written a plain quarter. Asked here only where the one beam
+        # count READ this head's stem and counted no beam. "A flag is a curved stroke hanging from the free tip of the stem, on the side
+        # away from the head ... NEVER a beam end, a ledger line, a slur end, a word or a neighbour's stem" -- 2.318 r5 opened this
+        # look for these cells and it read a ledger line and the word `Vcl.` as hooks, so a hook seen HERE never decides: it NARROWS
+        # quarter-or-flagged (equal support, below), the bar settles it, INFER labels it -- held blue, never a plain quarter or eighth.
+        tip_ink, tip_ink_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
+        tip_in_beamless_cell = bool(tip_ink)
+    if tip_ink and tip_in_beamless_cell:
+        used.extend(r.id for r in tip_ink_rows)
+        # SURE only where every row that saw it says a FLAG: the hook was COUNTED, its shape read (`why` shaped, `witness` shape) at a
+        # FREE tip. Never where the stroke crosses both sides of the stem (a ledger line or a slash: a flag hangs from one side), where
+        # the stem runs on past the tip (`runs_on`: into ledger lines, a word), or where the shape reader was not blocked-checked
+        # (`shape_unblocked`) -- the Litolff p15 quarters 2.318 r5 wrote as eighths are all of these. Sure: the counted level, written.
+        # Seen but not sure: HELD -- the quarter written GUESSED (blue) with the flagged value beside it, never a plain quarter (a
+        # narrowing would be left red in a busy bar: 2.154, the bar never chooses).
+        _c, lo_b, hi_b = _stem_tip_hook_count(tip_ink_rows)
+        seen = [r for r in tip_ink_rows if r.value]
+        sure = _c is not None and all((r.detail or {}).get("why") == "shaped" and (r.detail or {}).get("witness") == "shape"
+                                      and isinstance((r.detail or {}).get("hooks"), int) for r in seen)
+
+        def _plain(lv):
+            t = _at_level_value(base, lv, n_dots)
+            return {"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": lv}
+        if sure:
+            return Ruling(value=_plain(_c), reason="flag_ink_in_beamless_cell", used=tuple(used),
+                          detail={**shared, "hooks_counted": _c, "flag_sure": True})
+        chosen = _plain(0)
+        guess = {"rule": "flag_ink_in_beamless_cell", "chosen": chosen, "marks_blue": True, "files_under": str(Q.DURATION),
+                 "candidates": [dict(chosen, support=1.0), dict(_plain(_c if _c is not None else lo_b), support=1.0)]}
+        return Ruling(value=chosen, reason="flag_ink_in_beamless_cell", used=tuple(used),
+                      detail={**shared, "hooks_counted": _c, "hooks_min": lo_b, "hooks_max": hi_b, "flag_sure": False,
+                              HEAD_INK_GUESS_KEY: guess})
     if tip_ink:
         used.extend(r.id for r in tip_ink_rows)
 
@@ -4225,6 +4311,27 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                               "second_hollow_unclear", used=tuple(used), **shared, second_hollow=second_dis,
                               notehead_ink=ink_detail2),
                 ink_detail2, head_box, space)
+    # ROADMAP 2.341 (`OMR_HOLLOW_HEAD_WINS`): "A head whose middle is open paper is a half note (with a stem) -- never a quarter. NEVER
+    # call hollow a head whose opening is a staff-line gap, a ledger-line gap, or the gap between two fused heads." The two readings of
+    # this head disagree (the box read black / between, the head's own ink hollow: `_head_reads_disagree`) and neither is sure, so the
+    # note is HELD -- written GUESSED (blue) with both values as candidates, never plain. (A NARROWING here would be left red in a busy
+    # bar: the bar never chooses among candidates, 2.154.) Which value is written: where the box read NOTHING (between its two
+    # populations) the half (the 2.220 rule for a box 2.148 could not read); where the box read BLACK the quarter stays (Sean
+    # 2026-10-28: a black head 2.148 READ is never overturned -- although on these heads it read paper above the slit; asked, not
+    # assumed). Only on a head with its own stem and NOTHING read on that stem (a beam or flag on the stem says the head is black:
+    # 2.43); never a whole (a stem).
+    if head_reads_disagree is not None and head_reads_disagree.get("has_stem") and base == _HEAD_BEATS["noteheadBlack"] \
+            and not flags and not flag_levels and not tip_ink and not levels and not one_beam_pending \
+            and strokes_before_hollow == (0, 0, 0) and not _stem_tip_disputed(ev, cell, own_stems, side):
+        used.append(head_reads_disagree["head_ink_row"])
+        half, black = (_fill_candidates(("half", "black"), n_dots, ratio, ev, {"half": 1.0, "black": 1.0}))
+        chosen, other = (half, black) if head_reads_disagree.get("box_fill") is None else (black, half)
+        plain = {k: chosen.value[k] for k in ("beats", "written", "dots", "beam_levels")}
+        guess = {"rule": HEAD_READS_DISAGREE_RULE, "chosen": plain, "marks_blue": True, "files_under": str(Q.DURATION),
+                 "candidates": [dict(plain, support=1.0), dict({k: other.value[k] for k in plain}, support=1.0)],
+                 "head_ink": head_ink_read}
+        return Ruling(value=plain, reason="head_reads_disagree", used=tuple(used),
+                      detail={**shared, "head_reads_disagree": head_reads_disagree, HEAD_INK_GUESS_KEY: guess})
     if (beam_evidence == "none_over_this_note" or beamless_looked) and ink_hollow:
         ink_detail = fill_row.detail or {}
         used.append(fill_row.id)

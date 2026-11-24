@@ -30,7 +30,8 @@ from tools.omr.staged.lane_report import page_of             # noqa: E402
 SPECK_FLOOR_SP2 = stroke_map.MIN_AREA_SP2
 
 #: every quantity the exporter reads to count `arcs_not_written` and `dot_role_not_placed`. A context page's rows of these are dropped.
-ARC_QUANTITIES = ("arc_box", "arc_ink_shape", "arc_kind", "arc_owner", "arc_is_not_an_arc", "tie_pair", "system_arc")
+#: ROADMAP 2.338: + the page pass's rows (`page_arc` runs, `page_arc_binding`): without them a context page's page runs were counted (Litolff p1, 13 runs)
+ARC_QUANTITIES = ("arc_box", "arc_ink_shape", "arc_kind", "arc_owner", "arc_is_not_an_arc", "tie_pair", "system_arc", "page_arc", "page_arc_binding")
 DOT_QUANTITIES = ("aug_dot", "dot_role", "dot_staff_position", "dot_stroke_ink")
 FAMILY_QUANTITIES = frozenset(ARC_QUANTITIES + DOT_QUANTITIES)
 

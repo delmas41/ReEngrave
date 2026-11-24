@@ -1,0 +1,158 @@
+[
+ {
+  "tile": 1,
+  "page": 2,
+  "box": [
+   872,
+   533,
+   891,
+   575
+  ],
+  "role": "changed",
+  "off": "16th rest, C5+F5 quarters, quarter rest (red: 2.25 of 2)",
+  "on": "C5 + F#5 (blue) quarters, quarter rest"
+ },
+ {
+  "tile": 2,
+  "page": 2,
+  "box": [
+   872,
+   697,
+   893,
+   742
+  ],
+  "role": "changed",
+  "off": "16th rest, D4+G4 quarters, quarter rest (red)",
+  "on": "D4+G4 quarters, quarter rest (sharp claimed, not applied: open)"
+ },
+ {
+  "tile": 3,
+  "page": 9,
+  "box": [
+   1478,
+   2574,
+   1496,
+   2618
+  ],
+  "role": "changed",
+  "off": "16th rest, A4+C#4 quarters, quarter rest (red)",
+  "on": "A4+C#4 quarters, quarter rest"
+ },
+ {
+  "tile": 4,
+  "page": 8,
+  "box": [
+   1395,
+   1241,
+   1417,
+   1286
+  ],
+  "role": "changed",
+  "off": "32nd rest (blue), C#4 half (red)",
+  "on": "C#4 half"
+ },
+ {
+  "tile": 5,
+  "page": 8,
+  "box": [
+   1394,
+   1525,
+   1414,
+   1569
+  ],
+  "role": "open",
+  "off": "32nd rest, F3 half (red)",
+  "on": "unchanged: the boxed sharp's own reading did not name it"
+ },
+ {
+  "tile": 6,
+  "page": 8,
+  "box": [
+   2412,
+   1661,
+   2442,
+   1708
+  ],
+  "role": "open",
+  "off": "16th rest, then the half (red)",
+  "on": "unchanged: a sharp fused to a natural, unread"
+ },
+ {
+  "tile": 7,
+  "page": 9,
+  "box": [
+   609,
+   2222,
+   629,
+   2274
+  ],
+  "role": "never",
+  "off": "quarter rest",
+  "on": "unchanged (reads as a filled sharp; no note just right of it)"
+ },
+ {
+  "tile": 8,
+  "page": 2,
+  "box": [
+   1375,
+   2158,
+   1402,
+   2199
+  ],
+  "role": "never",
+  "off": "16th rest",
+  "on": "unchanged"
+ },
+ {
+  "tile": 9,
+  "page": 2,
+  "box": [
+   934,
+   841,
+   955,
+   893
+  ],
+  "role": "never",
+  "off": "quarter rest (Sean: quarter rest)",
+  "on": "unchanged"
+ },
+ {
+  "tile": 10,
+  "page": 2,
+  "box": [
+   2368,
+   520,
+   2390,
+   549
+  ],
+  "role": "never",
+  "off": "eighth rest (Sean: an eighth rest)",
+  "on": "unchanged"
+ },
+ {
+  "tile": 11,
+  "page": 8,
+  "box": [
+   1714,
+   3228,
+   1734,
+   3258
+  ],
+  "role": "never",
+  "off": "eighth rest (Sean: an eighth rest)",
+  "on": "unchanged"
+ },
+ {
+  "tile": 12,
+  "page": 2,
+  "box": [
+   837,
+   1881,
+   855,
+   1933
+  ],
+  "role": "never",
+  "off": "quarter rest (Sean: quarter rest)",
+  "on": "unchanged"
+ }
+]

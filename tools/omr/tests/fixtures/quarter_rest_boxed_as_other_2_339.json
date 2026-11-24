@@ -1,0 +1,1916 @@
+{
+ "about": "ROADMAP 2.339 controls: GATHER rows as filed on the 20261122-night records (real pixels measured by gather_unboxed_rest_ink; the detector boxes on that ink). Cut by the lane script, never edited.",
+ "cases": {
+  "litolff:glyph/4/1/1/1/350000": {
+   "group": "missed_arpeggiato",
+   "plate": "litolff",
+   "subject": "glyph/4/1/1/1/350000",
+   "shape": {
+    "value": 3.43,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.27,
+     "height_spaces": 3.43,
+     "staff_step": 4.95,
+     "fill": 0.574,
+     "max_column_share": 1.0,
+     "mass_y": 0.557,
+     "column_profile": [
+      0.81,
+      1.0,
+      1.0,
+      0.61,
+      0.43,
+      0.18
+     ],
+     "coverage": 0.913,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      406,
+      394,
+      533,
+      737
+     ],
+     "bbox_page_px": [
+      689.9,
+      2314.1,
+      709.9,
+      2368.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/4/1/1/1/1",
+     "value": [
+      "arpeggiato",
+      397,
+      395,
+      127,
+      337
+     ],
+     "score": 0.4242020845413208,
+     "detail": {
+      "bbox_page_px": [
+       688.5275,
+       2314.2125,
+       708.53,
+       2367.29
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/15/0/1/5/350000": {
+   "group": "missed_arpeggiato",
+   "plate": "litolff",
+   "subject": "glyph/15/0/1/5/350000",
+   "shape": {
+    "value": 3.3,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.15,
+     "height_spaces": 3.3,
+     "staff_step": 4.94,
+     "fill": 0.578,
+     "max_column_share": 1.0,
+     "mass_y": 0.552,
+     "column_profile": [
+      0.59,
+      0.71,
+      1.0,
+      1.0,
+      0.63,
+      0.46
+     ],
+     "coverage": 0.83,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      279,
+      394,
+      394,
+      724
+     ],
+     "bbox_page_px": [
+      1047.9,
+      553.1,
+      1066.1,
+      605.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/15/0/1/5/3",
+     "value": [
+      "arpeggiato",
+      281,
+      407,
+      104,
+      303
+     ],
+     "score": 0.2741665542125702,
+     "detail": {
+      "bbox_page_px": [
+       1048.2575,
+       555.1025,
+       1064.6375,
+       602.825
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/4/1/2/8/350000": {
+   "group": "missed_arpeggiato",
+   "plate": "litolff",
+   "subject": "glyph/4/1/2/8/350000",
+   "shape": {
+    "value": 3.31,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.14,
+     "height_spaces": 3.31,
+     "staff_step": 4.95,
+     "fill": 0.618,
+     "max_column_share": 1.0,
+     "mass_y": 0.571,
+     "column_profile": [
+      0.61,
+      0.71,
+      1.0,
+      0.85,
+      0.54,
+      0.42
+     ],
+     "coverage": 0.922,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 1.6,
+      "dy_spaces": 6.305
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      140,
+      381,
+      254,
+      712
+     ],
+     "bbox_page_px": [
+      1617.0,
+      2448.0,
+      1635.0,
+      2500.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/4/1/2/8/2",
+     "value": [
+      "arpeggiato",
+      141,
+      386,
+      115,
+      308
+     ],
+     "score": 0.4951953887939453,
+     "detail": {
+      "bbox_page_px": [
+       1617.2075,
+       2448.795,
+       1635.32,
+       2497.305
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/15/0/5/5/350000": {
+   "group": "missed_arpeggiato",
+   "plate": "litolff",
+   "subject": "glyph/15/0/5/5/350000",
+   "shape": {
+    "value": 3.41,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.18,
+     "height_spaces": 3.41,
+     "staff_step": 4.97,
+     "fill": 0.553,
+     "max_column_share": 0.924,
+     "mass_y": 0.555,
+     "column_profile": [
+      0.6,
+      0.87,
+      0.92,
+      0.67,
+      0.62,
+      0.42
+     ],
+     "coverage": 0.921,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      328,
+      394,
+      446,
+      735
+     ],
+     "bbox_page_px": [
+      1054.0,
+      1196.1,
+      1072.0,
+      1248.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/15/0/5/5/4",
+     "value": [
+      "arpeggiato",
+      325,
+      399,
+      116,
+      328
+     ],
+     "score": 0.4409739673137665,
+     "detail": {
+      "bbox_page_px": [
+       1053.5625,
+       1196.8475,
+       1071.2525,
+       1246.8675
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/15/0/6/17/350000": {
+   "group": "missed_arpeggiato",
+   "plate": "litolff",
+   "subject": "glyph/15/0/6/17/350000",
+   "shape": {
+    "value": 3.3,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.14,
+     "height_spaces": 3.3,
+     "staff_step": 4.94,
+     "fill": 0.555,
+     "max_column_share": 1.0,
+     "mass_y": 0.564,
+     "column_profile": [
+      0.6,
+      0.86,
+      1.0,
+      0.65,
+      0.46,
+      0.09
+     ],
+     "coverage": 0.929,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      407,
+      375,
+      521,
+      705
+     ],
+     "bbox_page_px": [
+      2210.1,
+      1342.1,
+      2228.1,
+      1394.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/15/0/6/17/2",
+     "value": [
+      "arpeggiato",
+      409,
+      381,
+      131,
+      312
+     ],
+     "score": 0.48592686653137207,
+     "detail": {
+      "bbox_page_px": [
+       2210.4175,
+       1343.0075,
+       2231.05,
+       1392.1475
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/12/1/3/5/350000": {
+   "group": "missed_arpeggiato",
+   "plate": "litolff",
+   "subject": "glyph/12/1/3/5/350000",
+   "shape": {
+    "value": 3.25,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.19,
+     "height_spaces": 3.25,
+     "staff_step": 4.99,
+     "fill": 0.564,
+     "max_column_share": 1.0,
+     "mass_y": 0.572,
+     "column_profile": [
+      0.6,
+      0.87,
+      1.0,
+      0.85,
+      0.62,
+      0.42
+     ],
+     "coverage": 0.896,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 1.86,
+      "dy_spaces": -0.895
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      150,
+      382,
+      269,
+      707
+     ],
+     "bbox_page_px": [
+      1356.0,
+      2591.1,
+      1375.0,
+      2643.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/12/1/3/5/0",
+     "value": [
+      "staff",
+      0,
+      379,
+      878,
+      429
+     ],
+     "score": 0.8724127411842346,
+     "detail": {
+      "bbox_page_px": [
+       1332.0,
+       2590.64,
+       1472.48,
+       2659.28
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/12/1/3/5/1",
+     "value": [
+      "arpeggiato",
+      142,
+      395,
+      122,
+      304
+     ],
+     "score": 0.6300261616706848,
+     "detail": {
+      "bbox_page_px": [
+       1354.72,
+       2593.2,
+       1374.24,
+       2641.84
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/11/1/9/9/350000": {
+   "group": "boundary_head_beside",
+   "plate": "litolff",
+   "subject": "glyph/11/1/9/9/350000",
+   "shape": {
+    "value": 3.36,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.26,
+     "height_spaces": 3.36,
+     "staff_step": 4.88,
+     "fill": 0.539,
+     "max_column_share": 1.0,
+     "mass_y": 0.586,
+     "column_profile": [
+      0.62,
+      0.91,
+      1.0,
+      0.64,
+      0.43,
+      0.23
+     ],
+     "coverage": 0.906,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.28,
+      "dy_spaces": -1.18
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      458,
+      578,
+      584,
+      914
+     ],
+     "bbox_page_px": [
+      1718.1,
+      3356.0,
+      1738.0,
+      3409.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/11/1/9/9/0",
+     "value": [
+      "staff",
+      0,
+      569,
+      895,
+      442
+     ],
+     "score": 0.619411051273346,
+     "detail": {
+      "bbox_page_px": [
+       1646.0,
+       3354.6175,
+       1786.9625,
+       3424.2325
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/11/1/9/9/1",
+     "value": [
+      "arpeggiato",
+      456,
+      592,
+      125,
+      312
+     ],
+     "score": 0.5614582300186157,
+     "detail": {
+      "bbox_page_px": [
+       1717.82,
+       3358.24,
+       1737.5075,
+       3407.38
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/1/0/7/9/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/1/0/7/9/350000",
+   "shape": {
+    "value": 3.24,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.08,
+     "height_spaces": 3.24,
+     "staff_step": 4.88,
+     "fill": 0.557,
+     "max_column_share": 1.0,
+     "mass_y": 0.577,
+     "column_profile": [
+      0.6,
+      0.88,
+      1.0,
+      0.71,
+      0.53,
+      0.1
+     ],
+     "coverage": 0.809,
+     "covered_by": [
+      "restQuarter"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      419,
+      578,
+      527,
+      902
+     ],
+     "bbox_page_px": [
+      1848.0,
+      2385.0,
+      1865.0,
+      2436.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/1/0/7/9/1",
+     "value": [
+      "restQuarter",
+      411,
+      602,
+      106,
+      289
+     ],
+     "score": 0.5150021910667419,
+     "detail": {
+      "bbox_page_px": [
+       1846.7325,
+       2388.815,
+       1863.4275,
+       2434.3325
+      ],
+      "category": "rest"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/1/0/9/9/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/1/0/9/9/350000",
+   "shape": {
+    "value": 3.3,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.08,
+     "height_spaces": 3.3,
+     "staff_step": 4.94,
+     "fill": 0.578,
+     "max_column_share": 1.0,
+     "mass_y": 0.541,
+     "column_profile": [
+      0.56,
+      0.63,
+      1.0,
+      0.85,
+      0.63,
+      0.44
+     ],
+     "coverage": 0.952,
+     "covered_by": [
+      "restQuarter"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      400,
+      578,
+      508,
+      908
+     ],
+     "bbox_page_px": [
+      1845.0,
+      2735.0,
+      1862.0,
+      2787.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/1/0/9/9/0",
+     "value": [
+      "restQuarter",
+      397,
+      591,
+      113,
+      314
+     ],
+     "score": 0.8533392548561096,
+     "detail": {
+      "bbox_page_px": [
+       1844.5275,
+       2737.0825,
+       1862.325,
+       2786.5375
+      ],
+      "category": "rest"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/2/0/0/3/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/2/0/0/3/350000",
+   "shape": {
+    "value": 3.12,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.19,
+     "height_spaces": 3.12,
+     "staff_step": 4.86,
+     "fill": 0.556,
+     "max_column_share": 0.901,
+     "mass_y": 0.569,
+     "column_profile": [
+      0.4,
+      0.7,
+      0.9,
+      0.88,
+      0.68,
+      0.52
+     ],
+     "coverage": 0.908,
+     "covered_by": [
+      "restQuarter"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      381,
+      632,
+      500,
+      944
+     ],
+     "bbox_page_px": [
+      933.0,
+      417.1,
+      952.0,
+      467.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/2/0/0/3/3",
+     "value": [
+      "restQuarter",
+      385,
+      640,
+      116,
+      293
+     ],
+     "score": 0.3418065309524536,
+     "detail": {
+      "bbox_page_px": [
+       933.6,
+       418.4,
+       952.16,
+       465.28
+      ],
+      "category": "rest"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/5/0/2/0/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "litolff",
+   "subject": "glyph/5/0/2/0/350000",
+   "shape": {
+    "value": 2.86,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.08,
+     "height_spaces": 2.86,
+     "staff_step": 5.4,
+     "fill": 0.469,
+     "max_column_share": 1.0,
+     "mass_y": 0.587,
+     "column_profile": [
+      0.95,
+      1.0,
+      0.38,
+      0.38,
+      0.36,
+      0.24
+     ],
+     "coverage": 0.993,
+     "covered_by": [
+      "accidentalFlat",
+      "arpeggiato"
+     ],
+     "right_head": null,
+     "first_cell": true,
+     "left_of_header": false,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      578,
+      584,
+      686,
+      870
+     ],
+     "bbox_page_px": [
+      443.0,
+      817.0,
+      460.0,
+      862.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/5/0/2/0/2",
+     "value": [
+      "staff",
+      86,
+      589,
+      1818,
+      423
+     ],
+     "score": 0.8131765127182007,
+     "detail": {
+      "bbox_page_px": [
+       365.545,
+       817.7675,
+       651.88,
+       884.39
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/5/0/2/0/3",
+     "value": [
+      "arpeggiato",
+      572,
+      583,
+      76,
+      285
+     ],
+     "score": 0.6520801186561584,
+     "detail": {
+      "bbox_page_px": [
+       442.09000000000003,
+       816.8225,
+       454.06,
+       861.71
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/5/0/2/0/5",
+     "value": [
+      "tie",
+      91,
+      562,
+      1813,
+      75
+     ],
+     "score": 0.30556759238243103,
+     "detail": {
+      "bbox_page_px": [
+       366.3325,
+       813.515,
+       651.88,
+       825.3275
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/5/0/2/0/7",
+     "value": [
+      "arpeggiato",
+      573,
+      583,
+      113,
+      285
+     ],
+     "score": 0.2866212725639343,
+     "detail": {
+      "bbox_page_px": [
+       442.2475,
+       816.8225,
+       460.045,
+       861.71
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/5/0/2/0/9",
+     "value": [
+      "accidentalFlat",
+      572,
+      584,
+      116,
+      284
+     ],
+     "score": 0.2701876759529114,
+     "detail": {
+      "bbox_page_px": [
+       442.09000000000003,
+       816.98,
+       460.36,
+       861.71
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/5/1/5/0/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "litolff",
+   "subject": "glyph/5/1/5/0/350000",
+   "shape": {
+    "value": 2.66,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.08,
+     "height_spaces": 2.66,
+     "staff_step": 4.18,
+     "fill": 0.531,
+     "max_column_share": 1.0,
+     "mass_y": 0.573,
+     "column_profile": [
+      1.0,
+      1.0,
+      0.7,
+      0.5,
+      0.5,
+      0.31
+     ],
+     "coverage": 0.912,
+     "covered_by": [
+      "arpeggiato",
+      "noteheadHalfInSpace"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.92,
+      "dy_spaces": 1.095
+     },
+     "first_cell": true,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      597,
+      661,
+      705,
+      927
+     ],
+     "bbox_page_px": [
+      444.0,
+      3329.1,
+      461.0,
+      3371.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/5/1/5/0/2",
+     "value": [
+      "staff",
+      104,
+      589,
+      1896,
+      428
+     ],
+     "score": 0.6728022694587708,
+     "detail": {
+      "bbox_page_px": [
+       366.38,
+       3317.7675,
+       665.0,
+       3385.1775
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/5/1/5/0/4",
+     "value": [
+      "arpeggiato",
+      579,
+      658,
+      75,
+      263
+     ],
+     "score": 0.5776418447494507,
+     "detail": {
+      "bbox_page_px": [
+       441.1925,
+       3328.635,
+       453.005,
+       3370.0575
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/5/1/5/0/10",
+     "value": [
+      "noteheadHalfInSpace",
+      582,
+      693,
+      126,
+      222
+     ],
+     "score": 0.2588478922843933,
+     "detail": {
+      "bbox_page_px": [
+       441.665,
+       3334.1475,
+       461.51,
+       3369.1125
+      ],
+      "category": "notehead"
+     }
+    },
+    {
+     "subject": "glyph/5/1/5/0/11",
+     "value": [
+      "noteheadHalfInSpace",
+      582,
+      696,
+      126,
+      122
+     ],
+     "score": 0.2588478922843933,
+     "detail": {
+      "bbox_page_px": [
+       441.665,
+       3334.62,
+       461.51,
+       3353.835
+      ],
+      "category": "notehead"
+     }
+    },
+    {
+     "subject": "glyph/5/1/5/0/12",
+     "value": [
+      "noteheadHalfInSpace",
+      582,
+      794,
+      126,
+      122
+     ],
+     "score": 0.2588478922843933,
+     "detail": {
+      "bbox_page_px": [
+       441.665,
+       3350.055,
+       461.51,
+       3369.27
+      ],
+      "category": "notehead"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/3/0/8/0/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "litolff",
+   "subject": "glyph/3/0/8/0/350000",
+   "shape": {
+    "value": 3.1,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.77,
+     "height_spaces": 3.1,
+     "staff_step": 4.0,
+     "fill": 0.834,
+     "max_column_share": 0.939,
+     "mass_y": 0.513,
+     "column_profile": [
+      0.94,
+      0.94,
+      0.89,
+      0.79,
+      0.85,
+      0.85
+     ],
+     "coverage": 0.935,
+     "covered_by": [
+      "arpeggiato",
+      "ledgerLine"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.3,
+      "dy_spaces": 0.03
+     },
+     "first_cell": true,
+     "left_of_header": false,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      1065,
+      484,
+      1142,
+      794
+     ],
+     "bbox_page_px": [
+      508.1,
+      1656.0,
+      520.0,
+      1704.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/3/0/8/0/6",
+     "value": [
+      "staff",
+      128,
+      422,
+      1762,
+      439
+     ],
+     "score": 0.6741292476654053,
+     "detail": {
+      "bbox_page_px": [
+       362.84,
+       1646.41,
+       635.95,
+       1714.455
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/3/0/8/0/12",
+     "value": [
+      "arpeggiato",
+      1056,
+      484,
+      87,
+      290
+     ],
+     "score": 0.3565562069416046,
+     "detail": {
+      "bbox_page_px": [
+       506.68,
+       1656.02,
+       520.165,
+       1700.97
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/3/0/8/0/14",
+     "value": [
+      "ledgerLine",
+      1132,
+      625,
+      378,
+      27
+     ],
+     "score": 0.2999438941478729,
+     "detail": {
+      "bbox_page_px": [
+       518.46,
+       1677.875,
+       577.05,
+       1682.06
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/14/1/2/7/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "litolff",
+   "subject": "glyph/14/1/2/7/350000",
+   "shape": {
+    "value": 3.31,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.33,
+     "height_spaces": 3.31,
+     "staff_step": 4.95,
+     "fill": 0.59,
+     "max_column_share": 1.0,
+     "mass_y": 0.533,
+     "column_profile": [
+      0.65,
+      0.82,
+      0.85,
+      0.77,
+      1.0,
+      0.63
+     ],
+     "coverage": 0.976,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.28,
+      "dy_spaces": -0.005
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      388,
+      381,
+      521,
+      712
+     ],
+     "bbox_page_px": [
+      1531.1,
+      2470.0,
+      1552.1,
+      2522.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/14/1/2/7/2",
+     "value": [
+      "arpeggiato",
+      384,
+      377,
+      145,
+      327
+     ],
+     "score": 0.736906886100769,
+     "detail": {
+      "bbox_page_px": [
+       1530.48,
+       2469.3775,
+       1553.3175,
+       2520.88
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/14/1/2/7/6",
+     "value": [
+      "staff",
+      2,
+      369,
+      1001,
+      451
+     ],
+     "score": 0.4889928102493286,
+     "detail": {
+      "bbox_page_px": [
+       1470.315,
+       2468.1175,
+       1627.9725,
+       2539.15
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/3/1/1/7/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "brahms",
+   "subject": "glyph/3/1/1/7/350000",
+   "shape": {
+    "value": 3.13,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.95,
+     "height_spaces": 3.13,
+     "staff_step": 3.85,
+     "fill": 0.532,
+     "max_column_share": 0.767,
+     "mass_y": 0.496,
+     "column_profile": [
+      0.77,
+      0.77,
+      0.63,
+      0.66,
+      0.75,
+      0.75
+     ],
+     "coverage": 0.84,
+     "covered_by": [
+      "accidentalSharp",
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.19,
+      "dy_spaces": 0.475
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      898,
+      451,
+      993,
+      764
+     ],
+     "bbox_page_px": [
+      4204.9,
+      4326.0,
+      4231.1,
+      4412.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/3/1/1/7/7",
+     "value": [
+      "arpeggiato",
+      896,
+      447,
+      90,
+      285
+     ],
+     "score": 0.5726495981216431,
+     "detail": {
+      "bbox_page_px": [
+       4204.4,
+       4324.925,
+       4229.15,
+       4403.3
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/3/1/1/7/17",
+     "value": [
+      "accidentalSharp",
+      898,
+      434,
+      89,
+      274
+     ],
+     "score": 0.2949661314487457,
+     "detail": {
+      "bbox_page_px": [
+       4204.95,
+       4321.35,
+       4229.425,
+       4396.7
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/7/1/8/9/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "brahms",
+   "subject": "glyph/7/1/8/9/350000",
+   "shape": {
+    "value": 3.17,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.97,
+     "height_spaces": 3.17,
+     "staff_step": 5.75,
+     "fill": 0.604,
+     "max_column_share": 0.839,
+     "mass_y": 0.52,
+     "column_profile": [
+      0.83,
+      0.84,
+      0.73,
+      0.73,
+      0.76,
+      0.74
+     ],
+     "coverage": 0.99,
+     "covered_by": [
+      "accidentalNatural",
+      "accidentalSharp",
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadHalfOnLine",
+      "dx_spaces": 0.15,
+      "dy_spaces": -0.15
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      105,
+      523,
+      202,
+      840
+     ],
+     "bbox_page_px": [
+      4405.1,
+      6315.1,
+      4432.1,
+      6403.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/7/1/8/9/6",
+     "value": [
+      "accidentalNatural",
+      97,
+      520,
+      104,
+      320
+     ],
+     "score": 0.6655581593513489,
+     "detail": {
+      "bbox_page_px": [
+       4402.9175,
+       6314.3,
+       4431.7775,
+       6403.1
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/7/1/8/9/8",
+     "value": [
+      "accidentalSharp",
+      97,
+      519,
+      104,
+      325
+     ],
+     "score": 0.5924518704414368,
+     "detail": {
+      "bbox_page_px": [
+       4402.9175,
+       6314.0225,
+       4431.7775,
+       6404.21
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/7/1/8/9/11",
+     "value": [
+      "arpeggiato",
+      99,
+      520,
+      102,
+      321
+     ],
+     "score": 0.4479004740715027,
+     "detail": {
+      "bbox_page_px": [
+       4403.4725,
+       6314.3,
+       4431.7775,
+       6403.3775
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/23/0/7/3/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "brahms",
+   "subject": "glyph/23/0/7/3/350000",
+   "shape": {
+    "value": 3.15,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.96,
+     "height_spaces": 3.15,
+     "staff_step": 3.99,
+     "fill": 0.557,
+     "max_column_share": 0.851,
+     "mass_y": 0.521,
+     "column_profile": [
+      0.85,
+      0.84,
+      0.4,
+      0.6,
+      0.76,
+      0.75
+     ],
+     "coverage": 0.803,
+     "covered_by": [
+      "accidentalSharp",
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.38,
+      "dy_spaces": -0.07
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      836,
+      443,
+      932,
+      758
+     ],
+     "bbox_page_px": [
+      2526.1,
+      2358.0,
+      2553.0,
+      2446.2
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/23/0/7/3/12",
+     "value": [
+      "accidentalSharp",
+      832,
+      438,
+      94,
+      262
+     ],
+     "score": 0.5485374927520752,
+     "detail": {
+      "bbox_page_px": [
+       2524.96,
+       2356.64,
+       2551.2799999999997,
+       2430.0
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/23/0/7/3/23",
+     "value": [
+      "arpeggiato",
+      831,
+      444,
+      94,
+      269
+     ],
+     "score": 0.2503730058670044,
+     "detail": {
+      "bbox_page_px": [
+       2524.68,
+       2358.32,
+       2551.0,
+       2433.64
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/9/1/11/4/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "brahms",
+   "subject": "glyph/9/1/11/4/350000",
+   "shape": {
+    "value": 2.607,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.034,
+     "height_spaces": 2.607,
+     "staff_step": 1.214,
+     "fill": 0.35,
+     "max_column_share": 1.0,
+     "mass_y": 0.587,
+     "column_profile": [
+      1.0,
+      1.0,
+      0.2,
+      0.38,
+      0.38,
+      0.28
+     ],
+     "coverage": 0.949,
+     "covered_by": [
+      "accidentalFlat",
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.137,
+      "dy_spaces": 0.58
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      1599,
+      578,
+      1697,
+      825
+     ],
+     "bbox_page_px": [
+      3202.1,
+      6792.9,
+      3230.2,
+      6863.9
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/9/1/11/4/2",
+     "value": [
+      "accidentalFlat",
+      1600,
+      565,
+      91,
+      260
+     ],
+     "score": 0.8219972252845764,
+     "detail": {
+      "bbox_page_px": [
+       3202.375,
+       6789.216796875,
+       3228.501953125,
+       6863.865234375
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/9/1/11/4/11",
+     "value": [
+      "arpeggiato",
+      1597,
+      557,
+      95,
+      269
+     ],
+     "score": 0.2627776563167572,
+     "detail": {
+      "bbox_page_px": [
+       3201.513671875,
+       6786.919921875,
+       3228.7890625,
+       6864.15234375
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/19/1/10/4/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "brahms",
+   "subject": "glyph/19/1/10/4/350000",
+   "shape": {
+    "value": 3.17,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.91,
+     "height_spaces": 3.17,
+     "staff_step": 5.99,
+     "fill": 0.557,
+     "max_column_share": 0.849,
+     "mass_y": 0.511,
+     "column_profile": [
+      0.85,
+      0.77,
+      0.48,
+      0.74,
+      0.75,
+      0.75
+     ],
+     "coverage": 0.752,
+     "covered_by": [
+      "accidentalNatural",
+      "accidentalSharp",
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.0,
+      "dy_spaces": -4.385
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      978,
+      342,
+      1069,
+      659
+     ],
+     "bbox_page_px": [
+      3045.9,
+      6429.1,
+      3071.0,
+      6516.2
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/19/1/10/4/6",
+     "value": [
+      "accidentalNatural",
+      972,
+      350,
+      87,
+      260
+     ],
+     "score": 0.6828277707099915,
+     "detail": {
+      "bbox_page_px": [
+       3044.3,
+       6431.25,
+       3068.225,
+       6502.75
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/19/1/10/4/13",
+     "value": [
+      "arpeggiato",
+      971,
+      341,
+      86,
+      268
+     ],
+     "score": 0.42011594772338867,
+     "detail": {
+      "bbox_page_px": [
+       3044.025,
+       6428.775,
+       3067.675,
+       6502.475
+      ],
+      "category": "ornament"
+     }
+    },
+    {
+     "subject": "glyph/19/1/10/4/20",
+     "value": [
+      "accidentalSharp",
+      972,
+      351,
+      85,
+      250
+     ],
+     "score": 0.2734217047691345,
+     "detail": {
+      "bbox_page_px": [
+       3044.3,
+       6431.525,
+       3067.675,
+       6500.275
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/20/1/9/5/350000": {
+   "group": "arpeggiato_on_accidental",
+   "plate": "brahms",
+   "subject": "glyph/20/1/9/5/350000",
+   "shape": {
+    "value": 3.076,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.157,
+     "height_spaces": 3.076,
+     "staff_step": 5.919,
+     "fill": 0.595,
+     "max_column_share": 0.954,
+     "mass_y": 0.512,
+     "column_profile": [
+      0.47,
+      0.95,
+      0.94,
+      0.93,
+      0.94,
+      0.48
+     ],
+     "coverage": 0.982,
+     "covered_by": [
+      "accidentalSharp",
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.274,
+      "dy_spaces": -0.02
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      651,
+      358,
+      765,
+      661
+     ],
+     "bbox_page_px": [
+      3744.1,
+      6768.2,
+      3776.0,
+      6852.9
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/20/1/9/5/12",
+     "value": [
+      "accidentalSharp",
+      653,
+      345,
+      108,
+      317
+     ],
+     "score": 0.7343524098396301,
+     "detail": {
+      "bbox_page_px": [
+       3744.69970703125,
+       6764.52587890625,
+       3774.91650390625,
+       6853.2177734375
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/20/1/9/5/18",
+     "value": [
+      "arpeggiato",
+      654,
+      352,
+      111,
+      310
+     ],
+     "score": 0.39590051770210266,
+     "detail": {
+      "bbox_page_px": [
+       3744.9794921875,
+       6766.484375,
+       3776.03564453125,
+       6853.2177734375
+      ],
+      "category": "ornament"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/19/0/2/1/350000": {
+   "group": "sharp_boxed_flag",
+   "plate": "brahms",
+   "subject": "glyph/19/0/2/1/350000",
+   "shape": {
+    "value": 3.3,
+    "detail": {
+     "n_pieces": 2,
+     "width_spaces": 1.1,
+     "height_spaces": 3.3,
+     "staff_step": 5.06,
+     "fill": 0.496,
+     "max_column_share": 1.0,
+     "mass_y": 0.51,
+     "column_profile": [
+      0.33,
+      1.0,
+      0.99,
+      0.47,
+      0.81,
+      0.57
+     ],
+     "coverage": 0.519,
+     "covered_by": [
+      "flag8thDown"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.23,
+      "dy_spaces": -2.59
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      56,
+      382,
+      166,
+      712
+     ],
+     "bbox_page_px": [
+      1550.3,
+      1024.1,
+      1580.2,
+      1114.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/19/0/2/1/17",
+     "value": [
+      "flag8thDown",
+      80,
+      493,
+      278,
+      346
+     ],
+     "score": 0.2883378267288208,
+     "detail": {
+      "bbox_page_px": [
+       1556.8,
+       1054.3425,
+       1632.555,
+       1148.6275
+      ],
+      "category": "flag"
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,29 @@
+{
+ "date": "2026-11-23",
+ "sheet": "out/print/2.335/sheet.png",
+ "lane": "2.335 a48671137, OMR_SLASH_STEM_CORE ON vs OFF, Litolff 2, 6, 16",
+ "question": "Which of tiles 1-15 are not tremolo slashes? (tile 16 is the letter g no longer read as one)",
+ "sean_words": [
+  "Only the last one is not a tremolo slash.",
+  "The last time is a g"
+ ],
+ "answers": {
+  "1": "tremolo slash",
+  "2": "tremolo slash",
+  "3": "tremolo slash",
+  "4": "tremolo slash",
+  "5": "tremolo slash",
+  "6": "tremolo slash",
+  "7": "tremolo slash",
+  "8": "tremolo slash",
+  "9": "tremolo slash",
+  "10": "tremolo slash",
+  "11": "tremolo slash",
+  "12": "tremolo slash",
+  "13": "tremolo slash",
+  "14": "tremolo slash",
+  "15": "tremolo slash",
+  "16": "the letter g"
+ },
+ "key": "scratchpad lane-2335/r2 (not kept); tile labels on the sheet give the page"
+}

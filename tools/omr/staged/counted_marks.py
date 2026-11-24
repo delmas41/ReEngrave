@@ -340,19 +340,72 @@ def tapped_export(result: Dict[str, Any], strip: bool = True, only_pages: Option
 
 REPLACED, RETIRED = "replaced_by_page_arc", "old_box_path_retired"
 
+#: ROADMAP 2.338 (tooling): the report key under which a caller holding the RECORD files `old_boxes_on_page_runs` for `arcs_count`
+ON_RUNS_KEY = "arcs_old_tie_boxes_on_page_runs"
+
+
+def old_boxes_on_page_runs(record: Dict[str, Any], count_pages: Optional[Sequence[int]] = None) -> Dict[str, Any]:
+    """ROADMAP 2.338 (the 2026-11-23 small test, `benchmarks/arcs-combined-2026-11/FINDINGS.md`): the OLD tie-box refusals the exporter counts in
+    `arcs_not_written` (`tie_pair_<reason>` / `tie_pair_narrowed`, one per standing `Q.TIE_PAIR` refusal, `export._record_tie_pairs`) whose box WITNESSES a
+    page-ink run. ONE MARK, ONE ARC: that box is the same ink as the run, so it is not a second unwritten arc --
+      * `written`: the run was written (or bound with its kind unread): the arc is in the file, or counted as a page run;
+      * `run_counted`: the run abstained: it is already counted once among the page runs read and not written.
+    Returns `{"written": {key: n}, "run_counted": {key: n}}`, keyed by the exporter's own refusal name, over `count_pages` (None: every page).
+    Reads the record only; the exporter's report has no per-box list, so the caller that holds the record files this beside the report (`ON_RUNS_KEY`)."""
+    from . import export as E
+    from .lane_report import page_of
+    cp = set(count_pages) if count_pages is not None else None
+    last: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    for v in record.get("verdicts") or ():
+        if v.get("quantity") in ("tie_pair", "page_arc_binding"):
+            last[(v["quantity"], v["subject"])] = v
+    box_runs: Dict[str, List[Dict[str, Any]]] = collections.defaultdict(list)
+    for (q, s), v in last.items():
+        if q != "page_arc_binding" or (cp is not None and page_of(s) not in cp):
+            continue
+        for r in (v.get("detail") or {}).get("runs") or ():
+            if r.get("status") in ("written", "abstained"):
+                for w in r.get("witnesses") or ():
+                    box_runs[str(w)].append(r)
+    out: Dict[str, Dict[str, int]] = {"written": collections.Counter(), "run_counted": collections.Counter()}
+    for (q, s), v in last.items():
+        if q != "tie_pair" or (cp is not None and page_of(s) not in cp) or v.get("outcome") == "decided":
+            continue
+        if v.get("outcome") == "narrowed":
+            key = "tie_pair_narrowed"
+        elif v.get("reason") in E._TIE_PAIR_COUNTED_ELSEWHERE:
+            continue
+        else:
+            key = "tie_pair_" + str(v.get("reason"))
+        rs = box_runs.get(s) or ()
+        if any(r.get("status") == "written" or r.get("kind_unread") for r in rs):
+            out["written"][key] += 1
+        elif rs:
+            out["run_counted"][key] += 1
+    return {k: dict(c) for k, c in out.items()}
+
 
 def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
     """Arcs, not boxes, from the exporter's own report (`arcs_not_written` by reason + the page-arc counters in `written`).
 
     `not_written_total`  = old-box refusals that are still refusals + page runs read and not written (abstained, written-in-plan-but-not-in-file).
     Named apart: `replaced` / `retired` boxes (bookkeeping: the arc is written once by its run, or left to the page pass), `not_an_arc` (boxes refused
-    as ink that is no arc), `unwitnessed` page runs (no detector box agrees: mostly fakes, never called lost arcs).
+    as ink that is no arc), `unwitnessed` page runs (no detector box agrees: mostly fakes, never called lost arcs), and (ROADMAP 2.338, where the caller
+    filed `ON_RUNS_KEY` from the record) old tie-box refusals whose box witnesses a page run -- the run's arc written, or the run already counted.
     A page-arc count the report does not hold is `None` (a record gathered without the page pass), never 0."""
     anw = dict(report.get("arcs_not_written") or {})
     w = report.get("written") or {}
     page_on = "page_arc_runs" in w
     replaced, retired = int(anw.pop(REPLACED, 0)), int(anw.pop(RETIRED, 0))
     not_an_arc = {k: anw.pop(k) for k in [k for k in anw if k.startswith("not_an_arc:")]}
+    on_runs = report.get(ON_RUNS_KEY)
+    on_runs_taken = {"written": 0, "run_counted": 0} if on_runs is not None else None
+    for part in ("written", "run_counted"):
+        for name, n in ((on_runs or {}).get(part) or {}).items():
+            take = min(int(anw.get(name, 0)), int(n))
+            if take:
+                anw[name] = int(anw[name]) - take
+                on_runs_taken[part] += take
     slur_nif, tie_nif = int(w.get("page_arc_slurs_not_in_file", 0)), int(w.get("page_arc_ties_not_in_file", 0))
     # a bound page curve whose head is not in the file is filed by the exporter under the old names too; count it once, as a page arc
     adjusted: Dict[str, int] = {}
@@ -381,7 +434,10 @@ def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
         "page_runs_not_written": page_unwritten if page else None,
         "page_runs": page,
         "apart": {"replaced_by_page_arc_boxes": replaced, "old_box_path_retired_boxes": retired, "not_an_arc_boxes": sum(not_an_arc.values()),
-                  "unwitnessed_page_runs": page["unwitnessed"] if page else None},
+                  "unwitnessed_page_runs": page["unwitnessed"] if page else None,
+                  # ROADMAP 2.338: None = the caller filed no record-side list (the row may still count one arc twice)
+                  "old_tie_boxes_on_written_page_runs": on_runs_taken["written"] if on_runs_taken is not None else None,
+                  "old_tie_boxes_on_counted_page_runs": on_runs_taken["run_counted"] if on_runs_taken is not None else None},
         "adjusted_for_double_count": adjusted,
         "with_unwitnessed": (old_total + page_unwritten + page["unwitnessed"]) if page else old_total,
         # the old ranking row, for comparison: every reason but `not_an_arc:*`, boxes and all
@@ -402,6 +458,11 @@ def format_arcs(a: Dict[str, Any]) -> List[str]:
     lines.append("  named apart: boxes replaced by a written page arc %d; old box path retired %d (boxes, bookkeeping); boxes that are no arc %d; "
                  "unwitnessed page runs %s (mostly fakes)" % (ap["replaced_by_page_arc_boxes"], ap["old_box_path_retired_boxes"],
                                                               ap["not_an_arc_boxes"], ap["unwitnessed_page_runs"]))
+    if ap.get("old_tie_boxes_on_written_page_runs") is not None:
+        lines.append("  named apart (2.338): old tie boxes on a page run -- its arc written %d, the run already counted %d (one arc, never two)" % (
+            ap["old_tie_boxes_on_written_page_runs"], ap["old_tie_boxes_on_counted_page_runs"]))
+    else:
+        lines.append("  ⚠️ no record-side list of old tie boxes on page runs: the row may count one arc twice (2.338)")
     return lines
 
 
@@ -437,6 +498,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             result = {"record": result, "summary": {}}
         _xml, report, out = tapped_export(result)
         out["old_figure"] = {"n": report["written"]["notes"], "of": report["balance"]["noteheads_in_log"]}
+        report[ON_RUNS_KEY] = old_boxes_on_page_runs(result["record"])          # ROADMAP 2.338: one arc, never two
         out["arcs"] = arcs_count(report)
     old = (out["old_figure"]["n"], out["old_figure"]["of"]) if "old_figure" in out else None
     print("\n".join(format_notes(out, old)))

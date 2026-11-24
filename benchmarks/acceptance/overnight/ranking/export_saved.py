@@ -34,6 +34,8 @@ def main(argv):
     # ROADMAP 2.316: the same traced export (the file keeps its `rg=` stamps here, as before), tapped for the exporter's own per-head fates; the census counts the
     # COUNTED pages only (the context page's boxes stand as neighbours, never counted)
     xml, report, census = CM.tapped_export(res, strip=False, only_pages=count_pages)
+    # ROADMAP 2.338: the old tie boxes whose box witnesses a page run (one arc, never two), from the record, beside the report for `arcs_count`
+    report[CM.ON_RUNS_KEY] = CM.old_boxes_on_page_runs(r, count_pages)
     sym = L.parse_symbols(xml, boxes)
     hosts, loose, red_n, blue_n, nnw = CV.counted_symbols(sym["hosts"], sym["loose"], report, count_pages)
     red = report.get("bars_written_red") or {}
