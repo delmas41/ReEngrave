@@ -10,7 +10,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 2,
@@ -28,7 +32,11 @@
    "role": "refused",
    "sean": "tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 4,
@@ -37,7 +45,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 5,
@@ -46,7 +58,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 6,
@@ -55,7 +71,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 7,
@@ -64,7 +84,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 8,
@@ -82,7 +106,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 10,
@@ -91,7 +119,17 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   },
+   "later_answers": [
+    {
+     "date": "2026-11-24",
+     "words": "That is definitely just a part of a slur. The box only covers from the bar line to the second note. So hopefully there's actually a box that covers the whole arc, in which case this one would be unnecessary because the size is wrong. But the actual arc from one half note to the other is a slur."
+    }
+   ]
   },
   {
    "n": 11,
@@ -100,7 +138,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 12,
@@ -109,7 +151,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 13,
@@ -118,7 +164,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 14,
@@ -127,7 +177,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 15,
@@ -136,7 +190,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 16,
@@ -145,7 +203,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 17,
@@ -154,7 +216,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 18,
@@ -163,7 +229,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 19,
@@ -172,7 +242,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   },
   {
    "n": 20,
@@ -181,7 +255,11 @@
    "role": "refused",
    "sean": "Tie",
    "sean_says_note": false,
-   "refusal_right": true
+   "refusal_right": true,
+   "scored_as": {
+    "answer_kind": "not_a_note",
+    "value": "arc"
+   }
   }
  ]
 }
