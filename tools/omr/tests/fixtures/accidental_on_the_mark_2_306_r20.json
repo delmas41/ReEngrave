@@ -1,0 +1,200 @@
+{
+ "source": "litolff.on.gathered.record.json, 6/0/1/12 (2.306 r20 merged-tree gather, OMR_PAGE_STEMS ON arm)",
+ "rows": [
+  {
+   "subject": "glyph/6/0/1/12/5",
+   "quantity": "glyph_box",
+   "value": [
+    "noteheadHalfInSpace",
+    257,
+    307,
+    161,
+    163
+   ],
+   "reader": "detector",
+   "frame": "cell:12",
+   "detail": {
+    "category": "notehead"
+   }
+  },
+  {
+   "subject": "glyph/6/0/1/12/5",
+   "quantity": "glyph_conf",
+   "value": 0.3193688988685608,
+   "reader": "detector",
+   "frame": "cell:12",
+   "detail": {}
+  },
+  {
+   "subject": "glyph/6/0/1/12/5",
+   "quantity": "notehead_class",
+   "value": "noteheadHalfInSpace",
+   "reader": "detector",
+   "frame": "cell:12",
+   "detail": {}
+  },
+  {
+   "subject": "glyph/6/0/1/12/6",
+   "quantity": "glyph_box",
+   "value": [
+    "noteheadBlackInSpace",
+    257,
+    309,
+    157,
+    190
+   ],
+   "reader": "detector",
+   "frame": "cell:12",
+   "detail": {
+    "category": "notehead",
+    "tall_split": {
+     "read": false,
+     "holes": 1
+    }
+   }
+  },
+  {
+   "subject": "glyph/6/0/1/12/6",
+   "quantity": "glyph_conf",
+   "value": 0.2971358597278595,
+   "reader": "detector",
+   "frame": "cell:12",
+   "detail": {}
+  },
+  {
+   "subject": "glyph/6/0/1/12/6",
+   "quantity": "notehead_class",
+   "value": "noteheadBlackInSpace",
+   "reader": "detector",
+   "frame": "cell:12",
+   "detail": {}
+  },
+  {
+   "subject": "glyph/6/0/1/12/5",
+   "quantity": "mark_group",
+   "value": "mg/6/0/352",
+   "reader": "geometry",
+   "frame": "cell:12",
+   "detail": {
+    "family": "notehead",
+    "size": 2,
+    "rep": "glyph/6/0/1/12/5",
+    "members": [
+     "glyph/6/0/1/12/5",
+     "glyph/6/0/1/12/6"
+    ],
+    "identity": "page_head",
+    "head_how": "ink",
+    "head_ink_px": 79,
+    "ink_centre": [
+     2490.2,
+     525.9
+    ]
+   }
+  },
+  {
+   "subject": "glyph/6/0/1/12/6",
+   "quantity": "mark_group",
+   "value": "mg/6/0/352",
+   "reader": "geometry",
+   "frame": "cell:12",
+   "detail": {
+    "family": "notehead",
+    "size": 2,
+    "rep": "glyph/6/0/1/12/5",
+    "members": [
+     "glyph/6/0/1/12/5",
+     "glyph/6/0/1/12/6"
+    ],
+    "identity": "page_head",
+    "head_how": "ink",
+    "head_ink_px": 79,
+    "ink_centre": [
+     2490.2,
+     525.9
+    ]
+   }
+  },
+  {
+   "subject": "cell/6/0/1/12",
+   "quantity": "cell_staff_space",
+   "value": 100.0,
+   "reader": "geometry",
+   "frame": "cell:12",
+   "detail": {
+    "half_step": 50.0,
+    "lines": 5
+   }
+  },
+  {
+   "subject": "glyph/6/0/1/12/5",
+   "quantity": "notehead_staff_position",
+   "value": -0.1,
+   "reader": "geometry",
+   "frame": "cell:12",
+   "detail": {
+    "residual": 0.1,
+    "rounded": 0
+   }
+  },
+  {
+   "subject": "glyph/6/0/1/12/6",
+   "quantity": "notehead_staff_position",
+   "value": 0.22,
+   "reader": "geometry",
+   "frame": "cell:12",
+   "detail": {
+    "residual": 0.22,
+    "rounded": 0
+   }
+  },
+  {
+   "subject": "glyph/6/0/1/12/360000",
+   "quantity": "accidental_staff_position",
+   "value": 0.15614000000000033,
+   "reader": "geometry",
+   "frame": "cell:12",
+   "detail": {
+    "alteration": "#",
+    "detector_class": "accidentalSharp",
+    "anchor_fraction": 0.501,
+    "box_centre_position": 0.15,
+    "residual": 0.15614000000000033,
+    "rounded": 0,
+    "x0": 80.0,
+    "x1": 227.0,
+    "y0": 247.0,
+    "y1": 554.0,
+    "confidence": 0.0,
+    "shape": {
+     "bl": 1.0,
+     "tr": 1.0,
+     "ink_w": 147,
+     "ink_h": 300,
+     "aspect": 0.49,
+     "shape": "sharp",
+     "bl_zone": "present",
+     "tr_zone": "present",
+     "margin": 0.4
+    },
+    "family": {
+     "type": "sharp",
+     "why": "filled_sharp_corners",
+     "margin": null,
+     "features": {
+      "bl": 1.0,
+      "tr": 1.0,
+      "read_margin": 0.4
+     },
+     "grown": [],
+     "grown_sp": 0.0,
+     "detector_class": "page_ink",
+     "detector_type": null,
+     "candidates": [],
+     "agrees_with_detector": null
+    }
+   }
+  }
+ ],
+ "note": "Litolff p6 system 0 staff 1 bar 12 (page 6/0/1/12): a sharp before an F5 half (print, read by the 2.306 r19/r20 agents: F#5 half). The half's head is boxed twice (5: noteheadHalfInSpace conf 0.319, 6: noteheadBlackInSpace conf 0.297, one page_head mark mg/6/0/352); the sharp (360000, read from its own ink) is owned by box 6, EXPORT writes box 5. Boxes 1-3 (the sharp's own ink boxed as two heads and a ledger) are left out: the real run refuses them (claimed_by:page_claim, accidental_ink share 1.0)."
+}

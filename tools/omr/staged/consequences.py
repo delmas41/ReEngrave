@@ -1827,6 +1827,47 @@ def _apply_printed_also_reads(log: Log, subject: Subject,
     return [clef.id] if clef is not None else []
 
 
+ACCIDENTAL_ON_THE_MARK_ENV = "OMR_ACCIDENTAL_ON_THE_MARK"
+
+
+def accidental_on_the_mark_enabled() -> bool:
+    """`OMR_ACCIDENTAL_ON_THE_MARK` (ROADMAP 2.306 r20), default OFF (1/true/yes/on turns it on)."""
+    import os
+    return os.environ.get(ACCIDENTAL_ON_THE_MARK_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _boxes_of_the_same_head(log: Log, head: Subject, pitch_value: Any) -> List[Subject]:
+    """ROADMAP 2.306 r20. AN ACCIDENTAL BELONGS TO THE NOTE IT STANDS BEFORE, NOT TO ONE OF THE BOXES THE DETECTOR DREW ON THAT NOTE.
+    The other boxes of `head`'s own mark: the members of its `Q.MARK_GROUP` that the one head identity (2.290, `identity == "page_head"`:
+    one head's ink read by two boxes) folded, on the head's OWN staff, whose pitch is DECIDED and the same as the head's. NEVER a box of
+    another staff's view of the ink (that is another staff's note), never a box another identity grouped, never a box whose pitch differs
+    (then which box is the note is `_settle_folded_pitches`' question at EXPORT, not this rule's).
+    Cause (Litolff 6/0/1/12, F#5 half written F5): the sharp's owner is the box at 0.297, EXPORT writes the box at 0.319 (2.58b), and
+    the carry below skips it because it stands at the SAME x, not to the right -- so the written note never hears its own sharp."""
+    rows = log.rows(Q.MARK_GROUP, head)
+    if not rows:
+        return []
+    d = rows[-1].detail or {}
+    if d.get("identity") != "page_head":
+        return []
+    staff = head.at(Kind.STAFF)
+    out = []
+    for k in d.get("members") or ():
+        if k == head.to_key():
+            continue
+        try:
+            m = Subject.from_key(str(k))
+        except Exception:
+            continue
+        if staff is None or m.at(Kind.STAFF) != staff:
+            continue
+        mp = log.verdict(Q.PITCH, m)
+        if mp is None or mp.outcome is not Outcome.DECIDED or mp.value != pitch_value:
+            continue
+        out.append(m)
+    return out
+
+
 @rule(consequence=Consequence.APPLY_PRINTED_ACCIDENTAL,
       cause=Q.ACCIDENTAL_OWNER, effect=Q.ACCIDENTAL, scope=Kind.GLYPH,
       reads_beyond_cause=_apply_printed_also_reads,
@@ -1905,6 +1946,11 @@ def apply_printed_accidental(log: Log, subject: Subject,
     if cell is None:
         return []
 
+    # ROADMAP 2.306 r20 (`OMR_ACCIDENTAL_ON_THE_MARK`, default OFF): an accidental belongs to the NOTE it stands before, whichever
+    # box the detector read that note with. `same_mark` = the other boxes of this head (its `page_head` group, own staff, same pitch).
+    same_mark = _boxes_of_the_same_head(log, head, pitch.value) if accidental_on_the_mark_enabled() else []
+    mark_keys = {head.to_key()} | {m.to_key() for m in same_mark}
+
     # ⚠️⚠️ TWO GLYPHS THAT CLAIM ONE HEAD WITH DIFFERENT ALTERATIONS: NOTHING
     # FOLLOWS, SO NOTHING IS WRITTEN. Measured on the MERGED tree
     # (2026-09-27), not foreseen by the branch: on the Litolff whole movement
@@ -1924,7 +1970,7 @@ def apply_printed_accidental(log: Log, subject: Subject,
     # counts it under `heads_contradicted`.
     for other in _standing(log, cell, Q.ACCIDENTAL_OWNER):
         if (other.id != owner.id and other.outcome is Outcome.DECIDED
-                and other.value == owner.value
+                and other.value in mark_keys
                 and (other.detail or {}).get("alteration") != alteration):
             return []
 
@@ -1960,10 +2006,15 @@ def apply_printed_accidental(log: Log, subject: Subject,
         rivals.append(rx)
 
     out: List[Verdict] = []
-    owned_keys = {head.to_key()}
+    owned_keys = set(mark_keys)
     out.append(_supersede(log, head, alteration,
                           reason="printed_glyph", owner=owner,
                           basis=(owner.id, pitch.id), printed=True))
+    for m in same_mark:
+        # the same printed glyph on the same note: EXPORT writes one box of the mark (2.58b), so every box carries it
+        mp = log.verdict(Q.PITCH, m)
+        out.append(_supersede(log, m, alteration, reason="printed_glyph_same_head", owner=owner,
+                              basis=(owner.id, mp.id), printed=True))
 
     for later in _standing(log, cell, Q.PITCH):
         if later.outcome is not Outcome.DECIDED:
