@@ -55,6 +55,17 @@ ANCHOR_STRIDE_SPACES = 3.0
 ANCHOR_HALF_WINDOW_SPACES = 1.5
 LINE_SEARCH_SPACES = 0.4
 LINE_MIN_INK = 0.5
+#: ROADMAP 2.342 (`OMR_STROKE_SPACE_OWN_STAFF`): a column's five lines are the staff's own only where every gap is within this share of one
+#: recorded space ... (measured, Litolff p2/p3/p6/p16 + Brahms p0/p7/p20, 600 dpi: columns the old walk tracked well depart up to 0.53 in one gap
+#: [a line thickened by a head]; the clef columns that broke it 0.8-1.0 [two lines run together])
+OWN_GAP_TOL = 0.5
+#: ... and the five stand within this share of the staff's recorded height (well-tracked columns: 99% within 0.06, max 0.13; Brahms p7 staff 5
+#: and p20 staff 12 have a recorded line one third of a space off, so their recorded height is ~10% short of the printed one)
+OWN_SPREAD_TOL = 0.15
+#: where the walk from the last column fails, the recorded comb is moved at most this far (spaces) to the ink; under one space so it can never
+#: slide onto the next line (Litolff p6 staff 2: a bent staff stands ~0.65 sp off its recorded rows at the left end)
+OWN_RESEED_SPACES = 0.75
+STROKE_SPACE_OWN_STAFF_ENV = "OMR_STROKE_SPACE_OWN_STAFF"
 #: ROADMAP 2.202b. A horizontal / curve stroke's thickness is read on the UNERASED raster (CLAUDE §7: a thickness must not be read off an erased
 #: line). `tools/omr/staff_line_removal.py` erases a whole vertical run through a line row when the run it WALKS (bounded at `cap + 2` rows each side)
 #: is <= its crossing cut (0.45 sp): a beam 0.6 sp thick lying on a line is walked for ~37 rows, looks like 44 <= 45, and is erased from the line to
@@ -400,8 +411,70 @@ class Stroke:
     cut: str = ""
 
 
+def stroke_space_own_staff_enabled() -> bool:
+    """`OMR_STROKE_SPACE_OWN_STAFF` (ROADMAP 2.342), default OFF; 1/true/yes/on enables."""
+    return os.environ.get(STROKE_SPACE_OWN_STAFF_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _five_lines(prof: np.ndarray, seeds: Sequence[float], search: int) -> Optional[List[float]]:
+    """PURE. The five line rows of one column profile, each the ink-weighted centre of the strongest band within `search` rows of its seed; None
+    where a line has no ink there or two lines do not stand in order."""
+    h = prof.shape[0]
+    rows: List[float] = []
+    for y in seeds:
+        lo, hi = max(0, int(round(y)) - search), min(h, int(round(y)) + search + 1)
+        if hi - lo < 2:
+            return None
+        seg = prof[lo:hi]
+        peak = float(seg.max())
+        if peak < LINE_MIN_INK:
+            return None
+        band = np.nonzero(seg >= 0.5 * peak)[0]
+        wts = seg[band]
+        rows.append(float(lo + (band * wts).sum() / wts.sum()))
+    if any(rows[i + 1] - rows[i] <= 0 for i in range(4)):
+        return None
+    return rows
+
+
+def _at_own_spacing(rows: Sequence[float], nominal: Sequence[float]) -> bool:
+    """PURE (ROADMAP 2.342). Do five rows stand at the staff's OWN spacing (`nominal`, its recorded lines)? Every gap within
+    `OWN_GAP_TOL` of one recorded space and the whole staff within `OWN_SPREAD_TOL` of its recorded height. NEVER two lines run together, never
+    a staff a quarter shorter than its own."""
+    own = (nominal[4] - nominal[0]) / 4.0
+    if own <= 0:
+        return False
+    if any(abs((rows[i + 1] - rows[i]) / own - 1.0) > OWN_GAP_TOL for i in range(4)):
+        return False
+    return abs((rows[4] - rows[0]) / (4.0 * own) - 1.0) <= OWN_SPREAD_TOL
+
+
+def _comb_seed(prof: np.ndarray, nominal: Sequence[float], reach: int) -> Optional[List[float]]:
+    """PURE (ROADMAP 2.342). The staff's recorded five lines moved TOGETHER, by the shift within `reach` rows where most ink lies under all
+    five (one comb, so two lines can never be pulled onto one); None where the comb never fits inside the profile."""
+    h = prof.shape[0]
+    best: Optional[Tuple[float, int]] = None
+    for d in range(-reach, reach + 1):
+        ys = [int(round(y + d)) for y in nominal]
+        if ys[0] < 1 or ys[-1] >= h - 1:
+            continue
+        sc = float(sum(prof[y - 1:y + 2].max() for y in ys))
+        if best is None or sc > best[0]:
+            best = (sc, d)
+    return None if best is None else [y + best[1] for y in nominal]
+
+
 class LocalStaff:
-    """The five staff lines at any x of one cell, measured on the RAW reduced raster (reduced-frame rows)."""
+    """The five staff lines at any x of one cell, measured on the RAW reduced raster (reduced-frame rows).
+
+    ROADMAP 2.342 (`OMR_STROKE_SPACE_OWN_STAFF`, default OFF), CLAUDE §5 "measure against the staff LOCALLY". Every stroke is measured in the
+    spacing of the five lines of the staff it stands on, at its own x. The walk across the staff takes a column's five lines only where they
+    stand at that staff's OWN spacing (`_at_own_spacing`); a column that does not is never taken and never seeds the next one. Where the walk
+    from the last column finds no such five, the staff's recorded lines are moved together as one comb to where the ink is (`_comb_seed`, within
+    `OWN_RESEED_SPACES`) and read again. NEVER another staff's spacing, never a spacing a column read off a clef or brace: before this, on
+    Litolff p2 system 0 staff 1 the walk took a column inside the treble clef with two lines run together (spread 12 px of the staff's 15.75),
+    no later column matched five distinct lines, and that one clef column was held flat to the staff's right end (323 strokes 25% off).
+    Where no column reads, `lines_at` gives the staff's own recorded lines (its own spacing; the position the tilt may move)."""
 
     def __init__(self, raw_small: Optional[np.ndarray], nominal_small: Sequence[float], sp_small: float):
         self.sp = float(sp_small)
@@ -411,10 +484,12 @@ class LocalStaff:
         self._rows: List[List[float]] = []
         if raw_small is None or len(self.nominal) != 5 or sp_small <= 0 or raw_small.ndim != 2:
             return
+        own_staff = stroke_space_own_staff_enabled()
         h, w = raw_small.shape
         half = max(2, int(round(ANCHOR_HALF_WINDOW_SPACES * sp_small)))
         stride = max(2, int(round(ANCHOR_STRIDE_SPACES * sp_small)))
         search = max(1, int(round(LINE_SEARCH_SPACES * sp_small)))
+        reach = max(1, int(round(OWN_RESEED_SPACES * sp_small)))
         prev = list(self.nominal)
         for cx in range(half, max(half + 1, w - half + stride), stride):
             cx = min(cx, w - 1)
@@ -422,22 +497,13 @@ class LocalStaff:
             if b - a < 3:
                 continue
             prof = raw_small[:, a:b].mean(axis=1)
-            rows: List[float] = []
-            ok = True
-            for y in prev:
-                lo, hi = max(0, int(round(y)) - search), min(h, int(round(y)) + search + 1)
-                if hi - lo < 2:
-                    ok = False
-                    break
-                seg = prof[lo:hi]
-                peak = float(seg.max())
-                if peak < LINE_MIN_INK:
-                    ok = False
-                    break
-                band = np.nonzero(seg >= 0.5 * peak)[0]
-                wts = seg[band]
-                rows.append(float(lo + (band * wts).sum() / wts.sum()))
-            if not ok or any(rows[i + 1] - rows[i] <= 0 for i in range(4)):
+            rows = _five_lines(prof, prev, search)
+            if own_staff and (rows is None or not _at_own_spacing(rows, self.nominal)):
+                seed = _comb_seed(prof, self.nominal, reach)
+                rows = None if seed is None else _five_lines(prof, seed, search)
+                if rows is not None and not _at_own_spacing(rows, self.nominal):
+                    rows = None
+            if rows is None:
                 continue
             self._xs.append(float(cx))
             self._rows.append(rows)
