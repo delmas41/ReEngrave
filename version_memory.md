@@ -9,6 +9,11 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- 2.324 r11 LANDED (main aa9038505): opening C clefs read right; the part join counts evidence
+- STAGED GATHER `clef_pagewide.py`: a C clef is two upright bars side by side, the same height, thick on the left (repairs the regression of bef49d18a: Brahms p3/p10 viola and Litolff p13 viola read bass, Brahms p17 bassoon tenor lost; Sean's two crops are hard controls). No flag.
+- STAGED ADJUDICATE `adjudicators/identity.py` `_short_slots_rest_on_evidence`: staves join their parts when every slot on a short system was paired on evidence, never on position alone (the old `_slots_are_ordinals` check refused a fully correct reading; the join had held only while a viola was misread). No flag.
+- Fast tier 11,286 passed, 0 failed. Seen on the touched pages only; not on the frozen sample or a whole movement.
+
 ## 2026-11-23 -- 2.335 slash fix LANDED ON (main 3ac19ca5d; Sean "Yes")
 - STAGED GATHER: `OMR_SLASH_STEM_CORE` default ON (`page_tremolo.stem_core_enabled`): the page tremolo finder reads with ledger lines set aside, joins a slash to another stem only where their ink meets, and its claim covers the page strokes it owns. `judged_claims` follows the page fact "where a tremolo slash crosses its stem the crossing belongs to both". Litolff 2, 6, 16: 15 new slashes, all 15 judged slashes by Sean; the slash piece no longer written as a half at 6/1/8/11; 16/0/1/6 written in two voices (Sean: "2 voices"). Fast tier 11,255 passed. Seen on three Litolff pages only; no Brahms page.
 
