@@ -1,0 +1,297 @@
+READOUT DIFF at GATHER + ADJUDICATE   20261122-night=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261122-night.record.json
+                                      20261123-night=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261123-night.record.json
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! PROVENANCE: the two records differ in
+!!   code      commit: 20261122-night='5634884a49d00a46366e097ffeb5f529217c6502'  20261123-night='3881969e95b0d256c339eec46236a7e5ba215f3f'
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+== family (other classes): gathered 20261122-night 15168 / 20261123-night 15168; matched 15168 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   classes no export family claims: {'ledgerLine': 7659, 'staff': 2600, 'beam': 2563, 'arpeggiato': 1900, 'flag8thUp': 170, 'flag8thDown': 101, 'stem': 78, 'brace': 43} ...
+   ADJUDICATE status 20261122-night -> 20261123-night: {'kept -> refused': 85, 'given_away -> refused': 1}
+   GATHER     page_mark: 1062 of 15168 changed
+           3  1256 -> 1257
+           2  614 -> 615
+           2  757 -> 758
+           2  932 -> 933
+           2  1032 -> 1033
+           2  1033 -> 1034
+   ADJUDICATE arpeggiato_is_not_an_arpeggiato: 86 of 1900 changed answer
+          86  decided:false -> decided:true
+   ADJUDICATE ledger_is_not_a_ledger: 0 of 7659 changed answer, 30 same answer by another reason
+   e.g. arpeggiato_is_not_an_arpeggiato: glyph/2/0/7/2/5 ~ glyph/2/0/7/2/5, glyph/2/1/6/14/6 ~ glyph/2/1/6/14/6, glyph/3/0/1/9/5 ~ glyph/3/0/1/9/5, glyph/3/0/7/1/8 ~ glyph/3/0/7/1/8, glyph/4/0/8/2/4 ~ glyph/4/0/8/2/4
+   e.g. page_mark: glyph/3/1/5/5/5 ~ glyph/3/1/5/5/5, glyph/3/1/5/5/6 ~ glyph/3/1/5/5/6, glyph/3/1/5/6/3 ~ glyph/3/1/5/6/3, glyph/3/1/5/6/4 ~ glyph/3/1/5/6/4, glyph/3/1/5/6/5 ~ glyph/3/1/5/6/5
+
+== family accidental: gathered 20261122-night 1511 / 20261123-night 1511; matched 1511 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   ADJUDICATE status 20261122-night -> 20261123-night: {'kept -> refused': 46}
+   GATHER     mark_group: 30 of 1511 changed
+           3  "mg/8/0/272" -> "mg/8/0/273"
+           3  "mg/8/0/297" -> "mg/8/0/298"
+           3  "mg/8/0/259" -> "mg/8/0/260"
+           2  "mg/3/1/199" -> "mg/3/1/198"
+           2  "mg/3/1/173" -> "mg/3/1/172"
+           2  "mg/8/0/271" -> "mg/8/0/272"
+   GATHER     page_mark: 122 of 1511 changed
+           4  245 -> 246
+           4  279 -> 280
+           3  303 -> 304
+           3  308 -> 309
+           3  318 -> 319
+           3  564 -> 565
+   ADJUDICATE accidental_is_not_an_accidental: 46 of 1511 changed answer
+          46  decided:false -> decided:true
+   ADJUDICATE accidental_owner: 1 of 1390 changed answer, 1 same answer by another reason
+           1  decided:"glyph/13/0/8/5/7" -> abstained:null
+   e.g. accidental_is_not_an_accidental: glyph/2/0/2/5/5 ~ glyph/2/0/2/5/5, glyph/2/0/4/5/8 ~ glyph/2/0/4/5/8, glyph/2/0/4/5/10 ~ glyph/2/0/4/5/10, glyph/2/1/10/2/3 ~ glyph/2/1/10/2/3, glyph/2/1/10/2/6 ~ glyph/2/1/10/2/6
+   e.g. mark_group: glyph/3/1/1/5/2 ~ glyph/3/1/1/5/2, glyph/3/1/1/14/0 ~ glyph/3/1/1/14/0, glyph/3/1/2/14/0 ~ glyph/3/1/2/14/0, glyph/3/1/2/16/4 ~ glyph/3/1/2/16/4, glyph/3/1/4/11/2 ~ glyph/3/1/4/11/2
+   e.g. page_mark: glyph/3/1/6/12/2 ~ glyph/3/1/6/12/2, glyph/3/1/6/12/4 ~ glyph/3/1/6/12/4, glyph/3/1/7/9/2 ~ glyph/3/1/7/9/2, glyph/8/0/2/3/0 ~ glyph/8/0/2/3/0, glyph/8/0/2/3/2 ~ glyph/8/0/2/3/2
+   e.g. accidental_owner: glyph/13/0/8/5/9 ~ glyph/13/0/8/5/9
+
+== family articulation: gathered 20261122-night 21 / 20261123-night 21; matched 21 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 1 of 21 changed
+           1  681 -> 682
+   e.g. page_mark: glyph/8/0/7/0/6 ~ glyph/8/0/7/0/6
+
+== family clef: gathered 20261122-night 505 / 20261123-night 505; matched 505 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 29 of 505 changed
+           2  215 -> 216
+           2  458 -> 459
+           2  554 -> 555
+           1  1656 -> 1655
+           1  1722 -> 1721
+           1  323 -> 324
+   e.g. page_mark: glyph/3/1/6/0/7 ~ glyph/3/1/6/0/7, glyph/3/1/7/0/0 ~ glyph/3/1/7/0/0, glyph/8/0/2/0/0 ~ glyph/8/0/2/0/0, glyph/8/0/3/0/0 ~ glyph/8/0/3/0/0, glyph/8/0/3/0/2 ~ glyph/8/0/3/0/2
+
+== family dot: gathered 20261122-night 619 / 20261123-night 619; matched 619 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 11 of 619 changed
+           1  1636 -> 1635
+           1  348 -> 349
+           1  376 -> 377
+           1  390 -> 391
+           1  610 -> 611
+           1  657 -> 658
+   ADJUDICATE dot_role: 2 of 619 changed answer, 1 same answer by another reason
+           2  decided:"staccato" -> abstained:null
+   e.g. page_mark: glyph/3/1/5/14/0 ~ glyph/3/1/5/14/0, glyph/8/0/3/7/4 ~ glyph/8/0/3/7/4, glyph/8/0/3/13/5 ~ glyph/8/0/3/13/5, glyph/8/0/3/17/3 ~ glyph/8/0/3/17/3, glyph/8/0/6/8/5 ~ glyph/8/0/6/8/5
+   e.g. dot_role: glyph/6/0/1/10/10 ~ glyph/6/0/1/10/10, glyph/6/1/2/4/6 ~ glyph/6/1/2/4/6
+
+== family dynamic: gathered 20261122-night 1602 / 20261123-night 1602; matched 1602 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 206 of 1602 changed
+           5  1331 -> 1332
+           5  1680 -> 1681
+           5  1799 -> 1800
+           5  1845 -> 1846
+           4  637 -> 638
+           4  1150 -> 1151
+   e.g. page_mark: glyph/3/1/7/0/1 ~ glyph/3/1/7/0/1, glyph/8/0/2/5/1 ~ glyph/8/0/2/5/1, glyph/8/0/2/6/4 ~ glyph/8/0/2/6/4, glyph/8/0/2/9/8 ~ glyph/8/0/2/9/8, glyph/8/0/2/11/1 ~ glyph/8/0/2/11/1
+
+== family fermata: gathered 20261122-night 178 / 20261123-night 178; matched 178 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+
+== family key: gathered 20261122-night 540 / 20261123-night 540; matched 540 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     mark_group: 2 of 528 changed
+           1  "mg/3/1/92" -> "mg/3/1/91"
+           1  "mg/3/1/87" -> "mg/3/1/86"
+   GATHER     page_mark: 37 of 540 changed
+           1  1651 -> 1650
+           1  1652 -> 1651
+           1  1653 -> 1652
+           1  1724 -> 1723
+           1  1728 -> 1727
+           1  1729 -> 1728
+   e.g. mark_group: glyph/3/1/0/5/0 ~ glyph/3/1/0/5/0, glyph/3/1/0/5/2 ~ glyph/3/1/0/5/2
+   e.g. page_mark: glyph/3/1/6/0/1 ~ glyph/3/1/6/0/1, glyph/3/1/6/0/2 ~ glyph/3/1/6/0/2, glyph/3/1/6/0/3 ~ glyph/3/1/6/0/3, glyph/3/1/7/0/2 ~ glyph/3/1/7/0/2, glyph/3/1/7/0/6 ~ glyph/3/1/7/0/6
+
+== family note: gathered 20261122-night 12039 / 20261123-night 12039; matched 12039 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   ADJUDICATE status 20261122-night -> 20261123-night: {'kept -> refused': 37, 'kept -> narrowed': 7, 'given_away -> refused': 4, 'narrowed -> refused': 2, 'narrowed -> kept': 2}
+   GATHER     mark_group: 159 of 12039 changed
+           4  "mg/3/1/240" -> "mg/3/1/239"
+           4  "mg/8/0/260" -> "mg/8/0/261"
+           3  "mg/3/1/123" -> "mg/3/1/122"
+           3  "mg/3/1/249" -> "mg/3/1/248"
+           3  "mg/8/0/251" -> "mg/8/0/252"
+           3  "mg/8/0/306" -> "mg/8/0/307"
+   GATHER     page_mark: 685 of 12039 changed
+           4  612 -> 613
+           4  778 -> 779
+           4  1770 -> 1771
+           3  1801 -> 1800
+           3  319 -> 320
+           3  498 -> 499
+   GATHER     page_mark_owner: 3 of 9391 changed
+           1  "staff/3/1/5" -> none
+           1  "staff/8/0/1" -> none
+           1  none -> "staff/8/0/1"
+   ADJUDICATE duration: 65 of 12039 changed answer, 12 same answer by another reason
+          44  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> abstained:null
+           8  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> narrowed:[{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1....
+           5  decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> abstained:null
+           3  narrowed:[{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.... -> abstained:null
+           2  narrowed:[{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+           1  decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "written": 2.0} -> abstained:null
+           1  abstained:null -> decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0}
+           1  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   ADJUDICATE glyph_owner: 1 of 4616 changed answer, 10 same answer by another reason
+           1  decided:"staff/8/0/1" -> decided:"own staff"
+   ADJUDICATE head_stem: 8 of 12039 changed answer
+           7  decided:"<row>" -> abstained:null
+           1  decided:"<row>" -> narrowed:["<row>", "<row>"]
+   ADJUDICATE notehead_is_an_eighth_rest: 0 of 321 changed answer, 6 same answer by another reason
+   ADJUDICATE notehead_is_not_a_notehead: 43 of 12039 changed answer, 38 same answer by another reason
+          43  decided:false -> decided:true
+   ADJUDICATE stem_value: 25 of 12039 changed answer, 12 same answer by another reason
+           9  decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "head_fill": "h... -> abstained:null
+           8  decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": "b... -> abstained:null
+           5  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "head_fill": "b... -> narrowed:[{"beam_levels": 0, "beats": 1.0, "dots": 0, "head_fill": ...
+           3  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "head_fill": "b... -> abstained:null
+   ADJUDICATE unison_voices: 1 of 12039 changed answer
+           1  abstained:null -> decided:{"agree": true, "voices": {"down": {"beam_levels": 0, "beat...
+   e.g. duration: glyph/2/0/7/4/5 ~ glyph/2/0/7/4/5, glyph/2/1/9/14/5 ~ glyph/2/1/9/14/5, glyph/4/1/8/11/4 ~ glyph/4/1/8/11/4, glyph/5/1/2/14/2 ~ glyph/5/1/2/14/2, glyph/5/1/2/14/7 ~ glyph/5/1/2/14/7
+   e.g. notehead_is_not_a_notehead: glyph/2/0/7/4/5 ~ glyph/2/0/7/4/5, glyph/4/1/8/11/4 ~ glyph/4/1/8/11/4, glyph/4/1/9/11/6 ~ glyph/4/1/9/11/6, glyph/5/1/2/14/2 ~ glyph/5/1/2/14/2, glyph/5/1/2/14/7 ~ glyph/5/1/2/14/7
+   e.g. stem_value: glyph/2/0/7/4/5 ~ glyph/2/0/7/4/5, glyph/2/0/7/4/12 ~ glyph/2/0/7/4/12, glyph/6/1/8/11/0 ~ glyph/6/1/8/11/0, glyph/6/1/8/11/13 ~ glyph/6/1/8/11/13, glyph/7/0/7/14/1 ~ glyph/7/0/7/14/1
+   e.g. mark_group: glyph/3/1/0/6/0 ~ glyph/3/1/0/6/0, glyph/3/1/0/6/1 ~ glyph/3/1/0/6/1, glyph/3/1/0/6/14 ~ glyph/3/1/0/6/14, glyph/3/1/0/7/0 ~ glyph/3/1/0/7/0, glyph/3/1/0/7/1 ~ glyph/3/1/0/7/1
+   e.g. page_mark: glyph/3/1/5/5/4 ~ glyph/3/1/5/5/4, glyph/3/1/5/6/2 ~ glyph/3/1/5/6/2, glyph/3/1/5/7/1 ~ glyph/3/1/5/7/1, glyph/3/1/5/8/2 ~ glyph/3/1/5/8/2, glyph/3/1/5/9/0 ~ glyph/3/1/5/9/0
+   e.g. page_mark_owner: glyph/3/1/5/5/4 ~ glyph/3/1/5/5/4, glyph/8/0/0/17/6 ~ glyph/8/0/0/17/6, glyph/8/0/1/17/1 ~ glyph/8/0/1/17/1
+   e.g. head_stem: glyph/5/1/2/14/2 ~ glyph/5/1/2/14/2, glyph/7/0/10/8/3 ~ glyph/7/0/10/8/3, glyph/7/0/10/13/2 ~ glyph/7/0/10/13/2, glyph/10/1/9/0/8 ~ glyph/10/1/9/0/8, glyph/11/1/3/8/2 ~ glyph/11/1/3/8/2
+   e.g. glyph_owner: glyph/8/0/0/17/6 ~ glyph/8/0/0/17/6
+   e.g. unison_voices: glyph/16/0/1/6/1 ~ glyph/16/0/1/6/1
+
+== family ornament: gathered 20261122-night 3 / 20261123-night 3; matched 3 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+
+== family rest: gathered 20261122-night 2980 / 20261123-night 2980; matched 2980 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   ADJUDICATE status 20261122-night -> 20261123-night: {'kept -> refused': 10}
+   GATHER     mark_group: 77 of 2980 changed
+           1  "mg/3/1/88" -> "mg/3/1/87"
+           1  "mg/3/1/102" -> "mg/3/1/101"
+           1  "mg/3/1/113" -> "mg/3/1/112"
+           1  "mg/3/1/127" -> "mg/3/1/126"
+           1  "mg/3/1/145" -> "mg/3/1/144"
+           1  "mg/3/1/157" -> "mg/3/1/156"
+   GATHER     page_mark: 178 of 2980 changed
+           1  1733 -> 1732
+           1  1735 -> 1734
+           1  1738 -> 1737
+           1  1739 -> 1738
+           1  1744 -> 1743
+           1  1749 -> 1748
+   ADJUDICATE rest_is_not_a_rest: 10 of 2980 changed answer, 8 same answer by another reason
+           9  decided:false -> decided:true
+           1  narrowed:[false, true] -> decided:true
+   e.g. rest_is_not_a_rest: glyph/2/0/1/3/4 ~ glyph/2/0/1/3/4, glyph/2/0/2/3/1 ~ glyph/2/0/2/3/1, glyph/6/1/7/4/13 ~ glyph/6/1/7/4/13, glyph/7/0/7/7/7 ~ glyph/7/0/7/7/7, glyph/7/0/10/13/4 ~ glyph/7/0/10/13/4
+   e.g. mark_group: glyph/3/1/0/5/3 ~ glyph/3/1/0/5/3, glyph/3/1/0/6/2 ~ glyph/3/1/0/6/2, glyph/3/1/0/7/2 ~ glyph/3/1/0/7/2, glyph/3/1/0/8/9 ~ glyph/3/1/0/8/9, glyph/3/1/0/9/3 ~ glyph/3/1/0/9/3
+   e.g. page_mark: glyph/3/1/7/0/11 ~ glyph/3/1/7/0/11, glyph/3/1/7/1/1 ~ glyph/3/1/7/1/1, glyph/3/1/7/2/0 ~ glyph/3/1/7/2/0, glyph/3/1/7/3/0 ~ glyph/3/1/7/3/0, glyph/3/1/7/4/4 ~ glyph/3/1/7/4/4
+
+== family slur: gathered 20261122-night 1989 / 20261123-night 1989; matched 1989 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 101 of 1989 changed
+           3  937 -> 938
+           2  949 -> 950
+           2  1015 -> 1016
+           2  1047 -> 1048
+           2  1076 -> 1077
+           2  1155 -> 1156
+   ADJUDICATE arc_kind: 2 of 1989 changed answer
+           2  decided:"tie" -> decided:"slur"
+   ADJUDICATE tie_pair: 2 of 1989 changed answer
+           2  decided:{"start": "glyph/6/1/11/2/4", "stop": "glyph/6/1/11/3/1"} -> abstained:null
+   e.g. page_mark: glyph/3/1/5/6/0 ~ glyph/3/1/5/6/0, glyph/3/1/5/7/2 ~ glyph/3/1/5/7/2, glyph/3/1/5/8/0 ~ glyph/3/1/5/8/0, glyph/3/1/5/10/0 ~ glyph/3/1/5/10/0, glyph/3/1/5/11/5 ~ glyph/3/1/5/11/5
+   e.g. arc_kind: glyph/6/1/11/2/1 ~ glyph/6/1/11/2/1, glyph/6/1/11/3/4 ~ glyph/6/1/11/3/4
+   e.g. tie_pair: glyph/6/1/11/2/1 ~ glyph/6/1/11/2/1, glyph/6/1/11/3/4 ~ glyph/6/1/11/3/4
+
+== family tie: gathered 20261122-night 1523 / 20261123-night 1523; matched 1523 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 43 of 1523 changed
+           1  1637 -> 1636
+           1  1639 -> 1638
+           1  1649 -> 1648
+           1  1670 -> 1669
+           1  1716 -> 1715
+           1  1720 -> 1719
+   ADJUDICATE arc_kind: 9 of 1523 changed answer
+           4  decided:"slur" -> decided:"tie"
+           4  decided:"tie" -> decided:"slur"
+           1  decided:"tie" -> abstained:null
+   ADJUDICATE tie_pair: 0 of 1523 changed answer, 9 same answer by another reason
+   e.g. arc_kind: glyph/3/1/2/16/5 ~ glyph/3/1/2/16/5, glyph/4/0/3/5/4 ~ glyph/4/0/3/5/4, glyph/4/0/3/5/5 ~ glyph/4/0/3/5/5, glyph/4/0/3/5/7 ~ glyph/4/0/3/5/7, glyph/4/0/3/11/12 ~ glyph/4/0/3/11/12
+   e.g. page_mark: glyph/3/1/5/14/1 ~ glyph/3/1/5/14/1, glyph/3/1/5/14/3 ~ glyph/3/1/5/14/3, glyph/3/1/5/17/1 ~ glyph/3/1/5/17/1, glyph/3/1/6/4/3 ~ glyph/3/1/6/4/3, glyph/3/1/6/15/2 ~ glyph/3/1/6/15/2
+
+== family time: gathered 20261122-night 84 / 20261123-night 84; matched 84 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   GATHER     page_mark: 2 of 84 changed
+           1  794 -> 795
+           1  1977 -> 1978
+   e.g. page_mark: glyph/8/0/8/0/7 ~ glyph/8/0/8/0/7, glyph/8/1/9/0/17 ~ glyph/8/1/9/0/17
+
+== family tuplet: gathered 20261122-night 12 / 20261123-night 12; matched 12 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+   ADJUDICATE status 20261122-night -> 20261123-night: {'kept -> refused': 1}
+   ADJUDICATE tuplet_marker_is_not_a_marker: 1 of 12 changed answer
+           1  decided:false -> decided:true
+   e.g. tuplet_marker_is_not_a_marker: glyph/6/0/6/7/4 ~ glyph/6/0/6/7/4
+
+== family wedge: gathered 20261122-night 1 / 20261123-night 1; matched 1 (0 in another bar); only 20261122-night 0, only 20261123-night 0
+
+== staves, bars, systems (ADJUDICATE, by key)
+   clef: 1 of 331 changed
+        staff/13/0/9: decided:"bass" -> decided:"alto"
+   dynamic_anchor: 1 of 331 changed
+        staff/12/0/9: decided:[{"anchor": "glyph/12/0/9/3/8", "anchor_cell": 3, "carrier": "rest", "detected_in_cell": 3, "letters": ["<row... -> decided:[{"anchor": "glyph/12/0/9/3/8", "anchor_cell": 3, "carrier": "rest", "detected_in_cell": 3, "letters": ["<row...
+   event: 1 of 5203 changed
+        cell/7/0/10/13: decided:{"events": [{"glyphs": [4], "kind": "rest", "x": 84.5}, {"glyphs": [1, 2], "kind": "chord", "x": 159.75}, {"g... -> decided:{"events": [{"glyphs": [2], "kind": "chord", "x": 76.0}, {"glyphs": [4], "kind": "rest", "x": 84.5}, {"glyphs...
+   onset_column: 1 of 31 changed
+        system/7/0: decided:{"bars": [{"alone": [346.72, 349.63, 379.56, 470.28, 529.89, 557.3, 610.44, 621.4, 631.04, 642.74], "columns"... -> decided:{"bars": [{"alone": [346.72, 349.63, 379.56, 470.28, 529.89, 557.3, 610.44, 621.4, 631.04, 642.74], "columns"...
+   page_arc_binding: 11 of 16 changed
+        page/2: decided:{"abstained": 25, "not_witnessed": 9, "runs": 76, "written": 42} -> decided:{"abstained": 24, "not_witnessed": 11, "runs": 78, "written": 43}
+        page/3: decided:{"abstained": 62, "not_witnessed": 10, "runs": 126, "written": 54} -> decided:{"abstained": 58, "not_witnessed": 9, "runs": 131, "written": 64}
+        page/4: decided:{"abstained": 50, "not_witnessed": 14, "runs": 116, "written": 52} -> decided:{"abstained": 55, "not_witnessed": 14, "runs": 125, "written": 56}
+   part_key: 1 of 1 changed
+        document: decided:{"changes": [], "document": [{"fifths": -3, "from": null, "read": 215, "rows": 215, "support": 208, "tally": ... -> decided:{"changes": [], "document": [{"fifths": -3, "from": null, "read": 214, "rows": 214, "support": 207, "tally": ...
+   slot_index: 2 of 331 changed
+        staff/13/0/9: decided:10 -> decided:9
+        staff/13/0/10: decided:11 -> narrowed:[10, 11]
+   stroke_owner: 235 of 5343 changed
+        cell/1/0/7/0: decided:{"contested": [], "owned": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "...+29 more"]} -> decided:{"contested": [], "owned": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "...+23 more"]}
+        cell/2/0/7/4: decided:{"contested": [17], "owned": [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18]} -> decided:{"contested": [17], "owned": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16, 18]}
+        cell/2/0/8/10: decided:{"contested": [], "owned": [0, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16]} -> decided:{"contested": [], "owned": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16]}
+   voices: 1 of 5343 changed
+        cell/6/0/1/12: decided:{"n_voices": 1, "rests_displaced_by_position": {}, "rests_in_every_voice": [], "voices": [[1, 2, 4, 5, 6]]} -> decided:{"n_voices": 2, "rest_own_voice": [4], "rests_displaced_by_position": {"4": "lower"}, "rests_in_every_voice":...
+   (bar-level values that NAME glyph indexes (event, voices) change whenever the detector's output order changes; read the glyph lines above for what moved)
+
+== matched glyphs that changed (40 shown of 2848)
+   glyph/2/0/1/3/4 ~ glyph/2/0/1/3/4 (iou 1.0): status kept -> refused; rest_is_not_a_rest: decided:false -> decided:true
+   glyph/2/0/2/3/1 ~ glyph/2/0/2/3/1 (iou 1.0): status kept -> refused; rest_is_not_a_rest: decided:false -> decided:true
+   glyph/2/0/2/5/5 ~ glyph/2/0/2/5/5 (iou 1.0): status kept -> refused; accidental_is_not_an_accidental: decided:false -> decided:true
+   glyph/2/0/4/5/8 ~ glyph/2/0/4/5/8 (iou 1.0): status kept -> refused; accidental_is_not_an_accidental: decided:false -> decided:true
+   glyph/2/0/4/5/10 ~ glyph/2/0/4/5/10 (iou 1.0): status kept -> refused; accidental_is_not_an_accidental: decided:false -> decided:true
+   glyph/2/0/7/2/5 ~ glyph/2/0/7/2/5 (iou 1.0): status kept -> refused; arpeggiato_is_not_an_arpeggiato: decided:false -> decided:true
+   glyph/2/0/7/4/5 ~ glyph/2/0/7/4/5 (iou 1.0): status kept -> refused; duration: decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "written": 2.0} -> abstained:null; notehead_is_not_a_notehead: decided:false -> decided:true; stem_value: decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "head_fill": "h... -> abstained:null
+   glyph/2/0/7/4/12 ~ glyph/2/0/7/4/12 (iou 1.0): stem_value: decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "head_fill": "h... -> abstained:null
+   glyph/2/1/6/14/6 ~ glyph/2/1/6/14/6 (iou 1.0): status kept -> refused; arpeggiato_is_not_an_arpeggiato: decided:false -> decided:true
+   glyph/2/1/9/14/5 ~ glyph/2/1/9/14/5 (iou 1.0): duration: decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> abstained:null
+   glyph/2/1/10/2/3 ~ glyph/2/1/10/2/3 (iou 1.0): status kept -> refused; accidental_is_not_an_accidental: decided:false -> decided:true
+   glyph/2/1/10/2/6 ~ glyph/2/1/10/2/6 (iou 1.0): status kept -> refused; accidental_is_not_an_accidental: decided:false -> decided:true
+   glyph/3/0/1/9/5 ~ glyph/3/0/1/9/5 (iou 1.0): status kept -> refused; arpeggiato_is_not_an_arpeggiato: decided:false -> decided:true
+   glyph/3/0/7/1/8 ~ glyph/3/0/7/1/8 (iou 1.0): status kept -> refused; arpeggiato_is_not_an_arpeggiato: decided:false -> decided:true
+   glyph/3/1/0/5/0 ~ glyph/3/1/0/5/0 (iou 1.0): GATHER mark_group: "mg/3/1/92" -> "mg/3/1/91"
+   glyph/3/1/0/5/2 ~ glyph/3/1/0/5/2 (iou 1.0): GATHER mark_group: "mg/3/1/87" -> "mg/3/1/86"
+   glyph/3/1/0/5/3 ~ glyph/3/1/0/5/3 (iou 1.0): GATHER mark_group: "mg/3/1/88" -> "mg/3/1/87"
+   glyph/3/1/0/6/0 ~ glyph/3/1/0/6/0 (iou 1.0): GATHER mark_group: "mg/3/1/104" -> "mg/3/1/103"
+   glyph/3/1/0/6/1 ~ glyph/3/1/0/6/1 (iou 1.0): GATHER mark_group: "mg/3/1/94" -> "mg/3/1/93"
+   glyph/3/1/0/6/2 ~ glyph/3/1/0/6/2 (iou 1.0): GATHER mark_group: "mg/3/1/102" -> "mg/3/1/101"
+   glyph/3/1/0/6/14 ~ glyph/3/1/0/6/14 (iou 1.0): GATHER mark_group: "mg/3/1/93" -> "mg/3/1/92"
+   glyph/3/1/0/7/0 ~ glyph/3/1/0/7/0 (iou 1.0): GATHER mark_group: "mg/3/1/116" -> "mg/3/1/115"
+   glyph/3/1/0/7/1 ~ glyph/3/1/0/7/1 (iou 1.0): GATHER mark_group: "mg/3/1/106" -> "mg/3/1/105"
+   glyph/3/1/0/7/2 ~ glyph/3/1/0/7/2 (iou 1.0): GATHER mark_group: "mg/3/1/113" -> "mg/3/1/112"
+   glyph/3/1/0/7/4 ~ glyph/3/1/0/7/4 (iou 1.0): GATHER mark_group: "mg/3/1/106" -> "mg/3/1/105"
+   glyph/3/1/0/8/1 ~ glyph/3/1/0/8/1 (iou 1.0): GATHER mark_group: "mg/3/1/131" -> "mg/3/1/130"
+   glyph/3/1/0/8/2 ~ glyph/3/1/0/8/2 (iou 1.0): GATHER mark_group: "mg/3/1/121" -> "mg/3/1/120"
+   glyph/3/1/0/8/4 ~ glyph/3/1/0/8/4 (iou 1.0): GATHER mark_group: "mg/3/1/128" -> "mg/3/1/127"
+   glyph/3/1/0/8/9 ~ glyph/3/1/0/8/9 (iou 1.0): GATHER mark_group: "mg/3/1/127" -> "mg/3/1/126"
+   glyph/3/1/0/9/0 ~ glyph/3/1/0/9/0 (iou 1.0): GATHER mark_group: "mg/3/1/136" -> "mg/3/1/135"
+   glyph/3/1/0/9/2 ~ glyph/3/1/0/9/2 (iou 1.0): GATHER mark_group: "mg/3/1/147" -> "mg/3/1/146"
+   glyph/3/1/0/9/3 ~ glyph/3/1/0/9/3 (iou 1.0): GATHER mark_group: "mg/3/1/145" -> "mg/3/1/144"
+   glyph/3/1/0/10/0 ~ glyph/3/1/0/10/0 (iou 1.0): GATHER mark_group: "mg/3/1/157" -> "mg/3/1/156"
+   glyph/3/1/0/11/0 ~ glyph/3/1/0/11/0 (iou 1.0): GATHER mark_group: "mg/3/1/168" -> "mg/3/1/167"
+   glyph/3/1/0/12/0 ~ glyph/3/1/0/12/0 (iou 1.0): GATHER mark_group: "mg/3/1/181" -> "mg/3/1/180"
+   glyph/3/1/0/13/0 ~ glyph/3/1/0/13/0 (iou 1.0): GATHER mark_group: "mg/3/1/195" -> "mg/3/1/194"
+   glyph/3/1/0/14/0 ~ glyph/3/1/0/14/0 (iou 1.0): GATHER mark_group: "mg/3/1/208" -> "mg/3/1/207"
+   glyph/3/1/0/15/0 ~ glyph/3/1/0/15/0 (iou 1.0): GATHER mark_group: "mg/3/1/220" -> "mg/3/1/219"
+   glyph/3/1/0/16/0 ~ glyph/3/1/0/16/0 (iou 1.0): GATHER mark_group: "mg/3/1/232" -> "mg/3/1/231"
+   glyph/3/1/0/17/0 ~ glyph/3/1/0/17/0 (iou 1.0): GATHER mark_group: "mg/3/1/245" -> "mg/3/1/244"
+
+3102 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).

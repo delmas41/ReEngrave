@@ -1,0 +1,17 @@
+litolff ranking, fix-actions per page over 8 loaded pages, biggest first by TAG (BASE=base TAG=tag)
+kind                                             BASE/pg    TAG/pg    delta   10-29 rank   (totals BASE -> TAG)
+ties and slurs not written (boxes, old figure)     205.9     206.1     +0.2         83.0   1647 -> 1649
+ties and slurs not written (arcs)                   47.2      47.6     +0.4            -   378 -> 381
+printed notes not written (candidate lost)          32.0      31.0     -1.0            -   256 -> 248
+pitched heads not written (boxes, old figure)       21.0      20.2     -0.8         34.3   168 -> 162
+red bars                                            18.5      15.0     -3.5         27.3   148 -> 120
+unread empty bars                                    9.0       8.8     -0.2         31.0   72 -> 70
+dots abstained (dot_role_ambiguous, specks out; mostly non-dot ink, 2.234)       5.5       5.5     +0.0            -   44 -> 44
+blue notes (check load)                             75.0      84.5     +9.5        138.4   600 -> 676
+blue rests (check load)                              6.0       6.5     +0.5          3.8   48 -> 52
+BASE notes: written 4163 of 4419 printed; named apart (never lost notes): duplicates of a written note 1148 boxes, non-note ink 258 boxes, duplicate with no written twin 26 boxes; candidate lost by fate {'value_undecided': 129, 'no_pitch': 7, 'dropped_at_render': 13, 'owned_no_twin': 3, 'clipped': 18, 'too_narrow': 57, 'other': 29}
+BASE arcs: old-box refusals 124 + page runs read and not written 254; named apart: boxes replaced by a written page arc 783, old box path retired 607 (bookkeeping boxes), boxes that are no arc 311, unwitnessed page runs 131 (mostly fakes; counting them: 509)
+TAG notes: written 4149 of 4397 printed; named apart (never lost notes): duplicates of a written note 1148 boxes, non-note ink 286 boxes, duplicate with no written twin 26 boxes; candidate lost by fate {'value_undecided': 124, 'no_pitch': 7, 'dropped_at_render': 12, 'owned_no_twin': 3, 'clipped': 18, 'too_narrow': 55, 'other': 29}
+TAG arcs: old-box refusals 120 + page runs read and not written 261; named apart: boxes replaced by a written page arc 789, old box path retired 601 (bookkeeping boxes), boxes that are no arc 311, unwitnessed page runs 134 (mostly fakes; counting them: 515)
+BASE dots row: 61 abstained dot_role_ambiguous, 17 of them dot-class boxes under the stroke floor (specks) -> 44 counted
+TAG dots row: 61 abstained dot_role_ambiguous, 17 of them dot-class boxes under the stroke floor (specks) -> 44 counted

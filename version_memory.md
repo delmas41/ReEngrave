@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-24 -- overnight 20261123-night read (commit 3881969e9; compare vs 20261122-night filed)
+- Both movements exit 0 (Litolff 79 min, Brahms 273 min). Compare in `benchmarks/acceptance/overnight/20261123-night/`. CHANGES, not verdicts: red bars Litolff 340 -> 277, Brahms 492 -> 429; bars that add up 5424 -> 5484 and 6409 -> 6446; accidentals written +142 -9 and +94 -5; blue marks +184 -29 and +127 -79; pitches changed ~185 and ~191; printed notes written 8388/8857 -> 8360/8817 and 15821/17191 -> 15794/17149; Brahms viola no longer carries a bass clef in the file; parts named 12/12 and 14/14.
+- Sean's judged marks (the only verdict): Litolff 208/14/8 -> 209/14/8, Brahms 187/16/5 -> 187/16/5; right->wrong 0 on both. Two unwritten -> wrong to trace: Litolff 2.164-review tile 10 (a page arc now written as a slur at glyph/3/1/5/15/2) and Brahms 2.78-phase2-review tile 5 (glyph/0/0/12/1/15 narrowed to a set without his answer, beams_ambiguous). Not traced to a switch yet; eleven switches + the clef/part-join repair are all suspects for every change.
+
 ## 2026-11-23 -- `OMR_STROKE_SPACE_OWN_STAFF` ON (main 3881969e9; Sean "Do that"); overnight 20261123-night started
 - STAGED GATHER `stroke_map.LocalStaff` (2.342) default ON: a column's five lines are accepted only at the staff's own spacing. Fast tier 11,299 passed, 0 failed; no reader test changed its answer. Eleven switches on today in all.
 - Overnight `TAG=20261123-night THROUGH=infer REF=origin/main` started 22:45 MST on commit 3881969e9, default flags, both movements. Read it as CHANGES against 20261122-night (compare_20261029.sh); the first whole-movement run of all of today's switches and of the clef + part-join repair.

@@ -1,0 +1,57 @@
+== commits
+BASE 5634884a49d00a46366e097ffeb5f529217c6502  TAG 3881969e95b0d256c339eec46236a7e5ba215f3f
+git log --oneline 5634884a4..3881969e9: 209 commits (41 merges, 168 non-merge)
+changed under tools/omr: 88 files changed, 53497 insertions(+), 159 deletions(-)
+files changed by area: tests 60, staged 28
+
+== ROADMAP items named in commit subjects (oldest first; a subject names it, the tree decides whether it is ON)
+  2.78    e9d202b40 2.306 / 2.78 strings-mixed: a staff's family (own name, or the decided slot named elsewhere with the same clef); on a string stem each head keeps its 
+  2.285   315dc98e0 accidental-not-head WIP: OMR_ACCIDENTAL_FUSED_INK (default OFF) -- the 2.285 reader also reads a natural whose bars are lost (two close uprights stagg
+  2.306   3f2cb6623 2.306 r1: stems read once on the page (OMR_PAGE_STEMS, default OFF)
+  2.319   11ef1a260 batch-4: drop the four r14 tests of the flagged-note exception main retired at 2.319 step 2 (export.flagged_outside_a_joined_beam, _value_from_its_own
+  2.324   4d76468e9 2.324 r11: a C clef's two bars stand side by side and run the same height; a treble clef's ink past the staff is its own stroke (OMR_CLEF_C_PAIR lane 
+  2.333   907463927 2.333: a dropped head must not hide -- OMR_DROPPED_HEAD_MARKS (bar|spot, OFF); real-record controls; 28 blind tiles for Sean
+  2.334   1f4c7c1b5 DECISIONS + ROADMAP 2.334: two switches on, eighth-rest lane (Sean)
+  2.335   26d149f23 ROADMAP: claim 2.335 slash core, 2.336 fused accidentals, 2.337 last two switches, 2.306 r19 (Sean)
+  2.336   26d149f23 ROADMAP: claim 2.335 slash core, 2.336 fused accidentals, 2.337 last two switches, 2.306 r19 (Sean)
+  2.337   26d149f23 ROADMAP: claim 2.335 slash core, 2.336 fused accidentals, 2.337 last two switches, 2.306 r19 (Sean)
+  2.338   a1c3fd5b0 Arcs read and not written: FINDINGS; claim ROADMAP 2.338
+  2.339   899f47e63 Red-bar groups from the record: FINDINGS; claim ROADMAP 2.339-2.341
+  2.340   a8d1f629b 2.340: a sharp/natural boxed as a rest files no rest claim (OMR_ACCIDENTAL_BOXED_AS_OTHER, default OFF, STAGED GATHER); real-pixel controls
+  2.341   899f47e63 Red-bar groups from the record: FINDINGS; claim ROADMAP 2.339-2.341
+  2.342   441272dd6 2.306 r19 round 2: FINDINGS; claim ROADMAP 2.342 stroke map staff space
+  (15 items)
+
+== 'Land' commits (the ones that flip a default)
+  8def0a953 Land batch 4 (stem reader by ink, strings, slash core, fused accidentals, dot by head ink, relocate at export, dropped-head marks): all flags OFF
+  b0bb87ee7 Land batch 6: 2.339 quarter-rest and 2.340 accidental boxed-as-other default ON (Sean); regenerate data-flow
+  0d4e43646 Land batch 6: re-pin 2.340 default test, document quarter-rest flag, drop stale reach gap, regenerate ink-rules
+
+== flag DEFAULTS that differ (same AST scanner on both trees; ON = the default state)
+flag                               BASE     TAG      GATHER? read in (TAG tree)
+OMR_ACCIDENTAL_BOXED_AS_OTHER      absent   ON       no      adjudicators/family_precision.py, page_claim_names.py
+OMR_ACCIDENTAL_FUSED_INK           absent   ON       YES     adjudicators/notehead_precision.py, page_accidental_ink.py
+OMR_DOT_BY_HEAD_INK                absent   ON       no      adjudicators/aug_dot_join.py, adjudicators/rhythm.py
+OMR_FOLD_FAR_BY_LEDGER             OFF      ON       no      export.py
+OMR_HOLLOW_HEAD_WINS               absent   OFF      no      adjudicators/rhythm.py
+OMR_PAGE_STEMS                     absent   OFF      YES     adjudicate.py, adjudicators/rhythm.py, adjudicators/stem_value.py
+OMR_QUARTER_REST_BOXED_AS_OTHER    absent   ON       no      adjudicators/family_precision.py, adjudicators/unboxed_rest.py
+OMR_RELOCATE_AT_EXPORT             OFF      ON       no      adjudicators/rhythm.py, export.py
+OMR_REST_BOXED_AS_OTHER            absent   ON       no      adjudicators/family_precision.py, adjudicators/unboxed_rest.py
+OMR_SLASH_STEM_CORE                absent   ON       YES     gather.py, page_tremolo.py
+OMR_STACK_TWO_HEADS                absent   OFF      no      stroke_map.py
+OMR_STEM_STUB_CUT                  absent   OFF      no      stroke_map.py
+OMR_STEM_TIP_FLAG_WHEN_DECLINED    absent   ON       no      adjudicators/rhythm.py
+OMR_STRING_STOPS_OWN_VALUE         absent   OFF      no      adjudicators/stem_value.py, export.py, staff_family.py
+OMR_STROKE_SPACE_OWN_STAFF         absent   ON       no      stroke_map.py
+(15 flags changed default; 173 flags seen by the scan at BASE, 186 at TAG)
+
+== every OMR_* NAME in non-test source: added since BASE (15) / gone (0)  [catches value flags the scan misses]
+  + OMR_ARC_END_BY_INK                 staged/page_arc_bind.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: OFF (roadmap 2.338, built 2026-11-23, `lane-2.338`)
+  + OMR_DROPPED_HEAD_MARKS             staged/export.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: `spot` (default since Sean 2026-11-23; `bar` selectable; `off`/`0` switches it off; ROADMAP 2.333, built OFF 2026-11-22)
+
+blind spot: a flag read through a path the scan cannot parse and already present at BASE is NOT listed even if its default moved.

@@ -1,0 +1,40 @@
+== beethoven5-litolff
+file size MB: BASE 686  TAG 693   (x1.01)
+  observations  rows   595674 ->   596443   ~MB    258 ->    259
+  abstentions   rows    77974 ->    77974   ~MB     26 ->     26
+  verdicts      rows   206970 ->   207331   ~MB    425 ->    432
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  verdicts      notehead_is_not_a_notehead         rows    12039 ->    12039   ~MB   49.4 ->   51.7
+  verdicts      stroke_owner                       rows     5343 ->     5343   ~MB   62.6 ->   64.3
+  verdicts      arc_is_not_an_arc                  rows     3512 ->     3512   ~MB    9.9 ->   10.7
+  verdicts      duration                           rows    16656 ->    16696   ~MB   44.0 ->   44.8
+  verdicts      rest_is_not_a_rest                 rows     2980 ->     2980   ~MB    9.0 ->    9.5
+  verdicts      arpeggiato_is_not_an_arpeggiato    rows     1900 ->     1900   ~MB    4.8 ->    5.2
+  observations  claimed_area                       rows    23390 ->    23987   ~MB   11.1 ->   11.4
+  verdicts      accidental_owner                   rows     1954 ->     2125   ~MB    2.3 ->    2.6
+  verdicts      unboxed_ink_is_a_rest              rows     1665 ->     1665   ~MB    1.5 ->    1.7
+  observations  accidental_staff_position          rows     1954 ->     2125   ~MB    2.1 ->    2.2
+  verdicts      accidental                         rows     4381 ->     4530   ~MB    1.9 ->    1.9
+  verdicts      flag_is_not_a_flag                 rows      297 ->      297   ~MB    0.8 ->    0.8
+  verdicts      dot_role                           rows      619 ->      619   ~MB    1.3 ->    1.4
+  verdicts      dynamic_is_not_a_dynamic           rows     1602 ->     1602   ~MB    1.0 ->    1.0
+== brahms1-breitkopf
+file size MB: BASE 2218  TAG 2228   (x1.00)
+  observations  rows  1458232 ->  1458438   ~MB    646 ->    646
+  abstentions   rows   165695 ->   165688   ~MB     57 ->     57
+  verdicts      rows   479834 ->   479965   ~MB   1600 ->   1610
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  verdicts      duration                           rows    35265 ->    35250   ~MB  196.1 ->  198.6
+  verdicts      unboxed_ink_is_a_rest              rows     7170 ->     7170   ~MB    6.2 ->    8.7
+  verdicts      stroke_owner                       rows     6699 ->     6699   ~MB  126.8 ->  129.0
+  verdicts      dot_role                           rows    10115 ->    10115   ~MB   29.3 ->   30.5
+  verdicts      arc_is_not_an_arc                  rows    16697 ->    16697   ~MB   46.3 ->   47.0
+  verdicts      accidental_is_not_an_accidental    rows     6540 ->     6540   ~MB    3.3 ->    3.6
+  verdicts      notehead_is_not_a_notehead         rows    24454 ->    24454   ~MB  110.1 ->  110.4
+  verdicts      rest_is_not_a_rest                 rows     8870 ->     8870   ~MB   30.6 ->   30.8
+  verdicts      flag_is_not_a_flag                 rows     3399 ->     3399   ~MB    8.1 ->    8.4
+  verdicts      accidental_owner                   rows     7670 ->     7768   ~MB   12.3 ->   12.5
+  verdicts      dynamic_is_not_a_dynamic           rows     3942 ->     3942   ~MB    2.4 ->    2.5
+  observations  accidental_staff_position          rows     7670 ->     7768   ~MB    8.4 ->    8.5
+  verdicts      arpeggiato_is_not_an_arpeggiato    rows      856 ->      856   ~MB    2.3 ->    2.4
+  observations  claimed_area                       rows    46823 ->    46929   ~MB   24.3 ->   24.4

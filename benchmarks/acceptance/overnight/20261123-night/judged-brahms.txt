@@ -1,0 +1,12 @@
+judged tiles, brahms, today's scorer on BOTH records (index 2265 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            187         16          5          0         42        196
+  TAG             187         16          5          0         42        196
+  right/wrong/narrowed  BASE 187/16/5  ->  TAG 187/16/5
+  moves: right->wrong 0 (must be 0) | right->gone 0 | wrong->right 0 | unwritten->wrong 1 | unwritten->right 0 | tiles scored on both 404
+  status transitions that are not 'same' (BASE -> TAG: n):
+  RIGHT -> WRONG (0)
+  RIGHT -> GONE (0)
+  WRONG -> RIGHT (0)
+  UNWRITTEN -> WRONG (1):
+    2.78-phase2-review         tile 5    ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15'] narrowed [0.25, 0.5], answer in set (beams_ambiguous); narrowed [0.5, 1.0], answer NOT in set (beams_ambiguous)
