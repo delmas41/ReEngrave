@@ -42,7 +42,30 @@ The raw replay records were deleted for disk space. The 12 crops are in
 `out/print/2.347-leaves/`. The counts above rest on the lane agent's report and cannot be
 re-derived without a new replay.
 
+## Cause of the page-10 refusal (trace 2026-11-25, saved 20261123-night record, no page read)
+
+The fault is upstream of this rule, in the 2.336 sharp reader that is ON in main.
+
+- STAGED GATHER `page_accidental_ink.sharp_stacks` claimed page strokes 675 and 678 (stroke map:
+  `head|head`) as one sharp: `claimed_area` obs:382073, `fused: sharp_stack`, area
+  [621, 3466, 645, 3509], 1.46 sp wide by 2.61 sp tall.
+- ADJUDICATE `notehead_precision._on_an_accidentals_ink` then refused the head box: it owns one
+  sliver stroke, and the claim holds 0.88 of its ink. The rule decided correctly on what it was told.
+- Why the reader passed the ink: its stem guard counts only a stroke of kind "vertical" (stroke 678
+  is 1.60 sp long but kind "blob": the broken stem is merged into the head); a stem stub at the top
+  passes the narrower-end test (about 0.30 sp against a 0.35 sp limit -- a raster ESTIMATE, not the
+  reader's mask); `head_beside` has no barline guard and took a half note in the next bar.
+- Both sides, measured on real marks: claim width 1.46 sp here against 1.04-1.27 sp on the 11 true
+  sharps; height 2.61 sp against 2.74-3.24 sp. This rule's own measures do not separate them: held
+  share 0.88 here, 0.539-0.913 on the true cases.
+- On main today, flag OFF: boxes glyph/10/1/9/0/4 and /8 sit on the same claim and are refused.
+  Not checked whether they are real notes.
+- Who says: Sean's tile says box 5 is a notehead. "Two heads stacked a third apart" and the
+  stem-stub mechanism are OURS, from a rough raster, not confirmed. The taper was looked at on 3 of
+  the 11 true sharps only.
+- Process lesson: a rule that refuses a box because another reader claimed its ink is only as good
+  as that claim. Fix goes to the reader: ROADMAP 2.352.
+
 ## Open
 
-Why the rule takes the Litolff p10 head: cause not found. Unchecked guess (OURS): the broken
-stem leaves the head with nothing marking it as a note, and the sharp's ink beside it claims it.
+ROADMAP 2.352 (the sharp reader's claim); this rule waits on it.
