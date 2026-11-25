@@ -96,6 +96,7 @@ def held_by_earlier(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, f
         total = 0.0
         by: Dict[str, Tuple[float, List[int]]] = {}
         owns = False
+        owned = 0.0
         for o, share, ink, state, fam, owners in strokes:
             if ink is None or ink <= 0 or share <= 0:
                 continue
@@ -104,7 +105,9 @@ def held_by_earlier(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, f
             if state not in ("decided", "merged") or not fam:
                 continue
             if fam == family:
-                owns = owns or key in set(owners or ())
+                if key in set(owners or ()):
+                    owns = True
+                    owned += w
                 continue
             if tier_of(fam, tiers, areas) < t_own:
                 ink0, ords = by.get(fam, (0.0, []))
@@ -116,6 +119,8 @@ def held_by_earlier(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, f
         if share < near_min:
             continue
         out[key] = {"by": f, "share": round(share, 3), "ink": round(total, 1), "strokes": sorted(by[f][1]), "owns": owns, "tier": t_own,
+                    # 2.347: how much of the box's own ink (sp^2) the box owns itself -- `owns` is "any stroke at all", a sliver included
+                    "owned_ink": round(owned, 3),
                     "by_tier": tier_of(f, tiers, areas), "area": f in areas, "also": sorted(x for x in by if x != f),
                     # accidental-not-head lane: the share ALL earlier claims hold together, and each family's (a head box on an accidental fused into a barline
                     # is held part by the barline, part by the accidental -- neither alone reaches the cut). Recorded; read only by the notehead refusal.

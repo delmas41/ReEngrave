@@ -645,12 +645,21 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 
+#: ROADMAP 2.347: a head box on an accidental's claimed ink that owns only a sliver of head ink is refused by the claim (`_on_an_accidentals_ink`); default OFF
+#: until Sean's word; "1"/"true"/"yes"/"on" turns it on. Reached only while `OMR_ACCIDENTAL_FUSED_INK` is on (the refusal it widens).
+HEAD_BOX_ON_ACCIDENTAL_INK_ENV = "OMR_HEAD_BOX_ON_ACCIDENTAL_INK"
+
+
+def head_box_on_accidental_ink_enabled() -> bool:
+    return os.environ.get(HEAD_BOX_ON_ACCIDENTAL_INK_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _on_an_accidentals_ink(ic, box_row) -> Optional[Ruling]:
     """accidental-not-head lane (flag `OMR_ACCIDENTAL_FUSED_INK`, default ON). THE RULE: ink that is an accidental's is never also a notehead. A head
     box that owns no ink of its own and stands mostly on ink earlier marks claimed, an ACCIDENTAL's claim among them, is refused BY THE CLAIM
     (`claimed_by:page_claim`). The one-claim rule (2.277: one claim holds `CUT` of the box) missed the natural fused into the barline at Litolff
     bar 21: the barline held 38% of each head box on it, the natural the rest, so neither alone refused them and an A-flat4 half was written on
-    the natural, pushing Sean's chord to beat 2. Never a box that owns head ink (a real head touching its accidental keeps its own oval), never
+    the natural, pushing Sean's chord to beat 2. Never a box that owns head ink unless the accidental alone holds half its ink (2.347; a real head touching its accidental keeps its own oval), never
     without an accidental's claim (two other claims sharing a box are the 2.277 rule's, unchanged). `CUT` is the register's one cut."""
     from .. import page_accidental_ink as _PAI
     if ic is None or not _PAI.fused_enabled():
@@ -658,8 +667,14 @@ def _on_an_accidentals_ink(ic, box_row) -> Optional[Ruling]:
     e = getattr(ic, "entry", None) or {}
     shares = e.get("shares") or {}
     held_all = e.get("held_all")
-    if e.get("owns") or held_all is None or _PAI.OWNER not in shares or float(held_all) < _claim_final.CF.CUT:
+    if held_all is None or _PAI.OWNER not in shares or float(held_all) < _claim_final.CF.CUT:
         return None
+    if e.get("owns") and (not head_box_on_accidental_ink_enabled() or float(shares.get(_PAI.OWNER, 0.0)) < _claim_final.CF.CUT):
+        return None         # owns a stroke: only the accidental ALONE holding half the box's ink refuses it (2.347); with the flag off, never
+    # ROADMAP 2.347 (flag `OMR_HEAD_BOX_ON_ACCIDENTAL_INK`): "owns" is any one stroke at all, and a sharp's own blobs are such strokes. Where the accidental's
+    # claim holds at least half of the box's ink (the test above) the ink the box owns is the minority: the box is on the accidental. Measured 19 of 19 on
+    # the 20261123-night records by a crop each: a sharp (or a filled-in natural) with the real head standing separately to its right. Never a box
+    # the accidental holds under half of (a real head touching its accidental keeps its own oval).
     detail = {"class": box_row.value[0], "ink_consult": {"by": _PAI.OWNER, "held_all": held_all, "shares": shares, "cut": _claim_final.CF.CUT,
                                                          "verdict": getattr(ic, "verdict_id", ""), "via": "accidental_with_earlier_claims"}}
     used = tuple(x for x in (box_row.id, getattr(ic, "verdict_id", "")) if x)
