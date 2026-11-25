@@ -97,12 +97,16 @@ def test_never_a_rest_whose_note_is_not_just_right_of_it():
     # The gap test is what keeps it a rest: widen it and the rule takes the rest (the control can fail).
     name = "p9_9_1_0_0_quarter_rest"
     assert verdict(name, True)["standing"] == "READ"
-    saved = PCN.ACC_HEAD_GAP_MAX_SP
+    # ROADMAP 2.352: the sharp reader itself now declines this rest's ink (a solid block with no paper between two uprights, `STACK_TIP_GAP_MIN_SP`), so
+    # no sharp is claimed on it at all; the gap test below is the SECOND guard and is shown with the first one off (the control can still fail)
+    saved, saved_tip = PCN.ACC_HEAD_GAP_MAX_SP, PAI.STACK_TIP_GAP_MIN_SP
     try:
+        PAI.STACK_TIP_GAP_MIN_SP = 0.0
+        assert verdict(name, True)["standing"] == "READ"
         PCN.ACC_HEAD_GAP_MAX_SP = 9.0
         assert verdict(name, True)["why"] == "a_sharp_before_its_note"
     finally:
-        PCN.ACC_HEAD_GAP_MAX_SP = saved
+        PCN.ACC_HEAD_GAP_MAX_SP, PAI.STACK_TIP_GAP_MIN_SP = saved, saved_tip
 
 
 def test_never_a_flat():

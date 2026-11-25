@@ -119,6 +119,13 @@ STACK_STEM_MIN_SP = 1.5
 #: and wide. The narrower end's width (mean of its two end rows), spaces: the 18 filled Litolff sharps measured 0.13-0.29, the one stacked
 #: chord they were confused with (Litolff 6/1/3/9, B-flat3 + E-flat4 beside a natural: the check's only real notes lost) 0.44.
 STACK_END_MAX_SP = 0.35
+#: ROADMAP 2.352 -- THE RULE, as a musician says it: a sharp is two thin uprights crossed by two slanted bars, so where its uprights stick out past the
+#: bars paper shows between them; a solid block with one stub on it is noteheads on a broken stem, not a sharp. NEVER: release a real sharp.
+#: The widest paper between two inked parts of one row of the filled block's own ink (spaces), at least this much. Measured on the reader's own mask,
+#: both sides, real marks: Litolff p10 glyph/10/1/9/0/5 (Sean 2026-11-25: "a notehead but the stem ink is broken") 0.06 (one pixel); the four sharps this
+#: reader claims among 2.347's eleven judged-true cases 0.31-0.32 (five pixels); the other claims of those pages 0.06-0.39 (one unjudged below the cut
+#: on Litolff p12, one at 0.19 above it). A cut on ~16 px to the space with five judged marks: it only narrows -- what it declines is left unclaimed.
+STACK_TIP_GAP_MIN_SP = 0.15
 
 
 def fused_enabled() -> bool:
@@ -348,6 +355,30 @@ def stack_corners(masks: Sequence[Any], members: Sequence[int], scale: float) ->
     return {**AS.classify(meas), "measure": meas, "end_px": round(min(ends) / max(1e-9, float(scale or 1.0)), 2)}
 
 
+def stack_tip_gap(masks: Sequence[Any], members: Sequence[int], scale: float, spl: float) -> float:
+    """ROADMAP 2.352: the widest paper between two inked parts of ONE row of the members' own ink (the stroke map's masks: staff lines erased, neighbours not
+    drawn), in staff spaces; 0.0 for a solid block with nothing standing apart from it (no row shows paper between two parts), or without masks. `spl`: page px to
+    the space at the mark, `scale`: the masks' reduction of the page. Measures the ink, not its box. Pure."""
+    import numpy as np
+    ms = [masks[m] for m in members if 0 <= m < len(masks)]
+    if not ms:
+        return 0.0
+    x0 = min(int(x) for _m, x, _y in ms)
+    y0 = min(int(y) for _m, _x, y in ms)
+    x1 = max(int(x) + m.shape[1] for m, x, _y in ms)
+    y1 = max(int(y) + m.shape[0] for m, _x, y in ms)
+    u = np.zeros((y1 - y0, x1 - x0), bool)
+    for m, x, y in ms:
+        u[int(y) - y0:int(y) - y0 + m.shape[0], int(x) - x0:int(x) - x0 + m.shape[1]] |= np.asarray(m).astype(bool)
+    d = np.diff(np.pad(u.astype(np.int8), ((0, 0), (1, 1))), axis=1)
+    widest = 0
+    for r in range(d.shape[0]):
+        starts, ends = np.flatnonzero(d[r] == 1), np.flatnonzero(d[r] == -1)
+        if len(starts) > 1:
+            widest = max(widest, int((starts[1:] - ends[:-1]).max()))
+    return float(widest) / max(1e-9, float(scale or 1.0) * float(spl or 1.0))
+
+
 def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
                  masks: Sequence[Any], scale: float, count: Any) -> List[Dict[str, Any]]:
     """A SHARP FILLED IN TO ONE BLOCK (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): a group of strokes the stroke map cut from ONE fused piece
@@ -395,6 +426,11 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
             continue
         if float(c.get("end_px") or 0.0) / spl > STACK_END_MAX_SP:
             count("fused_stack:rounded_ends")          # no upright sticks out at either end: stacked heads, not a sharp
+            continue
+        if stack_tip_gap(masks, mem, scale, spl) < STACK_TIP_GAP_MIN_SP:
+            # ROADMAP 2.352: a stub on one end passes the thin-end test, but a sharp's two uprights stand APART with paper between them; a solid block with
+            # one stub is noteheads on a broken stem (Litolff p10 glyph/10/1/9/0/5, Sean: "a notehead but the stem ink is broken"). Left unclaimed, never re-read.
+            count("fused_stack:no_paper_between_uprights")
             continue
         t = {"why": "filled_sharp_corners", "margin": c.get("margin"), "bl": (c.get("measure") or {}).get("bl"), "tr": (c.get("measure") or {}).get("tr")}
         out.append(_cluster(mem, ub, "sharp", t, h, spl, "sharp_stack"))
