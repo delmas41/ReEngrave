@@ -76,7 +76,7 @@ def test_never_a_box_that_owns_nothing_changes():
 
 def test_held_by_earlier_records_what_the_box_owns():
     from tools.omr.staged.adjudicators import ink_consult as IC
-    tiers = [["head"], ["accidental"]]
+    tiers = [["rest"], ["head"]]
     strokes = [(1, 1.0, 0.9, "decided", "accidental_ink", ["x"]), (2, 1.0, 0.06, "decided", "head", ["b"]), (3, 1.0, 0.04, "decided", "head", ["other"])]
     out = IC.held_by_earlier([("b", "head", strokes)], tiers, area_families=["accidental_ink"])
     assert out["b"]["owns"] is True and abs(out["b"]["owned_ink"] - 0.06) < 1e-9
