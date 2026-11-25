@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-25 -- 2.348 LANDED on main (STAGED ADJUDICATE `rhythm`; (a) unconditional, (b) under `OMR_BAR_SUM_SKIPS_REFUSED`, (c) `OMR_BAR_AGAINST_NEEDS_MAJORITY` OFF)
+- Fast tier on the merged tree: 11381 passed / 1 failed. The failure (`test_staged_narrowed_bar_length_2_162.py`, `ev=None` into `_total_staff_count`) fixed in 50d436e50 (no evidence = count unknown = silences nothing). Targeted re-run after the fix: 1549 passed. The full tier was not re-run after the fix. Flag (c) is unmeasured on a whole movement.
+
 ## 2026-11-24 night -- 2.348 BUILT on branch `lane-2.348` (not landed): (a) an undecided meter is marked, (b) the voice sum skips refused ink, (c) a bar speaks against a carry only for most staves (flag `OMR_BAR_AGAINST_NEEDS_MAJORITY`, OFF)
 - Cause and lesson: 2.346 fixed `_bar_lengths_for` and left `_sum_beats` (the voice splitter's sum) on the old rule: two sums of "what is in this bar" must call one decision (`_glyph_left_the_bar`, now shared, same flag `OMR_BAR_SUM_SKIPS_REFUSED`). The abstention was silent because the marker keyed on one reason code; it now keys on "the meter verdict is not decided" (`export._meter_unread_marker`, bar 0 of the system's first staff, the same red `meter?`, MusicXML and LilyPond, `report["meters_not_read"]`).
 - (a) Saved 20261123-night verdicts: Brahms 2 abstained meters (system/6/1, system/21/0, `carry_outweighed_by_the_bars`), Litolff 0; reconstructed from replayed bars, today's tree abstains on neither (both `carried` 6/8, print agrees by my look: `out/print/2.348-meter-vote/`). Replay Brahms p6 flag OFF (= record) vs ON: OFF file carries one `meter?`, ON none, `<time>` count 72 both. Control rows: `tests/fixtures/meter_abstained_2_348_brahms.json` (the two saved verdicts).
