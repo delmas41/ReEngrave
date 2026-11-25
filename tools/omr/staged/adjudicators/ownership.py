@@ -2578,6 +2578,23 @@ def _accidental_state(ev: Evidence, head: Tuple) -> str:
     return state
 
 
+def _printed_alteration(ev: Evidence, head: Tuple) -> Optional[str]:
+    """What the accidental PRINTED on this head says (`natural` / `sharp` / `flat` ...), or None where none is printed on it, two disagree, or its
+    alteration was not read. The owner verdict carries the alteration (`adjudicate_accidental_owner`: it travels with the owner).
+
+    ROADMAP 2.344 (Sean 2026-11-24, DECISIONS: an arc between the same notes is a tie): two notes at one position are one pitch when the accidental at
+    each end says the same thing, and two pitches when it says two things; where an end prints none this is None and the rule has no opinion."""
+    row = head[0]
+    key = row.subject.to_key()
+    cell = row.subject.at(Kind.CELL)
+    seen = set()
+    for a in ev.rows(Q.ACCIDENTAL_STAFF_POSITION, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        ow = ev.verdict(Q.ACCIDENTAL_OWNER, subject=a.subject)
+        if ow is not None and ow.outcome is Outcome.DECIDED and ow.value == key:
+            seen.add((ow.detail or {}).get("alteration"))
+    return next(iter(seen)) if len(seen) == 1 and None not in seen else None
+
+
 def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
     """What the arc JOINS: its two end heads, their steps, and the accidental
     state -- or why that could not be read. Records only; `_two_note_verdict`
@@ -2765,6 +2782,14 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
                                  "printed" if "printed" in (acc_b, acc_a)
                                  else "unknown")
         out["stop_accidental"] = acc_b
+        if out["accidental"] == "printed" and acc_b == "printed" and _arc_claim.tie_same_notes_enabled():
+            # ROADMAP 2.344 (Sean 2026-11-24: "The rule should be as simple as the same notes"): the stop prints an accidental. Where the start prints one too
+            # and the two SAY the same, the stop restates the pitch (a courtesy) and the arc joins the same notes; where they say two things the pitch
+            # changes and it does not. Where the start prints none (its pitch is the key's or the bar's) nothing here says which, and the rule has no opinion.
+            alt_a, alt_b = _printed_alteration(ev, a), _printed_alteration(ev, b)
+            out["start_alteration"], out["stop_alteration"] = alt_a, alt_b
+            if alt_a is not None and alt_b is not None:
+                out["accidental"] = "restated" if alt_a == alt_b else "changed"
     out["_heads"] = (a[3], b[3], a[4])
     return out
 
@@ -2789,6 +2814,10 @@ def _two_note_verdict(kind: str, tn: Dict[str, Any]
     if rel == "same":
         if tn["accidental"] == "unchanged":
             return "tie", "two_notes_same_pitch"
+        if tn["accidental"] == "restated":
+            return "tie", "two_notes_same_pitch_restated"          # ROADMAP 2.344
+        if tn["accidental"] == "changed":
+            return "slur", "two_notes_pitch_changed_by_accidental"  # ROADMAP 2.344: never a tie between notes of different pitch
         if tn["accidental"] == "unknown" and kind == "slur":
             # ⚠️ RULE 8. Two notes at one step cannot be a slur, and whether
             # they are one PITCH needs an accidental nobody could read.
@@ -3130,6 +3159,7 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
 
       different staff step (geometry AND step agree)       -> slur   (`page_binding_different_pitch`)
       one step, nothing between, accidental unchanged      -> tie    (`page_binding_same_pitch_adjacent`)
+      ... a printed accidental on the stop that says what the start's says (ROADMAP 2.344) -> tie (`page_binding_same_pitch_restated`); one that says another thing -> slur
       one step with heads between, an accidental printed or unread, a step unread or the two witnesses disagreeing,
       an end unbound or at the system's edge               -> no kind here (`kind` None, `why` says which); the consumer keeps its OFF path.
 
@@ -3465,8 +3495,20 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
         acc_b = acc(hr)
         state = "unchanged" if acc_b == "none" else acc_b
         b["accidental"] = state
+        alt_l = alt_r = None
+        if state == "printed" and _arc_claim.tie_same_notes_enabled():
+            # ROADMAP 2.344 (Sean 2026-11-24: "The rule should be as simple as the same notes"): a printed accidental on the stop that says what the start's
+            # printed accidental says restates the pitch; one that says another thing changes it (never a tie). No printed accidental on the start: no opinion.
+            def alt_of(h):
+                return _printed_alteration(ev, (rows[h["key"]], h["cell"], h["cx"], h["cy"], h["w"], h["h"]))
+            alt_l, alt_r = alt_of(hl), alt_of(hr)
+            b["start_alteration"], b["stop_alteration"] = alt_l, alt_r
         if state == "unchanged":
             b.update(kind="tie", rule="page_binding_same_pitch_adjacent")
+        elif alt_l is not None and alt_r is not None and alt_l == alt_r:
+            b.update(kind="tie", rule="page_binding_same_pitch_restated", accidental="restated")
+        elif alt_l is not None and alt_r is not None:
+            b.update(kind="slur", rule="page_binding_pitch_changed_by_accidental", accidental="changed")
         else:
             b["why"] = "same_pitch_accidental_" + state
     return b
