@@ -1,0 +1,12 @@
+{
+  "set": "2.352-r3",
+  "date": "2026-11-25",
+  "question": "Litolff page 4, a mark above the staff. Main reads the ink in the orange box as a sharp; round 3 lets it go. What is the ink in the box?",
+  "answered_by": "Sean",
+  "answers": [
+    {"tile": 1, "file": "tile1_litolff_p4.png", "doc": "litolff", "page": 4, "box": [1062, 2285, 1081, 2326],
+     "verbatim": "Similar to the previous tile, this one is also two half notes, a third apart.",
+     "answer": "two half notes, a third apart"}
+  ],
+  "ours": "Not a sharp: main's claim is wrong here; round 3's ground (a sharp is not two hollow heads) now has two judged non-sharps (Litolff p13, p4) against 12 judged sharps."
+}

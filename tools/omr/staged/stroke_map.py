@@ -409,6 +409,142 @@ class Stroke:
     parts: List["Stroke"] = field(default_factory=list)
     #: ROADMAP 2.260a M0: the cell crop's edges this stroke's ink reaches (letters of `CUT_EDGES`, page border NOT yet dropped); "" = none
     cut: str = ""
+    #: ROADMAP 2.349 (`OMR_STEM_TIP_COLUMNS`, default ON): the ink beside each beamed END of a vertical stroke, read at full resolution
+    #: (`tip_columns`); empty with the flag off or for a stroke that is not a stem-length vertical
+    tip_columns: List[Dict[str, Any]] = field(default_factory=list)
+
+
+# ───────────────────────────── ROADMAP 2.349: the ink beside a stem's tip (flag `OMR_STEM_TIP_COLUMNS`, default ON) ─────────────────────────────
+#: CAUSE (2.349, measured on Sean's judged sixteenths B01/B04/B06/B10 and Brahms p0 2.78 tile 5): Brahms engraves two beams 0.06-0.25 sp apart. The
+#: stroke map reads the page at 16 px a space, where a gap of 0.06-0.25 sp is 1-4 px and the reduction fills it: two beams become ONE stroke a double
+#: beam thick over part of its run, and every later reader judges that stroke as a whole (its median, its box edge, a 12-sample profile 0.6-1.1 sp
+#: apart). At the page's own resolution (canonical, ~60-100 px a space) the two bars and the paper between them are plainly there in the column
+#: beside the stem. This fact files, for each end of a stem-length vertical that a horizontal or curved stroke touches near that end, the ink
+#: runs in columns just beside the stem on each side, from the full-resolution ERASED raster (a staff line is never taken for a beam). GATHER: it
+#: reads ink and decides nothing; ADJUDICATE (`beam_strokes.two_bars_at_stem`, flag `OMR_TWO_BEAMS_AT_STEM`) reads it.
+STEM_TIP_COLUMNS_ENV = "OMR_STEM_TIP_COLUMNS"
+#: where the columns stand, staff spaces out from the stem's own edge (its ink near the end, never its box): one column every 0.15 sp up to 1.2 sp --
+#: far enough to pass where two fused beams meet the stem (Brahms p0 tile 5: fused 0.75 sp along, the paper between them shows from 0.9), never as far
+#: as a neighbour's stem (stems of a beamed group stand 1.5 sp apart and more)
+TIP_COLUMN_OFFSETS_SPACES = (0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1.05, 1.2)
+#: the window along the column: this far beyond the stem's end (a sloped beam's far side, a beam the stem stops short of) ...
+TIP_COLUMN_OUTWARD_SPACES = 1.0
+#: ... to this far in from it (two beam levels and the paper between them are under 1.5 sp; a third under 2.3)
+TIP_COLUMN_INWARD_SPACES = 2.5
+#: a run thinner than this (staff spaces) is a speck the erase left, not a bar, and is not filed
+TIP_COLUMN_MIN_RUN_SPACES = 0.08
+#: a vertical's end is "beamed" (and read) only where a horizontal or curved stroke touches the vertical within this far of the end
+TIP_COLUMN_TOUCH_SPACES = 1.0
+#: a stem-length vertical: at least this long (shorter verticals are accidental strokes, letters), at most `beam_strokes.ONE_STEM_MAX_SPACES`
+TIP_COLUMN_MIN_LENGTH_SPACES = 1.0
+TIP_COLUMN_MAX_LENGTH_SPACES = 9.0
+
+
+def stem_tip_columns_enabled() -> bool:
+    """`OMR_STEM_TIP_COLUMNS` (ROADMAP 2.349), default ON (Sean 2026-11-25 "Land on"; unset = ON, an explicit `0/false/no/off` disables). GATHER only."""
+    return os.environ.get(STEM_TIP_COLUMNS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _col_runs(col: np.ndarray) -> List[Tuple[int, int]]:
+    """(first, last) row of every ink run in a boolean column."""
+    if not col.any():
+        return []
+    d = np.diff(np.concatenate(([0], col.astype(np.int8), [0])))
+    starts = np.nonzero(d == 1)[0]
+    stops = np.nonzero(d == -1)[0] - 1
+    return list(zip(starts.tolist(), stops.tolist()))
+
+
+def tip_columns(erased: np.ndarray, edge_l: float, edge_r: float, end_y: float, inward: int, sp: float,
+                owner: Optional[Any] = None) -> Dict[str, Any]:
+    """PURE. The ink runs beside one end of a stem, on the full-resolution erased raster `erased` (0 = ink, canonical px).
+
+    `edge_l` / `edge_r`: the stem's own ink edges near that end (canonical x); `end_y`: the end's row; `inward` +1 when the stem runs DOWN from this
+    end (its top end), -1 when it runs up (its bottom end); `sp` canonical px per space; `owner(x, y) -> int`: the stroke ordinal holding that pixel
+    (-1 none), or None. Returns `{"y", "x": [edge_l, edge_r], "L": [...], "R": [...]}`: per side one entry per `TIP_COLUMN_OFFSETS_SPACES` (None
+    where the column is off the raster), each a list of runs `[outer, thickness, owner]` -- `outer` the run's edge nearest the stem's end, in
+    spaces INWARD of the end (negative: beyond it), `thickness` in spaces, `owner` the stroke holding the run's middle pixel."""
+    H, W = erased.shape
+    lo = end_y - TIP_COLUMN_OUTWARD_SPACES * sp if inward > 0 else end_y - TIP_COLUMN_INWARD_SPACES * sp
+    hi = end_y + TIP_COLUMN_INWARD_SPACES * sp if inward > 0 else end_y + TIP_COLUMN_OUTWARD_SPACES * sp
+    ya, yb = max(0, int(math.floor(lo))), min(H - 1, int(math.ceil(hi)))
+    out: Dict[str, Any] = {"y": round(float(end_y), 1), "x": [round(float(edge_l), 1), round(float(edge_r), 1)]}
+    for name, sgn, edge in (("L", -1, edge_l), ("R", 1, edge_r)):
+        cols: List[Optional[List[List[float]]]] = []
+        for d in TIP_COLUMN_OFFSETS_SPACES:
+            x = int(round(edge + sgn * d * sp))
+            if not (0 <= x < W) or yb <= ya:
+                cols.append(None)
+                continue
+            runs = []
+            for a, b in _col_runs(erased[ya:yb + 1, x] == 0):
+                a, b = a + ya, b + ya
+                th = (b - a + 1) / sp
+                if th < TIP_COLUMN_MIN_RUN_SPACES:
+                    continue
+                o = (a - end_y) / sp if inward > 0 else (end_y - (b + 1)) / sp
+                who = int(owner(x, (a + b) // 2)) if owner is not None else -1
+                runs.append([round(o, 2), round(th, 2), who])
+            cols.append(sorted(runs))
+        out[name] = cols
+    return out
+
+
+def _file_tip_columns(built: List[Any], erased: np.ndarray, sp_red: float, inv: float, red_shape: Tuple[int, int]) -> None:
+    """ROADMAP 2.349: fill `Stroke.tip_columns` of every stem-length vertical in `built` (map_strokes' sorted list: (box, Stroke, mask, x0, y0,
+    piece index); ordinal = position) at each end a horizontal or curved stroke touches within `TIP_COLUMN_TOUCH_SPACES` of that end."""
+    hr, wr = red_shape
+    lab = np.full((hr, wr), -1, np.int32)
+    for o, r in enumerate(built):
+        m, x0, y0 = r[2], r[3], r[4]
+        mh, mw = m.shape
+        y1, x1 = min(hr, y0 + mh), min(wr, x0 + mw)
+        if y1 > y0 and x1 > x0:
+            sub = lab[y0:y1, x0:x1]
+            sub[m[:y1 - y0, :x1 - x0]] = o
+    scale = 1.0 / inv
+    sp_c = sp_red * inv
+
+    def owner(x: int, y: int) -> int:
+        rx, ry = int(x * scale), int(y * scale)
+        return int(lab[ry, rx]) if 0 <= ry < hr and 0 <= rx < wr else -1
+
+    for o, r in enumerate(built):
+        st, m, x0, y0 = r[1], r[2], r[3], r[4]
+        if st.kind != "vertical" or not (TIP_COLUMN_MIN_LENGTH_SPACES <= st.length_sp <= TIP_COLUMN_MAX_LENGTH_SPACES):
+            continue
+        by, bh = st.box[1], st.box[3]
+        for top in (True, False):
+            end_c = by if top else by + bh
+            beamed = False
+            for j, _c in st.touches:
+                t = built[j][1]
+                if t.kind not in ("horizontal", "curve"):
+                    continue
+                ty0, ty1 = t.box[1], t.box[1] + t.box[3]
+                if ty0 - TIP_COLUMN_TOUCH_SPACES * sp_c <= end_c <= ty1 + TIP_COLUMN_TOUCH_SPACES * sp_c:
+                    beamed = True
+                    break
+            if not beamed:
+                continue
+            e = _stem_edges_near(m, x0, y0, top, sp_red, inv)
+            if e is None:
+                continue
+            col = tip_columns(erased, e[0], e[1], e[2], 1 if top else -1, sp_c, owner)
+            col["end"] = "top" if top else "bottom"
+            st.tip_columns.append(col)
+
+
+def _stem_edges_near(m: np.ndarray, x0: int, y0: int, top: bool, sp_red: float, inv: float) -> Optional[Tuple[float, float, float]]:
+    """(left edge, right edge, end row) in CANONICAL px of a vertical stroke's own ink within one space of its top (`top`) or bottom end;
+    None for an empty mask."""
+    ys, xs = np.nonzero(m)
+    if ys.size == 0:
+        return None
+    y_end = ys.min() if top else ys.max()
+    near = np.abs(ys - y_end) <= max(1.0, sp_red)
+    xs_n = xs[near]
+    return ((x0 + float(xs_n.min())) * inv, (x0 + float(xs_n.max()) + 1.0) * inv, (y0 + float(y_end) + (0.0 if top else 1.0)) * inv)
 
 
 def stroke_space_own_staff_enabled() -> bool:
@@ -1680,6 +1816,8 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             contact = round((min(ca, cb) or max(ca, cb)) / sp, 2)
             si.touches.append((j, contact))
             sj.touches.append((i, contact))
+    if stem_tip_columns_enabled():
+        _file_tip_columns(built, erased, sp, inv, ink.shape)
     out = [r[1] for r in built]
     if joins:
         ordinal = {r[5]: o for o, r in enumerate(built)}

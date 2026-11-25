@@ -183,6 +183,9 @@ class _Bar:
     #: notes are written exactly as read (CLAUDE.md rule 8: cannot-tell is
     #: never converted into an answer, including "empty").
     meter_return: bool = False
+    #: ROADMAP 2.348 (a). True on a system's FIRST bar (first staff only, `SX._meter_unread_marker`) when the system's meter
+    #: was never decided: the bar is written as it is (any kind, held or empty included) with the same red `meter?` mark above it.
+    meter_unread: bool = False
     #: ROADMAP 2.173 (flag `OMR_RED_BARS`). Set on a `"single"`/`"two_voice"`
     #: bar `_bar_holds_out` refused and the file writes red instead of holding
     #: out: `{"words": str, "want": Fraction (whole notes, the bar the
@@ -581,6 +584,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
         # `_part_xml` makes -- `None` on every staff but the system's own
         # first and on every system whose meter was not abstained this way.
         meter_return_cell = SX._meter_return_marker(rec, run)
+        meter_unread_cell = SX._meter_unread_marker(rec, run)       # ROADMAP 2.348 (a)
+        _run_first_bar = len(bars)
         for i in range(run.n_measures):
             meter = SX._meter_dict(meter_at(run.meter, i))
             # ⚠️⚠️ ROADMAP 2.8/3.5: THE METER A READER OF THIS FILE SEES, not
@@ -808,6 +813,15 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                              red=red,
                              where=((run.page, run.system, run.staff, i)
                                     if red else None)))
+        if meter_unread_cell is not None:
+            # ROADMAP 2.348 (a): the run's bars are appended one per cell, in order, by every branch above (a run that holds
+            # fewer is an error here, never a mark on the wrong bar); the first bar of the run takes the mark, whatever kind it is
+            if len(bars) - _run_first_bar != run.n_measures or run.n_measures < 1:
+                raise SX.Unbalanced(
+                    "lilypond: run page %d system %d staff %d wrote %d bars for %d cells; the unread-meter mark has no bar to sit on"
+                    % (run.page, run.system, run.staff, len(bars) - _run_first_bar, run.n_measures))
+            bars[_run_first_bar + meter_unread_cell].meter_unread = True
+            counters["meters_not_read"] += 1
     SX.one_chord.bar_declines(False)
     return bars, lane0, lane1
 
@@ -961,8 +975,24 @@ def _lily_measure_marked(events: List[Dict[str, Any]],
     return " ".join(out)
 
 
+def _meter_unread_prefix(bar: _Bar, counters: Dict[str, int]) -> str:
+    """ROADMAP 2.348 (a): the red `meter?` mark above a system's first bar whose meter was never decided, or `""`. The same
+    `\\mark` and the same word (`UNREAD_BAR_MARK_WORDS`) as `_meter_return_prefix`; written before ANY kind of bar (a held or
+    empty bar included, which `_meter_return_prefix` never reaches)."""
+    if not bar.meter_unread:
+        return ""
+    word = SX.UNREAD_BAR_MARK_WORDS[SX.METER_RETURN_NOT_READ_REASON]
+    counters["meters_not_read_written"] += 1
+    return f'\\mark \\markup {{ \\with-color #red "{_ly_escape(word)}" }} '
+
+
 def _render_bar(bar: _Bar, wedges: Dict[int, str],
                 counters: Dict[str, int]) -> str:
+    return _meter_unread_prefix(bar, counters) + _render_bar_body(bar, wedges, counters)
+
+
+def _render_bar_body(bar: _Bar, wedges: Dict[int, str],
+                     counters: Dict[str, int]) -> str:
     # ROADMAP 2.109: the bar's dynamics, once, counted on the ledger. Written
     # on the first event of a bar this file writes as music (or on a decided
     # whole-bar rest), dropped -- by name -- from a bar it marks unread.
@@ -1413,6 +1443,13 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             "found (%d) -- a bar was found without being marked, or marked "
             "without being found" % (_mrn_written, _mrn_found))
     report["meter_returns_not_read"] = _mrn_found
+    # ROADMAP 2.348 (a): the same found-equals-written control for the unread-meter mark
+    _mnr_found = int(counters.get("meters_not_read", 0))
+    _mnr_written = int(counters.get("meters_not_read_written", 0))
+    if _mnr_written != _mnr_found:
+        raise SX.Unbalanced(
+            "lilypond unread-meter marks written (%d) do not equal systems found (%d)" % (_mnr_written, _mnr_found))
+    report["meters_not_read"] = _mnr_found
     # ⚠️⚠️ ROADMAP 2.64: THE TWO NOTE EQUALITIES `to_musicxml` ASSERTS,
     # ASSERTED HERE TOO, over the SAME counters and the SAME formula -- a
     # second spelling of either would be a second thing to keep in step.

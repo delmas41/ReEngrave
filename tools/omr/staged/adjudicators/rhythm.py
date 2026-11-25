@@ -1457,6 +1457,16 @@ def bar_sum_skips_refused_enabled() -> bool:
     return os.environ.get(BAR_SUM_SKIPS_REFUSED_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+BAR_AGAINST_NEEDS_MAJORITY_ENV = "OMR_BAR_AGAINST_NEEDS_MAJORITY"
+
+
+def bar_against_needs_majority_enabled() -> bool:
+    """ROADMAP 2.348 (c), default OFF (built, not proposed: only an explicit `1/true/yes/on` enables): a bar speaks AGAINST a candidate meter
+    only when the staves that read it are most of the system's staves (`_score_bars`)."""
+    import os
+    return os.environ.get(BAR_AGAINST_NEEDS_MAJORITY_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _not_a_note_mark(ev: Evidence, refusal) -> Optional[str]:
     """Why a head `adjudicate_notehead_is_not_a_notehead` refused is NOT A NOTE
     AT ALL (and so has no duration), else None.
@@ -2887,7 +2897,8 @@ def _stroke_views(ev: Evidence, cell) -> list:
             space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
             profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
             ends=tuple(float(v) for v in (d.get("ends") or ())[:4]),
-            end_steps=tuple(float(v) for v in (d.get("end_steps_from_top") or ())[:2])))
+            end_steps=tuple(float(v) for v in (d.get("end_steps_from_top") or ())[:2]),
+            tip_columns=tuple(d.get("tip_columns") or ())))       # ROADMAP 2.349: the ink beside each beamed end (GATHER `OMR_STEM_TIP_COLUMNS`)
     return out
 
 
@@ -5561,7 +5572,7 @@ def _corroborate(ev: Evidence, candidate: dict) -> dict:
     if not num or not den:
         return {"state": "no_candidate"}
     expected = float(num) * 4.0 / float(den)
-    return _score_bars(_bar_lengths_for(ev), expected)
+    return _score_bars(_bar_lengths_for(ev), expected, _total_staff_count(ev))
 
 
 def _bar_lengths_for(ev: Evidence) -> dict:
@@ -5630,11 +5641,18 @@ def _resolve_lengths(lengths, expected: float) -> list:
     return out
 
 
-def _score_bars(bars: dict, expected: float) -> dict:
-    """Signed terms for one candidate meter, over the bars that can speak."""
+def _score_bars(bars: dict, expected: float, n_staves: Optional[int] = None) -> dict:
+    """Signed terms for one candidate meter, over the bars that can speak.
+
+    ROADMAP 2.348 (c), flag `OMR_BAR_AGAINST_NEEDS_MAJORITY` (default OFF): a bar speaks AGAINST the candidate only when the staves that
+    read it are most of the system's staves (`n_staves`, `_total_staff_count`); a bar read by fewer is silent -- it is neither counted for
+    nor against, and the `bars_minority` list names it. A bar that AGREES is unchanged (it is the carry's own witness). With `n_staves`
+    unknown nothing is silenced (cannot tell is not "a minority")."""
     terms = []
     agree = disagree = 0
     observed = Counter()
+    minority: list = []
+    majority_rule = bar_against_needs_majority_enabled() and bool(n_staves)
     for cell_index, lengths in sorted(bars.items()):
         lengths = _resolve_lengths(lengths, expected)      # 2.162: a range confirms or is silent
         if len(lengths) < METER_CARRY_MIN_STAVES_PER_BAR:
@@ -5642,6 +5660,9 @@ def _score_bars(bars: dict, expected: float) -> dict:
         mode, n = Counter(lengths).most_common(1)[0]
         if n / len(lengths) < 0.5:
             continue                 # the staves do not agree with EACH OTHER
+        if majority_rule and abs(mode - expected) >= 1e-6 and len(lengths) * 2 <= n_staves:
+            minority.append({"cell": cell_index, "spoke": len(lengths), "of": n_staves, "length": round(mode, 4)})
+            continue
         observed[mode] += 1
         if abs(mode - expected) < 1e-6:
             agree += 1
@@ -5658,8 +5679,10 @@ def _score_bars(bars: dict, expected: float) -> dict:
         return {"state": "too_few_assessable_bars",
                 "bars_assessable": len(terms),
                 "bars_agree": agree, "bars_disagree": disagree,
-                "bar_lengths_seen": dict(observed.most_common(6))}
+                "bar_lengths_seen": dict(observed.most_common(6)),
+                **({"bars_minority": minority} if minority else {})}
     return {"terms": terms, "bars_agree": agree, "bars_disagree": disagree,
+            **({"bars_minority": minority} if minority else {}),
             # ⚠️ WHAT THE BARS THEMSELVES SAY, recorded even though nothing
             # consumes it. On the *Andante* it is the honest answer that they
             # name NOTHING -- 1.0, 3.0 and 5.0 with no mode -- which is a
@@ -6226,6 +6249,8 @@ def _total_staff_count(ev: Evidence) -> Optional[int]:
     own docstring). `Q.SYSTEM_STAFF_COUNT` is already in `adjudicate_meter`'s
     `wants`, read the identical way at that decision's own top level.
     """
+    if ev is None:  # no evidence handed in: the count is unknown, and unknown silences nothing
+        return None
     v = ev.verdict(Q.SYSTEM_STAFF_COUNT)
     return v.value if v is not None and v.value else None
 
@@ -7233,6 +7258,7 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                   "bars_agree": check["bars_agree"],
                   "bars_disagree": check["bars_disagree"],
                   "bar_lengths_seen": check["bar_lengths_seen"],
+                  **({"bars_minority": check["bars_minority"]} if check.get("bars_minority") else {}),   # 2.348 (c): bars silenced as a minority
                   "skipped_uncorroborated": skipped_uncorroborated}
         if support < METER_CARRY_FLOOR:
             # ⚠️ Its own reason, and the SUPPORT is on the record beside it: a
@@ -7313,7 +7339,7 @@ def _bars_opinion(ev: Evidence) -> dict:
     # below (n/2 - n/2) = 0 and the floor refuses it. This is the *Andante*'s
     # own case -- 3.0, 3.5 and 1.5 at one bar each.
     length, _ = plausible.most_common(1)[0]
-    scored = _score_bars(bars, length)
+    scored = _score_bars(bars, length, _total_staff_count(ev))
     if "terms" not in scored:
         return dict(scored, state="too_few_assessable_bars")
     return {"state": "named", "length": length,
@@ -8931,8 +8957,12 @@ def _sum_beats(ev: Evidence, cell: Subject, events) -> Optional[float]:
     one physical duration by construction; a rest is its own event). `None`
     where any event's representative glyph has no DECIDED `Q.DURATION` --
     rule 8: a bar with an unread duration cannot be said to sum OR not to.
+
+    ROADMAP 2.348 (b): a glyph `_glyph_left_the_bar` says left (a DECIDED not-a-note refusal; a refused box read as an eighth rest
+    stays) takes no time here either -- the one decision `_bar_lengths_for` made in 2.346, under the same flag.
     """
     total = 0.0
+    skip = bar_sum_skips_refused_enabled()
     for e in events:
         glyphs = sorted(e.get("_glyphs") or ())
         if not glyphs:
@@ -8940,6 +8970,14 @@ def _sum_beats(ev: Evidence, cell: Subject, events) -> Optional[float]:
         if e.get("unison_beats") is not None:
             total += float(e["unison_beats"])       # ROADMAP 2.175: this voice's own stem value
             continue
+        if skip:
+            # ROADMAP 2.348 (b): the SAME decision as the meter's bar sum (`_bar_lengths_for`, 2.346, flag `OMR_BAR_SUM_SKIPS_REFUSED`):
+            # a box already refused as not a note takes no time in its bar (`_glyph_left_the_bar`, a reinstated eighth rest stays).
+            # An event whose every glyph left takes no time; otherwise its first glyph that is still IN the bar stands for it. An
+            # undecided head is not "left", so it is still asked for below and the sum stays unknown.
+            glyphs = [g for g in glyphs if not _glyph_left_the_bar(ev, cell, g, reinstated_stays=True)]
+            if not glyphs:
+                continue
         rep = glyphs[0]
         sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
                       staff=cell.staff, cell=cell.cell, glyph=rep)
@@ -9090,11 +9128,12 @@ def _rest_own_voice_split(ev: Evidence, events):
     # head positions).
     composed_from=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-                   Q.NOTEHEAD_STAFF_POSITION),
+                   Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+           Q.NOTEHEAD_IS_AN_EIGHTH_REST),     # ROADMAP 2.348 (b): `_sum_beats` keeps a reinstated eighth rest in its bar
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
              "nothing_to_split", "one_voice_plus_displaced_whole_rest"),

@@ -826,6 +826,14 @@ def _print_accounting_summary(*, musicxml_report: Optional[dict],
                   f"(CLAUDE.md §10, roadmap 2.12k)", file=sys.stderr)
             break
 
+    # ROADMAP 2.348 (a): a system whose meter was never decided is marked `meter?` above its first bar (red), in both files
+    for rpt in (musicxml_report, lilypond_report):
+        if rpt is not None and "meters_not_read" in rpt:
+            print(f"  meters not read (\"meter?\" above the system's first bar, "
+                  f"no <time> written): {rpt['meters_not_read']} systems "
+                  f"(roadmap 2.348)", file=sys.stderr)
+            break
+
     census = (musicxml_report or lilypond_report or {}).get("status_census") or {}
     unaccounted = census.get("unaccounted")
     if unaccounted:

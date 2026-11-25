@@ -1,0 +1,12 @@
+{
+  "set": "2.352-r4",
+  "date": "2026-11-25",
+  "question": "Litolff pages 2 and 12. Orange box = a notehead. Main writes these notes plain; round 4 writes them sharp. Is there a sharp printed just left of the boxed note?",
+  "answered_by": "Sean",
+  "verbatim": "There is a sharp in front of those notes.",
+  "answers": [
+    {"tile": 1, "file": "tile1_litolff_p2.png", "doc": "litolff", "page": 2, "cell": "2/0/2/3", "sharp_ink_near": [877, 698], "answer": "a sharp stands before the note (G#4)"},
+    {"tile": 2, "file": "tile2_litolff_p12.png", "doc": "litolff", "page": 12, "cell": "12/0/2/10", "sharp_ink_near": [1784, 691], "answer": "a sharp stands before the note (F#5)"}
+  ],
+  "ours": "Main loses both sharps (filed on the other staff's copy of the note by a list-order tie, then dropped as owned_by_another_staff); round 4 writes them. Round 4 corrects main here."
+}

@@ -1,0 +1,17 @@
+{
+ "question": "Is the ink in the orange box a notehead?",
+ "colours": "orange box = the mark the new rule would refuse as a note",
+ "rule": "ROADMAP 2.347 OMR_HEAD_BOX_ON_ACCIDENTAL_INK",
+ "note": "Only this one of the 12 leaves was put to Sean (the manager's crop look found the other 11 plainly a box on a sharp). page_box not kept: the lane's raw records were deleted; matched by glyph key. Crops: out/print/2.347-leaves/ of the manager worktree (untracked).",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "leaves_litolff_glyph-10-1-9-0-5.png",
+   "doc": "litolff",
+   "glyph": "glyph/10/1/9/0/5",
+   "control": false,
+   "role": "refused",
+   "question": "Is the ink in the orange box a notehead?"
+  }
+ ]
+}

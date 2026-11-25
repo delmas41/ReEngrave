@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 213 flag predicates; 27 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 217 flag predicates; 27 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -109,7 +109,7 @@ The two numbers (or C) that say how long a bar is.
 - **read by ADJUDICATE** (10): `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/notehead_precision.py:_meter_read_at_this_cell`, `adjudicators/rhythm.py:_adjacent_corroborated_cautionary`, `adjudicators/rhythm.py:_carry_meter`, `adjudicators/rhythm.py:_form_for_length`, `adjudicators/rhythm.py:_meter_changes`, `adjudicators/rhythm.py:_meter_in_force`, `adjudicators/rhythm.py:_ocr_at_bar_candidates` +2 more
 - **read by EVALUATE** (4): `rule reconcile_chord_duration`, `rule reconcile_duration`, `rule reinstate_rest_between_staves`, `rule size_measure_rest`
 - **read by INFER** (3): `infer rule collapse_narrowed_by_bar`, `inferences.py:lone_event_decline`, `inferences.py:solve_bare_stem_bar`
-- **read by EXPORT** (2): `export.py:_meter_return_marker`, `export.py:build`
+- **read by EXPORT** (3): `export.py:_meter_return_marker`, `export.py:_meter_unread_marker`, `export.py:build`
 - **written** (declared): `<time>`; a change holds until the printed return.
 - **flags on its readers' paths** (as the code resolves them today): `gather._meter_ocr_at_bar_enabled()=OFF`, `positions.positions_enabled()=OFF`
 - **open gaps** (2):
@@ -475,6 +475,7 @@ The small number printed above a system.
 - **decided by** (ADJUDICATE): `adjudicate_printed_bar_number` -> `printed_bar_number`
 - **read by GATHER** (1): `gather.py:gather_page_claims`
 - **read by EXPORT** (1): `export.py:_printed_bar_number_check`
+- **flags on its readers' paths** (as the code resolves them today): `bar_number_text.surya_available()=OFF`
 - **open gaps**: none derived
 
 ### Instrument name -- `--mark instrument`
@@ -1352,7 +1353,7 @@ Which edition and movement this is; scanned or engraved.
 - `meter` read by ADJUDICATE: `adjudicators/rhythm.py:_adjacent_corroborated_cautionary`, `adjudicators/rhythm.py:_carry_meter`, `adjudicators/rhythm.py:_form_for_length`, `adjudicators/rhythm.py:_meter_in_force`
 - `meter` read by EVALUATE: `rule reconcile_chord_duration`, `rule reconcile_duration`, `rule reinstate_rest_between_staves`, `rule size_measure_rest`
 - `meter` read by INFER: `infer rule collapse_narrowed_by_bar`, `inferences.py:lone_event_decline`, `inferences.py:solve_bare_stem_bar`
-- `meter` read by EXPORT: `export.py:_meter_return_marker`, `export.py:build`
+- `meter` read by EXPORT: `export.py:_meter_return_marker`, `export.py:_meter_unread_marker`, `export.py:build`
 - `meter` belongs to: `--mark meter`
 
 ### `meter_glyph` (Q.METER_GLYPH) -- LIVE
@@ -1454,7 +1455,7 @@ Which edition and movement this is; scanned or engraved.
 ### `notehead_is_an_eighth_rest` (Q.NOTEHEAD_IS_AN_EIGHTH_REST) -- LIVE
 
 - `notehead_is_an_eighth_rest` decided by: ADJUDICATE `adjudicators/narrow_rest.py:adjudicate_narrow_box_is_an_eighth_rest`
-- `notehead_is_an_eighth_rest` declared in `wants` (not a read): `adjudicate_meter`
+- `notehead_is_an_eighth_rest` declared in `wants` (not a read): `adjudicate_meter`, `adjudicate_voices`
 - `notehead_is_an_eighth_rest` read by ADJUDICATE: `adjudicators/rhythm.py:_glyph_left_the_bar`
 - `notehead_is_an_eighth_rest` read by EVALUATE: `consequences.py:_reinstated_rest`, `rule size_reinstated_rest`
 - `notehead_is_an_eighth_rest` read by EXPORT: `export.py:_place_notes`
@@ -1653,7 +1654,8 @@ Which edition and movement this is; scanned or engraved.
 
 ### `printed_bar_number` (Q.PRINTED_BAR_NUMBER) -- LIVE
 
-- `printed_bar_number` filed by: GATHER `gather.py:gather_printed_bar_numbers`, GATHER `gather.py:_printed_bar_numbers_surya`
+- `printed_bar_number` filed by: GATHER `gather.py:gather_printed_bar_numbers`
+- `printed_bar_number` filed OFF by default: `gather.py:_printed_bar_numbers_surya` (after `if not BNT.surya_available(): return` (True by default))
 - `printed_bar_number` decided by: ADJUDICATE `adjudicators/text.py:adjudicate_printed_bar_number`
 - `printed_bar_number` abstained by (not a producer): `gather.py:_printed_bar_numbers_surya`, `gather.py:_printed_bar_numbers_surya._unavailable`, `gather.py:gather_printed_bar_numbers`
 - `printed_bar_number` declared in `wants` (not a read): `adjudicate_printed_bar_number`

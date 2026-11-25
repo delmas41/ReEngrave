@@ -8313,6 +8313,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                     optional["cell_touch_boxes"] = touch
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
+            if st.tip_columns:                           # ROADMAP 2.349 (OMR_STEM_TIP_COLUMNS, default OFF): the ink beside each beamed end, full resolution
+                optional["tip_columns"] = st.tip_columns
             if links is not None and i < len(links) and links[i] is not None:
                 optional["page_stroke"] = list(links[i])     # ROADMAP 2.284: the page stroke this stroke's ink lies on, and its share
             if page_ok:

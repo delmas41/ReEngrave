@@ -97,8 +97,15 @@ class TestTheChecksHaveTeeth(unittest.TestCase):
         observes `stem` through a loop variable, so a literal-argument matcher
         called it ungathered and reported `duration` unsatisfiable."""
         sites, indirect = inventory._gather_sites()
-        self.assertNotIn("stem", sites)
-        self.assertIn("stem", indirect)
+        # ⚠️ `stem` ALSO has a literal `log.observe(csub, Q.STEM, ...)` site
+        # since ROADMAP 2.306 (`page_stems._cell_row_for`), so the quantity as
+        # a whole is no longer "indirect only" and asserting that was STALE.
+        # What this test pins is the LOOP-VARIABLE site: `gather_cv_lines`
+        # observes `stem` through `for quantity, kind in ((Q.STEM, ...), ...)`
+        # and must stay invisible to the literal matcher and visible to the
+        # indirect one -- whatever other producers `stem` gains.
+        self.assertNotIn("gather_cv_lines", sites.get("stem", []))
+        self.assertIn("gather_cv_lines", indirect.get("stem", []))
         # ⚠️ Specifically the UNSATISFIABLE alarm. `stem` legitimately appears
         # in a different problem — `duration` declares it and never reads it —
         # and matching the bare quantity name made this test fail the moment

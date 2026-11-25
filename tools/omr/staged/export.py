@@ -5836,6 +5836,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
         # (`_meter_return_marker`'s own `run.staff == 0` gate) and on every
         # system whose meter was not abstained this exact way.
         meter_return_cell = _meter_return_marker(rec, run)
+        meter_unread_cell = _meter_unread_marker(rec, run)      # ROADMAP 2.348 (a)
         for i in range(run.n_measures):
             # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
             # This line used to sit outside the loop, one meter for the whole
@@ -5900,6 +5901,10 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                              '        </direction-type>\n'
                              '      </direction>')
                 counters["bars_marked_clef_unread"] += 1
+            if meter_unread_cell is not None and i == meter_unread_cell:
+                # ROADMAP 2.348 (a): this system's meter was never decided; said once, in red, above its first bar, whatever the bar holds
+                lines.append(_meter_return_direction_xml("      "))
+                counters["meters_not_read"] += 1
             cell_here = run.cells.get(i)
             # ROADMAP 2.314 r4: a bar the two-stems split cannot write adding up is written as flag OFF writes it (never broken by the flag)
             one_chord.bar_declines(False)
@@ -7013,6 +7018,26 @@ def _meter_return_marker(rec: Record, run: "StaffRun") -> Optional[int]:
     detail = v.get("detail") or {}
     at_cell = detail.get("at_cell")
     return int(at_cell) if at_cell is not None else None
+
+
+def _meter_unread_marker(rec: Record, run: "StaffRun") -> Optional[int]:
+    """ROADMAP 2.348 (a): the CELL index (always 0) of this system's first bar when the system's meter verdict is NOT decided
+    (abstained or narrowed, every reason but `meter_return_not_read`, which `_meter_return_marker` already marks), else None.
+
+    STAGED EXPORT. Such a system files no meter, so bar 0 carries no `<time>` and the file wrote a bare `<attributes>` block there
+    (restating key and clef in every part) with nothing saying the meter was never read. Marked by the SAME red `meter?` as an
+    unread return (the word comes from `UNREAD_BAR_MARK_WORDS[METER_RETURN_NOT_READ_REASON]`); nothing is written into `<time>`
+    that was not decided. First staff of the system only, like `_meter_return_marker`: a fact about the system is marked once.
+    Never: a decided meter marked; a system whose bar 0 does have a meter (`meter_at`) marked.
+    """
+    if run.staff != 0:
+        return None
+    v = rec.verdict(Q.METER, f"system/{run.page}/{run.system}")
+    if not v or v.get("outcome") == "decided" or v.get("reason") == METER_RETURN_NOT_READ_REASON:
+        return None
+    if meter_at(run.meter, 0) is not None:
+        return None
+    return 0
 
 
 def _meter_return_direction_xml(indent: str) -> str:
@@ -9192,6 +9217,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # equality over what it always was.
     report["meter_returns_not_read"] = int(
         counters.get("meter_returns_not_read", 0))
+    # ROADMAP 2.348 (a): systems whose meter was never decided, each marked `meter?` above its first bar (its own count, as above)
+    report["meters_not_read"] = int(counters.get("meters_not_read", 0))
     # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
     # artefact can ask its question one system at a time without holding a
     # second copy of the rule -- which is how `build_sheet.py`'s own
