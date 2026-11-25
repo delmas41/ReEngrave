@@ -14027,7 +14027,7 @@
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14044,16 +14044,22 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "1",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "litolff",
    "followup": false,
    "item": "2.164-review",
+   "later_answers": [
+    {
+     "date": "2026-11-24",
+     "words": "That is definitely just a part of a slur. The box only covers from the bar line to the second note. So hopefully there's actually a box that covers the whole arc, in which case this one would be unnecessary because the size is wrong. But the actual arc from one half note to the other is a slur."
+    }
+   ],
    "page_box": [
     2249.83,
     3203.8525,
@@ -14065,11 +14071,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "10",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14086,11 +14092,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "11",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14107,11 +14113,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "12",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14128,11 +14134,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "13",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "litolff",
@@ -14149,11 +14155,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "14",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14170,11 +14176,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "15",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "litolff",
@@ -14191,11 +14197,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "16",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14212,11 +14218,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "17",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "litolff",
@@ -14233,11 +14239,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "18",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14254,7 +14260,7 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "19",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "2",
@@ -14279,7 +14285,7 @@
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14296,11 +14302,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "20",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14317,11 +14323,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "3",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14338,11 +14344,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "4",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "litolff",
@@ -14359,11 +14365,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "5",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "litolff",
@@ -14380,11 +14386,11 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "6",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14401,7 +14407,7 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "7",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "Trem slashes",
@@ -14426,7 +14432,7 @@
   },
   {
    "answer": "Tie",
-   "answer_kind": "arc",
+   "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-17",
    "doc": "brahms",
@@ -14443,7 +14449,7 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "9",
-   "value": "tie"
+   "value": "arc"
   },
   {
    "answer": "0.5",

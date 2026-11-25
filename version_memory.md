@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-24 -- judged index: the 18 Set H "Tie" answers (2.164-review) are scored as "an arc, not a note"; tile 10 also carries Sean's slur answer (STAGED measuring; no flag)
+
+Sean's 2026-10-17 "Tie" answered "is the box a note?"; the index had read it as an arc-KIND claim (tie). `answers.json` tiles may now carry `scored_as` (`judged.item_rows` honours it; his words are untouched) and `later_answers` (his later words, kept beside the first). The 18 are retyped to `not_a_note` (value `arc`; the scorer asks only whether the box is refused as a note). Tile 10 also records today's slur answer. `judged_compare.py` prints the `still_wrong` list (`lane_report.compare_judged`, f6a561e68). Litolff 20261123-night: tile 10 wrong -> right; 5 other Litolff Set H tiles not_found -> right (the refusal verdict is now what they ask for); right->wrong 0.
+
 ## 2026-11-24 -- 2.343 LANDED: EXPORT marks a tie/slur/arc whose other note is unwritten, and an arc of unread kind (STAGED EXPORT; no flag)
 - Cause: `_record_tie_spans` (and the page-bound slur path) skipped a decided tie/slur when one of its notes was not written, counting it in `tie_end_not_in_file` but writing the surviving note plain; a page run whose kind was unread (`kind_unread`) was written as nothing. Lesson: a count that hides which side is missing is a silent drop (rule 8).
 - Now the written note carries red words, seven strings: `tie from unread note`, `tie to unread note`, `slur from unread note`, `slur to unread note`, `arc from unread note`, `arc to unread note` (kind unread at the unwritten end), and `arc: tie or slur unread` (run bound at both ends, kind unread, on its first note). Nothing invented. Sean 2026-11-24: shorter wording, slurs too, "arc" where the kind is not known (DECISIONS).
