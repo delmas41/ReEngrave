@@ -152,6 +152,11 @@ KNOWN_GAPS: Dict[str, str] = {
         "cannot see `subject=`."),
     "SCOPE-LATENT adjudicate_voices declares Q.NOTEHEAD_IS_NOT_A_NOTEHEAD": (
         "same as `Q.REST_IS_NOT_A_REST` above: read per glyph with `subject=`."),
+    "SCOPE-LATENT adjudicate_meter declares Q.REST_IS_NOT_A_REST": (
+        "ROADMAP 2.346 (OMR_BAR_SUM_SKIPS_REFUSED): read per glyph with `subject=` in `_glyph_left_the_bar` from `_bar_lengths_for`; "
+        "declared at the system it runs at, filed on the glyphs -- the read is correct, the frame check cannot see `subject=`."),
+    "SCOPE-LATENT adjudicate_meter declares Q.NOTEHEAD_IS_AN_EIGHTH_REST": (
+        "same as `Q.REST_IS_NOT_A_REST` above: read per glyph with `subject=` (a refused box read as an eighth rest stays in its bar)."),
     "SCOPE-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
         "the meter's dossier tier, inert for the same reason as the key "
         "signature's and with the same frame trap waiting under it."),
