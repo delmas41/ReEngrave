@@ -1,0 +1,16 @@
+{
+ "answered": "2026-11-25",
+ "verbatim": "That is a notehead but the stem ink is broken",
+ "question": "Is the ink in the orange box a notehead?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "litolff",
+   "glyph": "glyph/10/1/9/0/5",
+   "role": "refused",
+   "sean": "That is a notehead but the stem ink is broken",
+   "sean_says_note": true,
+   "refusal_right": false
+  }
+ ]
+}
