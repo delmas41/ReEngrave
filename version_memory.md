@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-25 -- 2.306 r22 (lane, not landed): a box read for its heads takes no stem; the duration reader stands a head on the page's stems; page views read their tip with the cell's blockers (STAGED GATHER + ADJUDICATE; inside `OMR_PAGE_STEMS`, no new flag)
+
+`lane-2.306-r22` (f42f13003 + paperwork + FINDINGS): `page_stems.tall_remainders`, `rhythm.stems_the_head_stands_on`, `gather.stem_tip_context` (shared by `gather_cv_lines` and `page_stems._cell_row_for`); real-row controls `test_page_stems_2_306_r22.py`. Full frozen sample both arms: red 125 -> 96 / 111 -> 82, judged right->wrong 0, judged_claims 0 new. Retire step measured (43 Litolff + 16 Brahms written heads still on the old join). FINDINGS: benchmarks/page-ledger-2026-11 "2.306 r22".
+
 ## 2026-11-24 -- 2.306 r21 (lane, not landed): barline box takes no stem; a slur's start at a stem tip is not a flag (STAGED GATHER + ADJUDICATE; `OMR_HOOK_NOT_ON_AN_ARC` OFF)
 
 `lane-2.306-r21` (dae9e5875, 685d13243 + FINDINGS): `page_stems.barline_boxes` (inside `OMR_PAGE_STEMS`), `rhythm.arc_through_hook_window` / `_hooks_on_arcs` (new flag, default OFF), real-row controls `test_page_stems_2_306_r21.py`. Full frozen sample both arms: Litolff unchanged from r20, Brahms ties +10 -9, red 111 -> 81, judged right->wrong 0. Print read of 51 plain-and-different bars (agent's look): 3 new Litolff wrongs listed. FINDINGS: benchmarks/page-ledger-2026-11 "2.306 r21".

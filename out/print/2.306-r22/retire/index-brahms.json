@@ -1,0 +1,15 @@
+{
+ "('page:two_voices/one_touches', 'stem')": [
+  "out/print/2.306-r22/retire/brahms-page-two_voices-one_touches-0-0-11-2-4.png",
+  "out/print/2.306-r22/retire/brahms-page-two_voices-one_touches-0-0-11-3-10.png",
+  "out/print/2.306-r22/retire/brahms-page-two_voices-one_touches-0-0-11-4-12.png"
+ ],
+ "('page:two_voices/one_stem_passes_the_head', 'stem')": [
+  "out/print/2.306-r22/retire/brahms-page-two_voices-one_stem_passes_the_head-0-0-11-1-13.png"
+ ],
+ "('copy_on_another_staff', 'stem')": [
+  "out/print/2.306-r22/retire/brahms-copy_on_another_staff-12-0-10-10-0.png",
+  "out/print/2.306-r22/retire/brahms-copy_on_another_staff-12-0-10-11-0.png",
+  "out/print/2.306-r22/retire/brahms-copy_on_another_staff-12-0-4-4-4.png"
+ ]
+}

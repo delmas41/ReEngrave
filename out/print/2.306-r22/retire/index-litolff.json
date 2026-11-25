@@ -1,0 +1,35 @@
+{
+ "('page:two_voices/one_touches', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-page-two_voices-one_touches-1-0-7-15-2.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-one_touches-10-1-10-11-1.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-one_touches-10-1-5-7-3.png"
+ ],
+ "('page:two_voices/ends_at_another_head', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-page-two_voices-ends_at_another_head-10-1-1-9-10.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-ends_at_another_head-10-1-9-3-1.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-ends_at_another_head-16-0-4-6-4.png"
+ ],
+ "('page:two_voices/head_ink_unread', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-page-two_voices-head_ink_unread-4-1-0-12-2.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-head_ink_unread-4-1-2-5-14.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-head_ink_unread-4-1-4-13-8.png"
+ ],
+ "('copy_on_another_staff', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-copy_on_another_staff-10-1-5-10-8.png",
+  "out/print/2.306-r22/retire/litolff-copy_on_another_staff-16-0-0-14-0.png",
+  "out/print/2.306-r22/retire/litolff-copy_on_another_staff-16-0-2-15-2.png"
+ ],
+ "('page:two_voices/one_stem_passes_the_head', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-page-two_voices-one_stem_passes_the_head-2-1-2-12-3.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-one_stem_passes_the_head-4-1-0-14-2.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-one_stem_passes_the_head-8-0-2-17-3.png"
+ ],
+ "('page:two_voices/a_stroke_shorter_than_a_stem', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-page-two_voices-a_stroke_shorter_than_a_stem-10-0-8-6-3.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-a_stroke_shorter_than_a_stem-4-0-4-11-7.png",
+  "out/print/2.306-r22/retire/litolff-page-two_voices-a_stroke_shorter_than_a_stem-4-0-4-11-11.png"
+ ],
+ "('page:two_voices/stroke_holds_another_head', 'stem')": [
+  "out/print/2.306-r22/retire/litolff-page-two_voices-stroke_holds_another_head-4-1-5-6-2.png"
+ ]
+}
