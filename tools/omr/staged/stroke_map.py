@@ -409,12 +409,12 @@ class Stroke:
     parts: List["Stroke"] = field(default_factory=list)
     #: ROADMAP 2.260a M0: the cell crop's edges this stroke's ink reaches (letters of `CUT_EDGES`, page border NOT yet dropped); "" = none
     cut: str = ""
-    #: ROADMAP 2.349 (`OMR_STEM_TIP_COLUMNS`, default OFF): the ink beside each beamed END of a vertical stroke, read at full resolution
+    #: ROADMAP 2.349 (`OMR_STEM_TIP_COLUMNS`, default ON): the ink beside each beamed END of a vertical stroke, read at full resolution
     #: (`tip_columns`); empty with the flag off or for a stroke that is not a stem-length vertical
     tip_columns: List[Dict[str, Any]] = field(default_factory=list)
 
 
-# ───────────────────────────── ROADMAP 2.349: the ink beside a stem's tip (flag `OMR_STEM_TIP_COLUMNS`, default OFF) ─────────────────────────────
+# ───────────────────────────── ROADMAP 2.349: the ink beside a stem's tip (flag `OMR_STEM_TIP_COLUMNS`, default ON) ─────────────────────────────
 #: CAUSE (2.349, measured on Sean's judged sixteenths B01/B04/B06/B10 and Brahms p0 2.78 tile 5): Brahms engraves two beams 0.06-0.25 sp apart. The
 #: stroke map reads the page at 16 px a space, where a gap of 0.06-0.25 sp is 1-4 px and the reduction fills it: two beams become ONE stroke a double
 #: beam thick over part of its run, and every later reader judges that stroke as a whole (its median, its box edge, a 12-sample profile 0.6-1.1 sp
@@ -441,8 +441,8 @@ TIP_COLUMN_MAX_LENGTH_SPACES = 9.0
 
 
 def stem_tip_columns_enabled() -> bool:
-    """`OMR_STEM_TIP_COLUMNS` (ROADMAP 2.349), default OFF; 1/true/yes/on enables. GATHER only."""
-    return os.environ.get(STEM_TIP_COLUMNS_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_STEM_TIP_COLUMNS` (ROADMAP 2.349), default ON (Sean 2026-11-25 "Land on"; unset = ON, an explicit `0/false/no/off` disables). GATHER only."""
+    return os.environ.get(STEM_TIP_COLUMNS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _col_runs(col: np.ndarray) -> List[Tuple[int, int]]:

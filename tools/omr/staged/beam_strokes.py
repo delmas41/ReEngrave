@@ -1265,7 +1265,7 @@ def beam_ink_at_stem(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[
 
 
 # ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-# ROADMAP 2.349 (flag `OMR_TWO_BEAMS_AT_STEM`, default OFF; reads the GATHER fact `OMR_STEM_TIP_COLUMNS`). TWO BEAMS ARE READ FROM THE INK AT THE
+# ROADMAP 2.349 (flag `OMR_TWO_BEAMS_AT_STEM`, default ON; reads the GATHER fact `OMR_STEM_TIP_COLUMNS`). TWO BEAMS ARE READ FROM THE INK AT THE
 # NOTE'S OWN STEM.
 #
 #   As a musician reads it: beside the stem, the second beam is a second bar lying just inside the first, toward the head, with a thin line of paper
@@ -1295,8 +1295,8 @@ TWO_BAR_MIN_COLUMNS = 3
 
 
 def two_beams_at_stem_enabled() -> bool:
-    """`OMR_TWO_BEAMS_AT_STEM` (ROADMAP 2.349), default OFF; 1/true/yes/on enables. ADJUDICATE only."""
-    return os.environ.get(TWO_BEAMS_AT_STEM_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_TWO_BEAMS_AT_STEM` (ROADMAP 2.349), default ON (Sean 2026-11-25 "Land on"; unset = ON, an explicit `0/false/no/off` disables). ADJUDICATE only."""
+    return os.environ.get(TWO_BEAMS_AT_STEM_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def tip_columns_at(strokes: Sequence[StrokeView], stem: StrokeView, tip_y: float) -> Optional[Dict[str, object]]:
