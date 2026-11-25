@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-24 -- 2.306 r21 (lane, not landed): barline box takes no stem; a slur's start at a stem tip is not a flag (STAGED GATHER + ADJUDICATE; `OMR_HOOK_NOT_ON_AN_ARC` OFF)
+
+`lane-2.306-r21` (dae9e5875, 685d13243 + FINDINGS): `page_stems.barline_boxes` (inside `OMR_PAGE_STEMS`), `rhythm.arc_through_hook_window` / `_hooks_on_arcs` (new flag, default OFF), real-row controls `test_page_stems_2_306_r21.py`. Full frozen sample both arms: Litolff unchanged from r20, Brahms ties +10 -9, red 111 -> 81, judged right->wrong 0. Print read of 51 plain-and-different bars (agent's look): 3 new Litolff wrongs listed. FINDINGS: benchmarks/page-ledger-2026-11 "2.306 r21".
+
 ## 2026-11-24 -- 2.343 LANDED: EXPORT marks a tie/slur/arc whose other note is unwritten, and an arc of unread kind (STAGED EXPORT; no flag)
 - Cause: `_record_tie_spans` (and the page-bound slur path) skipped a decided tie/slur when one of its notes was not written, counting it in `tie_end_not_in_file` but writing the surviving note plain; a page run whose kind was unread (`kind_unread`) was written as nothing. Lesson: a count that hides which side is missing is a silent drop (rule 8).
 - Now the written note carries red words, seven strings: `tie from unread note`, `tie to unread note`, `slur from unread note`, `slur to unread note`, `arc from unread note`, `arc to unread note` (kind unread at the unwritten end), and `arc: tie or slur unread` (run bound at both ends, kind unread, on its first note). Nothing invented. Sean 2026-11-24: shorter wording, slurs too, "arc" where the kind is not known (DECISIONS).

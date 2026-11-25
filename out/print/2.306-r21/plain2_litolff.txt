@@ -1,0 +1,59 @@
+('P12', '19') OFF (red): C3 half v1; rest quarter v1
+    ON: C4 quarter v1; rest quarter v1; C3 half v2
+('P12', '267') OFF (blue): D2 quarter v1; +C3 quarter v1; rest quarter v1
+    ON: C3 quarter v1; rest quarter v1
+1/0/2/2 OFF (red): rest eighth v1; G4 eighth v1; G4 eighth v1; G4 eighth v1; rest eighth v2; G4 eighth v2; G4 eighth v2
+    ON: rest eighth v1; G4 eighth v1; G4 eighth v1; G4 eighth v1; rest eighth v2; G4 eighth v2; G4 eighth v2; G4 eighth v2
+1/0/9/0 OFF (red): rest eighth v1; G3 eighth v1; G3 eighth v1
+    ON: rest eighth v1; G3 eighth v1; G3 eighth v1; G3 eighth v1
+1/0/9/6 OFF (red): D4 half v1; A-14 half v1; A-14 eighth v1; A-14 eighth v1
+    ON: D4 eighth v1; A-14 eighth v1; A-14 eighth v1; A-14 eighth v1
+10/1/2/0 OFF: F4 half v1; +A4 half v1
+    ON: F4 half v1; A4 half v2
+10/1/3/11 OFF (red): C4 quarter v1; +E-14 quarter v1
+    ON: C4 half v1; +E-14 half v1
+16/1/10/0 OFF (red): C2 half v1; +G2 half v1
+    ON: C2 half v1; +G2 half v1 tie:start
+2/0/10/2 OFF (red): C3 half v1; rest quarter v1
+    ON: C4 quarter v1; rest quarter v1; C3 half v2
+2/0/4/2 OFF: E5 quarter v1; rest quarter v1; E5 quarter v2; rest quarter v2
+    ON: E5 quarter v1; rest quarter v1
+2/1/6/9 OFF (red): C3 quarter v1; rest quarter v1; rest quarter v2
+    ON: C3 quarter v1; rest quarter v1
+4/0/4/12 OFF (red): G3 quarter v1; +G4 quarter v1
+    ON: G4 quarter v1; +D5 quarter v1; G3 quarter v1; +G4 quarter v1
+4/1/2/13 OFF (red): C5 eighth v2; +C6 eighth v2; C5 eighth v2; +C6 eighth v2
+    ON: F5 eighth v1; C5 eighth v1; +C6 eighth v1; C5 eighth v1; +C6 eighth v1; C5 eighth v1; +C6 eighth v1
+4/1/2/2 OFF (red): rest quarter v1; A4 quarter v2; +C5 quarter v2; rest quarter v2
+    ON: A4 quarter v1; +C5 quarter v1; rest quarter v1
+4/1/8/0 OFF (red): F5 eighth v1; E-15 eighth v1; G4 eighth v1
+    ON: F5 eighth v1; E-15 eighth v1; B-14 eighth v1; G4 eighth v1
+4/1/9/5 OFF (red): F3 eighth v1; F3 eighth v1; B-13 eighth v1; B-13 quarter v1
+    ON: F3 eighth v1; F3 eighth v1; B-13 eighth v1; B-13 eighth v1
+4/1/9/8 OFF (red): F4 eighth v1; E-14 eighth v1; G3 eighth v1
+    ON: F4 eighth v1; E-14 eighth v1; A-13 eighth v1; G3 eighth v1
+6/0/5/9 OFF (red): D6 half v1 tie:stop,start
+    ON: D5 half v1; +D6 half v1 tie:stop,start
+6/0/7/0 OFF (red): G4 quarter v1; G4 eighth v1; G4 eighth v1; F4 eighth v1
+    ON: G4 eighth v1; G4 eighth v1; G4 eighth v1; F4 eighth v1
+6/0/7/12 OFF (red): D4 quarter v1; D4 quarter v1; D4 eighth v1; C4 eighth v1
+    ON: D4 eighth v1; D4 eighth v1; D4 eighth v1; C4 eighth v1
+6/1/2/8 OFF (red): A4 quarter v2; +E5 quarter v2; rest quarter v2
+    ON: A4 quarter v1; +E5 quarter v1; rest quarter v1
+6/1/6/2 OFF (red): C3 quarter v1; rest quarter v1; rest quarter v2
+    ON: C3 quarter v1; rest quarter v1
+6/1/6/4 OFF (red): C3 quarter v1; rest quarter v1; rest quarter v2
+    ON: C3 quarter v1; rest quarter v1
+8/1/0/2 OFF (blue): C6 half v1; +D6 half v1
+    ON: D6 half v1
+8/1/10/3 OFF (blue): A-12 half v1 tie:start
+    ON: A2 half v1 tie:start
+8/1/10/4 OFF: A-12 half v1 tie:stop
+    ON: A2 half v1 tie:stop
+9/0/0/4 OFF (red): D6 half v1; +G6 half v1
+    ON: D6 half v1; +G6 half v1 tie:start
+9/0/4/0 OFF (red): D5 quarter v1; F5 quarter v1; F5 quarter v2
+    ON: D5 quarter v1; F5 quarter v1; D5 quarter v2; F5 quarter v2
+9/1/6/11 OFF (red): E-14 eighth v1; A-14 quarter v1; A-14 quarter v1; A-14 quarter v1
+    ON: E-14 eighth v1; A-14 eighth v1; A-14 eighth v1; A-14 eighth v1
+plain and different: 29
