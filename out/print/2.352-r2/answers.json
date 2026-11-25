@@ -1,0 +1,12 @@
+{
+  "set": "2.352-r2",
+  "date": "2026-11-25",
+  "question": "Litolff page 13. Main reads the ink in the orange box as a sharp; round 2 lets it go. What is the ink in the box?",
+  "answered_by": "Sean",
+  "answers": [
+    {"tile": 1, "file": "tile1_litolff_p13.png", "doc": "litolff", "page": 13, "box": [1909, 2433, 1929, 2478],
+     "verbatim": "The tile that you've shown me is a large, kind of tall orange box around two half note heads, a third apart.",
+     "answer": "two half note heads, a third apart"}
+  ],
+  "ours": "Not a sharp: main's sharp claim is wrong here and round 2 is right to let it go. Round 2 lets it go only because its 'note' is across a barline; a pair of hollow heads a third apart standing mid-bar would not be caught by that ground (not measured)."
+}
