@@ -119,13 +119,19 @@ STACK_STEM_MIN_SP = 1.5
 #: and wide. The narrower end's width (mean of its two end rows), spaces: the 18 filled Litolff sharps measured 0.13-0.29, the one stacked
 #: chord they were confused with (Litolff 6/1/3/9, B-flat3 + E-flat4 beside a natural: the check's only real notes lost) 0.44.
 STACK_END_MAX_SP = 0.35
-#: ROADMAP 2.352 -- THE RULE, as a musician says it: a sharp is two thin uprights crossed by two slanted bars, so where its uprights stick out past the
-#: bars paper shows between them; a solid block with one stub on it is noteheads on a broken stem, not a sharp. NEVER: release a real sharp.
-#: The widest paper between two inked parts of one row of the filled block's own ink (spaces), at least this much. Measured on the reader's own mask,
-#: both sides, real marks: Litolff p10 glyph/10/1/9/0/5 (Sean 2026-11-25: "a notehead but the stem ink is broken") 0.06 (one pixel); the four sharps this
-#: reader claims among 2.347's eleven judged-true cases 0.31-0.32 (five pixels); the other 25 stack claims on Litolff p10/12/13 (unjudged) 0.19-0.39 except
-#: three at 0.00-0.06 (Litolff p10 x2, p12 x1: left unclaimed, not looked at by Sean). A cut on ~16 px to the space with five judged marks: it only narrows.
-STACK_TIP_GAP_MIN_SP = 0.15
+#: ROADMAP 2.352 round 2 -- THE RULE, as a musician says it: a sharp stands just before its own note, in its own bar. NEVER: a note taken from across a barline;
+#: never a sharp released that stands before its note in its bar; never "cannot tell" turned into another answer (declined ink is simply left unclaimed).
+#: The convention (Sean 2026-11-25, "Always same bar", general) decides the barline ground alone: no number in it (`head_beside`, every reader of this module).
+#: Two grounds beside it, for a filled-in sharp only; measured on the reader's own values, both sides, real marks (tuned on Litolff/Brahms: they only NARROW, they
+#: leave ink unclaimed and never re-read it):
+#:   * "just before": the head box stands at most this far right of the block (spaces). Measured (box edge to box edge): the judged-true stacks -0.2-0.7,
+#:     the 24 other stack claims on the nine replay pages -0.1-1.3 (none judged); Sean's quarter rest (Litolff p10 [1564,2933,1580,2986], 2026-11-25) 3.5. Room: 1.2 above the
+#:     nearest claim, 1.0 below the rest.
+STACK_HEAD_GAP_MAX_SP = 2.5
+#:   * "as wide as a sharp": the block is at least this share of the sharp glyph's width (0.996 sp). Measured (ink box / local space): the judged-true stacks 0.94-1.1 (Brahms)
+#:     and 1.0 (Litolff p12), the other stack claims 0.8-1.2 (none judged); Sean's "part of an f ... part of a sforzando" (Litolff p10 [2081,421,2089,461]) 0.51.
+#:     Room: ~0.15 either side of the cut, unjudged side the thinner.
+STACK_W_MIN_FRAC = 0.65
 
 
 def fused_enabled() -> bool:
@@ -230,9 +236,24 @@ def held_strokes(strokes: Sequence[Any], held: Sequence[Sequence[float]], boxed:
     return out
 
 
-def head_beside(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp: float) -> Optional[Head]:
-    """The notehead this cluster is BY: the nearest head box to its right (not the cluster's own box) within `HEAD_GAP_MAX_SP` and `HEAD_DY_MAX_SP` of its
-    anchor height, else None. Pure."""
+def barline_between(x_from: float, x_to: float, y: float, barlines: Sequence[Dict[str, Any]]) -> bool:
+    """ROADMAP 2.352 r2: True where a barline's own ink (the page map's carved column: its fitted centre at height `y` and its measured width, `PageMap.barlines`) stands
+    between `x_from` and `x_to` (page px) at that height. The barline is read once on the page pass; here it is only looked at. Pure."""
+    for bl in barlines or ():
+        b = bl["box"]
+        if not (b[1] <= y <= b[3]):
+            continue
+        x = float(bl["intercept"]) + float(bl["slope"]) * y
+        if x_from <= x <= x_to:
+            return True
+    return False
+
+
+def head_beside(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp: float, barlines: Sequence[Dict[str, Any]] = (),
+                gap_max_sp: float = HEAD_GAP_MAX_SP) -> Optional[Head]:
+    """The notehead this cluster is BY: the nearest head box to its right (not the cluster's own box) within `gap_max_sp` (`HEAD_GAP_MAX_SP`) and `HEAD_DY_MAX_SP` of its
+    anchor height, else None. ROADMAP 2.352 r2, the rule: an accidental stands just before its own note, in its own bar -- a head with a barline between the cluster and
+    it is another bar's note and is never taken (`barlines`: the page map's). Pure."""
     best = None
     best_gap = None
     for h in heads:
@@ -240,7 +261,9 @@ def head_beside(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp
             continue
         gap = (h.box[0] - box[2]) / sp
         dy = abs((h.box[1] + h.box[3]) / 2.0 - anchor_y) / sp
-        if -0.3 <= gap <= HEAD_GAP_MAX_SP and dy <= HEAD_DY_MAX_SP and (best is None or gap < best_gap):
+        if barlines and barline_between(box[2], h.box[0], anchor_y, barlines):
+            continue
+        if -0.3 <= gap <= gap_max_sp and dy <= HEAD_DY_MAX_SP and (best is None or gap < best_gap):
             best, best_gap = h, gap
     return best
 
@@ -273,8 +296,19 @@ def _free_of(box: Sequence[float], boxed: Sequence[Sequence[float]], header: Seq
     return None
 
 
+def note_of(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp: float, barlines: Sequence[Dict[str, Any]], count: Any, prefix: str = "",
+            gap_max_sp: float = HEAD_GAP_MAX_SP) -> Optional[Head]:
+    """`head_beside` with its refusal counted in words: `<prefix>note_across_barline` where a head stands near enough but with a barline between (ROADMAP 2.352 r2:
+    another bar's note, never taken), else `<prefix>no_note_beside`. The ink is left unclaimed either way. Pure but for `count`."""
+    h = head_beside(box, anchor_y, heads, sp, barlines, gap_max_sp)
+    if h is None:
+        across = bool(barlines) and head_beside(box, anchor_y, heads, sp, (), gap_max_sp) is not None
+        count(prefix + ("note_across_barline" if across else "no_note_beside"))
+    return h
+
+
 def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
-                  count: Any) -> List[Dict[str, Any]]:
+                  count: Any, barlines: Sequence[Dict[str, Any]] = ()) -> List[Dict[str, Any]]:
     """A NATURAL OR SHARP WHOSE BARS ARE LOST (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): two free uprights of an accidental stem's length, centres at
     most `PAIR_GAP_MAX_SP` apart, staggered the natural's way or level (a sharp), both at least `PAIR_STEM_MIN_SP` long -- `read_type` names
     them on the two uprights alone --, together at most `PAIR_H_MAX_SP` tall, a note just right of them. `taken`: stroke ordinals no mark here may use (held, already claimed). Pure."""
@@ -311,9 +345,8 @@ def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], b
             if why:
                 count("fused_pair:" + why)
                 continue
-            h = head_beside(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction(ty) or 0.5), heads, spl)
+            h = note_of(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction(ty) or 0.5), heads, spl, barlines, count, "fused_pair:")
             if h is None:
-                count("fused_pair:no_note_beside")
                 continue
             # the accidental's bars are its ink too: every free piece that touches one of the two uprights and lies inside the pair's rows, never a
             # stem-long upright, never a real head's blob (`taken` holds those) -- Brahms 5/0/13/7: the sharp's bar ends left free kept the head box on
@@ -355,35 +388,12 @@ def stack_corners(masks: Sequence[Any], members: Sequence[int], scale: float) ->
     return {**AS.classify(meas), "measure": meas, "end_px": round(min(ends) / max(1e-9, float(scale or 1.0)), 2)}
 
 
-def stack_tip_gap(masks: Sequence[Any], members: Sequence[int], scale: float, spl: float) -> float:
-    """ROADMAP 2.352: the widest paper between two inked parts of ONE row of the members' own ink (the stroke map's masks: staff lines erased, neighbours not
-    drawn), in staff spaces; 0.0 for a solid block with nothing standing apart from it (no row shows paper between two parts), or without masks. `spl`: page px to
-    the space at the mark, `scale`: the masks' reduction of the page. Measures the ink, not its box. Pure."""
-    import numpy as np
-    ms = [masks[m] for m in members if 0 <= m < len(masks)]
-    if not ms:
-        return 0.0
-    x0 = min(int(x) for _m, x, _y in ms)
-    y0 = min(int(y) for _m, _x, y in ms)
-    x1 = max(int(x) + m.shape[1] for m, x, _y in ms)
-    y1 = max(int(y) + m.shape[0] for m, _x, y in ms)
-    u = np.zeros((y1 - y0, x1 - x0), bool)
-    for m, x, y in ms:
-        u[int(y) - y0:int(y) - y0 + m.shape[0], int(x) - x0:int(x) - x0 + m.shape[1]] |= np.asarray(m).astype(bool)
-    d = np.diff(np.pad(u.astype(np.int8), ((0, 0), (1, 1))), axis=1)
-    widest = 0
-    for r in range(d.shape[0]):
-        starts, ends = np.flatnonzero(d[r] == 1), np.flatnonzero(d[r] == -1)
-        if len(starts) > 1:
-            widest = max(widest, int((starts[1:] - ends[:-1]).max()))
-    return float(widest) / max(1e-9, float(scale or 1.0) * float(spl or 1.0))
-
-
 def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
-                 masks: Sequence[Any], scale: float, count: Any) -> List[Dict[str, Any]]:
+                 masks: Sequence[Any], scale: float, count: Any, barlines: Sequence[Dict[str, Any]] = ()) -> List[Dict[str, Any]]:
     """A SHARP FILLED IN TO ONE BLOCK (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): a group of strokes the stroke map cut from ONE fused piece
     (`joined_to`), none of them a stem, a horizontal or a curve, about one sharp tall (`STACK_H_MIN_FRAC`..`STACK_H_MAX_FRAC` of its glyph) and at
-    most `STACK_W_MAX_SP` wide, ink in both its lower-left and upper-right corners (`accidental_shape`: a sharp), a note just right of it at its height.
+    most `STACK_W_MAX_SP` wide and at least `STACK_W_MIN_FRAC` of a sharp's width, ink in both its lower-left and upper-right corners (`accidental_shape`: a sharp), a note
+    just right of it at its height (`STACK_HEAD_GAP_MAX_SP`) and in its own bar (2.352 r2: a sharp stands just before its own note, in its own bar).
     A stack the corners name anything else is counted (`fused_stack:<shape>`), never claimed. Pure."""
     from . import accidental_family as AF
     from . import stroke_map as SM
@@ -415,9 +425,11 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
         if why:
             count("fused_stack:" + why)
             continue
-        h = head_beside(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("sharp") or 0.5), heads, spl)
+        if w < STACK_W_MIN_FRAC * size[0]:
+            count("fused_stack:too_narrow")            # a sharp is about one space wide: a thinner block is part of another mark (an f's stem, a rest's stroke)
+            continue
+        h = note_of(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("sharp") or 0.5), heads, spl, barlines, count, "fused_stack:", STACK_HEAD_GAP_MAX_SP)
         if h is None:
-            count("fused_stack:no_note_beside")
             continue
         c = stack_corners(masks, mem, scale)
         shape = (c or {}).get("shape") or "unread"
@@ -427,11 +439,6 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
         if float(c.get("end_px") or 0.0) / spl > STACK_END_MAX_SP:
             count("fused_stack:rounded_ends")          # no upright sticks out at either end: stacked heads, not a sharp
             continue
-        if stack_tip_gap(masks, mem, scale, spl) < STACK_TIP_GAP_MIN_SP:
-            # ROADMAP 2.352: a stub on one end passes the thin-end test, but a sharp's two uprights stand APART with paper between them; a solid block with
-            # one stub is noteheads on a broken stem (Litolff p10 glyph/10/1/9/0/5, Sean: "a notehead but the stem ink is broken"). Left unclaimed, never re-read.
-            count("fused_stack:no_paper_between_uprights")
-            continue
         t = {"why": "filled_sharp_corners", "margin": c.get("margin"), "bl": (c.get("measure") or {}).get("bl"), "tr": (c.get("measure") or {}).get("tr")}
         out.append(_cluster(mem, ub, "sharp", t, h, spl, "sharp_stack"))
     return out
@@ -440,7 +447,7 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
 def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], held: Sequence[Sequence[float]],
               reads: Sequence[Sequence[float]] = (), held_ids: Sequence[int] = (),
               header: Sequence[Sequence[float]] = (), held_by: Optional[Dict[int, str]] = None, *, fused: bool = False,
-              masks: Sequence[Any] = (), scale: float = 1.0) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+              masks: Sequence[Any] = (), scale: float = 1.0, barlines: Sequence[Dict[str, Any]] = ()) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The finder over every vertical stroke of the page (module doc). Returns the clusters that pass (each `{members, box, type, why, margin, standing, head,
     candidates, fam}`) and the refusal-reason counts. Pure: strokes in, dicts out. `header`: the system-start header claims' rectangles (`left_of_the_clef`).
     `held_by` (ROADMAP 2.288): `{stroke ordinal: owner}` of the ledger's page-stroke claims; where given, a seed stroke the LEDGER holds is counted `claimed_by:<owner>` (the one consult's
@@ -489,9 +496,8 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
             continue
         frac = AF.anchor_fraction(ty) or 0.5
         anchor_y = ink_box[1] + (ink_box[3] - ink_box[1]) * frac
-        h = head_beside(ink_box, anchor_y, heads, spl)
+        h = note_of(ink_box, anchor_y, heads, spl, barlines, count)
         if h is None:
-            count("no_note_beside")
             continue
         margin = t.get("margin")
         out.append({"members": sorted(mem), "box": [round(v, 1) for v in ink_box], "type": ty, "why": t.get("why"), "margin": margin,
@@ -501,10 +507,10 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
     if fused:
         # accidental-not-head lane: the two thick-ink shapes the stroke reading above cannot see; never ink it or an earlier claim already took
         taken = set(held_set) | {m for c in out for m in c["members"]}
-        pairs = accidental_pairs(strokes, sp, heads, boxed, taken | blocked, header, count)       # a real head's blob is never a bar
+        pairs = accidental_pairs(strokes, sp, heads, boxed, taken | blocked, header, count, barlines)       # a real head's blob is never a bar
         out.extend(pairs)
         taken |= {m for c in pairs for m in c["members"]}
-        out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count))
+        out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count, barlines))
         reasons["fused_natural_pair"] = sum(1 for c in pairs if c["how"] == "natural_pair")
         reasons["fused_sharp_pair"] = sum(1 for c in pairs if c["how"] == "sharp_pair")
         reasons["fused_sharp_stack"] = sum(1 for c in out if c.get("how") == "sharp_stack")
@@ -701,7 +707,8 @@ def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: 
     # ROADMAP 2.288: a rest that stands READ is a claim on the ledger (`page_claim_names.gather_page_claim_boxes`, before this reader) and the ledger consult refuses its ink
     # (`claimed_by:rest`); a weak rest box blocks nobody, by rule: only a READ rest claims. `enabled()` already required the rest claims to be on.
     found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids, header_claims(log, sub), earlier_owners(log, sub),
-                               fused=fused_enabled(), masks=getattr(pm, "masks", None) or (), scale=float(getattr(pm, "scale", 1.0) or 1.0))
+                               fused=fused_enabled(), masks=getattr(pm, "masks", None) or (), scale=float(getattr(pm, "scale", 1.0) or 1.0),
+                               barlines=getattr(pm, "barlines", None) or ())
     if not file:
         return found, reasons
     glyphs = file_own_accidentals(log, found, cells, local)
