@@ -69,10 +69,13 @@ def test_rule_off_the_head_is_left_unresolved_as_r22_left_it(name, monkeypatch):
     assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
 
 
-def test_never_when_the_untouched_stroke_holds_no_other_head():
+@pytest.mark.parametrize("name", ["never_unheld_litolff_10_1_10_11_1", "never_unheld_brahms_8_0_3_1_10"])
+def test_never_when_the_untouched_stroke_holds_no_other_head(name):
     """Litolff 10/1/10/11/1 (an eighth on the bottom line, up stem to the beam): the stroke at its left is a short piece below the staff that no
-    head stands on. Not anyone's stem on the page, so nothing says it is not this head's: left unresolved."""
-    w, r = _read("never_unheld_litolff_10_1_10_11_1")
+    head stands on. Brahms 8/0/3/1/10 (a half note under a quarter, two voices; our look: its own stem is DOWN at its left, which the map read
+    as not touching it): the untouched stroke holds no head. Not anyone's stem on the page, so nothing says it is not this head's: left
+    unresolved (the Brahms one shows why -- deciding the touched stroke there would have been wrong)."""
+    w, r = _read(name)
     got = r[w["head"]]
     assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
 
