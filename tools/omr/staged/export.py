@@ -2745,7 +2745,34 @@ def _page_arc_plan(rec: Record) -> Optional[Dict[str, Any]]:
     standing = [v for v in rec.verdicts_of(Q.PAGE_ARC_BINDING) if rec.verdict(Q.PAGE_ARC_BINDING, v["subject"]) is v]
     if not standing:
         return None
-    return _page_arc_bind.plan_of([v.get("detail") or {} for v in standing])
+    details = [v.get("detail") or {} for v in standing]
+    if _arc_claim.tie_same_sounding_enabled():
+        details = [_kind_unread_same_pitch_runs(rec, d) for d in details]
+    return _page_arc_bind.plan_of(details)
+
+
+def _kind_unread_same_pitch_runs(rec: Record, detail: Dict[str, Any]) -> Dict[str, Any]:
+    """ROADMAP 2.344 r2 (STAGED EXPORT; rides `OMR_ARC_TIE_SAME_SOUNDING`): a page run bound at BOTH ends to two heads at ONE position whose kind ADJUDICATE refused for an accidental
+    (`same_pitch_awaits_sounding`, `same_pitch_accidental_printed/unknown/unread`) and that EVALUATE (`settle_arc_by_sounding`) could not settle -- none of the boxes that witness it
+    holds a DECIDED tie or slur -- is a kind-unread run: nothing is written for it and its first note says `arc: tie or slur unread` (2.343). Before this the detector's class of a
+    witnessing box was written unmarked. A run any witness of which is decided keeps its old path (the box writes it). Reads the record only; returns the detail unchanged where nothing applies."""
+    runs = detail.get("runs") or ()
+    changed = []
+    for r in runs:
+        why = str(r.get("why") or "")
+        ke = r.get("kind_evidence") or {}
+        if (r.get("status") != _page_arc_bind.ABSTAINED or r.get("kind_unread") or not why.startswith(("same_pitch_accidental", "same_pitch_awaits"))
+                or not ke.get("start") or not ke.get("stop") or r.get("row") is None):
+            changed.append(r)
+            continue
+        decided = False
+        for w in r.get("witnesses") or ():
+            kv = rec.verdict(Q.ARC_KIND, str(w))
+            if kv and kv.get("outcome") == "decided" and kv.get("value") in ("tie", "slur"):
+                decided = True
+                break
+        changed.append(r if decided else dict(r, kind_unread=True, start=ke["start"], stop=ke["stop"]))
+    return dict(detail, runs=changed)
 
 
 def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:

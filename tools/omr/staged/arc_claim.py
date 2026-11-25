@@ -48,7 +48,11 @@ BAND_MIN_PX = 1.5
 
 #: the reason an arc's kind abstains when no end pair can be read; a `Q.ARC_KIND` abstention with a reason in this set is STILL AN ARC
 ENDS_UNREAD = "arc_ends_unread"
-ARC_STILL_AN_ARC = (ENDS_UNREAD, "same_pitch_accidental_unread", "stack_slur_over_two_same_pitch_notes")
+#: ROADMAP 2.344 r2: two notes at ONE staff position, the stop printing an accidental the start does not (or the start's alteration unread): whether they are one
+#: PITCH is what each SOUNDS (key, an earlier accidental in the bar, its own glyph) -- a fact EVALUATE files (`Q.PITCH` + `Q.ACCIDENTAL`), after this decision. ADJUDICATE says so
+#: and waits; `consequences.settle_arc_by_sounding` decides what follows.
+AWAITS_SOUNDING = "same_pitch_awaits_sounding"
+ARC_STILL_AN_ARC = (ENDS_UNREAD, "same_pitch_accidental_unread", "stack_slur_over_two_same_pitch_notes", AWAITS_SOUNDING)
 
 
 def _on(name: str) -> bool:
@@ -407,6 +411,10 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
                 pos, rule = "tie", "two_notes_same_pitch_restated"          # ROADMAP 2.344: the stop's printed accidental says what the start already is
             elif acc == "changed":
                 pos, rule = "slur", "two_notes_pitch_changed_by_accidental"   # ROADMAP 2.344: never a tie between notes of different pitch
+            elif acc == "carried":
+                pos, rule = "tie", "two_notes_same_pitch_carried"             # ROADMAP 2.344 r2: the stop prints none, the tie carries the start's accidental
+            elif acc == "pending_sounding":
+                return None, AWAITS_SOUNDING, None                            # ROADMAP 2.344 r2: what each note sounds is filed at EVALUATE
             else:
                 return None, "same_pitch_accidental_unread", None
     if pos is None and system_shape in SHAPE_KIND:
@@ -504,6 +512,17 @@ ENV_TIE_SAME_NOTES = "OMR_ARC_TIE_SAME_NOTES"
 
 def tie_same_notes_enabled() -> bool:
     return os.environ.get(ENV_TIE_SAME_NOTES, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+#: ROADMAP 2.344 round 2 (same Sean ruling; default ON, deny-list, so a lane report can A/B it): "the same notes" in full. Where the two ends of an arc stand at one staff position
+#: and only ONE end prints an accidental (or an alteration was not read), the arc is a tie when both notes SOUND the same and a slur when the accidental changes the pitch: a stop with no
+#: accidental after a start that prints one is the same note (the tie carries it); a stop that prints one the start does not waits for EVALUATE, where each note's sounding pitch is filed;
+#: an accidental nobody could read decides nothing and the arc is marked "arc: tie or slur unread" (CLAUDE.md rule 8).
+ENV_TIE_SAME_SOUNDING = "OMR_ARC_TIE_SAME_SOUNDING"
+
+
+def tie_same_sounding_enabled() -> bool:
+    return tie_same_notes_enabled() and os.environ.get(ENV_TIE_SAME_SOUNDING, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def bind_enabled() -> bool:

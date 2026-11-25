@@ -83,6 +83,9 @@ def test_never_a_tie_where_the_stop_accidental_changes_the_pitch(monkeypatch):
 
 
 def test_no_accidental_printed_on_the_start_is_no_opinion_the_old_behaviour_stands(monkeypatch):
+    # ROUND 1's boundary: with round 2 (`OMR_ARC_TIE_SAME_SOUNDING`, `test_tie_same_sounding_2_344_r2.py`) off, a start with no printed accidental is no opinion. With it ON that
+    # case waits for what the two notes sound (EVALUATE) and is no longer the detector's class.
+    monkeypatch.setenv(AC.ENV_TIE_SAME_SOUNDING, "0")
     on = _run(monkeypatch, on=True, edit=_drop_accidental(ACC_A))
     off = _run(monkeypatch, on=False, edit=_drop_accidental(ACC_A))
     assert _kinds(on) == _kinds(off)

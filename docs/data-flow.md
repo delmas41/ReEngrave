@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 27 gaps; 210 flag predicates; 28 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 211 flag predicates; 27 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -90,7 +90,7 @@ The sharps or flats after the clef, in their fixed order.
 - **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `claimed_area`
 - **decided by** (ADJUDICATE): `adjudicate_key_signature` -> `key_signature`; `adjudicate_keysig_marker_is_not_a_marker` -> `keysig_marker_is_not_a_marker`; `adjudicate_part_key` -> `part_key`; `adjudicate_system_key` -> `system_key`
 - **read by ADJUDICATE** (11): `adjudicators/clef.py:_unknown_fit_candidates`, `adjudicators/clef.py:adjudicate_clef`, `adjudicators/family_precision.py:_key_tail_reads`, `adjudicators/header.py:_keysig_marker_glyph_refused`, `adjudicators/header.py:_marker_ink`, `adjudicators/header.py:_part_checked`, `adjudicators/header.py:_staff_reading`, `adjudicators/header.py:_system_checked` +3 more
-- **read by EVALUATE** (1): `rule respell_accidental`
+- **read by EVALUATE** (2): `consequences.py:_cause_for_key`, `rule respell_accidental`
 - **read by INFER** (3): `infer rule fill_part_key`, `inferences.py:_key_witnesses`, `inferences.py:part_key_census`
 - **read by EXPORT** (2): `export.py:_place_notes`, `export.py:build`
 - **written** (declared): `<key>`; the sounding `<alter>` of every note follows it.
@@ -267,7 +267,7 @@ A sharp, flat or natural in front of a head.
 - **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `claimed_area`
 - **decided by** (ADJUDICATE): `adjudicate_accidental_is_not_an_accidental` -> `accidental_is_not_an_accidental`; `adjudicate_accidental_owner` -> `accidental_owner`
 - **read by ADJUDICATE** (4): `adjudicators/ownership.py:_accidental_state`, `adjudicators/ownership.py:_printed_alteration`, `adjudicators/stroke_owner.py:_acc_on_rest_vetoes`, `adjudicators/unboxed_rest.py:_cover_left`
-- **read by EVALUATE** (2): `consequences.py:apply_printed_accidental`, `rule apply_printed_accidental`
+- **read by EVALUATE** (3): `consequences.py:_sounding_of`, `consequences.py:apply_printed_accidental`, `rule apply_printed_accidental`
 - **read by EXPORT** (2): `export.py:_accidental_census`, `export.py:_has_printed_accidental`
 - **written** (declared): `<accidental>` and the sounding `<alter>`, READ or GUESSED.
 - **flags on its readers' paths** (as the code resolves them today): `page_claim_names.accidental_boxed_as_other_enabled()=ON`, `page_claim_names.rests_enabled()=ON`
@@ -285,16 +285,18 @@ A curve over notes: the nearer of stacked arcs is the tie.
 - **decided by** (ADJUDICATE): `adjudicate_arc_is_not_an_arc` -> `arc_is_not_an_arc`; `adjudicate_arc_kind` -> `arc_kind`; `adjudicate_arc_owner` -> `arc_owner`; `adjudicate_page_arc_binding` -> `page_arc_binding`; `adjudicate_tie_pair` -> `tie_pair`
 - **read by GATHER** (4): `gather.py:gather_far_head_ledger_positions`, `gather.py:gather_page_claims`, `page_arcs.py:rows_of`, `page_owner.py:_file_page_owners`
 - **read by ADJUDICATE** (10): `adjudicators/family_precision.py:_arc_ink_refusal`, `adjudicators/family_precision.py:_traced_tie`, `adjudicators/notehead_precision.py:_arc_tail_refusal`, `adjudicators/ownership.py:_closest_sides`, `adjudicators/ownership.py:_flank_search`, `adjudicators/ownership.py:_joins_not_at_a_barline`, `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:_stack_reading` +2 more
-- **read by EXPORT** (4): `export.py:_page_arc_plan`, `export.py:_page_bound_slurs`, `export.py:_place_arcs`, `export.py:_record_tie_pairs`
+- **read by EVALUATE** (2): `consequences.py:settle_arc_by_sounding`, `rule settle_arc_by_sounding`
+- **read by EXPORT** (5): `export.py:_kind_unread_same_pitch_runs`, `export.py:_page_arc_plan`, `export.py:_page_bound_slurs`, `export.py:_place_arcs`, `export.py:_record_tie_pairs`
 - **written** (declared): `<slur>` / `<tied>` on the two written heads.
 - **flags on its readers' paths** (as the code resolves them today): `box_kind.enabled()=ON`
 - **old readers beside it** (declared; running derived): `arcs_system.py:gather_system_arcs` still runs, files only it: `system_arc`; `gather.py:gather_arc_claim` still runs; `adjudicate_arc_owner` still runs, files only it: `arc_owner`; `adjudicate_arc_kind` still runs, files only it: `arc_kind`; `adjudicate_tie_pair` still runs, files only it: `tie_pair`
-- **open gaps** (8):
+- **open gaps** (9):
   - OLD_FEEDS: old tie and slur reader `arcs_system.py:gather_system_arcs` still runs; what only the old path files (`system_arc`) is read by 3 later function(s)
   - OLD_FEEDS: old tie and slur reader `gather.py:gather_arc_claim` still runs by default (called from `gather.py:gather`); what it files is only shared facts (`claimed_area`); it still claims ink as `arc`, which OWNS it (a later box mostly on it is refused)
   - OLD_FEEDS: old tie and slur reader `adjudicate_arc_owner` still runs; what only the old path files (`arc_owner`) is read by 4 later function(s)
-  - OLD_FEEDS: old tie and slur reader `adjudicate_arc_kind` still runs; what only the old path files (`arc_kind`) is read by 2 later function(s)
-  - OLD_FEEDS: old tie and slur reader `adjudicate_tie_pair` still runs; what only the old path files (`tie_pair`) is read by 1 later function(s)
+  - OLD_FEEDS: old tie and slur reader `adjudicate_arc_kind` still runs; what only the old path files (`arc_kind`) is read by 3 later function(s)
+  - OLD_FEEDS: old tie and slur reader `adjudicate_tie_pair` still runs; what only the old path files (`tie_pair`) is read by 2 later function(s)
+  - DOUBLE_FED: `export.py:_page_arc_plan` meets the tie and slur from the old path (`arc_kind`) and from the new one (`page_arc_binding`) through the functions it calls
   - DOUBLE_FED: `export.py:_page_bound_slurs` meets the tie and slur from the old path (`arc_kind`) and from the new one (`page_arc_binding`) through the functions it calls
   - DOUBLE_FED: `export.py:_pair_arcs` meets the tie and slur from the old path (`arc_kind`, `tie_pair`) and from the new one (`page_arc_binding`) through the functions it calls
   - DOUBLE_FED: `export.py:_place_arcs` meets the tie and slur from the old path (`arc_kind`, `arc_owner`) and from the new one (`page_arc_binding`) through the functions it calls
@@ -594,7 +596,7 @@ Which edition and movement this is; scanned or engraved.
 ### `accidental` (Q.ACCIDENTAL) -- LIVE
 
 - `accidental` revised by: EVALUATE `respell_accidental`, EVALUATE `apply_printed_accidental`
-- `accidental` read by EVALUATE: `consequences.py:_supersede`, `consequences.py:respell_accidental`
+- `accidental` read by EVALUATE: `consequences.py:_sounding_of`, `consequences.py:_supersede`, `consequences.py:respell_accidental`, `consequences.py:settle_arc_by_sounding`
 - `accidental` read by EXPORT: `export.py:_accidental_census`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:one_ink_guess_of`
 
 ### `accidental_is_not_an_accidental` (Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL) -- LIVE
@@ -609,7 +611,7 @@ Which edition and movement this is; scanned or engraved.
 - `accidental_owner` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_accidental_owner`
 - `accidental_owner` declared in `wants` (not a read): `adjudicate_arc_kind`, `adjudicate_page_arc_binding`
 - `accidental_owner` read by ADJUDICATE: `adjudicators/ownership.py:_accidental_state`, `adjudicators/ownership.py:_printed_alteration`
-- `accidental_owner` read by EVALUATE: `consequences.py:apply_printed_accidental`, `rule apply_printed_accidental`
+- `accidental_owner` read by EVALUATE: `consequences.py:_sounding_of`, `consequences.py:apply_printed_accidental`, `rule apply_printed_accidental`
 - `accidental_owner` read by EXPORT: `export.py:_accidental_census`, `export.py:_has_printed_accidental`
 - `accidental_owner` belongs to: `--mark accidental`
 
@@ -652,7 +654,8 @@ Which edition and movement this is; scanned or engraved.
 - `arc_kind` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_arc_kind`
 - `arc_kind` declared in `wants` (not a read): `adjudicate_tie_pair`
 - `arc_kind` read by ADJUDICATE: `adjudicators/ownership.py:adjudicate_tie_pair`
-- `arc_kind` read by EXPORT: `export.py:_page_bound_slurs`, `export.py:_place_arcs`
+- `arc_kind` read by EVALUATE: `rule settle_arc_by_sounding`
+- `arc_kind` read by EXPORT: `export.py:_kind_unread_same_pitch_runs`, `export.py:_page_bound_slurs`, `export.py:_place_arcs`
 - `arc_kind` read only OFF by default: `export.py:_edge_curves`
 - `arc_kind` belongs to: `--mark arc`
 
@@ -1215,7 +1218,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `key_signature` decided by: ADJUDICATE `adjudicators/header.py:adjudicate_key_signature`
 - `key_signature` collapsed by: INFER `fill_part_key`
-- `key_signature` read by EVALUATE: `rule respell_accidental`
+- `key_signature` read by EVALUATE: `consequences.py:_cause_for_key`, `rule respell_accidental`
 - `key_signature` read by INFER: `infer rule fill_part_key`, `inferences.py:_key_witnesses`, `inferences.py:part_key_census`
 - `key_signature` read by EXPORT: `export.py:_place_notes`, `export.py:build`
 - `key_signature` belongs to: `--mark key`
@@ -1638,7 +1641,7 @@ Which edition and movement this is; scanned or engraved.
 ### `pitch` (Q.PITCH) -- LIVE
 
 - `pitch` revised by: EVALUATE `restate_pitch`, EVALUATE `move_glyph`
-- `pitch` read by EVALUATE: `consequences.py:apply_printed_accidental`, `consequences.py:move_glyph`, `consequences.py:respell_accidental`, `consequences.py:restate_pitch`
+- `pitch` read by EVALUATE: `consequences.py:_sounding_of`, `consequences.py:apply_printed_accidental`, `consequences.py:move_glyph`, `consequences.py:respell_accidental`, `consequences.py:restate_pitch`, `consequences.py:settle_arc_by_sounding`
 - `pitch` read by EXPORT: `export.py:_clef_changes_by_bar`, `export.py:_inferred_clefs`, `export.py:_place_notes`, `export.py:_plan_relocation`, `export.py:_unwritten_end_read`, `export.py:far_unread_guess_of`, `export.py:guess_of`
 
 ### `printed_bar_number` (Q.PRINTED_BAR_NUMBER) -- LIVE
@@ -1895,6 +1898,8 @@ Which edition and movement this is; scanned or engraved.
 ### `tie_pair` (Q.TIE_PAIR) -- LIVE
 
 - `tie_pair` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_tie_pair`
+- `tie_pair` revised by: EVALUATE `settle_arc_by_sounding`
+- `tie_pair` read by EVALUATE: `consequences.py:settle_arc_by_sounding`
 - `tie_pair` read by EXPORT: `export.py:_record_tie_pairs`
 - `tie_pair` belongs to: `--mark arc`
 
@@ -2032,11 +2037,12 @@ Every line is derived from the code. What the code cannot show (a rule that read
 - old tie and slur reader `arcs_system.py:gather_system_arcs` still runs; what only the old path files (`system_arc`) is read by 3 later function(s) -- at `adjudicators/family_precision.py:_traced_tie`, `adjudicators/ownership.py:_closest_sides`, `adjudicators/ownership.py:_system_arc_row`
 - old tie and slur reader `gather.py:gather_arc_claim` still runs by default (called from `gather.py:gather`); what it files is only shared facts (`claimed_area`); it still claims ink as `arc`, which OWNS it (a later box mostly on it is refused) -- at `gather.py:gather_arc_claim`
 - old tie and slur reader `adjudicate_arc_owner` still runs; what only the old path files (`arc_owner`) is read by 4 later function(s) -- at `adjudicators/ownership.py:_flank_search`, `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:_stack_reading`, `export.py:_place_arcs`
-- old tie and slur reader `adjudicate_arc_kind` still runs; what only the old path files (`arc_kind`) is read by 2 later function(s) -- at `export.py:_page_bound_slurs`, `export.py:_place_arcs`
-- old tie and slur reader `adjudicate_tie_pair` still runs; what only the old path files (`tie_pair`) is read by 1 later function(s) -- at `export.py:_record_tie_pairs`
+- old tie and slur reader `adjudicate_arc_kind` still runs; what only the old path files (`arc_kind`) is read by 3 later function(s) -- at `export.py:_kind_unread_same_pitch_runs`, `export.py:_page_bound_slurs`, `export.py:_place_arcs`
+- old tie and slur reader `adjudicate_tie_pair` still runs; what only the old path files (`tie_pair`) is read by 2 later function(s) -- at `consequences.py:settle_arc_by_sounding`, `export.py:_record_tie_pairs`
 
-### DOUBLE-FED CONSUMER: one function reads the same mark from the old reader and the new one (3)
+### DOUBLE-FED CONSUMER: one function reads the same mark from the old reader and the new one (4)
 
+- `export.py:_page_arc_plan` meets the tie and slur from the old path (`arc_kind`) and from the new one (`page_arc_binding`) through the functions it calls
 - `export.py:_page_bound_slurs` meets the tie and slur from the old path (`arc_kind`) and from the new one (`page_arc_binding`) through the functions it calls
 - `export.py:_pair_arcs` meets the tie and slur from the old path (`arc_kind`, `tie_pair`) and from the new one (`page_arc_binding`) through the functions it calls
 - `export.py:_place_arcs` meets the tie and slur from the old path (`arc_kind`, `arc_owner`) and from the new one (`page_arc_binding`) through the functions it calls
@@ -2075,4 +2081,4 @@ none
 
 A record call whose quantity is computed (the accessors themselves, a loop this map cannot follow). Listed so the count can only go down.
 
-`adjudicate.py:Evidence._note .state(<parameter quantity>)`, `adjudicate.py:Evidence.admitted .verdict(<parameter quantity>)`, `adjudicate.py:Evidence.refusals .refusals(<parameter quantity>)`, `adjudicate.py:Evidence.rows .rows(<parameter quantity>)`, `adjudicate.py:Evidence.state .state(<parameter quantity>)`, `adjudicate.py:Evidence.verdict .verdict(<parameter quantity>)`, `adjudicate.py:Evidence.verdicts .verdicts(<parameter quantity>)`, `adjudicate.py:adjudicate_one .verdict`, `consequences.py:_missed_rest_witness .verdict`, `evaluate.py:_cause_for .verdict(<parameter quantity>)`, `export.py:_family_refusals .verdicts_of`, `export.py:_non_detector_ink .obs_of`, `export.py:coverage .verdicts_of`, `groups.py:_candidate_rows .state`, `groups.py:_candidate_rows .verdict`, `infer.py:_admit .verdict`, `page_owner.py:LogRows.abs .refusals(<parameter q>)`, `page_owner.py:LogRows.obs .rows(<parameter q>)`, `page_owner.py:_Flip.obs .obs(<parameter q>)`, `pipeline.py:divergence .verdict`, `record.py:Log.record .verdict`, `record.py:Log.state .refusals(<parameter quantity>)`, `record.py:Log.state .rows(<parameter quantity>)`, `record.py:Log.verdict .verdicts(<parameter quantity>)`, `regather_report.py:extract_facts .verdict`, `review/rerun.py:rebuild_gather .abstain`, `review/rerun.py:rebuild_gather .observe`, `trace.py:population_of .obs_of`
+`adjudicate.py:Evidence._note .state(<parameter quantity>)`, `adjudicate.py:Evidence.admitted .verdict(<parameter quantity>)`, `adjudicate.py:Evidence.refusals .refusals(<parameter quantity>)`, `adjudicate.py:Evidence.rows .rows(<parameter quantity>)`, `adjudicate.py:Evidence.state .state(<parameter quantity>)`, `adjudicate.py:Evidence.verdict .verdict(<parameter quantity>)`, `adjudicate.py:Evidence.verdicts .verdicts(<parameter quantity>)`, `adjudicate.py:adjudicate_one .verdict`, `consequences.py:_missed_rest_witness .verdict`, `export.py:_family_refusals .verdicts_of`, `export.py:_non_detector_ink .obs_of`, `export.py:coverage .verdicts_of`, `groups.py:_candidate_rows .state`, `groups.py:_candidate_rows .verdict`, `infer.py:_admit .verdict`, `page_owner.py:LogRows.abs .refusals(<parameter q>)`, `page_owner.py:LogRows.obs .rows(<parameter q>)`, `page_owner.py:_Flip.obs .obs(<parameter q>)`, `pipeline.py:divergence .verdict`, `record.py:Log.record .verdict`, `record.py:Log.state .refusals(<parameter quantity>)`, `record.py:Log.state .rows(<parameter quantity>)`, `record.py:Log.verdict .verdicts(<parameter quantity>)`, `regather_report.py:extract_facts .verdict`, `review/rerun.py:rebuild_gather .abstain`, `review/rerun.py:rebuild_gather .observe`, `trace.py:population_of .obs_of`

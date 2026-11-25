@@ -25,7 +25,9 @@ recorded -- and the controls pass there too, which is what a control is for.
 
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
@@ -75,10 +77,11 @@ def _arc(log, cell, gi, x0, x1, y0=112.0, y1=118.0, cls="tie", staff_i=0):
 
 def _decide(log, *arcs, extra=(), order=ORDER):
     log.freeze()
-    for sub, quantity, value in extra:
+    for sub, quantity, value, *det in extra:
         log.record(Verdict(id=log._next_id("vrd"), subject=sub,
                            quantity=quantity, outcome=Outcome.DECIDED,
-                           value=value, decider="t", reason="x"))
+                           value=value, decider="t", reason="x",
+                           detail=det[0] if det else {}))
     adjudicate.run(log, order=order)
     return [log.verdict(Q.ARC_KIND, a) for a in arcs]
 
@@ -404,11 +407,26 @@ class TestTheAccidentalState(unittest.TestCase):
         a, b, arc = _two_heads(log, 4, 4, cls="slur")
         acc = self._acc(log, 0, 9, 106.0, 4)
         order = tuple(q for q in ORDER if q != Q.ACCIDENTAL_OWNER)
-        (v,) = _decide(log, arc, order=order,
-                       extra=((acc, Q.ACCIDENTAL_OWNER, b.to_key()),))
+        with mock.patch.dict(os.environ, {"OMR_ARC_TIE_SAME_SOUNDING": "0"}):          # ROADMAP 2.344 r2 off: the round-1 boundary, as before
+            (v,) = _decide(log, arc, order=order,
+                           extra=((acc, Q.ACCIDENTAL_OWNER, b.to_key()),))
         self.assertEqual(v.value, "slur")
         self.assertEqual(v.detail["grammar"]["tie_slur_rule"]["two_note"]
                          ["accidental"], "printed")
+
+    def test_a_PRINTED_accidental_on_the_stop_head_waits_for_what_the_notes_sound(self):
+        """ROADMAP 2.344 r2: the same case with round 2 on. The detector's class is NOT the answer: the arc waits (`same_pitch_awaits_sounding`) for EVALUATE to say
+        what each note sounds (`test_tie_same_sounding_2_344_r2.py`)."""
+        log = Log()
+        a, b, arc = _two_heads(log, 4, 4, cls="slur")
+        acc = self._acc(log, 0, 9, 106.0, 4)
+        order = tuple(q for q in ORDER if q != Q.ACCIDENTAL_OWNER)
+        with mock.patch.dict(os.environ, {"OMR_ARC_TIE_SAME_SOUNDING": "1"}):
+            (v,) = _decide(log, arc, order=order,
+                           extra=((acc, Q.ACCIDENTAL_OWNER, b.to_key(), {"alteration": "#"}),))
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "same_pitch_awaits_sounding")
+        self.assertEqual(v.detail["pending_sounding"], {"start": a.to_key(), "stop": b.to_key()})
 
     def test_the_positive_control_no_accidental_at_all_is_a_tie(self):
         log = Log()
@@ -429,12 +447,24 @@ class TestTheAccidentalState(unittest.TestCase):
 
     def test_the_same_unclaimed_accidental_beside_a_TIE_leaves_the_tie(self):
         """The refusal above is for a SLUR class only: a tie with a glyph it
-        cannot account for stays what the detector read."""
+        cannot account for stays what the detector read. (ROADMAP 2.344 r2 ends that: with it on, an accidental glyph nobody read decides nothing -- see the next test.)"""
         log = Log()
         _a, _b, arc = _two_heads(log, 4, 4, cls="tie")
         self._acc(log, 0, 9, 106.0, 4)
-        (v,) = _decide(log, arc)
+        with mock.patch.dict(os.environ, {"OMR_ARC_TIE_SAME_SOUNDING": "0"}):
+            (v,) = _decide(log, arc)
         self.assertEqual(v.value, "tie")
+
+    def test_the_same_unclaimed_accidental_beside_a_TIE_decides_nothing_in_round_two(self):
+        """ROADMAP 2.344 r2 (CLAUDE.md rule 8: a fallback never converts "cannot tell" into an answer): the tie class with an accidental nobody could read is not written as a tie;
+        the arc is still an arc, and EXPORT marks it (`arc: tie or slur unread`) where its run is bound."""
+        log = Log()
+        _a, _b, arc = _two_heads(log, 4, 4, cls="tie")
+        self._acc(log, 0, 9, 106.0, 4)
+        with mock.patch.dict(os.environ, {"OMR_ARC_TIE_SAME_SOUNDING": "1"}):
+            (v,) = _decide(log, arc)
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "same_pitch_accidental_unread")
 
     def test_an_accidental_far_to_the_left_is_not_this_heads(self):
         log = Log()
