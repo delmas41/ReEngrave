@@ -2897,7 +2897,8 @@ def _stroke_views(ev: Evidence, cell) -> list:
             space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
             profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
             ends=tuple(float(v) for v in (d.get("ends") or ())[:4]),
-            end_steps=tuple(float(v) for v in (d.get("end_steps_from_top") or ())[:2])))
+            end_steps=tuple(float(v) for v in (d.get("end_steps_from_top") or ())[:2]),
+            tip_columns=tuple(d.get("tip_columns") or ())))       # ROADMAP 2.349: the ink beside each beamed end (GATHER `OMR_STEM_TIP_COLUMNS`)
     return out
 
 

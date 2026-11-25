@@ -35,7 +35,8 @@ returned with every role so a refusal says how close it came.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+import os
+from dataclasses import dataclass, field
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 #: A vertical stroke is a STEM only up to this long (staff spaces). Measured on Litolff pp.2-16 (the 2.202 milestone gather): the 4,260 vertical
@@ -102,6 +103,8 @@ class StrokeView:
     end_steps: Tuple[float, ...] = ()            # 2.318 r3: where the two `ends` stand against the staff, half-spaces from the top line (0) to the bottom line (8), at their own x (empty: not filed)
     cut: str = ""                                # 2.318 r4: the cell-crop edges the ink reaches, letters "tblr" (`Q.STROKE` detail `cut`; "" = none / not filed)
     family: str = ""                             # 2.318 r4: the family of the mark that owns this stroke ("dynamic", "arc", "head" ...; the stroke owner's verdict), "" = unclaimed
+    #: 2.349: the ink beside each beamed end of a vertical, full resolution (`Q.STROKE` detail `tip_columns`, GATHER `OMR_STEM_TIP_COLUMNS`; () = not filed)
+    tip_columns: Tuple[Dict[str, object], ...] = field(default=(), compare=False, hash=False)
 
 
 def local_thickness(s: StrokeView, x: float) -> float:
@@ -1261,6 +1264,149 @@ def beam_ink_at_stem(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[
     return sorted(out)
 
 
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+# ROADMAP 2.349 (flag `OMR_TWO_BEAMS_AT_STEM`, default OFF; reads the GATHER fact `OMR_STEM_TIP_COLUMNS`). TWO BEAMS ARE READ FROM THE INK AT THE
+# NOTE'S OWN STEM.
+#
+#   As a musician reads it: beside the stem, the second beam is a second bar lying just inside the first, toward the head, with a thin line of paper
+#   between them; where the two meet the stem the scan may fuse them into one slab, and a little way along the beam the paper shows again. One bar
+#   beside the stem on every side that has a beam is one beam.
+#   NEVER: two on a slab alone (a slab as thick as two beams is also a single beam with a head or a stub run into it -- Litolff L12, Sean "8th");
+#   never on ink thicker than a slab (a head cluster, `FUSED_MAX_THICKNESS_SPACES`); never on a second bar first seen past a stretch of single
+#   beam (a neighbour's partial beam: the second beam must run TO this stem); never on a bar another mark's claim holds; never on a bar that is
+#   not parallel to the first over three columns (a head's oval is not a bar).
+#   CONVENTION (engraving, ASSUMED, not yet confirmed by Sean -- the report asks): beams are parallel bars about half a space thick, the second
+#   stacked inward of the first with less paper between them than a beam is thick. MEASURED on Sean's judged marks (canonical erased raster,
+#   columns 0.15-1.2 sp from the stem's edge): the paper between two beams 0.06-0.25 sp (B01, B04, B06, B10, B09, Brahms p5 1/5/12, p0 tile 5);
+#   the nearest ink inward of a single beam 0.64 sp and more (L01, L06, L08, L10, B05 and the other judged eighths); single bars 0.54-0.91 thick,
+#   slabs 1.27-1.45 (two fused: tile 5, B04; one beam and a lump: L12). The cut-offs below stand in those gaps.
+# ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+TWO_BEAMS_AT_STEM_ENV = "OMR_TWO_BEAMS_AT_STEM"
+#: the most paper (staff spaces) between two bars that are two beams: measured 0.06-0.25 between Sean's judged sixteenths' beams | 0.64 and more from a
+#: judged single beam to the next ink inward
+TWO_BAR_GAP_MAX_SPACES = 0.4
+#: the bar in one column is the bar of the column nearer the stem when their ink spans meet, within this (staff spaces; columns stand 0.15 sp apart,
+#: a beam at 25 deg moves 0.07 between them): followed by its ink, never by a fixed height
+TWO_BAR_TRACK_SPACES = 0.3
+#: ...and the paper between the two bars varies at most this much along the stretch (parallel bars; a head's oval opens and closes)
+TWO_BAR_PARALLEL_SPACES = 0.15
+#: the second bar is seen in at least this many columns (0.45 sp of beam): a bar, not a speck or the end of a stroke
+TWO_BAR_MIN_COLUMNS = 3
+
+
+def two_beams_at_stem_enabled() -> bool:
+    """`OMR_TWO_BEAMS_AT_STEM` (ROADMAP 2.349), default OFF; 1/true/yes/on enables. ADJUDICATE only."""
+    return os.environ.get(TWO_BEAMS_AT_STEM_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def tip_columns_at(strokes: Sequence[StrokeView], stem: StrokeView, tip_y: float) -> Optional[Dict[str, object]]:
+    """The filed `tip_columns` entry for THIS stem's tip: the entry of a vertical whose end row lies within half a space of `tip_y` and whose ink edges
+    hold the stem's middle (within `STEM_MATCH_X_SLACK_SPACES`). Found by where the ink is, never by ordinal: the count may have followed the stem
+    through a crossing to another piece's far end. None where nothing was filed (flag off at GATHER, or no beamed end there)."""
+    sp = stem.space_px if stem.space_px > 0 else 1.0
+    sx = stem.box[0] + stem.box[2] / 2.0
+    best, best_d = None, None
+    for s in strokes:
+        for e in s.tip_columns or ():
+            try:
+                ey = float(e["y"])
+                xl, xr = float(e["x"][0]), float(e["x"][1])
+            except (KeyError, TypeError, ValueError, IndexError):
+                continue
+            if abs(ey - tip_y) > 0.5 * sp or not (xl - STEM_MATCH_X_SLACK_SPACES * sp <= sx <= xr + STEM_MATCH_X_SLACK_SPACES * sp):
+                continue
+            d = abs(ey - tip_y)
+            if best is None or d < best_d:
+                best, best_d = e, d
+    return best
+
+
+def _column_state(runs, prev: Optional[Tuple[float, float]], claimed: set) -> Tuple[str, Optional[Tuple[float, float]], Optional[float]]:
+    """One column beside the stem: `(state, the first bar's (outer, inner) edges, paper between the bars)`. States: `two` (a bar at the tip and a
+    second bar inside it with thin paper between), `one` (a bar, nothing inside it near), `slab` (one run as thick as two beams), `cluster` (thicker
+    than a slab), `claimed` (the second bar is another mark's ink), `none` (no bar at the tip). `prev`: the first bar's edges in the column
+    nearer the stem -- the bar here is the run whose ink continues it (the spans overlap); the first column's bar starts at the tip."""
+    bars = [r for r in runs if float(r[1]) >= BEAM_MIN_THICKNESS_SP]
+    first = None
+    for r in bars:
+        o, i_ = float(r[0]), float(r[0]) + float(r[1])
+        if (abs(o) <= JOIN_OUTER_EDGE_SPACES) if prev is None else (o <= prev[1] + TWO_BAR_TRACK_SPACES and i_ >= prev[0] - TWO_BAR_TRACK_SPACES):
+            first = r
+            break
+    if first is None:
+        return "none", None, None
+    o, t = float(first[0]), float(first[1])
+    if t >= FUSED_MAX_THICKNESS_SPACES:
+        return "cluster", (o, o + t), None
+    if t >= FUSED_DOUBLE_MIN_THICKNESS_SPACES:
+        return "slab", (o, o + t), None
+    inner = o + t
+    nxt = [r for r in runs if float(r[0]) > inner]
+    if nxt:
+        r2 = min(nxt, key=lambda r: float(r[0]))
+        gap = float(r2[0]) - inner
+        if gap <= TWO_BAR_GAP_MAX_SPACES and BEAM_MIN_THICKNESS_SP <= float(r2[1]) < FUSED_DOUBLE_MIN_THICKNESS_SPACES:
+            if len(r2) > 2 and int(r2[2]) in claimed:
+                return "claimed", (o, inner), gap
+            return "two", (o, inner), gap
+    return "one", (o, inner), None
+
+
+def _side_verdict(cols, claimed: set) -> str:
+    """One side of the stem, walking OUT from it: `two` (after any slab where the beams meet the stem, the second bar runs on, parallel, for
+    `TWO_BAR_MIN_COLUMNS` columns), `one` (a single bar from the stem out, no slab), `end` (no beam on this side), `slab`, or `unread`."""
+    prev = None
+    states = []
+    gaps: List[float] = []
+    for c in cols:
+        if c is None:
+            states.append("off")
+            break
+        st, o, gap = _column_state(c, prev, claimed)
+        states.append(st)
+        if o is not None:
+            prev = o
+        if st == "two":
+            if gaps and abs(gap - gaps[-1]) > TWO_BAR_PARALLEL_SPACES:
+                break
+            gaps.append(gap)
+        elif st == "slab":
+            continue                       # where the two meet the stem (or meet again at a crossing): the stretch is not broken
+        elif st == "none" and prev is None:
+            continue                       # no bar yet: the beam may start a hair past the stem's edge
+        else:
+            break
+    if len(gaps) >= TWO_BAR_MIN_COLUMNS:
+        return "two"
+    if any(s in ("cluster", "claimed", "off") for s in states) or gaps:
+        return "unread"
+    if "slab" in states:
+        return "slab"
+    if len(states) == len(cols) and all(s == "none" for s in states):
+        return "end"
+    seen = [s for s in states if s != "none"]
+    return "one" if seen and seen[0] == "one" else "unread"
+
+
+def two_bars_at_stem(strokes: Sequence[StrokeView], stem: StrokeView, tip_y: float) -> Optional[Dict[str, object]]:
+    """2.349: what the full-resolution ink beside THIS stem's tip says: `{"read": "two" | "one" | None, "sides": {...}}`; None where no columns were
+    filed for the tip. `two`: a side shows the second beam running to the stem; `one`: every side with a beam shows one bar and no side shows a
+    slab. Pure."""
+    entry = tip_columns_at(strokes, stem, tip_y)
+    if entry is None:
+        return None
+    claimed = {s.ordinal for s in strokes if s.kind in ("owned", "contested") and s.family and s.family not in ("beam", "stem")}
+    sides = {nm: _side_verdict(entry.get(nm) or (), claimed) for nm in ("L", "R")}
+    v = set(sides.values())
+    if "two" in v:
+        read = "two"
+    elif v <= {"one", "end"} and "one" in v:
+        read = "one"
+    else:
+        read = None
+    return {"read": read, "sides": sides}
+
+
 def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float], side: Optional[str],
                finder_stem: bool = True) -> Dict[str, object]:
     """THE ONE BEAM COUNT of the stem(s) of the head at `head_box`. Pure.
@@ -1355,7 +1501,25 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
         if thick:
             causes.append("thick_at_stem")
             extra += len(thick)
+        two_bars = None
+        if two_beams_at_stem_enabled() and n == 1 and not tip["fused"]:
+            # 2.349: the count read ONE level from the stroke map; the full-resolution ink beside the stem says whether a second beam runs to it
+            # (module comment above `two_beams_at_stem_enabled`). It settles only "one level or two" -- the possible second level that a thick
+            # stroke or a stub at the tip left open; every other cause of doubt stands.
+            two_bars = two_bars_at_stem(strokes, stem, float(tip["tip_y"]))
+            if two_bars is not None and two_bars["read"] == "two":
+                n = 2
+                if "thick_at_stem" in causes:
+                    causes.remove("thick_at_stem")
+                    extra -= len(thick)
+                if "stub" in causes:
+                    causes.remove("stub")
+                    extra -= len(stubs_here)
+            elif two_bars is not None and two_bars["read"] == "one" and "thick_at_stem" in causes:
+                causes.remove("thick_at_stem")
+                extra -= len(thick)
         per.append({"stem": stem.ordinal, "stem_row": stem.row_id, "side": sd, "certain": n, "possible": n + extra, "causes": causes,
+                    **({"two_bars": two_bars} if two_bars is not None else {}),
                     "beam_ink": beam_ink_at_stem(strokes, role_by_ord, stem, tip),
                     # 2.319 r2: the stem's own ink as the count followed it (crossings joined), and what that ink touches -- the flag reader joins a
                     # flag to the stem by these where the stem finder found none (`rhythm._flags_on_ink_stem`)
