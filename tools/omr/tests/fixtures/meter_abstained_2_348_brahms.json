@@ -1,0 +1,65 @@
+{
+ "what": "ROADMAP 2.348: the two Q.METER verdicts that 20261123-night (Brahms 1 / Breitkopf) filed ABSTAINED, copied from the saved record (`considered`/`correlated` id lists dropped). Both carry_outweighed_by_the_bars; system/6/1 is the p6 case 2.346 resolved (OMR_BAR_SUM_SKIPS_REFUSED=0 reproduces it).",
+ "rows": [
+  {
+   "id": "vrd:2013063",
+   "subject": "system/6/1",
+   "quantity": "meter",
+   "outcome": "abstained",
+   "value": null,
+   "decider": "adjudicate_meter",
+   "reason": "carry_outweighed_by_the_bars",
+   "candidates": [],
+   "margin": null,
+   "supersedes": null,
+   "detail": {
+    "carried_from": "system/1/0",
+    "pages_since_read": 5,
+    "instead_of": "no_evidence",
+    "carried_via_cautionary": false,
+    "source_share": 1.0,
+    "source_staves_spoke": 13,
+    "support": 1.0,
+    "floor": 2.0,
+    "bars_agree": 1,
+    "bars_disagree": 1,
+    "bar_lengths_seen": {
+     "6.0": 1,
+     "3.0": 1
+    },
+    "skipped_uncorroborated": []
+   },
+   "basis_from": "considered"
+  },
+  {
+   "id": "vrd:2013092",
+   "subject": "system/21/0",
+   "quantity": "meter",
+   "outcome": "abstained",
+   "value": null,
+   "decider": "adjudicate_meter",
+   "reason": "carry_outweighed_by_the_bars",
+   "candidates": [],
+   "margin": null,
+   "supersedes": null,
+   "detail": {
+    "carried_from": "system/1/0",
+    "pages_since_read": 20,
+    "instead_of": "no_evidence",
+    "carried_via_cautionary": false,
+    "source_share": 1.0,
+    "source_staves_spoke": 13,
+    "support": 1.0,
+    "floor": 2.0,
+    "bars_agree": 2,
+    "bars_disagree": 2,
+    "bar_lengths_seen": {
+     "4.0": 2,
+     "3.0": 2
+    },
+    "skipped_uncorroborated": []
+   },
+   "basis_from": "considered"
+  }
+ ]
+}
