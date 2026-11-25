@@ -2647,6 +2647,58 @@ def _sounding_of(log: Log, head: Subject) -> Optional[Tuple[str, int, str]]:
     return lo[0], lo[1], alt
 
 
+def _settle_pair_by_sounding(log: Log, s_key: str, e_key: str):
+    """`(kind, rule, start_sounds, stop_sounds, basis)` for two heads at ONE staff position: the same sounding pitch is a `tie`, a different one a `slur`; None where either note's
+    sounding is unread or the two are not at one letter and octave (nothing then follows)."""
+    head_a, head_b = Subject.from_key(s_key), Subject.from_key(e_key)
+    a, b = _sounding_of(log, head_a), _sounding_of(log, head_b)
+    if a is None or b is None or a[:2] != b[:2]:
+        return None
+    new_kind = "tie" if a == b else "slur"
+    rule_name = "same_sounding_pitch" if new_kind == "tie" else "sounding_pitch_changed_by_accidental"
+    basis = tuple(v.id for v in (log.verdict(Q.PITCH, head_a), log.verdict(Q.PITCH, head_b), log.verdict(Q.ACCIDENTAL, head_a), log.verdict(Q.ACCIDENTAL, head_b)) if v is not None)
+    return new_kind, rule_name, a, b, basis
+
+
+@rule(consequence=Consequence.SETTLE_PAGE_ARC_BY_SOUNDING,
+      cause=Q.PAGE_ARC_BINDING, effect=Q.ARC_KIND, scope=Kind.PAGE,
+      bound="Only a page-ink run the page pass bound at BOTH ends to two heads at one staff position whose kind it left `same_pitch_awaits_sounding`, and only where both heads' sounding "
+            "pitch is read: the run becomes a WRITTEN tie (same sounding pitch) or slur (a different one). Changes no other run, adds no run, no note; where a pitch is unread the run stays "
+            "abstained (EXPORT then marks it `arc: tie or slur unread`).")
+def settle_page_arc_by_sounding(log: Log, subject: Subject, binding: Verdict) -> List[Verdict]:
+    """The page pass's runs, settled by what their two notes sound (ROADMAP 2.344 r2) -- the same rule as `settle_arc_by_sounding`, at the unit EXPORT writes: with the page pass ON a tie
+    or slur is written from its RUN (one arc, one ink), never from the detector boxes that witness it. The boxes' own verdicts are settled beside it so the two never disagree."""
+    if binding.outcome is not Outcome.DECIDED:
+        return []
+    detail = dict(binding.detail or {})
+    runs = list(detail.get("runs") or ())
+    new_runs, basis, n_set = [], [], 0
+    for r in runs:
+        ke = r.get("kind_evidence") or {}
+        if r.get("status") != "abstained" or r.get("why") != "same_pitch_awaits_sounding" or not ke.get("start") or not ke.get("stop") or ke["start"] == ke["stop"]:
+            new_runs.append(r)
+            continue
+        settled = _settle_pair_by_sounding(log, str(ke["start"]), str(ke["stop"]))
+        if settled is None:
+            new_runs.append(r)
+            continue
+        kind, rule_name, a, b, bs = settled
+        basis.extend(bs)
+        n_set += 1
+        new_runs.append(dict(r, status="written", kind=kind, start=ke["start"], stop=ke["stop"], relation="same", crosses_barline=ke.get("crosses_barline"),
+                             rule="page_binding_" + rule_name, closest=[], settled_by="settle_page_arc_by_sounding", sounds=[list(a), list(b)]))
+    if not n_set:
+        return []
+    value = dict(binding.value or {})
+    value["written"] = int(value.get("written") or 0) + n_set
+    value["abstained"] = max(0, int(value.get("abstained") or 0) - n_set)
+    detail["runs"] = new_runs
+    basis_t = tuple(dict.fromkeys(basis))
+    return [log.record(Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.PAGE_ARC_BINDING, outcome=Outcome.DECIDED, value=value, decider="settle_page_arc_by_sounding", reason="bound",
+        considered=basis_t, basis=basis_t, detail=detail, supersedes=binding.id))]
+
+
 @rule(consequence=Consequence.SETTLE_ARC_BY_SOUNDING,
       cause=Q.ARC_KIND, effect=Q.TIE_PAIR, scope=Kind.GLYPH, fires_unsettled=True,
       bound="Only an arc whose kind ADJUDICATE left `same_pitch_awaits_sounding` (two heads at one staff position, the stop printing an accidental the start does not) and only "
@@ -2671,14 +2723,10 @@ def settle_arc_by_sounding(log: Log, subject: Subject, kind: Verdict) -> List[Ve
     s_key, e_key = ends.get("start"), ends.get("stop")
     if not s_key or not e_key or s_key == e_key:
         return []
-    head_a, head_b = Subject.from_key(s_key), Subject.from_key(e_key)
-    a, b = _sounding_of(log, head_a), _sounding_of(log, head_b)
-    if a is None or b is None or a[:2] != b[:2]:
+    settled = _settle_pair_by_sounding(log, s_key, e_key)
+    if settled is None:
         return []
-    new_kind = "tie" if a == b else "slur"
-    rule_name = "same_sounding_pitch" if new_kind == "tie" else "sounding_pitch_changed_by_accidental"
-    pitch_a, pitch_b = log.verdict(Q.PITCH, head_a), log.verdict(Q.PITCH, head_b)
-    basis = tuple(v.id for v in (pitch_a, pitch_b, log.verdict(Q.ACCIDENTAL, head_a), log.verdict(Q.ACCIDENTAL, head_b)) if v is not None)
+    new_kind, rule_name, a, b, basis = settled
     detail = dict(kind.detail or {})
     grammar = dict(detail.get("grammar") or {})
     grammar["sounding"] = {"start": s_key, "stop": e_key, "start_sounds": list(a), "stop_sounds": list(b), "rule": rule_name}
@@ -2695,9 +2743,12 @@ def settle_arc_by_sounding(log: Log, subject: Subject, kind: Verdict) -> List[Ve
         supersedes=kind.id))]
     if new_kind == "tie":
         prior = log.verdict(Q.TIE_PAIR, subject)
+        # a pair the curve's own two bound heads name is `paired_by_page_binding` -- the one reason EXPORT keeps with the page pass on (`_retire_old_tie_pairs`: a tie is written only from
+        # ink traced to its two notes); a pair read off the two-note search is the old pairing's and is treated as it is
+        by_binding = pb.get("start") == s_key and pb.get("stop") == e_key
         pair = Verdict(
             id=log._next_id("vrd"), subject=subject, quantity=Q.TIE_PAIR, outcome=Outcome.DECIDED,
-            value={"start": s_key, "stop": e_key}, decider="settle_arc_by_sounding", reason="paired_by_sounding",
+            value={"start": s_key, "stop": e_key}, decider="settle_arc_by_sounding", reason="paired_by_page_binding" if by_binding else "paired",
             considered=basis + (out[0].id,), basis=basis + (out[0].id,),
             detail={"curve": pb.get("curve"), "crosses_barline": pb.get("crosses_barline"), "home_staff": pb.get("home"), "sounds": list(a)},
             supersedes=prior.id if prior is not None else None)

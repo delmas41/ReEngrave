@@ -285,7 +285,7 @@ A curve over notes: the nearer of stacked arcs is the tie.
 - **decided by** (ADJUDICATE): `adjudicate_arc_is_not_an_arc` -> `arc_is_not_an_arc`; `adjudicate_arc_kind` -> `arc_kind`; `adjudicate_arc_owner` -> `arc_owner`; `adjudicate_page_arc_binding` -> `page_arc_binding`; `adjudicate_tie_pair` -> `tie_pair`
 - **read by GATHER** (4): `gather.py:gather_far_head_ledger_positions`, `gather.py:gather_page_claims`, `page_arcs.py:rows_of`, `page_owner.py:_file_page_owners`
 - **read by ADJUDICATE** (10): `adjudicators/family_precision.py:_arc_ink_refusal`, `adjudicators/family_precision.py:_traced_tie`, `adjudicators/notehead_precision.py:_arc_tail_refusal`, `adjudicators/ownership.py:_closest_sides`, `adjudicators/ownership.py:_flank_search`, `adjudicators/ownership.py:_joins_not_at_a_barline`, `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:_stack_reading` +2 more
-- **read by EVALUATE** (2): `consequences.py:settle_arc_by_sounding`, `rule settle_arc_by_sounding`
+- **read by EVALUATE** (3): `consequences.py:settle_arc_by_sounding`, `rule settle_arc_by_sounding`, `rule settle_page_arc_by_sounding`
 - **read by EXPORT** (5): `export.py:_kind_unread_same_pitch_runs`, `export.py:_page_arc_plan`, `export.py:_page_bound_slurs`, `export.py:_place_arcs`, `export.py:_record_tie_pairs`
 - **written** (declared): `<slur>` / `<tied>` on the two written heads.
 - **flags on its readers' paths** (as the code resolves them today): `box_kind.enabled()=ON`
@@ -596,7 +596,7 @@ Which edition and movement this is; scanned or engraved.
 ### `accidental` (Q.ACCIDENTAL) -- LIVE
 
 - `accidental` revised by: EVALUATE `respell_accidental`, EVALUATE `apply_printed_accidental`
-- `accidental` read by EVALUATE: `consequences.py:_sounding_of`, `consequences.py:_supersede`, `consequences.py:respell_accidental`, `consequences.py:settle_arc_by_sounding`
+- `accidental` read by EVALUATE: `consequences.py:_settle_pair_by_sounding`, `consequences.py:_sounding_of`, `consequences.py:_supersede`, `consequences.py:respell_accidental`
 - `accidental` read by EXPORT: `export.py:_accidental_census`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:one_ink_guess_of`
 
 ### `accidental_is_not_an_accidental` (Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL) -- LIVE
@@ -652,6 +652,7 @@ Which edition and movement this is; scanned or engraved.
 ### `arc_kind` (Q.ARC_KIND) -- LIVE
 
 - `arc_kind` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_arc_kind`
+- `arc_kind` revised by: EVALUATE `settle_page_arc_by_sounding`
 - `arc_kind` declared in `wants` (not a read): `adjudicate_tie_pair`
 - `arc_kind` read by ADJUDICATE: `adjudicators/ownership.py:adjudicate_tie_pair`
 - `arc_kind` read by EVALUATE: `rule settle_arc_by_sounding`
@@ -1556,6 +1557,7 @@ Which edition and movement this is; scanned or engraved.
 ### `page_arc_binding` (Q.PAGE_ARC_BINDING) -- LIVE
 
 - `page_arc_binding` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_page_arc_binding`
+- `page_arc_binding` read by EVALUATE: `rule settle_page_arc_by_sounding`
 - `page_arc_binding` read by EXPORT: `export.py:_page_arc_plan`
 - `page_arc_binding` belongs to: `--mark arc`
 
@@ -1641,7 +1643,7 @@ Which edition and movement this is; scanned or engraved.
 ### `pitch` (Q.PITCH) -- LIVE
 
 - `pitch` revised by: EVALUATE `restate_pitch`, EVALUATE `move_glyph`
-- `pitch` read by EVALUATE: `consequences.py:_sounding_of`, `consequences.py:apply_printed_accidental`, `consequences.py:move_glyph`, `consequences.py:respell_accidental`, `consequences.py:restate_pitch`, `consequences.py:settle_arc_by_sounding`
+- `pitch` read by EVALUATE: `consequences.py:_settle_pair_by_sounding`, `consequences.py:_sounding_of`, `consequences.py:apply_printed_accidental`, `consequences.py:move_glyph`, `consequences.py:respell_accidental`, `consequences.py:restate_pitch`
 - `pitch` read by EXPORT: `export.py:_clef_changes_by_bar`, `export.py:_inferred_clefs`, `export.py:_place_notes`, `export.py:_plan_relocation`, `export.py:_unwritten_end_read`, `export.py:far_unread_guess_of`, `export.py:guess_of`
 
 ### `printed_bar_number` (Q.PRINTED_BAR_NUMBER) -- LIVE

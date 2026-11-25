@@ -107,10 +107,47 @@ def test_a_printed_accidental_that_restates_what_the_start_sounds_is_a_courtesy_
     on = _run(monkeypatch, P3, on=True, edit=edit)
     assert _kinds(on, P3_PIECES) == ["tie", "tie"]
     for p in P3_PIECES:
-        assert on[("tie_pair", p)]["value"] == {"start": P3_START, "stop": P3_STOP} and on[("tie_pair", p)]["reason"] == "paired_by_sounding"
+        assert on[("tie_pair", p)]["value"] == {"start": P3_START, "stop": P3_STOP} and on[("tie_pair", p)]["reason"] == "paired_by_page_binding"
         assert on[("arc_kind", p)]["detail"]["grammar"]["sounding"]["start_sounds"] == ["E", 4, "b"]
     off = _run(monkeypatch, P3, on=False, edit=edit)
     assert _kinds(off, P3_PIECES) == ["slur", "slur"]            # the old reading: the class decided, whatever the glyph said
+
+
+def _log_with_a_run(monkeypatch, edit=None):
+    """The real p3 s6 rows through every stage, then ONE page-pass verdict (`Q.PAGE_ARC_BINDING`) recorded by hand whose run names the real two heads and was left awaiting their sounding --
+    exactly what `adjudicate_page_arc_binding` files for that arc (the page's own ink rows are not in the fixture)."""
+    from tools.omr.staged.record import Outcome, Subject, Verdict
+    monkeypatch.setenv(AC.ENV_TIE_SAME_SOUNDING, "1")
+    rows = copy.deepcopy(P3["observations"])
+    if edit:
+        edit(rows)
+    log, _ = RR.rebuild_gather({"observations": rows, "abstentions": copy.deepcopy(P3["abstentions"]), "verdicts": []})
+    RR.run_stages(log)
+    run = {"row": "obs:run", "status": "abstained", "why": "same_pitch_awaits_sounding", "witnesses": list(P3_PIECES),
+           "kind_evidence": {"start": P3_START, "stop": P3_STOP, "crosses_barline": True}}
+    page = Subject.from_key("page/3")
+    v = log.record(Verdict(id=log._next_id("vrd"), subject=page, quantity=Q.PAGE_ARC_BINDING, outcome=Outcome.DECIDED,
+                           value={"runs": 1, "written": 0, "abstained": 1, "not_witnessed": 0}, decider="t", reason="none_bound", detail={"runs": [run]}))
+    return log, page, v
+
+
+def test_the_page_pass_run_is_settled_by_what_its_notes_sound(monkeypatch):
+    # with the page pass ON a tie or slur is written from its RUN: the real E-flat to E-natural run becomes a WRITTEN slur, never a tie
+    log, page, v = _log_with_a_run(monkeypatch)
+    (new,) = CQ.settle_page_arc_by_sounding(log, page, v)
+    (r,) = new.detail["runs"]
+    assert (r["status"], r["kind"], r["start"], r["stop"]) == ("written", "slur", P3_START, P3_STOP) and r["sounds"] == [["E", 4, "b"], ["E", 4, ""]]
+    assert new.value["written"] == 1 and new.value["abstained"] == 0 and log.verdict(Q.PAGE_ARC_BINDING, page).id == new.id
+    # the courtesy case (one fact changed on the real rows) is a written TIE
+    log, page, v = _log_with_a_run(monkeypatch, edit=_set_alteration(P3_ACC_STOP, "b"))
+    (new,) = CQ.settle_page_arc_by_sounding(log, page, v)
+    assert new.detail["runs"][0]["kind"] == "tie" and new.detail["runs"][0]["status"] == "written"
+
+
+def test_a_page_pass_run_whose_key_is_unread_stays_unsettled(monkeypatch):
+    log, page, v = _log_with_a_run(monkeypatch, edit=_drop_key)
+    assert CQ.settle_page_arc_by_sounding(log, page, v) == []
+    assert log.verdict(Q.PAGE_ARC_BINDING, page).id == v.id
 
 
 def test_a_key_nobody_read_decides_nothing(monkeypatch):

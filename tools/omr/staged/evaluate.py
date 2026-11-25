@@ -102,6 +102,8 @@ class Consequence(str, Enum):
     #: accidental the start does not, and said the kind waits for what each note SOUNDS (`arc_kind` reason `same_pitch_awaits_sounding`). Each head's pitch and
     #: alteration are filed here (`restate_pitch`, `respell_accidental`, `apply_printed_accidental`): the same sounding pitch is a tie, a different one a slur.
     SETTLE_ARC_BY_SOUNDING = "settle_arc_by_sounding"
+    #: ROADMAP 2.344 r2: the same, at the unit EXPORT writes with the page pass ON -- a page-ink RUN the page pass bound at both ends and left `same_pitch_awaits_sounding`.
+    SETTLE_PAGE_ARC_BY_SOUNDING = "settle_page_arc_by_sounding"
 
 
 @dataclass(frozen=True)
@@ -179,6 +181,7 @@ DOWNHILL: Tuple[str, ...] = (
     Q.ACCIDENTAL,
     # ⚠️ ROADMAP 2.344 r2, AFTER `Q.ACCIDENTAL` ON PURPOSE: `settle_arc_by_sounding`'s cause is an arc's kind (waiting for what its two notes sound) and what it reads is each
     # head's PITCH and ALTERATION, which the rules above file -- it must run after all of them. It writes the arc's kind and the tie's pair.
+    Q.PAGE_ARC_BINDING,
     Q.ARC_KIND,
     Q.TIE_PAIR,
     # ⚠️ ROADMAP 2.78, ABOVE `Q.METER` ON PURPOSE. `share_stem_value`'s cause
