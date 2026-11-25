@@ -125,10 +125,10 @@ STACK_END_MAX_SP = 0.35
 #: Two grounds beside it, for a filled-in sharp only; measured on the reader's own values, both sides, real marks (tuned on Litolff/Brahms: they only NARROW, they
 #: leave ink unclaimed and never re-read it):
 #:   * "just before": the note's ink starts at most this far right of the block's ink (spaces). ROADMAP 2.352 r3, by INK not box (Sean 2026-11-18): from the block's right ink
-#:     edge to the left ink edge of the head's ink inside its box (`head_ink_left`). Measured on the nine replay pages plus Litolff p2/p3/p4/p6 (58 stack claims): the judged-true stacks
-#:     0.0-1.1 (Litolff p12 [1249,744,1265,797] 0.57, where the box edge said -0.2), the unjudged stacks -0.1-2.2; Sean's quarter rest (Litolff p10 [1564,2933,1580,2986], 2026-11-25) 3.55.
-#:     Room: 0.3 above the nearest unjudged claim, 1.05 below the rest, 1.4 above the judged-true. Ink and box disagree by more than 0.2 sp on 25 of the 58 (the head box is cut
-#:     looser than its ink); no claim changed hands against round 2's box measure.
+#:     edge to the left edge of the ink inside the head's box (`head_ink_left`: a stem, a head, never a tie or a staff-line scrap). Measured on the nine replay pages plus Litolff
+#:     p2/p3/p4/p6 (58 stack claims): the judged-true stacks 0.0-0.7 (Litolff p12 [1249,744,1265,797] 0.06: its ink touches its note's stem, where the box edge said -0.2), the unjudged
+#:     stacks -0.1-2.1; Sean's quarter rest (Litolff p10 [1564,2933,1580,2986], 2026-11-25) 3.55. Room: 0.4 above the nearest unjudged claim, 1.05 below the rest, 1.8 above the
+#:     judged-true. Ink and box disagree by more than 0.2 sp on 2 of the 58; no claim changed hands against round 2's box measure.
 STACK_HEAD_GAP_MAX_SP = 2.5
 #: ROADMAP 2.352 r3 -- "A SHARP IS NOT TWO HOLLOW HEADS A THIRD APART ON ONE STEM" (Sean 2026-11-25, Litolff p13 [1909,2433,1929,2478]: "two half note heads, a third apart"; main's stroke reader
 #: read their two right-hand sides and the bar across their top as a sharp's two uprights and a bar, margin 0.07). Cause: the stroke map cuts a hollow head into pieces (its sides, its
