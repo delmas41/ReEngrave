@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-24 -- 2.345 LANDED: the LilyPond PDF draws the red spot marks (STAGED `lilypond.py` `_lily_event_marked`; no flag)
+
+The 2.333 `unread note` spot and the seven 2.343 arc marks, until now written only as MusicXML `<words color=red>`, are drawn red above the event in the LilyPond PDF from the same data the MusicXML uses (`unread_arc_words`, `export._dropped_head_place`); counted in the LilyPond report. Proof: 14 tests from real 2.343 + 2.333 fixtures (`test_lilypond_unread_note_marks_2_345.py`) and one engraved fragment of three real bars via `_render_bar` (`out/print/2.345/fragment.png`, sent to Sean) -- not a full `to_lilypond` run on a record. Limits: marks stack tall where notes are close, no layout work; 2.333 `bar` mode (the red bracket) is still not drawn in LilyPond; a rest copied into both voices may draw its spot twice, unchecked. Lesson: a mark added to the MusicXML writer is not finished until its LilyPond twin draws it.
+
 ## 2026-11-24 -- 2.344 LANDED: an arc between the same notes is a tie, printed accidental or not (STAGED ADJUDICATE `arc_kind` / `_page_binding`; flag `OMR_ARC_TIE_SAME_NOTES`, default ON)
 Rule: an arc between the same notes is a tie; a printed accidental on the tied-to note that repeats the start's is a courtesy, never a reason to call the arc a slur (Sean, 2026-11-24, in DECISIONS and page-facts). Measured on the Litolff p6-p7 replay: ties 36 -> 37, slurs 8 -> 8, judged totals unchanged; one other slur->tie flip at p6 system 1 staff 4 (glyph/6/1/4/4/8 + glyph/6/1/4/5/3) is NOT yet checked against the print. Limits: decides only when both notes carry a printed accidental; the never-case control is the real bar with one fact changed, and no real slur with a pitch-changing stop accidental was found; not measured on Brahms. Flag rows added to docs/flags-2026-09.md.
 
