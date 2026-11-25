@@ -22,7 +22,8 @@ ABSTAIN, NEVER GUESS. No free stroke: `no_stroke` (the nearest held / near-miss 
 with both and the signed margin (`fit` = EDGE_SP - |dx| in spaces; margin = best - second). One up at the right and one down at the left: where BOTH
 strokes' ink touches the head's ink it is two voices sharing the note (page-facts) and BOTH are filed, one `Q.PAGE_STEM` row per voice (`voice` up /
 down, how `unison_two_stems`; `_unison_heads`); anything less (one or neither touching, a stroke ending at another head, no head ink of its own)
-leaves `two_voices` abstained, `why` recorded, and the old join's unison rule decides as before. Each head's reading is filed on each of its glyph keys (`Q.PAGE_STEM`).
+leaves `two_voices` abstained, `why` recorded, and the old join's unison rule decides as before -- except (r23) where the head touches one
+stroke and the other is another head's stem: the touched one is its stem. Each head's reading is filed on each of its glyph keys (`Q.PAGE_STEM`).
 
 THE CUT-OFFS ARE MEASUREMENTS, so they only NARROW (CLAUDE §4): measured on the 2306 step-0 gathers (Brahms p0+p5, Litolff p6+p16) against the
 cell reader A's joined stems: the stem centre stands -0.22..+0.05 sp past a head's right edge (5-95%, Brahms), +0.03..+0.20 past its left; the page
@@ -374,6 +375,41 @@ def _outline_leaves_one_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[int,
     return s is None or s["directions"] == {d}
 
 
+#: ROADMAP 2.306 r23: the reading word of a head that touches one of its two strokes while the other is another head's stem
+OTHER_STEM_HOW = "other_stroke_is_anothers_stem"
+
+
+def _untouched_is_anothers_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[int, Dict[str, Any]], heads: Sequence[Dict[str, Any]]) -> bool:
+    """ROADMAP 2.306 r23 (the retire step's biggest cause, `one_touches`: 20 Litolff + 15 Brahms written heads the old join still answered). A
+    stroke up and a stroke down stand at a head and the head's ink touches only one. The untouched stroke `o` (a `d` stem from this head) is
+    ANOTHER head's stem -- never this one's -- where the page already stands another head on it and
+      * reads it the OTHER way: a stem points one way (our look, 22 heads: the next note's stem standing at this head's other edge -- a
+        neighbour's up stem at its left, a down stem at its right), or
+      * the same way, with every head on it BEYOND this head in that direction (above it for an up stem, below for a down one): the stem
+        leaves that head and stops there, short of this one -- two voices in one column (Sean 2026-11-14, r9: the upper head takes the up
+        stem, the lower the down stem; our look, 11 heads: divisi seconds and thirds).
+    Never where no other head stands on the stroke (it may be this head's own second voice whose contact the map missed: Litolff 6/1/3/1/1,
+    10/1/10/11/1, Brahms 8/0/3/1/10 stay unresolved), never where a head on it stands level with or on this head's own side (the stroke
+    would pass this head on its way to that one: a chord's stem). Pure."""
+    s = stems.get(int(o))
+    if not s:
+        return False
+    others = [k for k in s["heads"] if k != h["id"]]
+    if not others:
+        return False
+    if s["directions"] != {d}:
+        return True
+    hb = {k["id"]: k for k in heads}
+    cy = (float(h["box"][1]) + float(h["box"][3])) / 2.0
+    for k in others:
+        if k not in hb:
+            return False
+        ky = (float(hb[k]["box"][1]) + float(hb[k]["box"][3])) / 2.0
+        if not ((ky < cy) if d == "up" else (ky > cy)):
+            return False
+    return True
+
+
 def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
                   hink: Optional[Dict[Any, set]], touches_ink: Any, vbox: Optional[Dict[int, Any]] = None) -> int:
     """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
@@ -385,6 +421,8 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
     * each stroke leaves the head, not one stem passing through it beside the other (`_passes_beside_the_other`).
     * each stroke a stem's length (`UNISON_REACH_SP`), and no other head already standing on either stroke (that is a column of two voices or a
       chord, r9).
+    * r23: the head touches ONE stroke and the other is another head's stem (`_untouched_is_anothers_stem`) -> the touched stroke, a stem's
+      length and read no other way, is its one stem (how `other_stroke_is_anothers_stem`).
     * anything less -- one stroke or neither touching, an outline, a stroke another head holds, no head ink of its own on the map ->
       NOT two voices from the page, and nothing else is decided here either: the reading stays `two_voices` (the old cell join's unison rule still
       answers, as before this piece) with `why` saying which. Never two voices from one stem, never from a stroke that does not touch the head.
@@ -428,9 +466,23 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             s["heads"].append(h["id"])
             r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how="other_stroke_is_an_outline")
             continue
+        if len(keep) == 1 and not outline:
+            d = keep[0]
+            other = "down" if d == "up" else "up"
+            if (float(by_dir[d].get("reach") or 0.0) >= UNISON_REACH_SP
+                    and _outline_leaves_one_stem(h, int(by_dir[d]["stroke"]), d, stems)
+                    and _untouched_is_anothers_stem(h, int(by_dir[other]["stroke"]), other, stems, heads)):
+                # ROADMAP 2.306 r23: the head touches one stroke; the other is ANOTHER head's stem (`_untouched_is_anothers_stem`), so the
+                # one it touches is its stem
+                c = by_dir[d]
+                o = int(c["stroke"])
+                s = stems.setdefault(o, dict(ord=o, heads=[], directions={d}))
+                s["heads"].append(h["id"])
+                r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how=OTHER_STEM_HOW)
+                continue
         if len(keep) < 2:
-            # not two voices on the ink; which stroke is the head's one stem is NOT decided here (our look at 20 such heads: about half are a
-            # fused third on one stem, the rest real second voices whose stem's contact the map missed) -- the old path stays, counted
+            # not two voices on the ink; which stroke is the head's one stem is NOT decided here (r23: where the untouched stroke belongs to no
+            # other head it may be this head's own second voice whose contact the map missed) -- the old path stays, counted
             r["why"] = ("ends_at_another_head" if outline else "one_touches" if keep else "neither_touches")
             continue
         clash = [d for d in keep if int(by_dir[d]["stroke"]) in stems and stems[int(by_dir[d]["stroke"])]["directions"] != {d}]
@@ -862,6 +914,9 @@ def stem_runs_out_of_the_accidental(stroke: Any, acc_box: Sequence[float], sp: f
     return y < float(acc_box[1]) - tol or y + h > float(acc_box[3]) + tol
 
 
+#: ROADMAP 2.306 r23: the word filed on a copy of a head whose note belongs to another staff (its stem is filed there only, r7)
+COPY_HOW = "copy_on_another_staff"
+
 #: ROADMAP 2.306 r21: the reading word of a box on a barline with no head ink of its own (it takes no stem)
 BARLINE_HOW = "barline_not_a_head"
 
@@ -1045,8 +1100,11 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
             g = Subject.from_key(key)
             if own is not None and _staff_key(key) != own:
                 # ROADMAP 2.306 r7 (Sean 2026-11-13, "Yes"): a stem is filed only with the staff its note belongs to -- never as a copy in the
-                # cell of a staff whose padded crop only shows the head. Nothing is filed on the copy; the copy is the other staff's view.
+                # cell of a staff whose padded crop only shows the head. No stem is filed on the copy; the copy is the other staff's view.
+                # r23 (the retire step): the copy says so, so the old cell join no longer answers for it (`stem_value._page_stem_abstained`).
                 n_copy += 1
+                log.abstain(R.glyph(g.page, g.system, g.staff, g.cell, g.glyph), Q.PAGE_STEM, reason=ABSTAIN.ON_ANOTHER_STAFF, note=COPY_HOW, own_staff=own,
+                            reader=READERS.CV_PAGE_STEMS, frame=G.frame_cell(g.cell), head=hid, how=COPY_HOW)
                 continue
             c = cell_by_key.get((g.page, g.system, g.staff, g.cell))
             csub = R.cell(g.page, g.system, g.staff, g.cell)

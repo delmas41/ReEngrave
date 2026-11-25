@@ -3235,6 +3235,9 @@ class ABSTAIN(_Vocab):
     READERS_SPLIT = "readers_split"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
+    #: ROADMAP 2.306 r23 (`Q.PAGE_STEM`): this box is a copy of a head whose note belongs to ANOTHER staff (the other staff's padded crop shows it);
+    #: its stem is that staff's question, filed there only (Sean 2026-11-13, r7) -- here nothing is joined.
+    ON_ANOTHER_STAFF = "on_another_staff"
 
     # readers with nothing to read
     #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.

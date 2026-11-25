@@ -420,7 +420,8 @@ def page_voice_stems(detail: Any, stems: Sequence[Any]) -> Optional[Dict[str, Li
 def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:
     """ROADMAP 2.306 RETIRE: with `OMR_PAGE_STEMS` on, where the page read this head and could not name one stem, the cell join no longer answers in
     its place -- the head's stem is the page's question, asked once. `no_stroke` -> abstain `page_no_stem`; two candidates / a stroke read both ways
-    -> abstain `page_stem_ambiguous` with the candidates and margin. A unison of two voices (`two_voices`, page-facts: a head with a stem each way is two
+    -> abstain `page_stem_ambiguous` with the candidates and margin; a copy of a head whose note belongs to another staff (r23) -> abstain
+    `page_stem_on_another_staff` (its stem is that staff's question, filed there only: r7). A unison of two voices (`two_voices`, page-facts: a head with a stem each way is two
     notes) is left to the unison rule below. None: flag off, no page reading (no page map / no page head), or a page join."""
     from .. import page_stems as _PS
     if not _PS.enabled():
@@ -432,6 +433,9 @@ def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:
     how = str(d.get("how") or "")
     if how == "two_voices" or d.get("note") == "no_cell":
         return None
+    if how == _PS.COPY_HOW:
+        # ROADMAP 2.306 r23: a copy of a head whose note belongs to another staff -- its stem is that staff's (filed there only, r7)
+        return Ruling.abstain("page_stem_on_another_staff", used=(box_id,), page_how=how, own_staff=d.get("own_staff"))
     detail = {"page_how": how, "candidates": d.get("candidates"), "held": d.get("held"), "margin": d.get("margin")}
     if how == "no_stroke" or how == "stroke_held_by_inked_heads":
         return Ruling.abstain("page_no_stem", used=(box_id,), **detail)
@@ -450,7 +454,7 @@ def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
              "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
              "two_stems", "no_stem", "no_evidence", "page_stem", "page_stem_of_a_second",
-             "page_no_stem", "page_stem_ambiguous"),
+             "page_no_stem", "page_stem_ambiguous", "page_stem_on_another_staff"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
                    Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
