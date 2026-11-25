@@ -1447,6 +1447,16 @@ def refused_head_no_duration_enabled() -> bool:
     return os.environ.get(REFUSED_HEAD_NO_DURATION_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+BAR_SUM_SKIPS_REFUSED_ENV = "OMR_BAR_SUM_SKIPS_REFUSED"
+
+
+def bar_sum_skips_refused_enabled() -> bool:
+    """ROADMAP 2.346, default ON (Sean 2026-11-24 "Start it"; unset = ON, an explicit `0/false/no/off` disables): the meter witnesses'
+    bar sum (`_bar_lengths_for`) leaves out a glyph with a DECIDED not-a-note refusal."""
+    import os
+    return os.environ.get(BAR_SUM_SKIPS_REFUSED_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
 def _not_a_note_mark(ev: Evidence, refusal) -> Optional[str]:
     """Why a head `adjudicate_notehead_is_not_a_notehead` refused is NOT A NOTE
     AT ALL (and so has no duration), else None.
@@ -5562,6 +5572,8 @@ def _bar_lengths_for(ev: Evidence) -> dict:
                    ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
                    if r.value == "restWhole"}
     bars: dict = {}
+    # ROADMAP 2.346: the refusals `_glyph_left_the_bar` reads, named here so the inventory's read check sees them from this witness.
+    _refusals = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST)  # noqa: F841
     for grouping in ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS):
         if grouping.outcome is not Outcome.DECIDED:
             continue
@@ -5586,8 +5598,15 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         # ⚠️ ROADMAP 2.162 / 2.165: THE ONE BAR-LENGTH HELPER (`staged.bar_length`). Flag off it is the old sum (a narrowing
         # at its first candidate); under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` a staff bar holding a NARROWED note is a RANGE,
         # recorded as a (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter inside it and never refute one.
+        # ⚠️ ROADMAP 2.346 (flag `OMR_BAR_SUM_SKIPS_REFUSED`, default ON): a box already refused as NOT A NOTE takes no time in its bar.
+        # `Q.EVENT` still groups such a box (it reads `Q.NOTEHEAD_CLASS`, never the refusals) and its stale duration stands on the record
+        # (2.143 is parked OFF), so clef/key ink at a system start (`claimed_by:leading_column`) was summed here as a note: EVALUATE and
+        # INFER already leave it out (`consequences._left_the_bar`), this witness did not. Only a DECIDED refusal removes a glyph; an
+        # abstained or narrowed verdict leaves it in, so the bar stays a range / unknown exactly as before.
+        skip = bar_sum_skips_refused_enabled()
         got = _BL.length_of_events(
-            ([ev.verdict(Q.DURATION, subject=_sub(gi)) for gi in (event.get("glyphs") or [])] for event in events),
+            ([ev.verdict(Q.DURATION, subject=_sub(gi)) for gi in (event.get("glyphs") or [])
+              if not (skip and _glyph_left_the_bar(ev, cell, gi, reinstated_stays=True))] for event in events),
             missing="skip")
         if got.unknown or got.hi <= 0:
             continue
@@ -7552,14 +7571,17 @@ def _bar_corroboration_margin(ev: Evidence, candidate: dict) -> Optional[float]:
                    # the survivors against THIS decision's own verdict, one
                    # subject at a time -- never a raster of its own.
                    Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
-                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                   # ROADMAP 2.346: the bar sum leaves out a glyph with a DECIDED refusal (`_glyph_left_the_bar`).
+                   Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
            Q.METER_OCR, Q.METER_OCR_AT_BAR,
            Q.DURATION, Q.DOSSIER_FACT,
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
            Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS,
-           Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+           Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              # ⚠️ ROADMAP 2.22b: the carry held where the bars were silent.
@@ -8972,11 +8994,20 @@ def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
 #: above the middle belongs to the upper voice, one below to the lower (`REST_VOICE_DISPLACEMENT_MIN_STEPS`).
 #: CAUSE of the red bars: the stream split below needs an up-stem AND a down-stem note, so a bar whose notes all stand one
 #: way is `one_voice` and the displaced rest is ADDED into it ("should hold 2, counted 6": 1 + 1 + a 4-quarter rest).
-def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int) -> bool:
+def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int, reinstated_stays: bool = False) -> bool:
     """A DECIDED refusal that EXPORT honours takes this box out of its bar: not a rest or not a notehead (two of the tests `consequences._left_the_bar` applies; the glyph-owner test is NOT read here: a displaced rest never reads the neighbour staff). The record's `Q.EVENT` still
     groups such a box (it reads `Q.REST` / `Q.NOTEHEAD_CLASS`, never the refusals), so a sum over events must ask."""
     sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system, staff=cell.staff, cell=cell.cell, glyph=g)
+    if reinstated_stays:
+        # ROADMAP 2.346: a refused-narrow box ADJUDICATE read as an eighth rest on its own ink (2.80b) is IN its bar, as a rest
+        # (`consequences._reinstated_rest`); the refusal that made it "not a head" does not take it out.
+        er = ev.verdict(Q.NOTEHEAD_IS_AN_EIGHTH_REST, subject=sub)
+        reinstated = er is not None and er.outcome is Outcome.DECIDED and er.value is True
+    else:
+        reinstated = False
     for q in (Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD):
+        if reinstated and q == Q.NOTEHEAD_IS_NOT_A_NOTEHEAD:
+            continue
         v = ev.verdict(q, subject=sub)
         if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
             return True

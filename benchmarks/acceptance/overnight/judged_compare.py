@@ -48,16 +48,18 @@ def main() -> int:
         sa["totals"].get("right", 0), sa["totals"].get("wrong", 0), sa["totals"].get("narrowed", 0),
         sb["totals"].get("right", 0), sb["totals"].get("wrong", 0), sb["totals"].get("narrowed", 0)))
     print("  moves: right->wrong %d (must be 0) | right->gone %d | wrong->right %d | "
-          "unwritten->wrong %d | unwritten->right %d | tiles scored on both %d" % (
+          "unwritten->wrong %d | unwritten->right %d | still wrong (narrowed without his answer on both nights) %d | "
+          "tiles scored on both %d" % (
               len(mv["worse"]), len(mv["lost"]), len(mv["better"]), len(mv["unwritten_wrong"]),
-              len(mv["unwritten_right"]), mv["scored"]))
+              len(mv["unwritten_right"]), len(mv.get("still_wrong", [])), mv["scored"]))
     print("  status transitions that are not 'same' (BASE -> TAG: n):")
     for (x, y), n in sorted(trans.items(), key=lambda kv: -kv[1]):
         if x != y:
             print("    %-10s -> %-10s %d" % (x, y, n))
     for key, title in (("worse", "RIGHT -> WRONG"), ("lost", "RIGHT -> GONE"), ("better", "WRONG -> RIGHT"),
-                       ("unwritten_wrong", "UNWRITTEN -> WRONG")):
-        rows = mv[key]
+                       ("unwritten_wrong", "UNWRITTEN -> WRONG"),
+                       ("still_wrong", "STILL WRONG (same on both nights)")):
+        rows = mv.get(key, [])
         print("  %s (%d)%s" % (title, len(rows), ":" if rows else ""))
         for r in rows[:40]:
             print("    %-26s tile %-4s %s %s" % (r["item"], r["tile"], r["subject"],

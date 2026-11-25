@@ -43,6 +43,8 @@ class TestTheExecutionOrderIsDeclared(unittest.TestCase):
         self.assertEqual(order, [
             "name_part", "join_parts", "restate_pitch", "respell_accidental",
             "move_glyph", "apply_printed_accidental",
+            # ROADMAP 2.344 r2: an arc waiting for what its two notes sound is settled once every note's pitch and alteration are filed
+            "settle_page_arc_by_sounding", "settle_arc_by_sounding",
             # ROADMAP 2.78: a stem's value reaches its heads' durations BEFORE
             # any meter rule reads them (the bar sums read heads that agree)
             "share_stem_value",

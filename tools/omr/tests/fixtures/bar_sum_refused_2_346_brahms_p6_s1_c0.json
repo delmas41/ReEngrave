@@ -1,0 +1,221 @@
+{
+ "what": "ROADMAP 2.346 control: the REAL verdict rows of Brahms (breitkopf mvt1) system/6/1 cell 0 staff 6 (bar 107), record 20261123-night, as ADJUDICATE filed them before the meter. Printed bar: 3.0 quarter-beats (6/8). Glyphs 20 and 21 are clef/key ink refused claimed_by:leading_column; glyph 14 is a sharp boxed as a head (NOT refused: out of scope).",
+ "rows": [
+  {
+   "subject": "glyph/6/1/6/0/3",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": false,
+   "reason": "notehead",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/5",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": false,
+   "reason": "notehead",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/9",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": false,
+   "reason": "notehead",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/14",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": false,
+   "reason": "notehead",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/20",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "claimed_by:leading_column",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/21",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "claimed_by:leading_column",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/1",
+   "quantity": "rest_is_not_a_rest",
+   "outcome": "decided",
+   "value": false,
+   "reason": "rest",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/12",
+   "quantity": "rest_is_not_a_rest",
+   "outcome": "decided",
+   "value": false,
+   "reason": "rest",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/18",
+   "quantity": "rest_is_not_a_rest",
+   "outcome": "decided",
+   "value": false,
+   "reason": "rest",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/20",
+   "quantity": "notehead_is_an_eighth_rest",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "not_refused_as_too_narrow",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/21",
+   "quantity": "notehead_is_an_eighth_rest",
+   "outcome": "abstained",
+   "value": null,
+   "reason": "not_refused_as_too_narrow",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/1",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 0,
+    "is_rest": true
+   },
+   "reason": "rest_class",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/3",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "reason": "head_and_marks",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/5",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "reason": "head_and_marks",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/9",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "reason": "hooks_counted",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/12",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 0,
+    "is_rest": true
+   },
+   "reason": "rest_class",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/14",
+   "quantity": "duration",
+   "outcome": "narrowed",
+   "value": null,
+   "reason": "beams_ambiguous",
+   "candidates": [
+    {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   ]
+  },
+  {
+   "subject": "glyph/6/1/6/0/18",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 0,
+    "is_rest": true
+   },
+   "reason": "rest_class",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/20",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "reason": "head_and_marks",
+   "candidates": []
+  },
+  {
+   "subject": "glyph/6/1/6/0/21",
+   "quantity": "duration",
+   "outcome": "decided",
+   "value": {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "reason": "head_and_marks",
+   "candidates": []
+  }
+ ]
+}

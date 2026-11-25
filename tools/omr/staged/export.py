@@ -2745,7 +2745,34 @@ def _page_arc_plan(rec: Record) -> Optional[Dict[str, Any]]:
     standing = [v for v in rec.verdicts_of(Q.PAGE_ARC_BINDING) if rec.verdict(Q.PAGE_ARC_BINDING, v["subject"]) is v]
     if not standing:
         return None
-    return _page_arc_bind.plan_of([v.get("detail") or {} for v in standing])
+    details = [v.get("detail") or {} for v in standing]
+    if _arc_claim.tie_same_sounding_enabled():
+        details = [_kind_unread_same_pitch_runs(rec, d) for d in details]
+    return _page_arc_bind.plan_of(details)
+
+
+def _kind_unread_same_pitch_runs(rec: Record, detail: Dict[str, Any]) -> Dict[str, Any]:
+    """ROADMAP 2.344 r2 (STAGED EXPORT; rides `OMR_ARC_TIE_SAME_SOUNDING`): a page run bound at BOTH ends to two heads at ONE position whose kind ADJUDICATE refused for an accidental
+    (`same_pitch_awaits_sounding`, `same_pitch_accidental_printed/unknown/unread`) and that EVALUATE (`settle_arc_by_sounding`) could not settle -- none of the boxes that witness it
+    holds a DECIDED tie or slur -- is a kind-unread run: nothing is written for it and its first note says `arc: tie or slur unread` (2.343). Before this the detector's class of a
+    witnessing box was written unmarked. A run any witness of which is decided keeps its old path (the box writes it). Reads the record only; returns the detail unchanged where nothing applies."""
+    runs = detail.get("runs") or ()
+    changed = []
+    for r in runs:
+        why = str(r.get("why") or "")
+        ke = r.get("kind_evidence") or {}
+        if (r.get("status") != _page_arc_bind.ABSTAINED or r.get("kind_unread") or not why.startswith(("same_pitch_accidental", "same_pitch_awaits"))
+                or not ke.get("start") or not ke.get("stop") or r.get("row") is None):
+            changed.append(r)
+            continue
+        decided = False
+        for w in r.get("witnesses") or ():
+            kv = rec.verdict(Q.ARC_KIND, str(w))
+            if kv and kv.get("outcome") == "decided" and kv.get("value") in ("tie", "slur"):
+                decided = True
+                break
+        changed.append(r if decided else dict(r, kind_unread=True, start=ke["start"], stop=ke["stop"]))
+    return dict(detail, runs=changed)
 
 
 def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
@@ -7942,7 +7969,7 @@ def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
 #
 # CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: that a refused head-sized box with no written twin is worth a
 # musician's look (falsified by a seeded sample of marked bars that are right as written); the words are ours, not Sean's.
-# NOT CONFIRMED: the LilyPond twin (`lilypond._collect_bars`) does not draw either mark -- outside this lane's fence.
+# The LilyPond twin draws the spot (ROADMAP 2.345); the `bar` mode bracket it does not.
 DROPPED_HEAD_MARKS_ENV = "OMR_DROPPED_HEAD_MARKS"
 DROPPED_HEAD_WORD_PREFIX = "a note not written"
 DROPPED_HEAD_SPOT_WORD = "unread note"
@@ -8041,9 +8068,10 @@ def _dropped_head_words(dropped: Sequence[Dict[str, Any]]) -> str:
     return "%s: %s" % (DROPPED_HEAD_WORD_PREFIX, ", ".join(seen))
 
 
-def _dropped_head_onset(head: Dict[str, Any], streams: Sequence[Sequence[Dict[str, Any]]], divisions: int) -> int:
-    """Where in the bar the unwritten head stands, in `<duration>` units: the time of the voice's written events that stand
-    LEFT of it (the voice holding the event nearest in x). A place to look, not a beat claimed for a note."""
+def _dropped_head_place(head: Dict[str, Any], streams: Sequence[Sequence[Dict[str, Any]]]) -> Tuple[List[Dict[str, Any]], int]:
+    """Where in the bar the unwritten head stands: the voice holding the written event nearest it in x, that voice's events in x order, and
+    how many of them stand LEFT of the head. The ONE place both files read it from (MusicXML `_dropped_head_onset`, LilyPond twin
+    `lilypond._attach_dropped_head_spots`), so they cannot disagree about where the mark goes. A place to look, not a beat claimed for a note."""
     best, best_d = None, None
     for st in streams:
         for e in st:
@@ -8051,10 +8079,17 @@ def _dropped_head_onset(head: Dict[str, Any], streams: Sequence[Sequence[Dict[st
             if best_d is None or d < best_d:
                 best, best_d = st, d
     if not best:
-        return 0
+        return [], 0
     tol = 0.5 * max(head.get("w") or 0.0, 1.0)
-    return sum(_event_units(e, divisions) for e in sorted(best, key=lambda e: float(e.get("x_position") or 0))
-               if float(e.get("x_position") or 0) < head["x"] - tol)
+    ordered = sorted(best, key=lambda e: float(e.get("x_position") or 0))
+    return ordered, sum(1 for e in ordered if float(e.get("x_position") or 0) < head["x"] - tol)
+
+
+def _dropped_head_onset(head: Dict[str, Any], streams: Sequence[Sequence[Dict[str, Any]]], divisions: int) -> int:
+    """Where in the bar the unwritten head stands, in `<duration>` units: the time of the voice's written events that stand
+    LEFT of it (`_dropped_head_place`)."""
+    ordered, left = _dropped_head_place(head, streams)
+    return sum(_event_units(e, divisions) for e in ordered[:left])
 
 
 def _dropped_head_spot_xml(units: int, indent: str = "      ") -> str:

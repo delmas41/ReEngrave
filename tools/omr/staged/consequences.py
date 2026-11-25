@@ -2643,3 +2643,165 @@ def pair_word_and_dynamic(log: Log, subject: Subject,
         considered=basis, basis=basis,
         detail={"markings": markings, "unpaired": unpaired,
                 "spacing_px": spacing}))]
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.344 round 2: an arc between the same notes is a tie -- what each note SOUNDS settles it.
+# ──────────────────────────────────────────────────────────────────────────────
+
+#: the alterations the reader and the key write, as one spelling (`natural` is the bare letter)
+_ALTERATION_KEY = {"#": "#", "sharp": "#", "b": "b", "flat": "b", "##": "##", "double-sharp": "##", "bb": "bb", "double-flat": "bb", "natural": "", "": ""}
+
+
+def _cause_for_key(log: Log, head: Subject) -> Optional[Verdict]:
+    """The key verdict `respell_accidental` read for this head's staff (`evaluate._cause_for`: at the staff or an ancestor)."""
+    from .evaluate import _cause_for
+    staff = head.at(Kind.STAFF)
+    return None if staff is None else _cause_for(log, Q.KEY_SIGNATURE, staff)
+
+
+def _sounding_of(log: Log, head: Subject) -> Optional[Tuple[str, int, str]]:
+    """`(letter, octave, alteration)` the head SOUNDS -- its pitch as `restate_pitch` placed it, and the alteration `respell_accidental` (the key) or
+    `apply_printed_accidental` (its own glyph, or one earlier in the bar) filed on it, a bare letter being a natural -- or None where that cannot be said:
+    no decided pitch (a clef nobody read), an alteration of a spelling not known here, or a printed glyph decided for this head whose alteration was not read
+    or that two glyphs claim with different alterations (a printed accidental is then what the engraver drew and nothing here knows what; never the key's answer
+    put in its place -- CLAUDE.md rule 8)."""
+    pitch = log.verdict(Q.PITCH, head)
+    if pitch is None or pitch.outcome is not Outcome.DECIDED:
+        return None
+    lo = _letter_octave(pitch.value)
+    if lo is None:
+        return None
+    cell = head.at(Kind.CELL)
+    owned = set()
+    if cell is not None:
+        for ow in _standing(log, cell, Q.ACCIDENTAL_OWNER):
+            if ow.outcome is Outcome.DECIDED and ow.value == head.to_key():
+                owned.add((ow.detail or {}).get("alteration"))
+    if owned and (len(owned) != 1 or not isinstance(next(iter(owned)), str) or not next(iter(owned))):
+        return None
+    acc = log.verdict(Q.ACCIDENTAL, head)
+    if acc is None or acc.outcome is not Outcome.DECIDED or acc.value in (None, ""):
+        # no alteration filed: the bare letter -- but only where the KEY is read (a signature nobody read leaves the note's alteration unknown, not natural) or the head's own
+        # printed glyph says so
+        if not owned:
+            key = _cause_for_key(log, head)
+            if key is None or key.outcome is not Outcome.DECIDED or not isinstance(key.value, int):
+                return None
+        alt = ""
+    else:
+        alt = _ALTERATION_KEY.get(str(acc.value))
+        if alt is None:
+            return None
+    if owned and _ALTERATION_KEY.get(next(iter(owned))) != alt:
+        return None                     # the glyph's own word and the filed alteration disagree: nothing follows
+    return lo[0], lo[1], alt
+
+
+def _settle_pair_by_sounding(log: Log, s_key: str, e_key: str):
+    """`(kind, rule, start_sounds, stop_sounds, basis)` for two heads at ONE staff position: the same sounding pitch is a `tie`, a different one a `slur`; None where either note's
+    sounding is unread or the two are not at one letter and octave (nothing then follows)."""
+    head_a, head_b = Subject.from_key(s_key), Subject.from_key(e_key)
+    a, b = _sounding_of(log, head_a), _sounding_of(log, head_b)
+    if a is None or b is None or a[:2] != b[:2]:
+        return None
+    new_kind = "tie" if a == b else "slur"
+    rule_name = "same_sounding_pitch" if new_kind == "tie" else "sounding_pitch_changed_by_accidental"
+    basis = tuple(v.id for v in (log.verdict(Q.PITCH, head_a), log.verdict(Q.PITCH, head_b), log.verdict(Q.ACCIDENTAL, head_a), log.verdict(Q.ACCIDENTAL, head_b)) if v is not None)
+    return new_kind, rule_name, a, b, basis
+
+
+@rule(consequence=Consequence.SETTLE_PAGE_ARC_BY_SOUNDING,
+      cause=Q.PAGE_ARC_BINDING, effect=Q.ARC_KIND, scope=Kind.PAGE,
+      bound="Only a page-ink run the page pass bound at BOTH ends to two heads at one staff position whose kind it left `same_pitch_awaits_sounding`, and only where both heads' sounding "
+            "pitch is read: the run becomes a WRITTEN tie (same sounding pitch) or slur (a different one). Changes no other run, adds no run, no note; where a pitch is unread the run stays "
+            "abstained (EXPORT then marks it `arc: tie or slur unread`).")
+def settle_page_arc_by_sounding(log: Log, subject: Subject, binding: Verdict) -> List[Verdict]:
+    """The page pass's runs, settled by what their two notes sound (ROADMAP 2.344 r2) -- the same rule as `settle_arc_by_sounding`, at the unit EXPORT writes: with the page pass ON a tie
+    or slur is written from its RUN (one arc, one ink), never from the detector boxes that witness it. The boxes' own verdicts are settled beside it so the two never disagree."""
+    if binding.outcome is not Outcome.DECIDED:
+        return []
+    detail = dict(binding.detail or {})
+    runs = list(detail.get("runs") or ())
+    new_runs, basis, n_set = [], [], 0
+    for r in runs:
+        ke = r.get("kind_evidence") or {}
+        if r.get("status") != "abstained" or r.get("why") != "same_pitch_awaits_sounding" or not ke.get("start") or not ke.get("stop") or ke["start"] == ke["stop"]:
+            new_runs.append(r)
+            continue
+        settled = _settle_pair_by_sounding(log, str(ke["start"]), str(ke["stop"]))
+        if settled is None:
+            new_runs.append(r)
+            continue
+        kind, rule_name, a, b, bs = settled
+        basis.extend(bs)
+        n_set += 1
+        new_runs.append(dict(r, status="written", kind=kind, start=ke["start"], stop=ke["stop"], relation="same", crosses_barline=ke.get("crosses_barline"),
+                             rule="page_binding_" + rule_name, closest=[], settled_by="settle_page_arc_by_sounding", sounds=[list(a), list(b)]))
+    if not n_set:
+        return []
+    value = dict(binding.value or {})
+    value["written"] = int(value.get("written") or 0) + n_set
+    value["abstained"] = max(0, int(value.get("abstained") or 0) - n_set)
+    detail["runs"] = new_runs
+    basis_t = tuple(dict.fromkeys(basis))
+    return [log.record(Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.PAGE_ARC_BINDING, outcome=Outcome.DECIDED, value=value, decider="settle_page_arc_by_sounding", reason="bound",
+        considered=basis_t, basis=basis_t, detail=detail, supersedes=binding.id))]
+
+
+@rule(consequence=Consequence.SETTLE_ARC_BY_SOUNDING,
+      cause=Q.ARC_KIND, effect=Q.TIE_PAIR, scope=Kind.GLYPH, fires_unsettled=True,
+      bound="Only an arc whose kind ADJUDICATE left `same_pitch_awaits_sounding` (two heads at one staff position, the stop printing an accidental the start does not) and only "
+            "where BOTH heads have a decided pitch and a readable alteration at one letter and octave: the same sounding pitch is a tie (its pair is the two heads), a different "
+            "one a slur. Writes the arc's kind and its tie pair; adds, deletes, moves and re-pitches no note, and decides nothing where a pitch or an alteration is unread.")
+def settle_arc_by_sounding(log: Log, subject: Subject, kind: Verdict) -> List[Verdict]:
+    """Same position, and the notes SOUND the same -> a tie; sound two pitches -> a slur (ROADMAP 2.344 r2).
+
+    Sean (2026-11-24): "The rule should be as simple as the same notes. And if the tie carries over to the next measure, there may or may not be an accidental but if there
+    is not one, it is implied." Two noteheads at one staff position are one note when no accidental changes the pitch between them: the stop's printed accidental then
+    restates what the start already sounds (the key, or an accidental earlier in its bar -- a courtesy) and the arc is a tie; where it changes the pitch (C then C-sharp) the
+    arc is a slur and never a tie.
+
+    ⚠️ WHY HERE AND NOT IN `adjudicate_arc_kind`: what the START note sounds when it prints nothing is the key's alteration or an earlier accidental in its bar -- facts
+    `respell_accidental` and `apply_printed_accidental` file, after ADJUDICATE. A reading made earlier would re-derive them (a second spelling of C21) or guess. THIS FOLLOWS: it is
+    asked only of an arc whose two ends ADJUDICATE bound and read at one position, and it answers from the two sounding pitches alone. Where a pitch or an alteration is unread
+    it writes nothing -- the arc stays an arc, not a tie, not a slur, and EXPORT marks it (`arc: tie or slur unread`); the detector's class is never the answer.
+    """
+    if kind.outcome is not Outcome.ABSTAINED or kind.reason != "same_pitch_awaits_sounding":
+        return []
+    ends = (kind.detail or {}).get("pending_sounding") or {}
+    s_key, e_key = ends.get("start"), ends.get("stop")
+    if not s_key or not e_key or s_key == e_key:
+        return []
+    settled = _settle_pair_by_sounding(log, s_key, e_key)
+    if settled is None:
+        return []
+    new_kind, rule_name, a, b, basis = settled
+    detail = dict(kind.detail or {})
+    grammar = dict(detail.get("grammar") or {})
+    grammar["sounding"] = {"start": s_key, "stop": e_key, "start_sounds": list(a), "stop_sounds": list(b), "rule": rule_name}
+    detail["grammar"] = grammar
+    pb = dict(grammar.get("page_binding") or {})
+    if pb.get("start") and pb.get("stop"):
+        pb.update(kind=new_kind, rule="page_binding_" + rule_name, accidental="restated" if new_kind == "tie" else "changed")
+        pb.pop("why", None)
+        detail["page_binding"] = pb
+        grammar["page_binding"] = pb
+    out = [log.record(Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.ARC_KIND, outcome=Outcome.DECIDED, value=new_kind,
+        decider="settle_arc_by_sounding", reason=new_kind, considered=basis, basis=basis, detail=detail,
+        supersedes=kind.id))]
+    if new_kind == "tie":
+        prior = log.verdict(Q.TIE_PAIR, subject)
+        # a pair the curve's own two bound heads name is `paired_by_page_binding` -- the one reason EXPORT keeps with the page pass on (`_retire_old_tie_pairs`: a tie is written only from
+        # ink traced to its two notes); a pair read off the two-note search is the old pairing's and is treated as it is
+        by_binding = pb.get("start") == s_key and pb.get("stop") == e_key
+        pair = Verdict(
+            id=log._next_id("vrd"), subject=subject, quantity=Q.TIE_PAIR, outcome=Outcome.DECIDED,
+            value={"start": s_key, "stop": e_key}, decider="settle_arc_by_sounding", reason="paired_by_page_binding" if by_binding else "paired",
+            considered=basis + (out[0].id,), basis=basis + (out[0].id,),
+            detail={"curve": pb.get("curve"), "crosses_barline": pb.get("crosses_barline"), "home_staff": pb.get("home"), "sounds": list(a)},
+            supersedes=prior.id if prior is not None else None)
+        out.append(log.record(pair))
+    return out

@@ -61,6 +61,44 @@ class TestUnwrittenToWrong(unittest.TestCase):
         self.assertNotIn("FAILS", L.landing_line(dict(plates={"litolff": dict(judged=j)})))
 
 
+# Brahms 2.78-phase2-review tile 5 (two beamed sixteenths, glyph/0/0/12/1/1 and /15), scored on 20261122-night and on
+# 20261123-night: the saved duration verdicts of both glyphs are the same on both nights (narrowed, beams_ambiguous), and
+# the scorer's one note for the tile is the same text both nights -- one subject's set holds his answer, the other's does not.
+TILE5_NOTE = ("narrowed [0.25, 0.5], answer in set (beams_ambiguous); "
+              "narrowed [0.5, 1.0], answer NOT in set (beams_ambiguous)")
+TILE5_SUBJECTS = ["glyph/0/0/12/1/1", "glyph/0/0/12/1/15"]
+
+
+class TestStillWrongBothNights(unittest.TestCase):
+    """Sean 2026-11-24: a tile narrowed WITHOUT his answer on both nights is unchanged and still wrong, not unwritten -> wrong."""
+
+    def tile5(self, status="wrong", note=TILE5_NOTE):
+        return dict(item="2.78-phase2-review", tile="5", subject=TILE5_SUBJECTS, answer="16th", status=status, note=note)
+
+    def test_the_real_tile_is_not_a_move(self):
+        r = L.compare_judged([self.tile5()], [self.tile5()])
+        self.assertEqual(r["unwritten_wrong"], [])
+        self.assertEqual(len(r["still_wrong"]), 1)
+        self.assertEqual(r["worse"], [])
+
+    def test_it_stays_out_of_the_landing_count(self):
+        r = L.compare_judged([self.tile5()], [self.tile5()])
+        self.assertNotIn("FAILS", L.landing_line(dict(plates={"brahms": dict(judged=dict(worse=r["worse"], unwritten_wrong=r["unwritten_wrong"],
+                                                                                         unwritten_right=r["unwritten_right"], better=r["better"]))})))
+
+    def test_it_survives_by_place(self):
+        rep = L.compare_judged([self.tile5()], [self.tile5()])
+        self.assertEqual(len(L.by_place(rep, {}, [], [])["still_wrong"]), 1)
+
+    def test_can_fail_off_narrowed_with_his_answer_now_without_it_is_still_a_move(self):
+        r = L.compare_judged([self.tile5("narrowed", "narrowed [0.25, 0.5], answer in set (beams_ambiguous)")], [self.tile5()])
+        self.assertEqual((len(r["unwritten_wrong"]), r["still_wrong"]), (1, []))
+
+    def test_can_fail_a_decided_wrong_note_now_is_still_a_move(self):
+        r = L.compare_judged([self.tile5()], [self.tile5("wrong", "decided 1 beats")])
+        self.assertEqual((len(r["unwritten_wrong"]), r["still_wrong"]), (1, []))
+
+
 class TestInvented(unittest.TestCase):
     def idx(self, text="part of an ff", kind="other"):
         return dict(tiles=[dict(item="t", tile="7", doc="litolff", subject="glyph/4/0/4/3/8", subjects=None, followup=False,

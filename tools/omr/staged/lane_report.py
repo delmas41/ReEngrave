@@ -1082,7 +1082,7 @@ def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[
         return (t["item"], t["tile"])
     on_by = {k(t): t for t in on_tiles}
     worse, lost, better, n_scored = [], [], [], 0
-    up_wrong, up_right = [], []
+    up_wrong, up_right, still_wrong = [], [], []
     for t in off_tiles:
         u = on_by.get(k(t))
         if u is None:
@@ -1098,12 +1098,19 @@ def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[
         elif t["status"] in ("narrowed", "abstained", "not_found") or (t["status"] == "wrong" and t["note"].startswith("narrowed")):
             # ROADMAP 2.218: OFF left it unwritten (narrowed -- even to a set that misses Sean's answer -- abstained, or
             # not found); `by_place` keeps it only if the OFF file writes that very note nowhere at the place
-            if u["status"] == "wrong":
+            if u["status"] == "wrong" and t["status"] == "wrong" and u["note"].startswith("narrowed"):
+                # Sean 2026-11-24 (Brahms 2.78-phase2-review tile 5): narrowed WITHOUT his answer on BOTH nights is the same
+                # tile, still unwritten and still wrong -- not a move. (OFF narrowed WITH the answer, now narrowed without
+                # it, is still reported below: that one did change.)
+                still_wrong.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], answer=t["answer"],
+                                        off=t["note"], now=u["note"]))
+            elif u["status"] == "wrong":
                 up_wrong.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], answer=t["answer"],
                                      off=t["status"], now=u["note"]))
             elif u["status"] == "right":
                 up_right.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], answer=t["answer"], off=t["status"]))
-    return dict(worse=worse, lost=lost, better=better, unwritten_wrong=up_wrong, unwritten_right=up_right, scored=n_scored)
+    return dict(worse=worse, lost=lost, better=better, unwritten_wrong=up_wrong, unwritten_right=up_right,
+                still_wrong=still_wrong, scored=n_scored)
 
 
 # ───────────────────────────── 7b. changed places nobody has judged (ROADMAP 2.244) ─────────────────────────────
