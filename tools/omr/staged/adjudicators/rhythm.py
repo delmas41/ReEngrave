@@ -3314,8 +3314,10 @@ def _tip_obs(ev: Evidence, cell, own_stems):
         rows = _tips_honouring_claims(ev, cell, own_stems)[0]
     else:
         rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-    if hook_not_on_an_arc_enabled():
-        rows = _hooks_on_arcs(ev, cell, rows)
+    if hook_not_on_an_arc_enabled() and any(getattr(r, "value", None) is True for r in rows):
+        psub = ev.subject.at(Kind.PAGE) if hasattr(ev.subject, "at") else None
+        arcs = [(a.id, a.detail or {}) for a in ev.rows(Q.PAGE_ARC, subject=psub)] if psub is not None else []
+        rows = _hooks_on_arcs(ev, cell, rows, arcs)
     return rows
 
 
@@ -3356,7 +3358,7 @@ def arc_through_hook_window(window_page: Sequence[float], arcs: Sequence[Tuple[s
     return None
 
 
-def _hooks_on_arcs(ev: Evidence, cell, rows):
+def _hooks_on_arcs(ev: Evidence, cell, rows, arcs):
     """ROADMAP 2.306 r21 (`OMR_HOOK_NOT_ON_AN_ARC`). The arcs are read on the PAGE (`Q.PAGE_ARC`, 2.274) AFTER the stem tips were read at GATHER,
     so the tip reader could not leave an arc's ink out (2.306 r7: a reader cannot use a fact filed later) -- the two are CONNECTED here, at
     ADJUDICATE. A tip row that SAW a hook (value True, with its `window_canonical`) whose window an arc runs through and on past
@@ -3369,11 +3371,6 @@ def _hooks_on_arcs(ev: Evidence, cell, rows):
     if frame is None:
         return rows
     ox, oy, up = frame
-    try:
-        psub = ev.subject.at(Kind.PAGE)
-    except Exception:          # noqa: BLE001 -- a subject with no page (a test stub) reads no arcs
-        return rows
-    arcs = [(a.id, a.detail or {}) for a in ev.rows(Q.PAGE_ARC, subject=psub)]
     if not arcs:
         return rows
     import types

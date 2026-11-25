@@ -1549,7 +1549,7 @@ Which edition and movement this is; scanned or engraved.
 - `page_arc` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_page_arc_binding`
 - `page_arc` read by GATHER: `page_arcs.py:rows_of`
 - `page_arc` read by ADJUDICATE: `adjudicators/ownership.py:adjudicate_page_arc_binding`
-- `page_arc` read only OFF by default: `adjudicators/rhythm.py:_hooks_on_arcs`
+- `page_arc` read only OFF by default: `adjudicators/rhythm.py:_tip_obs`
 - `page_arc` belongs to: `--mark arc`
 
 ### `page_arc_binding` (Q.PAGE_ARC_BINDING) -- LIVE
