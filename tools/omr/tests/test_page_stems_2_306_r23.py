@@ -45,14 +45,15 @@ def _rule_off(monkeypatch):
 
 
 TOUCHED = ["opp_up_litolff_2_0_7_16_8", "opp_up_litolff_2_1_8_10_9", "opp_down_litolff_9_0_1_1_10", "opp_down_litolff_4_1_2_13_12",
-           "same_down_brahms_0_0_11_2_4", "same_down_brahms_14_1_9_6_4", "opp_down_brahms_0_0_12_4_0"]
+           "same_down_brahms_0_0_11_2_4", "same_up_brahms_0_0_11_3_10", "opp_down_brahms_0_0_12_4_0"]
 
 
 @pytest.mark.parametrize("name", TOUCHED)
 def test_the_stroke_the_head_touches_is_its_stem_when_the_other_is_anothers(name):
     """Our look at full size (crops `out/print/2.306-r23/`): Litolff 2/0/7/16/8 an eighth whose up stem runs to the beam; the stroke at its left
     is the lower neighbour's up stem. 9/0/1/1/10 a chord's down stem; the stroke at its right is the next chord's down stem. Brahms 0/0/11/2/4
-    and 14/1/9/6/4 the lower of two voices a step apart -- the upper head's up stem, the lower's down stem. Each was left `two_voices` /
+    the lower and 0/0/11/3/10 the upper of two voices a step apart -- the upper head's up stem, the lower's down stem; 0/0/12/4/0 a down stem,
+    the stroke at its right the next note's down stem. Each was left `two_voices` /
     `one_touches` and the old cell join answered in its place."""
     w, r = _read(name)
     got = r[w["head"]]
@@ -103,6 +104,41 @@ def test_same_way_only_from_a_head_beyond_this_one():
     assert PS._untouched_is_anothers_stem(h, 1, "up", {1: dict(heads=["b"], directions={"down"})}, heads)
     assert not PS._untouched_is_anothers_stem(h, 1, "up", {1: dict(heads=["h"], directions={"up"})}, heads)
     assert not PS._untouched_is_anothers_stem(h, 2, "up", {1: dict(heads=["a"], directions={"up"})}, heads)
+
+
+# ── (4) the stroke that ends at another head is that head's stem ─────────────────────────────────────────────────────────────────────────
+
+ENDS = ["ends_down_litolff_4_1_8_5_5", "ends_down_litolff_4_1_2_4_9", "ends_up_litolff_2_1_8_10_16", "ends_up_litolff_9_0_3_1_16"]
+
+
+@pytest.mark.parametrize("name", ENDS)
+def test_the_stroke_ending_at_another_head_is_that_heads_stem(name):
+    """Both strokes touch the head (Litolff merges), one ends at ANOTHER head that reads it as its own stem pointing away from itself. Our
+    look at full size: 4/1/8/5/5 the upper note's down stem runs past this head's right edge to the beam, this head's own stem is down at its
+    left; 2/1/8/10/16 and 9/0/3/1/16 the middle head of chords on up stems, the stroke at its left is the lower neighbour's up stem. Each was
+    left `two_voices` / `ends_at_another_head` (the stroke a stem's length, so the r19 outline rule stood aside)."""
+    w, r = _read(name)
+    got = r[w["head"]]
+    assert got["state"] == "one" and got["how"] == PS.OTHER_STEM_HOW and got["direction"] == w["expect"], got
+
+
+@pytest.mark.parametrize("name", ENDS)
+def test_ends_rule_off_left_as_r22_left_it(name, monkeypatch):
+    monkeypatch.setattr(PS, "_is_the_stem_of_the_head_it_ends_at", lambda *a, **k: False)
+    w, r = _read(name)
+    got = r[w["head"]]
+    assert got["state"] == "two_voices" and got.get("why") == "ends_at_another_head", got
+
+
+def test_never_when_the_head_it_ends_at_has_no_head_ink_of_its_own():
+    """Litolff 4/1/7/4/18: the stroke ends at a box the head identity found no oval in (`ink` False) -- possibly a box at a stem's tip, not a
+    note (Brahms 5/1/5/0's staccato dot): left unresolved. The control can fail: with the box given an oval, the rule takes it."""
+    w, heads, verts, held, cross, strokes = _window("ends_never_no_oval_litolff_4_1_7_4_18")
+    got = PS.read(heads, verts, held, crossers=cross, strokes=strokes)["heads"][w["head"]]
+    assert got["state"] == "two_voices" and got.get("why") == "ends_at_another_head", got
+    inked = [dict(h, ink=True) for h in heads]
+    got = PS.read(inked, verts, held, crossers=cross, strokes=strokes)["heads"][w["head"]]
+    assert got["how"] == PS.OTHER_STEM_HOW, got
 
 
 # ── (3) a copy of a head filed with another staff ────────────────────────────────────────────────────────────────────────────────────────

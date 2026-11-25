@@ -68,7 +68,12 @@ def test_where_a_stroke_does_not_touch_the_head_or_ends_at_another_head_it_is_ne
     for k in ((2, 99), (2, 468)):
         r = _read(next(w for w in _windows() if (w["page"], w["head"]) == k))["heads"][k[1]]
         assert whys[k] == "other_stroke_is_an_outline" and r["state"] == "one" and r["direction"] == "down", (k, r)
-    assert whys[(6, 9)] == "one_touches" and whys[(0, 268)] == "one_touches", whys
+    # ROADMAP 2.306 r23: Brahms 0/268's untouched up stroke is the neighbour's stem the page already reads (the other way), so the page now
+    # reads the head's one down stem itself (the window's own expectation, `one:down`); Litolff 6/9's untouched stroke holds no head in this
+    # window and stays to the old path
+    r = _read(next(w for w in _windows() if (w["page"], w["head"]) == (0, 268)))["heads"][268]
+    assert whys[(0, 268)] == PS.OTHER_STEM_HOW and r["state"] == "one" and r["direction"] == "down", r
+    assert whys[(6, 9)] == "one_touches", whys
     assert whys[(6, 155)] == "one_stem_passes_the_head", whys
     assert len(whys) == 6
 
