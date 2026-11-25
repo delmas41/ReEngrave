@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 211 flag predicates; 27 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 212 flag predicates; 27 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
