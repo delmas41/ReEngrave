@@ -473,7 +473,6 @@ The small number printed above a system.
 - **decided by** (ADJUDICATE): `adjudicate_printed_bar_number` -> `printed_bar_number`
 - **read by GATHER** (1): `gather.py:gather_page_claims`
 - **read by EXPORT** (1): `export.py:_printed_bar_number_check`
-- **flags on its readers' paths** (as the code resolves them today): `bar_number_text.surya_available()=OFF`
 - **open gaps**: none derived
 
 ### Instrument name -- `--mark instrument`
@@ -1450,6 +1449,8 @@ Which edition and movement this is; scanned or engraved.
 ### `notehead_is_an_eighth_rest` (Q.NOTEHEAD_IS_AN_EIGHTH_REST) -- LIVE
 
 - `notehead_is_an_eighth_rest` decided by: ADJUDICATE `adjudicators/narrow_rest.py:adjudicate_narrow_box_is_an_eighth_rest`
+- `notehead_is_an_eighth_rest` declared in `wants` (not a read): `adjudicate_meter`
+- `notehead_is_an_eighth_rest` read by ADJUDICATE: `adjudicators/rhythm.py:_glyph_left_the_bar`
 - `notehead_is_an_eighth_rest` read by EVALUATE: `consequences.py:_reinstated_rest`, `rule size_reinstated_rest`
 - `notehead_is_an_eighth_rest` read by EXPORT: `export.py:_place_notes`
 - `notehead_is_an_eighth_rest` belongs to: `--mark rest`
@@ -1644,8 +1645,7 @@ Which edition and movement this is; scanned or engraved.
 
 ### `printed_bar_number` (Q.PRINTED_BAR_NUMBER) -- LIVE
 
-- `printed_bar_number` filed by: GATHER `gather.py:gather_printed_bar_numbers`
-- `printed_bar_number` filed OFF by default: `gather.py:_printed_bar_numbers_surya` (after `if not BNT.surya_available(): return` (True by default))
+- `printed_bar_number` filed by: GATHER `gather.py:gather_printed_bar_numbers`, GATHER `gather.py:_printed_bar_numbers_surya`
 - `printed_bar_number` decided by: ADJUDICATE `adjudicators/text.py:adjudicate_printed_bar_number`
 - `printed_bar_number` abstained by (not a producer): `gather.py:_printed_bar_numbers_surya`, `gather.py:_printed_bar_numbers_surya._unavailable`, `gather.py:gather_printed_bar_numbers`
 - `printed_bar_number` declared in `wants` (not a read): `adjudicate_printed_bar_number`
@@ -1689,7 +1689,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `rest_is_not_a_rest` decided by: ADJUDICATE `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`
 - `rest_is_not_a_rest` revised by: EVALUATE `reinstate_rest_between_staves`
-- `rest_is_not_a_rest` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_dynamic_anchor`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_unboxed_ink_is_a_rest`, `adjudicate_voices`
+- `rest_is_not_a_rest` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_dynamic_anchor`, `adjudicate_meter`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_unboxed_ink_is_a_rest`, `adjudicate_voices`
 - `rest_is_not_a_rest` read by ADJUDICATE: `adjudicators/narrow_rest.py:adjudicate_narrow_box_is_an_eighth_rest`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/rhythm.py:_glyph_left_the_bar`, `adjudicators/text.py:adjudicate_dynamic_anchor`, `adjudicators/unboxed_rest.py:_cover_left`
 - `rest_is_not_a_rest` read by EVALUATE: `consequences.py:_contest_group`, `consequences.py:_left_the_bar`, `consequences.py:reinstate_rest_between_staves`
 - `rest_is_not_a_rest` read by INFER: `infer rule collapse_narrowed_by_bar`
