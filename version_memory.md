@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-25 -- 2.306 r23 (lane, not landed): the retire step -- a head takes the stroke it touches when the other is another head's stem; the stroke ending at another head is that head's; copies stop asking the old join (STAGED GATHER + ADJUDICATE; inside `OMR_PAGE_STEMS`, no new flag)
+
+`lane-2.306-r23`: `page_stems._untouched_is_anothers_stem`, `_is_the_stem_of_the_head_it_ends_at` (reading word `other_stroke_is_anothers_stem`), copy abstention `ABSTAIN.ON_ANOTHER_STAFF` -> `stem_value` reason `page_stem_on_another_staff`; real-window controls `test_page_stems_2_306_r23.py` (dump + cut tools `benchmarks/page-ledger-2026-11/2306/r23_*.py`). Old join's written heads 43 -> 21 Litolff, 16 -> 2 Brahms, copies -> 0 (file proven unchanged by them). Full frozen sample both arms: judged right->wrong 0, unwritten->wrong 0, 0 new claim contradictions, red 125 -> 95 / 111 -> 82. Fast tier 11,430 / 0. Flags stay OFF.
+
 ## 2026-11-25 -- 2.306 r22 (lane, not landed): a box read for its heads takes no stem; the duration reader stands a head on the page's stems; page views read their tip with the cell's blockers (STAGED GATHER + ADJUDICATE; inside `OMR_PAGE_STEMS`, no new flag)
 
 `lane-2.306-r22` (f42f13003 + paperwork + FINDINGS): `page_stems.tall_remainders`, `rhythm.stems_the_head_stands_on`, `gather.stem_tip_context` (shared by `gather_cv_lines` and `page_stems._cell_row_for`); real-row controls `test_page_stems_2_306_r22.py`. Full frozen sample both arms: red 125 -> 96 / 111 -> 82, judged right->wrong 0, judged_claims 0 new. Retire step measured (43 Litolff + 16 Brahms written heads still on the old join). FINDINGS: benchmarks/page-ledger-2026-11 "2.306 r22".
