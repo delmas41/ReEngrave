@@ -124,10 +124,23 @@ STACK_END_MAX_SP = 0.35
 #: The convention (Sean 2026-11-25, "Always same bar", general) decides the barline ground alone: no number in it (`head_beside`, every reader of this module).
 #: Two grounds beside it, for a filled-in sharp only; measured on the reader's own values, both sides, real marks (tuned on Litolff/Brahms: they only NARROW, they
 #: leave ink unclaimed and never re-read it):
-#:   * "just before": the head box stands at most this far right of the block (spaces). Measured (box edge to box edge): the judged-true stacks -0.2-0.7,
-#:     the 24 other stack claims on the nine replay pages -0.1-1.3 (none judged); Sean's quarter rest (Litolff p10 [1564,2933,1580,2986], 2026-11-25) 3.5. Room: 1.2 above the
-#:     nearest claim, 1.0 below the rest.
+#:   * "just before": the note's ink starts at most this far right of the block's ink (spaces). ROADMAP 2.352 r3, by INK not box (Sean 2026-11-18): from the block's right ink
+#:     edge to the left ink edge of the head's ink inside its box (`head_ink_left`). Measured on the nine replay pages plus Litolff p2/p3/p4/p6 (58 stack claims): the judged-true stacks
+#:     0.0-1.1 (Litolff p12 [1249,744,1265,797] 0.57, where the box edge said -0.2), the unjudged stacks -0.1-2.2; Sean's quarter rest (Litolff p10 [1564,2933,1580,2986], 2026-11-25) 3.55.
+#:     Room: 0.3 above the nearest unjudged claim, 1.05 below the rest, 1.4 above the judged-true. Ink and box disagree by more than 0.2 sp on 25 of the 58 (the head box is cut
+#:     looser than its ink); no claim changed hands against round 2's box measure.
 STACK_HEAD_GAP_MAX_SP = 2.5
+#: ROADMAP 2.352 r3 -- "A SHARP IS NOT TWO HOLLOW HEADS A THIRD APART ON ONE STEM" (Sean 2026-11-25, Litolff p13 [1909,2433,1929,2478]: "two half note heads, a third apart"; main's stroke reader
+#: read their two right-hand sides and the bar across their top as a sharp's two uprights and a bar, margin 0.07). Cause: the stroke map cuts a hollow head into pieces (its sides, its
+#: top, wide slabs, the stem), and the reader took the two verticals without the ink lying inside their box. What a musician sees: a hollow head shows a slit of paper, two hollow heads
+#: stacked a third apart show three or more; a sharp shows one cell of paper between its uprights and bars, two where the print is heavy. NEVER: a sharp released that shows two cells or
+#: fewer; never "cannot tell" turned into another answer (the ink is left unclaimed). Measured (cells of paper at least `HOLLOW_CELL_MIN_SP2` closed in by the claim's ink plus the ink
+#: inside its box, 216 claims on 15 pages): 0 cells 186, 1 cell 26, 2 cells 1 (Brahms p15, unjudged); the 12 judged-true sharps 0-1; the p13 mark 3 (Sean) and one more mark of the same
+#: look on Litolff p4 [1062,2285,1081,2326] 4 (our look, not judged). Room: two cells above the judged-true, one above the nearest other claim; the judged non-sharp side is ONE mark.
+HOLLOW_HEADS_CELLS_MIN = 3
+HOLLOW_CELL_MIN_SP2 = 0.02
+#: a horizontal stroke inside a claim's box longer than this (spaces) is a staff-line scrap, not part of a head
+HOLLOW_INSIDE_HORIZONTAL_MAX_SP = 2.2
 #:   * "as wide as a sharp": the block is at least this share of the sharp glyph's width (0.996 sp). Measured (ink box / local space): the judged-true stacks 0.94-1.1 (Brahms)
 #:     and 1.0 (Litolff p12), the other stack claims 0.8-1.2 (none judged); Sean's "part of an f ... part of a sforzando" (Litolff p10 [2081,421,2089,461]) 0.51.
 #:     Room: ~0.15 either side of the cut, unjudged side the thinner.
@@ -268,6 +281,87 @@ def head_beside(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp
     return best
 
 
+def ink_x_edges(masks: Sequence[Any], scale: float, members: Sequence[int], x_min: Optional[float] = None) -> Optional[Tuple[float, float]]:
+    """ROADMAP 2.352 r3 (Sean 2026-11-18: join and separate by INK, never by box): the left and right edge (page px) of the ink the strokes `members` own -- the first and
+    last column of their masks that hold ink (the stroke map's, staff lines erased). `x_min` (page px): only ink at or right of it counts. None where there is no
+    mask or no ink. Pure."""
+    import numpy as np
+    sc = float(scale or 1.0)
+    lo = hi = None
+    for m in members:
+        if not (0 <= m < len(masks)):
+            continue
+        mk, x0, _y0 = masks[m]
+        mk = np.asarray(mk).astype(bool)
+        if x_min is not None:
+            cut = int(np.ceil(x_min * sc)) - int(x0)
+            if cut >= mk.shape[1]:
+                continue
+            if cut > 0:
+                mk = mk.copy()
+                mk[:, :cut] = False
+        cols = np.flatnonzero(mk.any(axis=0))
+        if not cols.size:
+            continue
+        a, b = (int(x0) + int(cols[0])) / sc, (int(x0) + int(cols[-1]) + 1) / sc
+        lo = a if lo is None else min(lo, a)
+        hi = b if hi is None else max(hi, b)
+    return None if lo is None else (lo, hi)
+
+
+def head_ink_left(strokes: Sequence[Any], masks: Sequence[Any], scale: float, head: Head, exclude: Sequence[int] = ()) -> Optional[float]:
+    """The left edge (page px) of a detector notehead's INK: the first column holding ink INSIDE the head's own box, of any stroke the box meets (the box says where to
+    look; only the ink in it is measured; ties, slurs and staff-line scraps running through it are not the head). A head the stroke map merged with its stem into one tall stroke, or with the sharp beside it (Litolff merges), counts only
+    from the head's box on: the piece of that stroke outside the box is the stem's or the sharp's, never the head's. `exclude`: the claim's own strokes. None where no
+    ink lies in the box. Pure."""
+    import numpy as np
+    sc = float(scale or 1.0)
+    hx0, hy0, hx1, hy1 = [float(v) for v in head.box]
+    skip = set(int(i) for i in exclude)
+    best = None
+    for i, s in enumerate(strokes):
+        if i in skip or i >= len(masks):
+            continue
+        if getattr(s, "kind", None) == "curve" or (getattr(s, "kind", None) == "horizontal" and float(getattr(s, "length_sp", 0.0) or 0.0) > HOLLOW_INSIDE_HORIZONTAL_MAX_SP):
+            continue                      # a tie or slur, a staff-line or ledger scrap running through the box: not the head's ink
+        b = _box(s)
+        if b[2] <= hx0 or b[0] >= hx1 or b[3] <= hy0 or b[1] >= hy1:
+            continue
+        mk, x0, y0 = masks[i]
+        mk = np.asarray(mk).astype(bool)
+        cx0, cx1 = max(0, int(np.ceil(hx0 * sc)) - int(x0)), min(mk.shape[1], int(np.floor(hx1 * sc)) - int(x0))
+        cy0, cy1 = max(0, int(np.ceil(hy0 * sc)) - int(y0)), min(mk.shape[0], int(np.floor(hy1 * sc)) - int(y0))
+        if cx1 <= cx0 or cy1 <= cy0:
+            continue
+        cols = np.flatnonzero(mk[cy0:cy1, cx0:cx1].any(axis=0))
+        if cols.size:
+            x = (int(x0) + cx0 + int(cols[0])) / sc
+            best = x if best is None else min(best, x)
+    return best
+
+
+def head_beside_ink(box: Sequence[float], x_right: float, anchor_y: float, heads: Sequence[Head], strokes: Sequence[Any], masks: Sequence[Any], scale: float,
+                    members: Sequence[int], sp: float, barlines: Sequence[Dict[str, Any]] = (), gap_max_sp: float = HEAD_GAP_MAX_SP) -> Optional[Head]:
+    """`head_beside` measured by INK (ROADMAP 2.352 r3): the head whose own ink starts nearest right of the claim's ink edge `x_right` (page px), at most `gap_max_sp`
+    right of it and at most `HEAD_DY_MAX_SP` from `anchor_y`, with no barline between the claim's ink and the head's. A head with no ink in its box is no note beside.
+    The never: a note across a barline. Pure."""
+    best, best_gap = None, None
+    for hd in heads:
+        if share_inside(hd.box, box) >= OWN_BOX_SHARE or share_inside(box, hd.box) >= OWN_BOX_SHARE:
+            continue
+        if abs((hd.box[1] + hd.box[3]) / 2.0 - anchor_y) / sp > HEAD_DY_MAX_SP:
+            continue
+        left = head_ink_left(strokes, masks, scale, hd, members)
+        if left is None:
+            continue
+        gap = (left - x_right) / sp
+        if not (-0.3 <= gap <= gap_max_sp) or (barlines and barline_between(x_right, left, anchor_y, barlines)):
+            continue
+        if best is None or gap < best_gap:
+            best, best_gap = hd, gap
+    return best
+
+
 def left_of_header(box: Sequence[float], header: Sequence[Sequence[float]]) -> bool:
     """True where the ink's centre lies LEFT of a system-start header claim (`HEADER_OWNERS`) whose rows hold the ink's own: the margin's ink, never an accidental's
     (no accidental stands before its staff's first clef). `header`: the claims' rectangles `(x0, y0, x1, y1)`, page px. Pure."""
@@ -304,6 +398,67 @@ def note_of(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp: fl
     if h is None:
         across = bool(barlines) and head_beside(box, anchor_y, heads, sp, (), gap_max_sp) is not None
         count(prefix + ("note_across_barline" if across else "no_note_beside"))
+    return h
+
+
+def paper_cells(strokes: Sequence[Any], masks: Sequence[Any], members: Sequence[int], box: Sequence[float], scale: float = 1.0) -> int:
+    """ROADMAP 2.352 r3: the bits of paper CLOSED IN by a claim's ink -- the claim's own strokes plus the ink lying inside its box that the claim does not own (the pieces
+    of a hollow head the stroke map cut off; wide staff-line scraps, `HOLLOW_INSIDE_HORIZONTAL_MAX_SP`, excluded) -- each at least `HOLLOW_CELL_MIN_SP2` of a staff space
+    squared. Paper joined to the outside of the block is no cell. Measured on the ink (the stroke map's masks), never on a box. Pure."""
+    import numpy as np
+    mem = [int(m) for m in members]
+    ink = list(mem)
+    for j, s in enumerate(strokes):
+        if j in mem or j >= len(masks) or share_inside(_box(s), box) < OWN_BOX_SHARE:
+            continue
+        if getattr(s, "kind", None) == "horizontal" and float(getattr(s, "length_sp", 0.0) or 0.0) > HOLLOW_INSIDE_HORIZONTAL_MAX_SP:
+            continue
+        ink.append(j)
+    ms = [masks[m] for m in ink if 0 <= m < len(masks)]
+    if not ms:
+        return 0
+    x0 = min(int(x) for _m, x, _y in ms)
+    y0 = min(int(y) for _m, _x, y in ms)
+    x1 = max(int(x) + np.asarray(m).shape[1] for m, x, _y in ms)
+    y1 = max(int(y) + np.asarray(m).shape[0] for m, _x, y in ms)
+    u = np.zeros((y1 - y0 + 2, x1 - x0 + 2), bool)
+    for m, x, y in ms:
+        m = np.asarray(m).astype(bool)
+        u[int(y) - y0 + 1:int(y) - y0 + 1 + m.shape[0], int(x) - x0 + 1:int(x) - x0 + 1 + m.shape[1]] |= m
+    spl = float(getattr(strokes[mem[0]], "staff_space_local", None) or 0.0) if mem and mem[0] < len(strokes) else 0.0
+    sp_px = max(1e-6, spl * float(scale or 1.0))          # a staff space in the masks' raster
+    seen = np.zeros(u.shape, bool)
+    H, W = u.shape
+    cells = 0
+    for sy in range(H):
+        for sx in range(W):
+            if u[sy, sx] or seen[sy, sx]:
+                continue
+            stack, area, edge = [(sy, sx)], 0, False
+            seen[sy, sx] = True
+            while stack:
+                y, x = stack.pop()
+                area += 1
+                if y in (0, H - 1) or x in (0, W - 1):
+                    edge = True
+                for ny, nx in ((y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)):
+                    if 0 <= ny < H and 0 <= nx < W and not u[ny, nx] and not seen[ny, nx]:
+                        seen[ny, nx] = True
+                        stack.append((ny, nx))
+            if not edge and area >= HOLLOW_CELL_MIN_SP2 * sp_px * sp_px:
+                cells += 1
+    return cells
+
+
+def stack_note(box: Sequence[float], members: Sequence[int], anchor_y: float, heads: Sequence[Head], strokes: Sequence[Any], masks: Sequence[Any], scale: float,
+               sp: float, barlines: Sequence[Dict[str, Any]], count: Any) -> Optional[Head]:
+    """The note a filled-in sharp is just before, measured by INK (ROADMAP 2.352 r3, `head_beside_ink`): from the block's right ink edge to the head's left ink edge, at most
+    `STACK_HEAD_GAP_MAX_SP`, in its own bar. Refusals in words: `fused_stack:note_across_barline`, `fused_stack:no_note_beside`. Pure but for `count`."""
+    edges = ink_x_edges(masks, scale, members)
+    h = None if edges is None else head_beside_ink(box, edges[1], anchor_y, heads, strokes, masks, scale, members, sp, barlines, STACK_HEAD_GAP_MAX_SP)
+    if h is None:
+        across = bool(barlines) and edges is not None and head_beside_ink(box, edges[1], anchor_y, heads, strokes, masks, scale, members, sp, (), STACK_HEAD_GAP_MAX_SP) is not None
+        count("fused_stack:" + ("note_across_barline" if across else "no_note_beside"))
     return h
 
 
@@ -428,7 +583,7 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
         if w < STACK_W_MIN_FRAC * size[0]:
             count("fused_stack:too_narrow")            # a sharp is about one space wide: a thinner block is part of another mark (an f's stem, a rest's stroke)
             continue
-        h = note_of(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("sharp") or 0.5), heads, spl, barlines, count, "fused_stack:", STACK_HEAD_GAP_MAX_SP)
+        h = stack_note(ub, mem, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("sharp") or 0.5), heads, strokes, masks, scale, spl, barlines, count)
         if h is None:
             continue
         c = stack_corners(masks, mem, scale)
@@ -515,6 +670,14 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
         reasons["fused_sharp_pair"] = sum(1 for c in pairs if c["how"] == "sharp_pair")
         reasons["fused_sharp_stack"] = sum(1 for c in out if c.get("how") == "sharp_stack")
     out = fold_twins(out, merge=fused)
+    if masks:
+        kept = []
+        for c in out:
+            if c["type"] == "sharp" and paper_cells(strokes, masks, c["members"], c["box"], scale) >= HOLLOW_HEADS_CELLS_MIN:
+                count("hollow_heads")          # two hollow heads a third apart on a stem, not a sharp: left unclaimed, never re-read as anything else
+                continue
+            kept.append(c)
+        out = kept
     reasons["claimed"] = len(out)
     return out, reasons
 

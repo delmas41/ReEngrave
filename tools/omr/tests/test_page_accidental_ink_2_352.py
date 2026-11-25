@@ -148,6 +148,96 @@ def test_the_barline_between_the_notehead_and_its_note_is_in_the_page_maps_barli
     assert PAI.barline_between(c["box"][2], c["head"][0], y, meta["barlines"])
 
 
+# ── round 3: nearness by INK, and two hollow heads are not a sharp ─────────────────────────────────────────────────────────
+
+HEADS_MID_BAR = "litolff_p13_two_half_heads_sean"     # Sean 2026-11-25: "two half note heads, a third apart" (main: a sharp, stroke reader, margin 0.07)
+HEAD_MERGED = "litolff_p12_sharp_head_merged"         # a real sharp whose head the stroke map merged into the sharp's bars (head box 1269, ink merged back to 1254)
+
+
+def ink_gap(name, c, meta, strokes, masks, heads):
+    members = c["members"]
+    edges = PAI.ink_x_edges(masks, meta["scale"], members)
+    spl = float(strokes[members[0]].staff_space_local or meta["sp"])
+    left = PAI.head_ink_left(strokes, masks, meta["scale"], PAI.Head(tuple(c["head"]), c["head_conf"], c["head_key"]), members)
+    return None if (edges is None or left is None) else (left - edges[1]) / spl
+
+
+def test_two_hollow_heads_a_third_apart_are_not_a_sharp_mid_bar():
+    # barlines withheld: main's reader without the round-2 barline ground, i.e. the same ink with its note in its own bar (the mid-bar case)
+    meta, strokes, masks, found, why = read(HEADS_MID_BAR, barlines=False)
+    assert not covering(found, meta["glyph_box"])
+    assert why.get("hollow_heads") == 1                  # counted in words, never silent
+    assert not [c for c in found if covering([c], meta["glyph_box"])]          # never turned into another answer
+
+
+def test_the_two_hollow_heads_are_also_left_where_their_note_is_across_a_barline():
+    # round 2's own ground, on the same real mark (its note lies across the barline there)
+    meta, strokes, masks, found, why = read(HEADS_MID_BAR)
+    assert not covering(found, meta["glyph_box"]) and why.get("note_across_barline") == 1
+
+
+def test_the_two_hollow_heads_are_claimed_as_a_sharp_without_the_ground_so_the_control_can_fail():
+    saved = PAI.HOLLOW_HEADS_CELLS_MIN
+    PAI.HOLLOW_HEADS_CELLS_MIN = 99
+    try:
+        meta, strokes, masks, found, why = read(HEADS_MID_BAR, barlines=False)
+    finally:
+        PAI.HOLLOW_HEADS_CELLS_MIN = saved
+    got = covering(found, meta["glyph_box"])
+    assert len(got) == 1 and got[0]["type"] == "sharp" and got[0].get("how") is None and got[0]["why"] == "stems_level"
+
+
+def test_the_hollow_heads_show_three_cells_of_paper_where_no_judged_sharp_shows_more_than_one():
+    saved = PAI.HOLLOW_HEADS_CELLS_MIN
+    PAI.HOLLOW_HEADS_CELLS_MIN = 99
+    try:
+        meta, strokes, masks, found, why = read(HEADS_MID_BAR, barlines=False)
+    finally:
+        PAI.HOLLOW_HEADS_CELLS_MIN = saved
+    c = covering(found, meta["glyph_box"])[0]
+    assert PAI.paper_cells(strokes, masks, c["members"], c["box"], meta["scale"]) >= PAI.HOLLOW_HEADS_CELLS_MIN
+    for name in STACK_TRUE + OTHER_TRUE + [SEAN_SHARP]:                  # the other side, every judged sharp
+        m, s, mk, f, w = read(name)
+        got = covering(f, m["glyph_box"])[0]
+        assert PAI.paper_cells(s, mk, got["members"], got["box"], m["scale"]) <= 1, name
+        assert not w.get("hollow_heads"), name
+
+
+@pytest.mark.parametrize("name,lo,hi", [("litolff_p12_sharp_sean", -0.1, 0.3), ("litolff_p12_12_0_2_1_7_sharp", -0.3, 0.2), ("brahms_p7_7_1_5_0_15_sharp", 0.1, 0.5)])
+def test_the_judged_sharps_stand_this_far_from_their_note_by_ink(name, lo, hi):
+    # measured by the ink edges (Sean 2026-11-18: join and separate by ink): the p12 sharp's box edge said -0.2; its ink touches its note's stem (0.06)
+    meta, strokes, masks, found, why = read(name)
+    c = covering(found, meta["glyph_box"])[0]
+    assert lo <= ink_gap(name, c, meta, strokes, masks, None) <= hi
+
+
+def test_the_quarter_rests_note_is_far_by_ink_too():
+    saved = PAI.STACK_HEAD_GAP_MAX_SP
+    PAI.STACK_HEAD_GAP_MAX_SP = 9.0
+    try:
+        meta, strokes, masks, found, why = read(REST)
+    finally:
+        PAI.STACK_HEAD_GAP_MAX_SP = saved
+    c = covering(found, meta["glyph_box"])[0]
+    assert ink_gap(REST, c, meta, strokes, masks, None) > PAI.STACK_HEAD_GAP_MAX_SP + 0.5     # room below the cut, measured on Sean's rest
+
+
+def test_a_head_the_stroke_map_merged_into_its_sharp_is_still_the_note_beside_it():
+    # real Litolff p12 [1253,1685,1269,1733]: a sharp the map merged with its head (one stroke from x 1254); the head's ink counts from its own box, so the note stays beside
+    meta, strokes, masks, found, why = read(HEAD_MERGED)
+    got = covering(found, meta["glyph_box"])
+    assert len(got) == 1 and got[0].get("how") == "sharp_stack"
+    assert -0.1 <= ink_gap(HEAD_MERGED, got[0], meta, strokes, masks, None) <= 0.4
+
+
+def test_head_ink_left_is_clipped_to_the_heads_own_box():
+    mk = np.ones((6, 40), bool)
+    strokes = [SimpleNamespace(box=(100, 0, 40, 6), kind="blob")]
+    head = PAI.Head((120, 0, 140, 6), 0.9, "h")
+    assert PAI.head_ink_left(strokes, [(mk, 100, 0)], 1.0, head) == 120.0          # the merged piece left of the head is the sharp's
+    assert PAI.head_ink_left(strokes, [(mk, 100, 0)], 1.0, PAI.Head((300, 0, 320, 6), 0.9, "h")) is None     # no ink in the box: no note beside
+
+
 def test_barline_ground_unit():
     bar = [{"box": (100, 0, 106, 400), "slope": 0.0, "intercept": 103.0}]
     assert PAI.barline_between(90, 120, 200, bar)
