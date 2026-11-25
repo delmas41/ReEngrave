@@ -1,0 +1,13 @@
+{
+  "set": "2.352-declined",
+  "date": "2026-11-25",
+  "question": "What is the ink in the orange box? (three Litolff marks main reads as a sharp and the 2.352 fix would let go)",
+  "answered_by": "Sean",
+  "verbatim": "Tau 1 is a sharp, Tau 2 is a quarter note rest, Tau 3 is a part of an F. That's actually a part of sforzando.",
+  "answers": [
+    {"tile": 1, "file": "tile1_litolff_p12.png", "doc": "litolff", "page": 12, "box": [1249, 744, 1265, 797], "answer": "a sharp"},
+    {"tile": 2, "file": "tile2_litolff_p10.png", "doc": "litolff", "page": 10, "box": [1564, 2933, 1580, 2986], "answer": "a quarter note rest"},
+    {"tile": 3, "file": "tile3_litolff_p10.png", "doc": "litolff", "page": 10, "box": [2081, 421, 2089, 461], "answer": "part of an f; part of a sforzando"}
+  ],
+  "ours": "Sean's 'Tau' read as 'Tile' (dictation). Tile 1: the 2.352 cut (paper between the uprights, 0.15 sp) releases a REAL sharp -> the cut is wrong as built; lane-2.352 is not landed. Tiles 2 and 3: main's sharp claim is wrong there and the fix is right to let go."
+}

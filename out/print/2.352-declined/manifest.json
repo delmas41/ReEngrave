@@ -1,0 +1,62 @@
+[
+ {
+  "file": "tile1_litolff_p12.png",
+  "doc": "litolff",
+  "page": 12,
+  "box_lane_px": [
+   1249,
+   744,
+   1265,
+   797
+  ],
+  "scale": 5,
+  "crop_page_px": [
+   1162,
+   682,
+   1352,
+   828
+  ],
+  "staff_space_px": 15.75,
+  "question": "Is the ink in the orange box a sharp?"
+ },
+ {
+  "file": "tile2_litolff_p10.png",
+  "doc": "litolff",
+  "page": 10,
+  "box_lane_px": [
+   1564,
+   2933,
+   1580,
+   2986
+  ],
+  "scale": 5,
+  "crop_page_px": [
+   1478,
+   2902,
+   1666,
+   3030
+  ],
+  "staff_space_px": 15.75,
+  "question": "Is the ink in the orange box a sharp?"
+ },
+ {
+  "file": "tile3_litolff_p10.png",
+  "doc": "litolff",
+  "page": 10,
+  "box_lane_px": [
+   2081,
+   421,
+   2089,
+   461
+  ],
+  "scale": 5,
+  "crop_page_px": [
+   1990,
+   384,
+   2180,
+   510
+  ],
+  "staff_space_px": 15.75,
+  "question": "Is the ink in the orange box a sharp?"
+ }
+]
