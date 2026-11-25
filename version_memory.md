@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-24 -- 2.344 LANDED: an arc between the same notes is a tie, printed accidental or not (STAGED ADJUDICATE `arc_kind` / `_page_binding`; flag `OMR_ARC_TIE_SAME_NOTES`, default ON)
+Rule: an arc between the same notes is a tie; a printed accidental on the tied-to note that repeats the start's is a courtesy, never a reason to call the arc a slur (Sean, 2026-11-24, in DECISIONS and page-facts). Measured on the Litolff p6-p7 replay: ties 36 -> 37, slurs 8 -> 8, judged totals unchanged; one other slur->tie flip at p6 system 1 staff 4 (glyph/6/1/4/4/8 + glyph/6/1/4/5/3) is NOT yet checked against the print. Limits: decides only when both notes carry a printed accidental; the never-case control is the real bar with one fact changed, and no real slur with a pitch-changing stop accidental was found; not measured on Brahms. Flag rows added to docs/flags-2026-09.md.
+
 ## 2026-11-24 -- judged index: the 18 Set H "Tie" answers (2.164-review) are scored as "an arc, not a note"; tile 10 also carries Sean's slur answer (STAGED measuring; no flag)
 
 Sean's 2026-10-17 "Tie" answered "is the box a note?"; the index had read it as an arc-KIND claim (tie). `answers.json` tiles may now carry `scored_as` (`judged.item_rows` honours it; his words are untouched) and `later_answers` (his later words, kept beside the first). The 18 are retyped to `not_a_note` (value `arc`; the scorer asks only whether the box is refused as a note). Tile 10 also records today's slur answer. `judged_compare.py` prints the `still_wrong` list (`lane_report.compare_judged`, f6a561e68). Litolff 20261123-night: tile 10 wrong -> right; 5 other Litolff Set H tiles not_found -> right (the refusal verdict is now what they ask for); right->wrong 0.
