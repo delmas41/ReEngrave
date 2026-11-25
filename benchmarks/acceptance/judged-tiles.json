@@ -30270,19 +30270,37 @@
   },
   {
    "answer": "That is a notehead but the stem ink is broken",
-   "answer_kind": "other",
+   "answer_kind": "is_a_note",
    "control": false,
    "date": "2026-11-25",
    "doc": "litolff",
    "followup": false,
    "item": "2.347-leaves",
-   "page_box": null,
-   "question_kind": "unknown",
+   "mark_kind": "note",
+   "page_box": [
+    619.39,
+    3468.3225,
+    641.5975,
+    3489.9
+   ],
+   "position": {
+    "cell": 0,
+    "page": 10,
+    "page_box": [
+     619.39,
+     3468.3225,
+     641.5975,
+     3489.9
+    ],
+    "staff": 9,
+    "system": 1
+   },
+   "question_kind": "identity",
    "subject": "glyph/10/1/9/0/5",
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "1",
-   "value": null
+   "value": true
   },
   {
    "answer": "8th note on first ledger line",
