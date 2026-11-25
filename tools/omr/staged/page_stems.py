@@ -379,7 +379,8 @@ def _outline_leaves_one_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[int,
 OTHER_STEM_HOW = "other_stroke_is_anothers_stem"
 
 
-def _untouched_is_anothers_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[int, Dict[str, Any]], heads: Sequence[Dict[str, Any]]) -> bool:
+def _untouched_is_anothers_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[int, Dict[str, Any]], heads: Sequence[Dict[str, Any]],
+                                hink: Optional[Dict[Any, set]] = None) -> bool:
     """ROADMAP 2.306 r23 (the retire step's biggest cause, `one_touches`: 20 Litolff + 15 Brahms written heads the old join still answered). A
     stroke up and a stroke down stand at a head and the head's ink touches only one. The untouched stroke `o` (a `d` stem from this head) is
     ANOTHER head's stem -- never this one's -- where the page already stands another head on it and
@@ -390,13 +391,19 @@ def _untouched_is_anothers_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[i
         stem, the lower the down stem; our look, 11 heads: divisi seconds and thirds).
     Never where no other head stands on the stroke (it may be this head's own second voice whose contact the map missed: Litolff 6/1/3/1/1,
     10/1/10/11/1, Brahms 8/0/3/1/10 stay unresolved), never where a head on it stands level with or on this head's own side (the stroke
-    would pass this head on its way to that one: a chord's stem). Pure."""
+    would pass this head on its way to that one: a chord's stem), never where a head on it is THIS note seen again -- its ink is this head's
+    ink (Litolff 8/1/1/15/3: a stem-end box filed from the staff above, on this head's own oval, held the upper voice's stem; the head is
+    shared by two voices) -- and never where no head on it has ink of its own on the map. `hink`: each head's own ink (`head_ink`). Pure."""
     s = stems.get(int(o))
     if not s:
         return False
     others = [k for k in s["heads"] if k != h["id"]]
     if not others:
         return False
+    if hink is not None:
+        mine = hink.get(h["id"]) or set()
+        if any((hink.get(k) or set()) & mine for k in others) or not any(hink.get(k) for k in others):
+            return False
     if s["directions"] != {d}:
         return True
     hb = {k["id"]: k for k in heads}
@@ -411,18 +418,19 @@ def _untouched_is_anothers_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[i
 
 
 def _is_the_stem_of_the_head_it_ends_at(h: Dict[str, Any], o: int, d: str, stems: Dict[int, Dict[str, Any]], heads: Sequence[Dict[str, Any]],
-                                        vbox: Optional[Dict[int, Any]]) -> bool:
+                                        vbox: Optional[Dict[int, Any]], hink: Optional[Dict[Any, set]] = None) -> bool:
     """ROADMAP 2.306 r23 (the retire step's next cause, `ends_at_another_head`). A stroke at head `h` that would be its `d` stem, whose far end
     stops at ANOTHER head, is that head's own stem where that head reads it pointing AWAY from itself (the other way from `d`): a stem has one
     head end, and that end is at the other head (our look, Litolff 4/1/8/5/5: the upper note's down stem runs past this head's right edge to the
     beam; 2/0/7/1/5, 4/1/2/4/9, 4/1/7/4/18 the same). The other head must be a note with its own head ink (the 2.290 oval) -- never a box
     with no oval at a stem's tip (Brahms 5/1/5/0: a box on a staccato dot), never a head that reads the stroke the same way as this one (that
-    is the r19 outline question, or two voices). Pure."""
+    is the r19 outline question, or two voices), never this note seen again (a head whose ink is this head's ink). Pure."""
     s = stems.get(int(o))
     if not s or s["directions"] == {d} or len(s["directions"]) != 1:
         return False
     hb = {k["id"]: k for k in heads}
-    owners = [hb[k] for k in s["heads"] if k != h["id"] and k in hb and hb[k].get("ink")]
+    mine = (hink or {}).get(h["id"]) or set()
+    owners = [hb[k] for k in s["heads"] if k != h["id"] and k in hb and hb[k].get("ink") and not ((hink or {}).get(k) or set()) & mine]
     return bool(owners) and _ends_at_another_head(h, int(o), d, owners, vbox)
 
 
@@ -483,7 +491,7 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how="other_stroke_is_an_outline")
             continue
         if (len(keep) == 1 and len(outline) == 1 and float(by_dir[keep[0]].get("reach") or 0.0) >= UNISON_REACH_SP
-                and _is_the_stem_of_the_head_it_ends_at(h, int(by_dir[outline[0]]["stroke"]), outline[0], stems, heads, vbox)
+                and _is_the_stem_of_the_head_it_ends_at(h, int(by_dir[outline[0]]["stroke"]), outline[0], stems, heads, vbox, hink)
                 and _outline_leaves_one_stem(h, int(by_dir[keep[0]]["stroke"]), keep[0], stems)):
             # ROADMAP 2.306 r23 (`ends_at_another_head`, 14 written Litolff heads the old join answered): the stroke that ends at another head
             # is THAT head's stem, read by it pointing away from it -- so the other, touching this head and a stem's length, is this head's
@@ -499,7 +507,7 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             other = "down" if d == "up" else "up"
             if (float(by_dir[d].get("reach") or 0.0) >= UNISON_REACH_SP
                     and _outline_leaves_one_stem(h, int(by_dir[d]["stroke"]), d, stems)
-                    and _untouched_is_anothers_stem(h, int(by_dir[other]["stroke"]), other, stems, heads)):
+                    and _untouched_is_anothers_stem(h, int(by_dir[other]["stroke"]), other, stems, heads, hink)):
                 # ROADMAP 2.306 r23: the head touches one stroke; the other is ANOTHER head's stem (`_untouched_is_anothers_stem`), so the
                 # one it touches is its stem
                 c = by_dir[d]

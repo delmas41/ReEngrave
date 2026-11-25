@@ -80,6 +80,23 @@ def test_never_when_the_untouched_stroke_holds_no_other_head(name):
     assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
 
 
+def test_never_when_the_other_head_on_the_stroke_is_this_note_seen_again():
+    """Litolff 8/1/1/15/3 (found on the r23 full sample, our look at 3x): three eighths beamed above on up stems AND below on down stems --
+    the third head is shared by two voices. Its up stem is held by a stem-end box filed from the staff above, standing on this head's own
+    oval (the same ink). That box is this note again, not another head: left unresolved (the first build gave the head only its down stem and
+    the upper voice lost its eighth). The control can fail: without the head-ink comparison the rule takes the down stem."""
+    w, heads, verts, held, cross, strokes = _window("never_same_note_litolff_8_1_1_15_3")
+    res = PS.read(heads, verts, held, crossers=cross, strokes=strokes)
+    got = res["heads"][w["head"]]
+    assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
+    up = next(c for c in got["candidates"] if c["direction"] == "up")
+    stems = {int(o): dict(s, directions=set(s["directions"])) for o, s in res["stems"].items()}
+    h = next(x for x in heads if x["id"] == w["head"])
+    hink = PS.head_ink(heads, strokes, held)
+    assert not PS._untouched_is_anothers_stem(h, int(up["stroke"]), "up", stems, heads, hink)
+    assert PS._untouched_is_anothers_stem(h, int(up["stroke"]), "up", stems, heads)
+
+
 def test_never_when_both_strokes_touch_the_head():
     """Litolff 4/1/5/6/2: both strokes touch the head's ink and the up stroke also holds another head -- left `stroke_holds_another_head` as
     before. The control can fail the other way: the up stroke IS another head's stem (`_untouched_is_anothers_stem` says so), so only the
