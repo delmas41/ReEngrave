@@ -340,12 +340,43 @@ def head_ink_left(strokes: Sequence[Any], masks: Sequence[Any], scale: float, he
     return best
 
 
+def head_staff(hd: Head) -> Optional[Tuple[int, int]]:
+    """`(system, staff)` of the cell a detector head box was read in (its key is that cell's subject key), or None where the key names none. Pure."""
+    try:
+        from .record import Subject
+        sub = Subject.from_key(hd.key)
+        return (int(sub.system), int(sub.staff))
+    except Exception:
+        return None
+
+
+def stroke_staves(pm: Any, local: Dict[int, Tuple[int, int]]) -> List[Optional[Tuple[int, int]]]:
+    """ROADMAP 2.352 r4: per page stroke, `(system, staff)` of the staff the page map read it against (`PageMap.staff_of`: the staff its centre lies within, else the
+    nearest) -- a fact the page pass already holds. None where the page has no such staff. Pure."""
+    out: List[Optional[Tuple[int, int]]] = []
+    for pi, _loc in (getattr(pm, "staff_of", None) or ()):
+        out.append(local.get(int(pi)))
+    return out
+
+
+def own_staff_of(members: Sequence[int], stroke_staff: Sequence[Optional[Tuple[int, int]]]) -> Optional[Tuple[int, int]]:
+    """ROADMAP 2.352 r4: the staff a mark's ink is printed on -- the one staff every one of its strokes is read against; None where they name two staves or none. Pure."""
+    names = {stroke_staff[m] if 0 <= m < len(stroke_staff) else None for m in members}
+    return next(iter(names)) if len(names) == 1 and None not in names else None
+
+
 def head_beside_ink(box: Sequence[float], x_right: float, anchor_y: float, heads: Sequence[Head], strokes: Sequence[Any], masks: Sequence[Any], scale: float,
-                    members: Sequence[int], sp: float, barlines: Sequence[Dict[str, Any]] = (), gap_max_sp: float = HEAD_GAP_MAX_SP) -> Optional[Head]:
+                    members: Sequence[int], sp: float, barlines: Sequence[Dict[str, Any]] = (), gap_max_sp: float = HEAD_GAP_MAX_SP,
+                    own_staff: Optional[Tuple[int, int]] = None, count: Any = None) -> Optional[Head]:
     """`head_beside` measured by INK (ROADMAP 2.352 r3): the head whose own ink starts nearest right of the claim's ink edge `x_right` (page px), at most `gap_max_sp`
     right of it and at most `HEAD_DY_MAX_SP` from `anchor_y`, with no barline between the claim's ink and the head's. A head with no ink in its box is no note beside.
-    The never: a note across a barline. Pure."""
-    best, best_gap = None, None
+    The never: a note across a barline.
+    ROADMAP 2.352 r4, the rule: a sharp belongs to the note it stands before, on the staff the sharp itself is printed on (`own_staff`, `own_staff_of`). The page sees one
+    printed note as twin detector boxes, one per neighbouring staff's cell; their ink edges are whole pixels, so the twins tie, and a tie is never settled by list order:
+    among the heads as near as the nearest (within one ink pixel), those read on the sharp's own staff are the pool; within the pool, and where the sharp's strokes name no one
+    staff or no tied head is read on it, the choice is main's (`head_beside`: the nearest box edge), and a tie across staves it could not settle is counted
+    (`fused_stack:head_tie_kept_main`). Pure but for `count`."""
+    cands: List[Tuple[float, Head]] = []
     for hd in heads:
         if share_inside(hd.box, box) >= OWN_BOX_SHARE or share_inside(box, hd.box) >= OWN_BOX_SHARE:
             continue
@@ -357,9 +388,23 @@ def head_beside_ink(box: Sequence[float], x_right: float, anchor_y: float, heads
         gap = (left - x_right) / sp
         if not (-0.3 <= gap <= gap_max_sp) or (barlines and barline_between(x_right, left, anchor_y, barlines)):
             continue
-        if best is None or gap < best_gap:
-            best, best_gap = hd, gap
-    return best
+        cands.append((gap, hd))
+    if not cands:
+        return None
+    tol = (1.0 / float(scale or 1.0)) / sp                  # one ink pixel, in spaces: the edges are whole pixels
+    gmin = min(g for g, _ in cands)
+    tied = [(g, hd) for g, hd in cands if g <= gmin + tol]
+    if len(tied) == 1:
+        return tied[0][1]
+    pool = tied
+    if own_staff is not None:
+        mine = [(g, hd) for g, hd in tied if head_staff(hd) == own_staff]
+        if mine:
+            pool = mine
+    if pool is tied and len({head_staff(hd) for _g, hd in tied}) > 1 and count is not None:
+        count("fused_stack:head_tie_kept_main")
+    # within the pool main's own choice (`head_beside`: the nearest box edge) stands; only a pool that choice cannot name falls back to the nearest ink
+    return head_beside(box, anchor_y, [hd for _g, hd in pool], sp, barlines, gap_max_sp) or min(pool, key=lambda t: t[0])[1]
 
 
 def left_of_header(box: Sequence[float], header: Sequence[Sequence[float]]) -> bool:
@@ -451,11 +496,12 @@ def paper_cells(strokes: Sequence[Any], masks: Sequence[Any], members: Sequence[
 
 
 def stack_note(box: Sequence[float], members: Sequence[int], anchor_y: float, heads: Sequence[Head], strokes: Sequence[Any], masks: Sequence[Any], scale: float,
-               sp: float, barlines: Sequence[Dict[str, Any]], count: Any) -> Optional[Head]:
+               sp: float, barlines: Sequence[Dict[str, Any]], count: Any, stroke_staff: Sequence[Optional[Tuple[int, int]]] = ()) -> Optional[Head]:
     """The note a filled-in sharp is just before, measured by INK (ROADMAP 2.352 r3, `head_beside_ink`): from the block's right ink edge to the head's left ink edge, at most
     `STACK_HEAD_GAP_MAX_SP`, in its own bar. Refusals in words: `fused_stack:note_across_barline`, `fused_stack:no_note_beside`. Pure but for `count`."""
     edges = ink_x_edges(masks, scale, members)
-    h = None if edges is None else head_beside_ink(box, edges[1], anchor_y, heads, strokes, masks, scale, members, sp, barlines, STACK_HEAD_GAP_MAX_SP)
+    h = None if edges is None else head_beside_ink(box, edges[1], anchor_y, heads, strokes, masks, scale, members, sp, barlines, STACK_HEAD_GAP_MAX_SP,
+                                                   own_staff_of(members, stroke_staff), count)
     if h is None:
         across = bool(barlines) and edges is not None and head_beside_ink(box, edges[1], anchor_y, heads, strokes, masks, scale, members, sp, (), STACK_HEAD_GAP_MAX_SP) is not None
         count("fused_stack:" + ("note_across_barline" if across else "no_note_beside"))
@@ -544,7 +590,8 @@ def stack_corners(masks: Sequence[Any], members: Sequence[int], scale: float) ->
 
 
 def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
-                 masks: Sequence[Any], scale: float, count: Any, barlines: Sequence[Dict[str, Any]] = ()) -> List[Dict[str, Any]]:
+                 masks: Sequence[Any], scale: float, count: Any, barlines: Sequence[Dict[str, Any]] = (),
+                 stroke_staff: Sequence[Optional[Tuple[int, int]]] = ()) -> List[Dict[str, Any]]:
     """A SHARP FILLED IN TO ONE BLOCK (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): a group of strokes the stroke map cut from ONE fused piece
     (`joined_to`), none of them a stem, a horizontal or a curve, about one sharp tall (`STACK_H_MIN_FRAC`..`STACK_H_MAX_FRAC` of its glyph) and at
     most `STACK_W_MAX_SP` wide and at least `STACK_W_MIN_FRAC` of a sharp's width, ink in both its lower-left and upper-right corners (`accidental_shape`: a sharp), a note
@@ -583,7 +630,7 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
         if w < STACK_W_MIN_FRAC * size[0]:
             count("fused_stack:too_narrow")            # a sharp is about one space wide: a thinner block is part of another mark (an f's stem, a rest's stroke)
             continue
-        h = stack_note(ub, mem, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("sharp") or 0.5), heads, strokes, masks, scale, spl, barlines, count)
+        h = stack_note(ub, mem, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("sharp") or 0.5), heads, strokes, masks, scale, spl, barlines, count, stroke_staff)
         if h is None:
             continue
         c = stack_corners(masks, mem, scale)
@@ -602,7 +649,8 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
 def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], held: Sequence[Sequence[float]],
               reads: Sequence[Sequence[float]] = (), held_ids: Sequence[int] = (),
               header: Sequence[Sequence[float]] = (), held_by: Optional[Dict[int, str]] = None, *, fused: bool = False,
-              masks: Sequence[Any] = (), scale: float = 1.0, barlines: Sequence[Dict[str, Any]] = ()) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+              masks: Sequence[Any] = (), scale: float = 1.0, barlines: Sequence[Dict[str, Any]] = (),
+              stroke_staff: Sequence[Optional[Tuple[int, int]]] = ()) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The finder over every vertical stroke of the page (module doc). Returns the clusters that pass (each `{members, box, type, why, margin, standing, head,
     candidates, fam}`) and the refusal-reason counts. Pure: strokes in, dicts out. `header`: the system-start header claims' rectangles (`left_of_the_clef`).
     `held_by` (ROADMAP 2.288): `{stroke ordinal: owner}` of the ledger's page-stroke claims; where given, a seed stroke the LEDGER holds is counted `claimed_by:<owner>` (the one consult's
@@ -665,7 +713,7 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
         pairs = accidental_pairs(strokes, sp, heads, boxed, taken | blocked, header, count, barlines)       # a real head's blob is never a bar
         out.extend(pairs)
         taken |= {m for c in pairs for m in c["members"]}
-        out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count, barlines))
+        out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count, barlines, stroke_staff))
         reasons["fused_natural_pair"] = sum(1 for c in pairs if c["how"] == "natural_pair")
         reasons["fused_sharp_pair"] = sum(1 for c in pairs if c["how"] == "sharp_pair")
         reasons["fused_sharp_stack"] = sum(1 for c in out if c.get("how") == "sharp_stack")
@@ -871,7 +919,7 @@ def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: 
     # (`claimed_by:rest`); a weak rest box blocks nobody, by rule: only a READ rest claims. `enabled()` already required the rest claims to be on.
     found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids, header_claims(log, sub), earlier_owners(log, sub),
                                fused=fused_enabled(), masks=getattr(pm, "masks", None) or (), scale=float(getattr(pm, "scale", 1.0) or 1.0),
-                               barlines=getattr(pm, "barlines", None) or ())
+                               barlines=getattr(pm, "barlines", None) or (), stroke_staff=stroke_staves(pm, local))
     if not file:
         return found, reasons
     glyphs = file_own_accidentals(log, found, cells, local)

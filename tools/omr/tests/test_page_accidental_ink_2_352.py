@@ -48,12 +48,13 @@ def region(name):
     return meta, strokes, masks, heads
 
 
-def read(name, fused=True, barlines=True):
+def read(name, fused=True, barlines=True, staves=True):
     meta, strokes, masks, heads = region(name)
     found, why = PAI.read_page(strokes, meta["sp"], heads, [tuple(b) for b in meta["boxed"]], [tuple(r) for r in meta["rects"]],
                                [tuple(r) for r in meta["reads"]], meta["held_ids"], [tuple(r) for r in meta["header"]],
                                {int(k): v for k, v in meta["owners"].items()}, fused=fused, masks=masks, scale=meta["scale"],
-                               barlines=meta["barlines"] if barlines else ())
+                               barlines=meta["barlines"] if barlines else (),
+                               stroke_staff=[tuple(t) for t in meta["stroke_staff"]] if staves and meta.get("stroke_staff") else ())
     return meta, strokes, masks, found, why
 
 
@@ -251,3 +252,82 @@ def test_barline_ground_unit():
 def test_flag_default_unchanged_and_off_switch_still_off():
     meta, strokes, masks, found, why = read(NOTEHEAD, fused=False)
     assert not [c for c in found if c.get("how") == "sharp_stack"]
+
+
+# ── round 4: a sharp belongs to the note it stands before, on the staff the sharp itself is printed on ────────────────────────
+# The page sees one printed note as twin detector boxes, one per neighbouring staff's cell. Real Litolff p12 (the two sharps r3's ink-gap pick filed on staff 1's copy of
+# their note, which ADJUDICATE drops as `owned_by_another_staff`, so a real page read lost both): the sharps stand on staff 2 (`stroke_staff` = the page map's own
+# staff of each stroke, a fact already on the page pass).
+
+TWIN_SHARPS = ["litolff_p12_sharp_twin_boxes_a", "litolff_p12_sharp_twin_boxes_b"]
+
+
+def head_cell_staff(c):
+    return PAI.head_staff(PAI.Head(tuple(c["head"]), c["head_conf"], c["head_key"]))
+
+
+def read_with(meta, strokes, masks, heads, stroke_staff):
+    return PAI.read_page(strokes, meta["sp"], heads, [tuple(b) for b in meta["boxed"]], [tuple(r) for r in meta["rects"]], [tuple(r) for r in meta["reads"]],
+                         meta["held_ids"], [tuple(r) for r in meta["header"]], {int(k): v for k, v in meta["owners"].items()}, fused=True, masks=masks,
+                         scale=meta["scale"], barlines=meta["barlines"], stroke_staff=stroke_staff)
+
+
+@pytest.mark.parametrize("name", TWIN_SHARPS)
+def test_a_sharp_is_filed_on_the_staff_it_is_printed_on_not_on_its_twin_boxes_other_staff(name):
+    meta, strokes, masks, found, why = read(name)
+    got = covering(found, meta["glyph_box"])
+    assert len(got) == 1 and got[0].get("how") == "sharp_stack"
+    assert head_cell_staff(got[0]) == (1, 2)                                   # the sharp stands on system 1, staff 2
+    assert PAI.own_staff_of(got[0]["members"], [tuple(t) for t in meta["stroke_staff"]]) == (1, 2)
+
+
+@pytest.mark.parametrize("name", TWIN_SHARPS)
+def test_the_twin_boxes_tie_by_ink_so_only_the_sharps_own_staff_can_settle_them(name):
+    # the real tie: both twins' ink starts at the same whole pixel, one on each staff's cell
+    meta, strokes, masks, heads = region(name)
+    c = covering(read(name)[3], meta["glyph_box"])[0]
+    edges = PAI.ink_x_edges(masks, meta["scale"], c["members"])
+    lefts = {}
+    for hd in heads:                                         # the boxes of the one printed note: the claim's head and its twin in the neighbouring staff's cell
+        same_x = min(hd.box[2], c["head"][2]) - max(hd.box[0], c["head"][0]) >= 0.8 * (c["head"][2] - c["head"][0])
+        same_y = min(hd.box[3], c["head"][3]) > max(hd.box[1], c["head"][1])
+        if same_x and same_y and PAI.head_staff(hd) in ((1, 1), (1, 2)):
+            left = PAI.head_ink_left(strokes, masks, meta["scale"], hd, c["members"])
+            lefts.setdefault(PAI.head_staff(hd), []).append(left)
+    assert (1, 1) in lefts and (1, 2) in lefts and None not in lefts[(1, 1)] + lefts[(1, 2)]
+    assert abs(min(lefts[(1, 1)]) - min(lefts[(1, 2)])) <= 1.0 / meta["scale"]
+    assert 0 <= (min(lefts[(1, 2)]) - edges[1]) / meta["sp"] <= PAI.STACK_HEAD_GAP_MAX_SP
+
+
+@pytest.mark.parametrize("name", TWIN_SHARPS)
+def test_list_order_alone_files_the_sharp_on_the_wrong_staff_so_the_control_can_fail(name, monkeypatch):
+    # round 3's tip: no staff for the sharp and no box-edge pick -> the first tied head in list order. On the real ink that is staff 1's copy.
+    monkeypatch.setattr(PAI, "head_beside", lambda *a, **k: None)
+    meta, strokes, masks, found, why = read(name, staves=False)
+    assert head_cell_staff(covering(found, meta["glyph_box"])[0]) == (1, 1)
+
+
+@pytest.mark.parametrize("name", TWIN_SHARPS)
+def test_the_answer_does_not_depend_on_list_order(name):
+    meta, strokes, masks, heads = region(name)
+    ss = [tuple(t) for t in meta["stroke_staff"]]
+    staffs = [head_cell_staff(covering(read_with(meta, strokes, masks, order, ss)[0], meta["glyph_box"])[0]) for order in (heads, list(reversed(heads)))]
+    assert staffs == [(1, 2), (1, 2)]
+
+
+def test_a_sharp_whose_strokes_name_two_staves_keeps_mains_choice_and_counts_the_tie():
+    meta, strokes, masks, heads = region(TWIN_SHARPS[0])
+    mixed = [(1, 1) if i % 2 else (1, 2) for i in range(len(strokes))]          # the sharp's own strokes disagree about their staff
+    found, why = read_with(meta, strokes, masks, heads, mixed)
+    got = covering(found, meta["glyph_box"])
+    assert len(got) == 1                                                        # never dropped, never another answer
+    assert why.get("fused_stack:head_tie_kept_main", 0) >= 1                    # counted in words
+    assert head_cell_staff(got[0]) == (1, 2)                                    # main's choice (nearest box edge): the right one here
+
+
+def test_own_staff_of_is_none_where_strokes_disagree_or_have_none():
+    ss = [(0, 1), (0, 1), (0, 2), None]
+    assert PAI.own_staff_of([0, 1], ss) == (0, 1)
+    assert PAI.own_staff_of([1, 2], ss) is None
+    assert PAI.own_staff_of([0, 3], ss) is None
+    assert PAI.own_staff_of([], ss) is None
