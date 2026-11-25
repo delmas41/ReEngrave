@@ -8840,8 +8840,12 @@ def _sum_beats(ev: Evidence, cell: Subject, events) -> Optional[float]:
     one physical duration by construction; a rest is its own event). `None`
     where any event's representative glyph has no DECIDED `Q.DURATION` --
     rule 8: a bar with an unread duration cannot be said to sum OR not to.
+
+    ROADMAP 2.348 (b): a glyph `_glyph_left_the_bar` says left (a DECIDED not-a-note refusal; a refused box read as an eighth rest
+    stays) takes no time here either -- the one decision `_bar_lengths_for` made in 2.346, under the same flag.
     """
     total = 0.0
+    skip = bar_sum_skips_refused_enabled()
     for e in events:
         glyphs = sorted(e.get("_glyphs") or ())
         if not glyphs:
@@ -8849,6 +8853,14 @@ def _sum_beats(ev: Evidence, cell: Subject, events) -> Optional[float]:
         if e.get("unison_beats") is not None:
             total += float(e["unison_beats"])       # ROADMAP 2.175: this voice's own stem value
             continue
+        if skip:
+            # ROADMAP 2.348 (b): the SAME decision as the meter's bar sum (`_bar_lengths_for`, 2.346, flag `OMR_BAR_SUM_SKIPS_REFUSED`):
+            # a box already refused as not a note takes no time in its bar (`_glyph_left_the_bar`, a reinstated eighth rest stays).
+            # An event whose every glyph left takes no time; otherwise its first glyph that is still IN the bar stands for it. An
+            # undecided head is not "left", so it is still asked for below and the sum stays unknown.
+            glyphs = [g for g in glyphs if not _glyph_left_the_bar(ev, cell, g, reinstated_stays=True)]
+            if not glyphs:
+                continue
         rep = glyphs[0]
         sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
                       staff=cell.staff, cell=cell.cell, glyph=rep)
@@ -8999,11 +9011,12 @@ def _rest_own_voice_split(ev: Evidence, events):
     # head positions).
     composed_from=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-                   Q.NOTEHEAD_STAFF_POSITION),
+                   Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+           Q.NOTEHEAD_IS_AN_EIGHTH_REST),     # ROADMAP 2.348 (b): `_sum_beats` keeps a reinstated eighth rest in its bar
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
              "nothing_to_split", "one_voice_plus_displaced_whole_rest"),
