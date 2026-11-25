@@ -6168,6 +6168,8 @@ def _total_staff_count(ev: Evidence) -> Optional[int]:
     own docstring). `Q.SYSTEM_STAFF_COUNT` is already in `adjudicate_meter`'s
     `wants`, read the identical way at that decision's own top level.
     """
+    if ev is None:  # no evidence handed in: the count is unknown, and unknown silences nothing
+        return None
     v = ev.verdict(Q.SYSTEM_STAFF_COUNT)
     return v.value if v is not None and v.value else None
 
