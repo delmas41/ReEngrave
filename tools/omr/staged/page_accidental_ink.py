@@ -123,8 +123,8 @@ STACK_END_MAX_SP = 0.35
 #: bars paper shows between them; a solid block with one stub on it is noteheads on a broken stem, not a sharp. NEVER: release a real sharp.
 #: The widest paper between two inked parts of one row of the filled block's own ink (spaces), at least this much. Measured on the reader's own mask,
 #: both sides, real marks: Litolff p10 glyph/10/1/9/0/5 (Sean 2026-11-25: "a notehead but the stem ink is broken") 0.06 (one pixel); the four sharps this
-#: reader claims among 2.347's eleven judged-true cases 0.31-0.32 (five pixels); the other claims of those pages 0.06-0.39 (one unjudged below the cut
-#: on Litolff p12, one at 0.19 above it). A cut on ~16 px to the space with five judged marks: it only narrows -- what it declines is left unclaimed.
+#: reader claims among 2.347's eleven judged-true cases 0.31-0.32 (five pixels); the other 25 stack claims on Litolff p10/12/13 (unjudged) 0.19-0.39 except
+#: three at 0.00-0.06 (Litolff p10 x2, p12 x1: left unclaimed, not looked at by Sean). A cut on ~16 px to the space with five judged marks: it only narrows.
 STACK_TIP_GAP_MIN_SP = 0.15
 
 
