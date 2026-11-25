@@ -189,6 +189,9 @@ class _Bar:
     #: meter in force asks for), "voices": [Fraction counted per voice]}`.
     #: None everywhere else.
     red: Optional[Dict[str, Any]] = None
+    #: ROADMAP 2.345. The 2.333 spot words (`SX.DROPPED_HEAD_SPOT_WORD`) of a decided whole-bar rest bar: that bar's rest is built from the meter
+    #: alone (`_lily_measure_rest`), so the words an unwritten head filed on it cannot ride the event and are carried here.
+    spot_words: Tuple[str, ...] = ()
 
 
 def _lily_gap_text(gap_units: int, divisions: int,
@@ -740,6 +743,12 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                                  reason=SX._BAR_SUM_REFUSAL))
                 continue
 
+            # ROADMAP 2.345: the LILYPOND TWIN of `_part_xml`'s 2.333 spot mark -- the SAME gates (a bar that adds up and is not written red or in
+            # part, on a staff that is not a doubled copy, mode `spot`), so the two files cannot disagree about which bars carry it
+            if (red is None and cell is not None and cell.dropped_heads and not condensed
+                    and SX.dropped_head_marks_mode() == "spot"):
+                _attach_dropped_head_spots(cell.dropped_heads, streams, events)
+
             if (len(events) == 1 and events[0].get("kind") == "rest"
                     and (events[0].get("rest") or {}).get("measure_rest")):
                 # ⚠️ THE WHOLE-REST-MEANS-THE-BAR CONVENTION, READ OFF THE
@@ -757,7 +766,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                     judged if carried_meter_rest_enabled() else meter,
                     run.clef, key, directions=directions,
                     condensed=condensed,
-                    fermata=bool(events[0].get("fermata"))))
+                    fermata=bool(events[0].get("fermata")),
+                    spot_words=tuple(events[0].get("unread_spot_words") or ())))
                 continue
 
             # ⚠️ `streams` IS ALREADY COMPUTED, ABOVE, FOR THE HOLD-OUT CHECK
@@ -835,7 +845,52 @@ def _retouch_marks(ev: Dict[str, Any], dyn: str,
     return core[:i] + blue + core[i + a_len:] + dyn + wsuf
 
 
+def _attach_dropped_head_spots(dropped: Sequence[Dict[str, Any]], streams: Optional[Sequence[Sequence[Dict[str, Any]]]],
+                               events: Sequence[Dict[str, Any]]) -> int:
+    """ROADMAP 2.345: the LILYPOND TWIN of `_part_xml`'s 2.333 spot mark. The same place (`SX._dropped_head_place`: the voice nearest the head in x,
+    the events left of it) and the same words (`SX.DROPPED_HEAD_SPOT_WORD`); the words ride the written event that STANDS at that onset (the
+    one after the events to its left; the last, where it stands after them all), as `unread_spot_words`, drawn by `_unread_marks_suffix`.
+    No note, rest or time is written for the dropped head. Returns how many were placed (a voice with nothing printed to carry them places none)."""
+    voices = list(streams) if streams is not None else [events]
+    placed = 0
+    for d in dropped:
+        ordered, left = SX._dropped_head_place(d, voices)
+        for ev in ordered[left:] + ordered[:left][::-1]:
+            if ev.get("kind") not in SX._NOT_A_PRINTED_MARK:
+                ev.setdefault("unread_spot_words", []).append(SX.DROPPED_HEAD_SPOT_WORD)
+                placed += 1
+                break
+    return placed
+
+
+def _red_words_markup(words: Sequence[str]) -> str:
+    return "".join('^\\markup { \\with-color #red "%s" }' % _ly_escape(w) for w in words)
+
+
+def _unread_marks_suffix(ev: Dict[str, Any], counters: Optional[Dict[str, int]]) -> str:
+    """ROADMAP 2.345, the LILYPOND TWIN of the MusicXML red words that name an unread note: 2.343's `tie|slur|arc from|to unread note` /
+    `arc: tie or slur unread` (`unread_arc_words`, set on the heads by `export._mark_half_written_arcs`, the same words read, never re-listed)
+    and 2.333's `unread note` spot (`unread_spot_words`). Red words above the event; no note, rest or time is written."""
+    arc = list(dict.fromkeys(w for h in (ev.get("noteheads") or ()) for w in (h.get("unread_arc_words") or ())))
+    spot = list(ev.get("unread_spot_words") or ())
+    if counters is not None:
+        counters["arcs_marked_for_an_unread_note"] = counters.get("arcs_marked_for_an_unread_note", 0) + len(arc)
+        counters["dropped_head_spots_marked"] = counters.get("dropped_head_spots_marked", 0) + len(spot)
+    return _red_words_markup(arc + spot)
+
+
 def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
+                       dyns: Optional[Dict[int, str]] = None,
+                       counters: Optional[Dict[str, int]] = None,
+                       plain: bool = False) -> str:
+    """`_lily_event_status`, then the red words that name an unread note (ROADMAP 2.345; `_unread_marks_suffix`)."""
+    text = _lily_event_status(ev, wedges, dyns, counters, plain)
+    if ev.get("kind") in SX._NOT_A_PRINTED_MARK:
+        return text
+    return text + _unread_marks_suffix(ev, counters)
+
+
+def _lily_event_status(ev: Dict[str, Any], wedges: Dict[int, str],
                        dyns: Optional[Dict[int, str]] = None,
                        counters: Optional[Dict[str, int]] = None,
                        plain: bool = False) -> str:
@@ -932,6 +987,9 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
             rest += "\\fermata"
             counters["fermatas"] += 1
         rest += dyn
+        if bar.spot_words:
+            rest += _red_words_markup(bar.spot_words)
+            counters["dropped_head_spots_marked"] += len(bar.spot_words)
         if bar.reason is not None:
             # ⚠️⚠️ ROADMAP 3.5. THE MUSICXML TWIN: `staged.export.
             # _marked_empty_measure` colours the `<note>` and prepends a
@@ -1291,6 +1349,9 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         # same merged `slur_states`/`wedge_states` reach this renderer too.
         "cross_system_arcs_and_wedges": "handled, not dropped -- see module docstring",
         "two_voice_bars": int(counters.get("two_voice_bars", 0)),
+        # ROADMAP 2.345: the red words that name an unread note, DRAWN here (the MusicXML twin's own counters, same names)
+        "arcs_marked_for_an_unread_note": int(counters.get("arcs_marked_for_an_unread_note", 0)),
+        "dropped_head_spots_marked": int(counters.get("dropped_head_spots_marked", 0)),
         "version": version,
     }
     # ⚠️⚠️ ROADMAP 3.5, THE LILYPOND TWIN OF `staged.export.to_musicxml`'s
