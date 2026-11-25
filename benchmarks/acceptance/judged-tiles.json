@@ -1,6 +1,6 @@
 {
- "n_items": 186,
- "n_tiles": 2266,
+ "n_items": 187,
+ "n_tiles": 2269,
  "tiles": [
   {
    "answer": "right",
@@ -30301,6 +30301,54 @@
    "subjects": null,
    "tile": "1",
    "value": true
+  },
+  {
+   "answer": "a sharp",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-25",
+   "doc": null,
+   "followup": false,
+   "item": "2.352-declined",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": null
+  },
+  {
+   "answer": "a quarter note rest",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-25",
+   "doc": null,
+   "followup": false,
+   "item": "2.352-declined",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
+   "value": null
+  },
+  {
+   "answer": "part of an f; part of a sforzando",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-25",
+   "doc": null,
+   "followup": false,
+   "item": "2.352-declined",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "3",
+   "value": null
   },
   {
    "answer": "8th note on first ledger line",
