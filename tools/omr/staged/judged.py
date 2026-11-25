@@ -394,6 +394,11 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
         t = by_alias.get(key) or by_alias.get(key.split("_followup")[0]) or {}
         subs, skind = _subjects_of(t)
         kind, value = parse_answer(verb)
+        # Sean's words stay as recorded; what they ANSWERED is `scored_as` when the gallery's question was not the one the
+        # words parse as (2026-11-24: 2.164-review's "Tie" answered "is the box a note?", so it claims "an arc, not a note").
+        sa = extra.get("scored_as") if isinstance(extra, dict) else None
+        if isinstance(sa, dict) and sa.get("answer_kind"):
+            kind, value = sa["answer_kind"], sa.get("value")
         h = t.get("hidden") if isinstance(t.get("hidden"), dict) else {}
         rows.append({
             "item": item, "tile": key,
@@ -415,6 +420,8 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
         for k in ("cell_map", "position"):
             if t.get(k) is not None:
                 rows[-1][k] = t[k]
+        if isinstance(extra, dict) and extra.get("later_answers"):
+            rows[-1]["later_answers"] = extra["later_answers"]      # Sean's later words on the same tile, kept beside the first
         if t.get("position") is not None and isinstance(t.get("kind"), str):
             rows[-1]["mark_kind"] = t["kind"]       # ROADMAP 2.244: "the same kind" of a place match
     return rows
