@@ -371,6 +371,20 @@ def _lane_report_key(path: pathlib.Path) -> List[Dict[str, Any]]:
     return out
 
 
+#: ROADMAP 2.353 (A): what Sean ANSWERED where the words do not parse and the gallery did not say (`scored_as`). One row, one entry,
+#: his words quoted with the question they answered (CLAUDE.md s4); nothing else is re-kinded here. Litolff `glyph/10/1/9/0/5`, 2.347-leaves
+#: tile 1, "Is the ink in the orange box a notehead?" -- "That is a notehead but the stem ink is broken": a note is written there. He gave
+#: no pitch and no value, so none is claimed. The gallery kept no page box (the lane's raw records were deleted): the box is the head box
+#: of that key in the saved 20261123-night Litolff record (the same gather the 2.347 tile was cut from), recovered 2026-11-25.
+ANSWERED_AS: Dict[Tuple[str, str], Dict[str, Any]] = {
+    ("2.347-leaves", "1"): {
+        "answer_kind": "is_a_note", "value": True, "question_kind": "identity", "mark_kind": "note",
+        "page_box": [619.39, 3468.3225, 641.5975, 3489.9],
+        "position": {"page": 10, "system": 1, "staff": 9, "cell": 0, "page_box": [619.39, 3468.3225, 641.5975, 3489.9]},
+    },
+}
+
+
 def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
               ) -> List[Dict[str, Any]]:
     """The normalised tiles of one gallery."""
@@ -400,6 +414,9 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
         if isinstance(sa, dict) and sa.get("answer_kind"):
             kind, value = sa["answer_kind"], sa.get("value")
         h = t.get("hidden") if isinstance(t.get("hidden"), dict) else {}
+        fix = ANSWERED_AS.get((item, key))
+        if fix:
+            kind, value = fix["answer_kind"], fix["value"]
         rows.append({
             "item": item, "tile": key,
             "doc": _doc_of(t, mmeta) if t else None,
@@ -424,6 +441,9 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
             rows[-1]["later_answers"] = extra["later_answers"]      # Sean's later words on the same tile, kept beside the first
         if t.get("position") is not None and isinstance(t.get("kind"), str):
             rows[-1]["mark_kind"] = t["kind"]       # ROADMAP 2.244: "the same kind" of a place match
+        if fix:
+            rows[-1].update(question_kind=fix["question_kind"], page_box=list(fix["page_box"]),
+                            position=dict(fix["position"]), mark_kind=fix["mark_kind"])
     return rows
 
 
@@ -869,6 +889,33 @@ def _not_a_note(sub: str, what: str, S: Dict) -> Tuple[str, str]:
             else "kept as a notehead")
 
 
+def _is_a_note(sub: str, S: Dict) -> Tuple[str, str]:
+    """ROADMAP 2.353 (A): Sean said the ink at this place IS a notehead. Right = the record keeps a note there (not refused as a
+    note) and writes it; wrong = refused as no note. His words carry no pitch and no value, so neither is judged. A head kept but with
+    no decided value is written nowhere (EXPORT drops a narrowed note), so it is `narrowed` / `abstained`, never `right`."""
+    n = S.get((sub, "notehead_is_not_a_notehead"))
+    kids = S.get(("__tall_split__", sub)) or ()
+    if kids and n and n["outcome"] == "decided" and n["value"] is True:
+        res = [(k, _is_a_note(k, S)) for k in kids]
+        for k, (st, note) in res:
+            if st == "right":
+                return st, "tall box split; child %s: %s" % (k, note)
+        k, (st, note) = res[0]
+        return st, "tall box split; child %s: %s" % (k, note)
+    if n is None:
+        return "not_found", "no note-or-not verdict at this key"
+    if n["outcome"] != "decided":
+        return "abstained", "note-or-not abstained (%s)" % n["reason"]
+    if n["value"] is True:
+        return "wrong", "refused as not a note (%s)" % n["reason"]
+    d = S.get((sub, "duration"))
+    if d is not None and d["outcome"] == "decided" and _beats_of(d.get("value")) is not None:
+        return "right", "kept as a notehead, written (%s)" % d["reason"]
+    if d is not None and d["outcome"] == "narrowed":
+        return "narrowed", "kept as a notehead but its value is only narrowed (%s)" % d["reason"]
+    return "abstained", "kept as a notehead, no decided value (%s)" % (d["reason"] if d else "no duration verdict")
+
+
 def _arc(sub: str, want: str, S: Dict) -> Tuple[str, str]:
     a = S.get((sub, "arc_kind"))
     if a is None:
@@ -895,8 +942,17 @@ def _written_subjects(subs: Sequence[str], S: Dict) -> List[str]:
     exporter refuses (a second box on the head, a barline's ink, the clef) writes nothing, so it cannot make the note it is not wrong (Litolff "2.78-phase2-review"
     tile 11: the eighth is still written 0.5 beat, its neighbour box is refused as the barline's ink). With every named box refused the note is not written: they
     all stay, and score as they always did."""
-    keep = [s for s in subs if not _refused_as_not_a_note(s, S)]
-    return keep or list(subs)
+    keep = [s for s in subs if not _refused_as_not_a_note(s, S)] or list(subs)
+    # ROADMAP 2.353 (B): the same holds for a box with no DECIDED value. EXPORT refuses to argmax a narrowing and drops that note
+    # (`duration_narrowed`), so beside a box that is decided, the narrowed one writes nothing (Brahms p0 "2.78-phase2-review" tile 5: the
+    # sixteenth /1 is written, the second head-sized box /15 at the stem's far end is dropped). Where NO box is decided, all stay.
+    decided = [s for s in keep if _decided_value(s, S)]
+    return decided or keep
+
+
+def _decided_value(sub: str, S: Dict) -> bool:
+    v = S.get((sub, "duration"))
+    return bool(v and v["outcome"] == "decided" and _beats_of(v.get("value")) is not None)
 
 
 def score_row(row: Dict[str, Any], S: Dict) -> Tuple[str, str, Optional[float]]:
@@ -908,7 +964,7 @@ def score_row(row: Dict[str, Any], S: Dict) -> Tuple[str, str, Optional[float]]:
             "question_kind"], None
     if row["subject_kind"] != "glyph" or not subs:
         return "unscored", "no glyph subject (%s)" % row["subject_kind"], None
-    if kind in ("duration", "rest", "not_a_note", "arc") and value is not None:
+    if kind in ("duration", "rest", "not_a_note", "arc", "is_a_note") and value is not None:
         if kind == "duration":
             subs = _written_subjects(subs, S)
         results = []
@@ -919,13 +975,22 @@ def score_row(row: Dict[str, Any], S: Dict) -> Tuple[str, str, Optional[float]]:
                 results.append(_rest(s, value, S))
             elif kind == "not_a_note":
                 results.append(_not_a_note(s, value, S))
+            elif kind == "is_a_note":
+                results.append(_is_a_note(s, S))
             else:
                 results.append(_arc(s, value, S))
         stat = results[0][0]
+        disagree = False
         for r, _n in results:
             if r != stat:
                 stat = "wrong" if "wrong" in (stat, r) else r
+                disagree = True
         note = "; ".join(n for _s, n in results)
+        if disagree and kind == "duration":
+            # ROADMAP 2.353 (B): a tile that lists several boxes asks about one note; when the boxes that are written still disagree
+            # the scorer says so and picks none (CLAUDE.md rule 8: it never turns "cannot tell" into an answer).
+            stat, note = "unscored", "SUBJECTS DISAGREE (%s): %s" % (
+                ", ".join("%s %s" % (s, r) for s, (r, _n) in zip(subs, results)), note)
         marg = None
         for s in subs:
             for q in ("duration", "unboxed_ink_is_a_rest", "notehead_is_an_eighth_rest",
