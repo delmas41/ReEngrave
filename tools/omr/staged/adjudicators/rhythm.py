@@ -3840,7 +3840,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                   == Q.HEAD_STEM_REACH)
     if side_verdict is not None:
         used.append(side_verdict.id)
-    _no_beams, attached = _stem_joined([], stems, head_box)     # the stems the head stands on (the flag attachment reads them)
+    attached = stems_the_head_stands_on(_page_own, stems, head_box)     # the stems the head stands on (the flag attachment reads them)
     one_beam = None
     one_beam_pending = 0
     certain = possible = 0
@@ -8153,6 +8153,17 @@ def no_value_without_a_stem(page_own: Any, base: float, flag_levels: int, levels
     to no stem (`page_own_stems` returned []), it is not a whole note (base < 4), and no flag or beam was read on it. Flag off (`page_own` None)
     or a page join: False (unchanged). Pure."""
     return page_own == [] and float(base) < 4.0 and not flag_levels and not levels
+
+
+def stems_the_head_stands_on(page_own: Any, stems, head_box) -> list:
+    """ROADMAP 2.306 r22 (Litolff 1/0/9/6: an eighth rest the detector boxed as a notehead, written as a D4 eighth). The stems a head stands on
+    -- the ones its flags hang from and the ones EVALUATE groups a chord by (`consequences._stem_ids_used` reads them off the duration's `used`)
+    -- are the stems the PAGE read for it wherever the page read the head (`page_own_stems`: its one stem, both voices' stems, or none); the
+    cell's box overlap (`_stem_joined`) only where the page has no reading (flag off, no page head, a unison it left to the cell). A head the
+    page joined to no stem stands on none: never a neighbour's stem met only by box overlap. Pure apart from the box test."""
+    if page_own is not None:
+        return list(page_own)
+    return _stem_joined([], stems, head_box)[1]
 
 
 def page_own_stems(ev: Evidence, stems):

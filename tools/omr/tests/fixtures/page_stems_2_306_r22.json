@@ -1,0 +1,4861 @@
+{
+"source": "lane-2.306-r21 full frozen sample, Litolff ON arm gathered record (OMR_PAGE_STEMS + 4 stem flags), 2026-11-24; rows copied verbatim",
+"dyad": {
+"rows": [
+{
+"id": "obs:239423",
+"subject": "glyph/10/1/2/0/10",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+1205,
+334,
+177,
+473
+],
+"reader": "yolo_rescue_lowconf",
+"frame": "cell:0",
+"score": 0.12075255811214447,
+"detail": {
+"category": "notehead",
+"witness": "stem_end",
+"tall_split": {
+"read": true,
+"steps": [
+5,
+7
+],
+"added": [
+11,
+12
+],
+"covered": 0,
+"holes": 2
+},
+"bbox_page_px": [
+523.7875,
+2366.605,
+551.665,
+2441.1025
+],
+"x_center_page": 537.7262499999999,
+"y_center_page": 2403.85375
+},
+"basis": []
+},
+{
+"id": "obs:239426",
+"subject": "glyph/10/1/2/0/11",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+1205,
+580,
+177,
+130
+],
+"reader": "yolo_rescue_lowconf",
+"frame": "cell:0",
+"score": 0.12075255811214447,
+"detail": {
+"category": "notehead",
+"witness": "stem_end",
+"tall_split": {
+"split_from": 10,
+"step": 5
+},
+"bbox_page_px": [
+523.7875,
+2405.35,
+551.665,
+2425.825
+],
+"x_center_page": 537.7262499999999,
+"y_center_page": 2415.5874999999996
+},
+"basis": []
+},
+{
+"id": "obs:239429",
+"subject": "glyph/10/1/2/0/12",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+1205,
+679,
+177,
+130
+],
+"reader": "yolo_rescue_lowconf",
+"frame": "cell:0",
+"score": 0.12075255811214447,
+"detail": {
+"category": "notehead",
+"witness": "stem_end",
+"tall_split": {
+"split_from": 10,
+"step": 7
+},
+"bbox_page_px": [
+523.7875,
+2420.9425,
+551.665,
+2441.4175
+],
+"x_center_page": 537.7262499999999,
+"y_center_page": 2431.1800000000003
+},
+"basis": []
+},
+{
+"id": "obs:256954",
+"subject": "glyph/10/1/2/0/10",
+"quantity": "mark_group",
+"value": "mg/10/1/36",
+"reader": "geometry",
+"frame": "cell:0",
+"score": null,
+"detail": {
+"family": "notehead",
+"size": 1,
+"rep": "glyph/10/1/2/0/10",
+"identity": "page_head",
+"head_how": "tall_read",
+"head_ink_px": 319,
+"ink_centre": [
+537.3,
+2418.5
+],
+"apart": [
+[
+"glyph/10/1/2/0/11",
+"tall_read",
+1.0
+],
+[
+"glyph/10/1/2/0/12",
+"tall_read",
+1.0
+]
+]
+},
+"basis": []
+},
+{
+"id": "obs:256955",
+"subject": "glyph/10/1/2/0/11",
+"quantity": "mark_group",
+"value": "mg/10/1/37",
+"reader": "geometry",
+"frame": "cell:0",
+"score": null,
+"detail": {
+"family": "notehead",
+"size": 1,
+"rep": "glyph/10/1/2/0/11",
+"identity": "page_head",
+"head_how": "alone",
+"head_ink_px": 224,
+"ink_centre": [
+537.0,
+2415.0
+],
+"apart": [
+[
+"glyph/10/1/2/0/10",
+"tall_read",
+1.0
+],
+[
+"glyph/10/1/2/0/12",
+"boxes_a_third_apart",
+0.538
+]
+]
+},
+"basis": []
+},
+{
+"id": "obs:256956",
+"subject": "glyph/10/1/2/0/12",
+"quantity": "mark_group",
+"value": "mg/10/1/38",
+"reader": "geometry",
+"frame": "cell:0",
+"score": null,
+"detail": {
+"family": "notehead",
+"size": 1,
+"rep": "glyph/10/1/2/0/12",
+"identity": "page_head",
+"head_how": "alone",
+"head_ink_px": 158,
+"ink_centre": [
+537.7,
+2427.7
+],
+"apart": [
+[
+"glyph/10/1/2/0/10",
+"tall_read",
+1.0
+],
+[
+"glyph/10/1/2/0/11",
+"boxes_a_third_apart",
+0.538
+]
+]
+},
+"basis": []
+},
+{
+"id": "obs:275545",
+"subject": "glyph/10/1/2/0/10",
+"quantity": "page_stem",
+"value": "obs:266990",
+"reader": "cv_page_stems",
+"frame": "cell:0",
+"score": null,
+"detail": {
+"page_stroke": 524,
+"direction": "up",
+"side": "right",
+"tip_y": 2366.0,
+"stem_box": [
+544.0,
+2366.0,
+550.0,
+2442.0
+],
+"head": 15,
+"how": "two_voices_upper_takes_up",
+"candidates": [
+{
+"side": "left",
+"direction": "down",
+"dx": 0.204,
+"reach": 2.49,
+"gap": 0.2,
+"fit": 0.196,
+"stroke": 404
+},
+{
+"side": "right",
+"direction": "up",
+"dx": -0.296,
+"reach": 2.4,
+"gap": 0.0,
+"fit": 0.104,
+"stroke": 524
+}
+],
+"held": [],
+"near": [
+373,
+376,
+378,
+383
+],
+"margin": 0.092
+},
+"basis": []
+},
+{
+"id": "obs:275546",
+"subject": "glyph/10/1/2/0/11",
+"quantity": "page_stem",
+"value": "obs:266991",
+"reader": "cv_page_stems",
+"frame": "cell:0",
+"score": null,
+"detail": {
+"page_stroke": 404,
+"direction": "down",
+"side": "left",
+"tip_y": 2443.0,
+"stem_box": [
+525.0,
+2407.0,
+529.0,
+2443.0
+],
+"head": 16,
+"how": "two_voices_upper_takes_up",
+"candidates": [
+{
+"side": "left",
+"direction": "down",
+"dx": 0.013,
+"reach": 1.78,
+"gap": 0.0,
+"fit": 0.387,
+"stroke": 404
+},
+{
+"side": "right",
+"direction": "up",
+"dx": -0.013,
+"reach": 3.11,
+"gap": 0.0,
+"fit": 0.387,
+"stroke": 524
+}
+],
+"held": [],
+"near": [
+373,
+376,
+378,
+383
+],
+"margin": 0.0
+},
+"basis": []
+},
+{
+"id": "obs:275547",
+"subject": "glyph/10/1/2/0/12",
+"quantity": "page_stem",
+"value": "obs:266990",
+"reader": "cv_page_stems",
+"frame": "cell:0",
+"score": null,
+"detail": {
+"page_stroke": 524,
+"direction": "up",
+"side": "right",
+"tip_y": 2366.0,
+"stem_box": [
+544.0,
+2366.0,
+550.0,
+2442.0
+],
+"head": 17,
+"how": "engraving_side",
+"candidates": [
+{
+"side": "right",
+"direction": "up",
+"dx": -0.057,
+"reach": 3.92,
+"gap": 0.0,
+"fit": 0.343,
+"stroke": 524
+}
+],
+"held": [],
+"near": [
+373,
+376,
+378,
+383
+],
+"margin": 0.343
+},
+"basis": []
+}
+],
+"page_strokes": {
+"404": {
+"kind": "vertical",
+"ordinal": 404,
+"stroke_box": [
+525,
+2407,
+4,
+36
+],
+"bbox_page_px": [
+525.0,
+2407.0,
+529.0,
+2443.0
+],
+"length_spaces": 2.286,
+"angle_deg": 90.0,
+"thickness_spaces": 0.254,
+"thickness_spread_spaces": 0.0,
+"fill": 1.0,
+"ends": [
+525,
+2407,
+525,
+2442
+],
+"end_steps_from_top": [
+3.94,
+8.42
+],
+"touches": [
+[
+414,
+1.27
+],
+[
+415,
+0.95
+],
+[
+453,
+0.38
+],
+[
+454,
+0.44
+]
+],
+"component": 768,
+"staff_space_local_px": 15.64,
+"staff": [
+1,
+2
+],
+"sagitta_spaces": 0.0,
+"profile_sixteenths": [
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4
+]
+},
+"414": {
+"kind": "horizontal",
+"ordinal": 414,
+"stroke_box": [
+526,
+2403,
+25,
+7
+],
+"bbox_page_px": [
+526.0,
+2403.0,
+551.0,
+2410.0
+],
+"length_spaces": 1.609,
+"angle_deg": 3.7,
+"thickness_spaces": 0.444,
+"thickness_spread_spaces": 0.127,
+"fill": 0.886,
+"ends": [
+526,
+2409,
+550,
+2403
+],
+"end_steps_from_top": [
+4.2,
+3.44
+],
+"touches": [
+[
+404,
+1.27
+],
+[
+453,
+0.44
+],
+[
+524,
+4.0
+]
+],
+"component": 768,
+"staff_space_local_px": 15.62,
+"staff": [
+1,
+2
+],
+"sagitta_spaces": 0.06,
+"profile_sixteenths": [
+4,
+4,
+5,
+6,
+7,
+7,
+7,
+7,
+7,
+7,
+7,
+7
+]
+},
+"415": {
+"kind": "horizontal",
+"ordinal": 415,
+"stroke_box": [
+526,
+2419,
+26,
+6
+],
+"bbox_page_px": [
+526.0,
+2419.0,
+552.0,
+2425.0
+],
+"length_spaces": 1.669,
+"angle_deg": 3.9,
+"thickness_spaces": 0.38,
+"thickness_spread_spaces": 0.127,
+"fill": 0.84,
+"ends": [
+526,
+2424,
+551,
+2419
+],
+"end_steps_from_top": [
+6.12,
+5.49
+],
+"touches": [
+[
+404,
+0.95
+],
+[
+454,
+0.51
+],
+[
+499,
+0.32
+],
+[
+524,
+3.81
+]
+],
+"component": 768,
+"staff_space_local_px": 15.62,
+"staff": [
+1,
+2
+],
+"sagitta_spaces": 0.057,
+"profile_sixteenths": [
+3,
+3,
+3,
+4,
+5,
+6,
+6,
+6,
+6,
+6,
+6,
+6
+]
+},
+"453": {
+"kind": "blob",
+"ordinal": 453,
+"stroke_box": [
+530,
+2411,
+7,
+6
+],
+"bbox_page_px": [
+530.0,
+2411.0,
+537.0,
+2417.0
+],
+"length_spaces": 0.557,
+"angle_deg": 34.6,
+"thickness_spaces": 0.157,
+"thickness_spread_spaces": 0.131,
+"fill": 0.548,
+"ends": [
+530,
+2416,
+536,
+2411
+],
+"end_steps_from_top": [
+5.1,
+4.47
+],
+"touches": [
+[
+404,
+0.38
+],
+[
+414,
+0.44
+]
+],
+"component": 768,
+"staff_space_local_px": 15.63,
+"staff": [
+1,
+2
+],
+"hole_share": 0.0
+},
+"454": {
+"kind": "blob",
+"ordinal": 454,
+"stroke_box": [
+530,
+2426,
+8,
+7
+],
+"bbox_page_px": [
+530.0,
+2426.0,
+538.0,
+2433.0
+],
+"length_spaces": 0.646,
+"angle_deg": 35.4,
+"thickness_spaces": 0.181,
+"thickness_spread_spaces": 0.129,
+"fill": 0.518,
+"ends": [
+530,
+2432,
+537,
+2426
+],
+"end_steps_from_top": [
+7.15,
+6.39
+],
+"touches": [
+[
+404,
+0.44
+],
+[
+415,
+0.51
+]
+],
+"component": 768,
+"staff_space_local_px": 15.63,
+"staff": [
+1,
+2
+],
+"hole_share": 0.0
+},
+"499": {
+"kind": "blob",
+"ordinal": 499,
+"stroke_box": [
+538,
+2413,
+5,
+5
+],
+"bbox_page_px": [
+538.0,
+2413.0,
+543.0,
+2418.0
+],
+"length_spaces": 0.423,
+"angle_deg": 45.0,
+"thickness_spaces": 0.135,
+"thickness_spread_spaces": 0.09,
+"fill": 0.6,
+"ends": [
+538,
+2417,
+542,
+2413
+],
+"end_steps_from_top": [
+5.24,
+4.73
+],
+"touches": [
+[
+415,
+0.32
+],
+[
+524,
+0.32
+]
+],
+"component": 768,
+"staff_space_local_px": 15.62,
+"staff": [
+1,
+2
+],
+"hole_share": 0.0
+},
+"500": {
+"kind": "blob",
+"ordinal": 500,
+"stroke_box": [
+538,
+2431,
+5,
+11
+],
+"bbox_page_px": [
+538.0,
+2431.0,
+543.0,
+2442.0
+],
+"length_spaces": 0.733,
+"angle_deg": 80.1,
+"thickness_spaces": 0.313,
+"thickness_spread_spaces": 0.094,
+"fill": 0.8,
+"ends": [
+538,
+2441,
+542,
+2431
+],
+"end_steps_from_top": [
+8.31,
+7.04
+],
+"touches": [
+[
+524,
+0.63
+]
+],
+"component": 768,
+"staff_space_local_px": 15.62,
+"staff": [
+1,
+2
+],
+"hole_share": 0.0
+},
+"524": {
+"kind": "vertical",
+"ordinal": 524,
+"stroke_box": [
+544,
+2366,
+6,
+76
+],
+"bbox_page_px": [
+544.0,
+2366.0,
+550.0,
+2442.0
+],
+"length_spaces": 4.827,
+"angle_deg": -89.3,
+"thickness_spaces": 0.286,
+"thickness_spread_spaces": 0.127,
+"fill": 0.8,
+"ends": [
+544,
+2366,
+547,
+2441
+],
+"end_steps_from_top": [
+-1.29,
+8.32
+],
+"touches": [
+[
+414,
+4.0
+],
+[
+415,
+3.81
+],
+[
+499,
+0.32
+],
+[
+500,
+0.63
+]
+],
+"component": 768,
+"staff_space_local_px": 15.58,
+"staff": [
+1,
+2
+],
+"sagitta_spaces": 0.083,
+"profile_sixteenths": [
+3,
+4,
+4,
+4,
+5,
+4,
+6,
+6,
+6,
+6,
+4,
+4
+]
+}
+},
+"claims": [
+{
+"id": "obs:275042",
+"subject": "page/10",
+"quantity": "claimed_area",
+"value": 13,
+"reader": "cv_page_heads",
+"frame": "page",
+"score": null,
+"detail": {
+"owner": "head",
+"unit": "page_ink",
+"standing": "READ",
+"source": "page_head_one",
+"how": "page_head_oval",
+"page_strokes": [
+414,
+453,
+499
+],
+"members": [
+"glyph/10/1/2/0/11"
+],
+"rep": "glyph/10/1/2/0/11",
+"oval": [
+526.8,
+2407.1,
+547.2,
+2422.9
+],
+"staff": [
+1,
+2
+],
+"marked": []
+},
+"basis": []
+},
+{
+"id": "obs:275043",
+"subject": "page/10",
+"quantity": "claimed_area",
+"value": 14,
+"reader": "cv_page_heads",
+"frame": "page",
+"score": null,
+"detail": {
+"owner": "head",
+"unit": "page_ink",
+"standing": "READ",
+"source": "page_head_one",
+"how": "page_head_oval",
+"page_strokes": [
+454,
+500
+],
+"members": [
+"glyph/10/1/2/0/12"
+],
+"rep": "glyph/10/1/2/0/12",
+"oval": [
+527.4,
+2419.8,
+547.9,
+2435.6
+],
+"staff": [
+1,
+2
+],
+"marked": []
+},
+"basis": []
+},
+{
+"id": "obs:276885",
+"subject": "page/10",
+"quantity": "claimed_area",
+"value": 404,
+"reader": "cv_page_stems",
+"frame": "page",
+"score": null,
+"detail": {
+"owner": "stem",
+"unit": "page_ink",
+"standing": "READ",
+"source": "page_stems",
+"how": "head_engraving_side",
+"page_strokes": [
+404
+],
+"direction": "down",
+"heads": [
+16
+],
+"tip_y": 2443.0,
+"stem_box": [
+525.0,
+2407.0,
+529.0,
+2443.0
+]
+},
+"basis": []
+},
+{
+"id": "obs:276895",
+"subject": "page/10",
+"quantity": "claimed_area",
+"value": 524,
+"reader": "cv_page_stems",
+"frame": "page",
+"score": null,
+"detail": {
+"owner": "stem",
+"unit": "page_ink",
+"standing": "READ",
+"source": "page_stems",
+"how": "head_engraving_side",
+"page_strokes": [
+524
+],
+"direction": "up",
+"heads": [
+15,
+17
+],
+"tip_y": 2366.0,
+"stem_box": [
+544.0,
+2366.0,
+550.0,
+2442.0
+]
+},
+"basis": []
+}
+],
+"verdicts": [
+{
+"id": "vrd:386275",
+"subject": "glyph/10/1/2/0/10",
+"quantity": "notehead_is_not_a_notehead",
+"outcome": "decided",
+"value": true,
+"decider": "adjudicate_notehead_is_not_a_notehead",
+"reason": "taller_than_a_head",
+"considered": {
+"$pool": "pool:00044",
+"ins": [
+[
+0,
+"obs:239423"
+],
+[
+1,
+"vrd:374337"
+],
+[
+2,
+"obs:232980"
+],
+[
+3,
+"obs:232981"
+],
+[
+4,
+"obs:232982"
+],
+[
+5,
+"obs:232983"
+],
+[
+6,
+"obs:232984"
+],
+[
+7,
+"obs:232985"
+],
+[
+8,
+"obs:232986"
+],
+[
+9,
+"obs:232987"
+],
+[
+10,
+"obs:232988"
+],
+[
+11,
+"obs:232989"
+],
+[
+12,
+"obs:232990"
+],
+[
+13,
+"obs:232991"
+],
+[
+14,
+"obs:232992"
+],
+[
+15,
+"obs:232993"
+],
+[
+16,
+"obs:232994"
+],
+[
+17,
+"obs:232995"
+],
+[
+18,
+"obs:232996"
+],
+[
+19,
+"obs:232997"
+],
+[
+20,
+"obs:232998"
+],
+[
+21,
+"obs:232999"
+],
+[
+22,
+"obs:233000"
+],
+[
+23,
+"obs:233001"
+],
+[
+24,
+"obs:233002"
+],
+[
+25,
+"obs:233003"
+],
+[
+26,
+"obs:233004"
+],
+[
+27,
+"obs:233005"
+],
+[
+28,
+"obs:233006"
+],
+[
+29,
+"obs:233007"
+],
+[
+30,
+"obs:233008"
+],
+[
+31,
+"obs:256827"
+],
+[
+32,
+"obs:256828"
+],
+[
+33,
+"obs:256829"
+],
+[
+34,
+"obs:256830"
+],
+[
+35,
+"obs:256831"
+],
+[
+36,
+"obs:256832"
+],
+[
+37,
+"obs:256833"
+],
+[
+38,
+"obs:256834"
+],
+[
+39,
+"obs:256835"
+],
+[
+40,
+"obs:256836"
+],
+[
+41,
+"obs:256837"
+],
+[
+42,
+"obs:256838"
+],
+[
+43,
+"obs:274332"
+],
+[
+44,
+"obs:274333"
+],
+[
+45,
+"obs:274365"
+],
+[
+46,
+"obs:274384"
+],
+[
+47,
+"obs:274385"
+],
+[
+48,
+"obs:274405"
+],
+[
+49,
+"obs:274406"
+],
+[
+1048,
+"obs:266990"
+],
+[
+1049,
+"obs:266991"
+],
+[
+1050,
+"vrd:371735"
+],
+[
+1051,
+"vrd:371533"
+],
+[
+1052,
+"vrd:372101"
+],
+[
+1053,
+"obs:274429"
+],
+[
+1054,
+"obs:259368"
+],
+[
+1055,
+"obs:239424"
+],
+[
+1056,
+"obs:259369"
+],
+[
+1057,
+"obs:232506"
+],
+[
+1058,
+"obs:232507"
+],
+[
+1059,
+"obs:269383"
+],
+[
+1060,
+"obs:269384"
+],
+[
+1061,
+"obs:266993"
+],
+[
+1062,
+"obs:266994"
+],
+[
+1063,
+"obs:271423"
+],
+[
+1064,
+"obs:239425"
+],
+[
+1065,
+"obs:239428"
+],
+[
+1066,
+"obs:239431"
+],
+[
+1067,
+"obs:236617"
+],
+[
+1068,
+"obs:236619"
+],
+[
+1069,
+"obs:236621"
+],
+[
+1070,
+"obs:236623"
+],
+[
+1071,
+"obs:236625"
+],
+[
+1072,
+"obs:236627"
+],
+[
+1073,
+"obs:236629"
+],
+[
+1074,
+"obs:236631"
+],
+[
+1075,
+"obs:236633"
+],
+[
+1076,
+"obs:236635"
+],
+[
+1077,
+"obs:239426"
+],
+[
+1078,
+"obs:239429"
+],
+[
+1079,
+"obs:270510"
+]
+]
+},
+"used": [
+"obs:239423"
+],
+"missing": [
+"glyph_band_distance",
+"head_line_cut",
+"head_oval",
+"human_box_verdict",
+"letter_look_cover",
+"notehead_letter_ink"
+],
+"declined": [
+"stacked_head_fit"
+],
+"excluded": [],
+"correlated": [
+[
+"obs:239423",
+"obs:239426",
+"obs:239429"
+],
+[
+"vrd:371533",
+"vrd:371735",
+"vrd:372101",
+"vrd:374337"
+],
+[
+"obs:232980",
+"obs:274332",
+"obs:274333",
+"obs:274365"
+],
+[
+"obs:232981",
+"obs:232982"
+],
+[
+"obs:232983",
+"obs:232984"
+],
+[
+"obs:232985",
+"obs:232986"
+],
+[
+"obs:232987",
+"obs:232988"
+],
+[
+"obs:232989",
+"obs:232990"
+],
+[
+"obs:232991",
+"obs:232992"
+],
+[
+"obs:232993",
+"obs:232994"
+],
+[
+"obs:232995",
+"obs:232996"
+],
+[
+"obs:232997",
+"obs:232998"
+],
+[
+"obs:232999",
+"obs:233000"
+],
+[
+"obs:233001",
+"obs:233002"
+],
+[
+"obs:233003",
+"obs:233004"
+],
+[
+"obs:233005",
+"obs:233006"
+],
+[
+"obs:233007",
+"obs:233008"
+],
+[
+"obs:256827",
+"obs:256828",
+"obs:256829",
+"obs:256830",
+"obs:256831",
+"obs:256832",
+"obs:256833",
+"obs:256834",
+"obs:256835",
+"obs:256836",
+"obs:256837",
+"obs:256838",
+"obs:274989"
+],
+[
+"obs:274405",
+"obs:274406"
+],
+[
+"obs:274771",
+"obs:274779",
+"obs:274780",
+"obs:274781",
+"obs:274782",
+"obs:274783",
+"obs:274784",
+"obs:274785",
+"obs:274828",
+"obs:274829",
+"obs:274830",
+"obs:274831",
+"obs:274832",
+"obs:274833",
+"obs:274834",
+"obs:274835",
+"obs:274836",
+"obs:274837",
+"obs:274838",
+"obs:274839",
+"obs:274840",
+"obs:274841",
+"obs:274842",
+"obs:274843",
+"obs:274844",
+"obs:274845",
+"obs:274848"
+],
+[
+"obs:274990",
+"obs:274991",
+"obs:274992",
+"obs:274993",
+"obs:274994",
+"obs:274995",
+"obs:274996",
+"obs:274997",
+"obs:274998",
+"obs:274999",
+"obs:275000"
+],
+[
+"obs:275015",
+"obs:275016",
+"obs:275017",
+"obs:275018",
+"obs:275019",
+"obs:275020",
+"obs:275021",
+"obs:275022",
+"obs:275023",
+"obs:275024",
+"obs:275025",
+"obs:275026",
+"obs:275027",
+"obs:275028"
+],
+{
+"$pool": "pool:00306"
+},
+{
+"$pool": "pool:00307"
+},
+[
+"obs:266990",
+"obs:266991"
+],
+[
+"obs:269383",
+"obs:269384"
+],
+[
+"obs:266993",
+"obs:266994"
+],
+[
+"obs:239425",
+"obs:239428",
+"obs:239431"
+],
+[
+"obs:236617",
+"obs:236619",
+"obs:236621",
+"obs:236623",
+"obs:236625",
+"obs:236627",
+"obs:236629",
+"obs:236631",
+"obs:236633",
+"obs:236635"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"class": "noteheadBlackInSpace",
+"height_spaces": 4.73,
+"width_spaces": 1.77,
+"dot_size_spaces": [
+1.77,
+4.73
+],
+"tremolo_slash_signal": {
+"angle_deg": 84.1,
+"elongation": 2.03,
+"fill": 0.2404,
+"left_share": 0.983,
+"right_share": 0.017,
+"shape_ok": false,
+"crossing_ok": false,
+"position_ok": true,
+"would_fire": false,
+"at_stem_end": {
+"fires": false,
+"via": null,
+"margin": -0.8689,
+"axis": "angle_ceiling",
+"crossing_ok": false,
+"angle_deg": 84.1,
+"elongation": 2.03,
+"fill": 0.2404
+}
+},
+"nearer_staff_signal": {
+"filed_spaces": 0.0
+},
+"tall_split": {
+"read": true,
+"steps": [
+5,
+7
+],
+"added": [
+11,
+12
+],
+"covered": 0,
+"holes": 2
+}
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:386276",
+"subject": "glyph/10/1/2/0/11",
+"quantity": "notehead_is_not_a_notehead",
+"outcome": "decided",
+"value": false,
+"decider": "adjudicate_notehead_is_not_a_notehead",
+"reason": "notehead",
+"considered": {
+"$pool": "pool:00044",
+"ins": [
+[
+0,
+"obs:239426"
+],
+[
+1,
+"vrd:374337"
+],
+[
+2,
+"obs:232980"
+],
+[
+3,
+"obs:232981"
+],
+[
+4,
+"obs:232982"
+],
+[
+5,
+"obs:232983"
+],
+[
+6,
+"obs:232984"
+],
+[
+7,
+"obs:232985"
+],
+[
+8,
+"obs:232986"
+],
+[
+9,
+"obs:232987"
+],
+[
+10,
+"obs:232988"
+],
+[
+11,
+"obs:232989"
+],
+[
+12,
+"obs:232990"
+],
+[
+13,
+"obs:232991"
+],
+[
+14,
+"obs:232992"
+],
+[
+15,
+"obs:232993"
+],
+[
+16,
+"obs:232994"
+],
+[
+17,
+"obs:232995"
+],
+[
+18,
+"obs:232996"
+],
+[
+19,
+"obs:232997"
+],
+[
+20,
+"obs:232998"
+],
+[
+21,
+"obs:232999"
+],
+[
+22,
+"obs:233000"
+],
+[
+23,
+"obs:233001"
+],
+[
+24,
+"obs:233002"
+],
+[
+25,
+"obs:233003"
+],
+[
+26,
+"obs:233004"
+],
+[
+27,
+"obs:233005"
+],
+[
+28,
+"obs:233006"
+],
+[
+29,
+"obs:233007"
+],
+[
+30,
+"obs:233008"
+],
+[
+31,
+"obs:256827"
+],
+[
+32,
+"obs:256828"
+],
+[
+33,
+"obs:256829"
+],
+[
+34,
+"obs:256830"
+],
+[
+35,
+"obs:256831"
+],
+[
+36,
+"obs:256832"
+],
+[
+37,
+"obs:256833"
+],
+[
+38,
+"obs:256834"
+],
+[
+39,
+"obs:256835"
+],
+[
+40,
+"obs:256836"
+],
+[
+41,
+"obs:256837"
+],
+[
+42,
+"obs:256838"
+],
+[
+43,
+"obs:274332"
+],
+[
+44,
+"obs:274333"
+],
+[
+45,
+"obs:274365"
+],
+[
+46,
+"obs:274384"
+],
+[
+47,
+"obs:274385"
+],
+[
+48,
+"obs:274405"
+],
+[
+49,
+"obs:274406"
+],
+[
+1048,
+"obs:266990"
+],
+[
+1049,
+"obs:266991"
+],
+[
+1050,
+"vrd:371735"
+],
+[
+1051,
+"vrd:371533"
+],
+[
+1052,
+"vrd:372101"
+],
+[
+1053,
+"obs:274429"
+],
+[
+1054,
+"obs:259368"
+],
+[
+1055,
+"obs:239427"
+],
+[
+1056,
+"obs:259370"
+],
+[
+1057,
+"obs:232506"
+],
+[
+1058,
+"obs:232507"
+],
+[
+1059,
+"obs:269383"
+],
+[
+1060,
+"obs:269384"
+],
+[
+1061,
+"obs:266993"
+],
+[
+1062,
+"obs:266994"
+],
+[
+1063,
+"obs:271424"
+],
+[
+1064,
+"obs:239425"
+],
+[
+1065,
+"obs:239428"
+],
+[
+1066,
+"obs:239431"
+],
+[
+1067,
+"obs:236617"
+],
+[
+1068,
+"obs:236619"
+],
+[
+1069,
+"obs:236621"
+],
+[
+1070,
+"obs:236623"
+],
+[
+1071,
+"obs:236625"
+],
+[
+1072,
+"obs:236627"
+],
+[
+1073,
+"obs:236629"
+],
+[
+1074,
+"obs:236631"
+],
+[
+1075,
+"obs:236633"
+],
+[
+1076,
+"obs:236635"
+],
+[
+1077,
+"obs:239423"
+],
+[
+1078,
+"obs:239429"
+],
+[
+1079,
+"obs:270511"
+]
+]
+},
+"used": [
+"obs:239426"
+],
+"missing": [
+"glyph_band_distance",
+"head_line_cut",
+"head_oval",
+"human_box_verdict",
+"letter_look_cover",
+"notehead_letter_ink"
+],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:239423",
+"obs:239426",
+"obs:239429"
+],
+[
+"vrd:371533",
+"vrd:371735",
+"vrd:372101",
+"vrd:374337"
+],
+[
+"obs:232980",
+"obs:274332",
+"obs:274333",
+"obs:274365"
+],
+[
+"obs:232981",
+"obs:232982"
+],
+[
+"obs:232983",
+"obs:232984"
+],
+[
+"obs:232985",
+"obs:232986"
+],
+[
+"obs:232987",
+"obs:232988"
+],
+[
+"obs:232989",
+"obs:232990"
+],
+[
+"obs:232991",
+"obs:232992"
+],
+[
+"obs:232993",
+"obs:232994"
+],
+[
+"obs:232995",
+"obs:232996"
+],
+[
+"obs:232997",
+"obs:232998"
+],
+[
+"obs:232999",
+"obs:233000"
+],
+[
+"obs:233001",
+"obs:233002"
+],
+[
+"obs:233003",
+"obs:233004"
+],
+[
+"obs:233005",
+"obs:233006"
+],
+[
+"obs:233007",
+"obs:233008"
+],
+[
+"obs:256827",
+"obs:256828",
+"obs:256829",
+"obs:256830",
+"obs:256831",
+"obs:256832",
+"obs:256833",
+"obs:256834",
+"obs:256835",
+"obs:256836",
+"obs:256837",
+"obs:256838",
+"obs:274989"
+],
+[
+"obs:274405",
+"obs:274406"
+],
+[
+"obs:274771",
+"obs:274779",
+"obs:274780",
+"obs:274781",
+"obs:274782",
+"obs:274783",
+"obs:274784",
+"obs:274785",
+"obs:274828",
+"obs:274829",
+"obs:274830",
+"obs:274831",
+"obs:274832",
+"obs:274833",
+"obs:274834",
+"obs:274835",
+"obs:274836",
+"obs:274837",
+"obs:274838",
+"obs:274839",
+"obs:274840",
+"obs:274841",
+"obs:274842",
+"obs:274843",
+"obs:274844",
+"obs:274845",
+"obs:274848"
+],
+[
+"obs:274990",
+"obs:274991",
+"obs:274992",
+"obs:274993",
+"obs:274994",
+"obs:274995",
+"obs:274996",
+"obs:274997",
+"obs:274998",
+"obs:274999",
+"obs:275000"
+],
+[
+"obs:275015",
+"obs:275016",
+"obs:275017",
+"obs:275018",
+"obs:275019",
+"obs:275020",
+"obs:275021",
+"obs:275022",
+"obs:275023",
+"obs:275024",
+"obs:275025",
+"obs:275026",
+"obs:275027",
+"obs:275028"
+],
+{
+"$pool": "pool:00306"
+},
+{
+"$pool": "pool:00307"
+},
+[
+"obs:266990",
+"obs:266991"
+],
+[
+"obs:269383",
+"obs:269384"
+],
+[
+"obs:266993",
+"obs:266994"
+],
+[
+"obs:239425",
+"obs:239428",
+"obs:239431"
+],
+[
+"obs:236617",
+"obs:236619",
+"obs:236621",
+"obs:236623",
+"obs:236625",
+"obs:236627",
+"obs:236629",
+"obs:236631",
+"obs:236633",
+"obs:236635"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"class": "noteheadBlackInSpace",
+"height_spaces": 1.3,
+"width_spaces": 1.77,
+"dot_size_spaces": [
+1.77,
+1.3
+],
+"tremolo_slash_signal": {
+"angle_deg": 60.1,
+"elongation": 1.1,
+"fill": 0.5302,
+"left_share": 0.9789,
+"right_share": 0.0211,
+"shape_ok": false,
+"crossing_ok": false,
+"position_ok": true,
+"would_fire": false,
+"at_stem_end": {
+"fires": false,
+"via": null,
+"margin": -0.3889,
+"axis": "elongation",
+"crossing_ok": false,
+"angle_deg": 60.1,
+"elongation": 1.1,
+"fill": 0.5302
+}
+},
+"tall_split": {
+"split_from": 10,
+"step": 5
+},
+"nearer_staff_signal": {
+"filed_spaces": 0.0
+}
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:386277",
+"subject": "glyph/10/1/2/0/12",
+"quantity": "notehead_is_not_a_notehead",
+"outcome": "decided",
+"value": false,
+"decider": "adjudicate_notehead_is_not_a_notehead",
+"reason": "notehead",
+"considered": {
+"$pool": "pool:00044",
+"ins": [
+[
+0,
+"obs:239429"
+],
+[
+1,
+"vrd:374337"
+],
+[
+2,
+"obs:232980"
+],
+[
+3,
+"obs:232981"
+],
+[
+4,
+"obs:232982"
+],
+[
+5,
+"obs:232983"
+],
+[
+6,
+"obs:232984"
+],
+[
+7,
+"obs:232985"
+],
+[
+8,
+"obs:232986"
+],
+[
+9,
+"obs:232987"
+],
+[
+10,
+"obs:232988"
+],
+[
+11,
+"obs:232989"
+],
+[
+12,
+"obs:232990"
+],
+[
+13,
+"obs:232991"
+],
+[
+14,
+"obs:232992"
+],
+[
+15,
+"obs:232993"
+],
+[
+16,
+"obs:232994"
+],
+[
+17,
+"obs:232995"
+],
+[
+18,
+"obs:232996"
+],
+[
+19,
+"obs:232997"
+],
+[
+20,
+"obs:232998"
+],
+[
+21,
+"obs:232999"
+],
+[
+22,
+"obs:233000"
+],
+[
+23,
+"obs:233001"
+],
+[
+24,
+"obs:233002"
+],
+[
+25,
+"obs:233003"
+],
+[
+26,
+"obs:233004"
+],
+[
+27,
+"obs:233005"
+],
+[
+28,
+"obs:233006"
+],
+[
+29,
+"obs:233007"
+],
+[
+30,
+"obs:233008"
+],
+[
+31,
+"obs:256827"
+],
+[
+32,
+"obs:256828"
+],
+[
+33,
+"obs:256829"
+],
+[
+34,
+"obs:256830"
+],
+[
+35,
+"obs:256831"
+],
+[
+36,
+"obs:256832"
+],
+[
+37,
+"obs:256833"
+],
+[
+38,
+"obs:256834"
+],
+[
+39,
+"obs:256835"
+],
+[
+40,
+"obs:256836"
+],
+[
+41,
+"obs:256837"
+],
+[
+42,
+"obs:256838"
+],
+[
+43,
+"obs:274332"
+],
+[
+44,
+"obs:274333"
+],
+[
+45,
+"obs:274365"
+],
+[
+46,
+"obs:274384"
+],
+[
+47,
+"obs:274385"
+],
+[
+48,
+"obs:274405"
+],
+[
+49,
+"obs:274406"
+],
+[
+1048,
+"obs:266990"
+],
+[
+1049,
+"obs:266991"
+],
+[
+1050,
+"vrd:371735"
+],
+[
+1051,
+"vrd:371533"
+],
+[
+1052,
+"vrd:372101"
+],
+[
+1053,
+"obs:274429"
+],
+[
+1054,
+"obs:259368"
+],
+[
+1055,
+"obs:239430"
+],
+[
+1056,
+"obs:259371"
+],
+[
+1057,
+"obs:232506"
+],
+[
+1058,
+"obs:232507"
+],
+[
+1059,
+"obs:269383"
+],
+[
+1060,
+"obs:269384"
+],
+[
+1061,
+"obs:266993"
+],
+[
+1062,
+"obs:266994"
+],
+[
+1063,
+"obs:271425"
+],
+[
+1064,
+"obs:239425"
+],
+[
+1065,
+"obs:239428"
+],
+[
+1066,
+"obs:239431"
+],
+[
+1067,
+"obs:236617"
+],
+[
+1068,
+"obs:236619"
+],
+[
+1069,
+"obs:236621"
+],
+[
+1070,
+"obs:236623"
+],
+[
+1071,
+"obs:236625"
+],
+[
+1072,
+"obs:236627"
+],
+[
+1073,
+"obs:236629"
+],
+[
+1074,
+"obs:236631"
+],
+[
+1075,
+"obs:236633"
+],
+[
+1076,
+"obs:236635"
+],
+[
+1077,
+"obs:239423"
+],
+[
+1078,
+"obs:239426"
+],
+[
+1079,
+"obs:270512"
+]
+]
+},
+"used": [
+"obs:239429"
+],
+"missing": [
+"glyph_band_distance",
+"head_line_cut",
+"head_oval",
+"human_box_verdict",
+"letter_look_cover",
+"notehead_letter_ink"
+],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:239423",
+"obs:239426",
+"obs:239429"
+],
+[
+"vrd:371533",
+"vrd:371735",
+"vrd:372101",
+"vrd:374337"
+],
+[
+"obs:232980",
+"obs:274332",
+"obs:274333",
+"obs:274365"
+],
+[
+"obs:232981",
+"obs:232982"
+],
+[
+"obs:232983",
+"obs:232984"
+],
+[
+"obs:232985",
+"obs:232986"
+],
+[
+"obs:232987",
+"obs:232988"
+],
+[
+"obs:232989",
+"obs:232990"
+],
+[
+"obs:232991",
+"obs:232992"
+],
+[
+"obs:232993",
+"obs:232994"
+],
+[
+"obs:232995",
+"obs:232996"
+],
+[
+"obs:232997",
+"obs:232998"
+],
+[
+"obs:232999",
+"obs:233000"
+],
+[
+"obs:233001",
+"obs:233002"
+],
+[
+"obs:233003",
+"obs:233004"
+],
+[
+"obs:233005",
+"obs:233006"
+],
+[
+"obs:233007",
+"obs:233008"
+],
+[
+"obs:256827",
+"obs:256828",
+"obs:256829",
+"obs:256830",
+"obs:256831",
+"obs:256832",
+"obs:256833",
+"obs:256834",
+"obs:256835",
+"obs:256836",
+"obs:256837",
+"obs:256838",
+"obs:274989"
+],
+[
+"obs:274405",
+"obs:274406"
+],
+[
+"obs:274771",
+"obs:274779",
+"obs:274780",
+"obs:274781",
+"obs:274782",
+"obs:274783",
+"obs:274784",
+"obs:274785",
+"obs:274828",
+"obs:274829",
+"obs:274830",
+"obs:274831",
+"obs:274832",
+"obs:274833",
+"obs:274834",
+"obs:274835",
+"obs:274836",
+"obs:274837",
+"obs:274838",
+"obs:274839",
+"obs:274840",
+"obs:274841",
+"obs:274842",
+"obs:274843",
+"obs:274844",
+"obs:274845",
+"obs:274848"
+],
+[
+"obs:274990",
+"obs:274991",
+"obs:274992",
+"obs:274993",
+"obs:274994",
+"obs:274995",
+"obs:274996",
+"obs:274997",
+"obs:274998",
+"obs:274999",
+"obs:275000"
+],
+[
+"obs:275015",
+"obs:275016",
+"obs:275017",
+"obs:275018",
+"obs:275019",
+"obs:275020",
+"obs:275021",
+"obs:275022",
+"obs:275023",
+"obs:275024",
+"obs:275025",
+"obs:275026",
+"obs:275027",
+"obs:275028"
+],
+{
+"$pool": "pool:00306"
+},
+{
+"$pool": "pool:00307"
+},
+[
+"obs:266990",
+"obs:266991"
+],
+[
+"obs:269383",
+"obs:269384"
+],
+[
+"obs:266993",
+"obs:266994"
+],
+[
+"obs:239425",
+"obs:239428",
+"obs:239431"
+],
+[
+"obs:236617",
+"obs:236619",
+"obs:236621",
+"obs:236623",
+"obs:236625",
+"obs:236627",
+"obs:236629",
+"obs:236631",
+"obs:236633",
+"obs:236635"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"class": "noteheadBlackInSpace",
+"height_spaces": 1.3,
+"width_spaces": 1.77,
+"dot_size_spaces": [
+1.77,
+1.3
+],
+"tremolo_slash_signal": {
+"angle_deg": 1.3,
+"elongation": 1.08,
+"fill": 0.4292,
+"left_share": 0.9727,
+"right_share": 0.0273,
+"shape_ok": false,
+"crossing_ok": false,
+"position_ok": false,
+"would_fire": false,
+"at_stem_end": {
+"fires": false,
+"via": null,
+"margin": -0.87,
+"axis": "angle_floor",
+"crossing_ok": false,
+"angle_deg": 1.3,
+"elongation": 1.08,
+"fill": 0.4292
+}
+},
+"tall_split": {
+"split_from": 10,
+"step": 7
+},
+"nearer_staff_signal": {
+"filed_spaces": 0.0
+}
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:435323",
+"subject": "glyph/10/1/2/0/10",
+"quantity": "head_stem",
+"outcome": "decided",
+"value": "obs:266990",
+"decider": "adjudicate_head_stem",
+"reason": "page_stem",
+"considered": [
+"obs:239423",
+"obs:266990",
+"obs:266991",
+"obs:275545"
+],
+"used": [
+"obs:239423",
+"obs:275545",
+"obs:266990"
+],
+"missing": [],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:266990",
+"obs:266991"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"stem": "obs:266990",
+"stem_rows": [
+"obs:266990"
+],
+"stem_box": [
+1333.0,
+325.0,
+38.0,
+483.0
+],
+"x_frac": 0.831,
+"flush": "right",
+"page_stroke": 524,
+"direction": "up",
+"page_how": "two_voices_upper_takes_up",
+"margin": 0.092
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:435324",
+"subject": "glyph/10/1/2/0/11",
+"quantity": "head_stem",
+"outcome": "decided",
+"value": "obs:266991",
+"decider": "adjudicate_head_stem",
+"reason": "page_stem",
+"considered": [
+"obs:239426",
+"obs:266990",
+"obs:266991",
+"obs:275546"
+],
+"used": [
+"obs:239426",
+"obs:275546",
+"obs:266991"
+],
+"missing": [],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:266990",
+"obs:266991"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"stem": "obs:266991",
+"stem_rows": [
+"obs:266991"
+],
+"stem_box": [
+1213.0,
+586.0,
+25.0,
+228.0
+],
+"x_frac": 0.116,
+"flush": "left",
+"page_stroke": 404,
+"direction": "down",
+"page_how": "two_voices_upper_takes_up",
+"margin": 0.0
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:435325",
+"subject": "glyph/10/1/2/0/12",
+"quantity": "head_stem",
+"outcome": "decided",
+"value": "obs:266990",
+"decider": "adjudicate_head_stem",
+"reason": "page_stem",
+"considered": [
+"obs:239429",
+"obs:266990",
+"obs:266991",
+"obs:275547"
+],
+"used": [
+"obs:239429",
+"obs:275547",
+"obs:266990"
+],
+"missing": [],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:266990",
+"obs:266991"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"stem": "obs:266990",
+"stem_rows": [
+"obs:266990"
+],
+"stem_box": [
+1333.0,
+325.0,
+38.0,
+483.0
+],
+"x_frac": 0.831,
+"flush": "right",
+"page_stroke": 524,
+"direction": "up",
+"page_how": "engraving_side",
+"margin": 0.343
+},
+"basis_from": "considered"
+}
+]
+},
+"rest": {
+"rows": [
+{
+"id": "obs:001884",
+"subject": "glyph/1/0/9/6/0",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+232,
+477,
+133,
+123
+],
+"reader": "detector",
+"frame": "cell:6",
+"score": 0.8437770009040833,
+"detail": {
+"category": "notehead",
+"bbox_page_px": [
+1499.54,
+2719.1275,
+1520.4875,
+2738.5
+],
+"x_center_page": 1510.01375,
+"y_center_page": 2728.8137500000003
+},
+"basis": []
+},
+{
+"id": "obs:001899",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackOnLine",
+99,
+719,
+144,
+86
+],
+"reader": "detector",
+"frame": "cell:6",
+"score": 0.3851415514945984,
+"detail": {
+"category": "notehead",
+"bbox_page_px": [
+1478.5925,
+2757.2425,
+1501.2725,
+2770.7875
+],
+"x_center_page": 1489.9325,
+"y_center_page": 2764.015
+},
+"basis": []
+},
+{
+"id": "obs:008833",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "mark_group",
+"value": "mg/1/0/152",
+"reader": "geometry",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"family": "notehead",
+"size": 1,
+"rep": "glyph/1/0/9/6/6",
+"identity": "page_head",
+"head_how": "alone",
+"head_ink_px": 162,
+"ink_centre": [
+1488.9,
+2765.9
+]
+},
+"basis": []
+},
+{
+"id": "obs:008837",
+"subject": "glyph/1/0/9/6/0",
+"quantity": "mark_group",
+"value": "mg/1/0/154",
+"reader": "geometry",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"family": "notehead",
+"size": 1,
+"rep": "glyph/1/0/9/6/0",
+"identity": "page_head",
+"head_how": "alone",
+"head_ink_px": 286,
+"ink_centre": [
+1512.6,
+2729.3
+]
+},
+"basis": []
+},
+{
+"id": "obs:014108",
+"subject": "glyph/1/0/9/6/0",
+"quantity": "page_stem",
+"value": "obs:011488",
+"reader": "cv_page_stems",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"page_stroke": 1430,
+"direction": "down",
+"side": "left",
+"tip_y": 2789.0,
+"stem_box": [
+1500.0,
+2725.0,
+1505.0,
+2789.0
+],
+"head": 74,
+"how": "engraving_side",
+"candidates": [
+{
+"side": "left",
+"direction": "down",
+"dx": 0.159,
+"reach": 3.94,
+"gap": 0.0,
+"fit": 0.241,
+"stroke": 1430
+}
+],
+"held": [],
+"near": [
+1404,
+1410,
+1416,
+1419
+],
+"margin": 0.241
+},
+"basis": []
+},
+{
+"id": "obs:011487",
+"subject": "cell/1/0/9/6",
+"quantity": "stem",
+"value": [
+540,
+503,
+25,
+412
+],
+"reader": "cv_lines",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"x0": 540,
+"x1": 565,
+"y_center": 709,
+"image": "no_staff",
+"staff_lines_erased": true
+},
+"basis": []
+},
+{
+"id": "obs:011488",
+"subject": "cell/1/0/9/6",
+"quantity": "stem",
+"value": [
+235,
+509,
+25,
+406
+],
+"reader": "cv_lines",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"x0": 235,
+"x1": 260,
+"y_center": 712,
+"image": "no_staff",
+"staff_lines_erased": true
+},
+"basis": []
+},
+{
+"id": "obs:011489",
+"subject": "cell/1/0/9/6",
+"quantity": "stem",
+"value": [
+381,
+509,
+32,
+406
+],
+"reader": "cv_lines",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"x0": 381,
+"x1": 413,
+"y_center": 712,
+"image": "no_staff",
+"staff_lines_erased": true
+},
+"basis": []
+},
+{
+"id": "obs:014088",
+"subject": "cell/1/0/9/6",
+"quantity": "stem",
+"value": [
+88.88888888888889,
+1561.904761904762,
+25.396825396825395,
+482.53968253968253
+],
+"reader": "cv_page_stems",
+"frame": "cell:6",
+"score": null,
+"detail": {
+"image": "page_strokes"
+},
+"basis": []
+}
+],
+"abstentions": [
+{
+"id": "abs:014101",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "page_stem",
+"reader": "cv_page_stems",
+"frame": "cell:6",
+"reason": "no_line_accepted",
+"detail": {
+"note": "stroke_held_by_its_head_end",
+"head": 72,
+"how": "stroke_held_by_its_head_end",
+"candidates": [
+{
+"side": "right",
+"direction": "up",
+"dx": -0.159,
+"reach": 2.35,
+"gap": 0.0,
+"fit": 0.241,
+"stroke": 1430
+}
+],
+"held": [],
+"near": [
+1390,
+1393,
+1404,
+1410
+],
+"margin": 1.562
+}
+}
+],
+"verdicts": [
+{
+"id": "vrd:381984",
+"subject": "glyph/1/0/9/6/0",
+"quantity": "notehead_is_not_a_notehead",
+"outcome": "decided",
+"value": false,
+"decider": "adjudicate_notehead_is_not_a_notehead",
+"reason": "notehead",
+"considered": {
+"$pool": "pool:00032",
+"ins": [
+[
+0,
+"obs:001884"
+],
+[
+1,
+"vrd:372436"
+],
+[
+2,
+"obs:000381"
+],
+[
+3,
+"obs:000382"
+],
+[
+4,
+"obs:000383"
+],
+[
+5,
+"obs:000384"
+],
+[
+6,
+"obs:000385"
+],
+[
+7,
+"obs:000386"
+],
+[
+8,
+"obs:000387"
+],
+[
+9,
+"obs:000388"
+],
+[
+10,
+"obs:000389"
+],
+[
+11,
+"obs:000390"
+],
+[
+12,
+"obs:000391"
+],
+[
+13,
+"obs:000392"
+],
+[
+14,
+"obs:000393"
+],
+[
+15,
+"obs:000394"
+],
+[
+16,
+"obs:000395"
+],
+[
+17,
+"obs:000396"
+],
+[
+18,
+"obs:000397"
+],
+[
+19,
+"obs:000398"
+],
+[
+20,
+"obs:000399"
+],
+[
+21,
+"obs:000400"
+],
+[
+22,
+"obs:000401"
+],
+[
+23,
+"obs:000402"
+],
+[
+24,
+"obs:000403"
+],
+[
+25,
+"obs:000404"
+],
+[
+26,
+"obs:000405"
+],
+[
+27,
+"obs:000406"
+],
+[
+28,
+"obs:000407"
+],
+[
+29,
+"obs:000408"
+],
+[
+30,
+"obs:000409"
+],
+[
+31,
+"obs:000410"
+],
+[
+32,
+"obs:000411"
+],
+[
+33,
+"obs:008648"
+],
+[
+34,
+"obs:008650"
+],
+[
+35,
+"obs:008651"
+],
+[
+36,
+"obs:008652"
+],
+[
+37,
+"obs:008653"
+],
+[
+38,
+"obs:008654"
+],
+[
+39,
+"obs:008655"
+],
+[
+40,
+"obs:008656"
+],
+[
+41,
+"obs:008657"
+],
+[
+42,
+"obs:008658"
+],
+[
+43,
+"obs:008659"
+],
+[
+44,
+"obs:008660"
+],
+[
+45,
+"obs:008661"
+],
+[
+46,
+"obs:013448"
+],
+[
+47,
+"obs:013471"
+],
+[
+48,
+"obs:013472"
+],
+[
+49,
+"obs:013490"
+],
+[
+50,
+"obs:013498"
+],
+[
+51,
+"obs:013512"
+],
+[
+340,
+"obs:009426"
+],
+[
+341,
+"obs:001885"
+],
+[
+342,
+"obs:000042"
+],
+[
+343,
+"obs:000043"
+],
+[
+344,
+"obs:011487"
+],
+[
+345,
+"obs:011488"
+],
+[
+346,
+"obs:011489"
+],
+[
+347,
+"obs:014088"
+],
+[
+348,
+"obs:011491"
+],
+[
+349,
+"obs:011492"
+],
+[
+350,
+"obs:011493"
+],
+[
+351,
+"obs:012713"
+],
+[
+352,
+"obs:001886"
+],
+[
+353,
+"obs:001891"
+],
+[
+354,
+"obs:001894"
+],
+[
+355,
+"obs:001901"
+],
+[
+356,
+"obs:001904"
+],
+[
+357,
+"obs:001887"
+],
+[
+358,
+"obs:001889"
+],
+[
+359,
+"obs:001892"
+],
+[
+360,
+"obs:001895"
+],
+[
+361,
+"obs:001897"
+],
+[
+362,
+"obs:001899"
+],
+[
+363,
+"obs:001902"
+],
+[
+364,
+"obs:001905"
+],
+[
+365,
+"obs:009427"
+],
+[
+366,
+"obs:012619"
+]
+]
+},
+"used": [
+"obs:001884"
+],
+"missing": [
+"glyph_band_distance",
+"head_line_cut",
+"head_oval",
+"human_box_verdict",
+"letter_look_cover",
+"stacked_head_fit"
+],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:001884",
+"obs:001887",
+"obs:001889",
+"obs:001892",
+"obs:001895",
+"obs:001897",
+"obs:001899",
+"obs:001902",
+"obs:001905"
+],
+[
+"obs:000381",
+"obs:013471",
+"obs:013472",
+"obs:013490"
+],
+[
+"obs:000382",
+"obs:000383"
+],
+[
+"obs:000384",
+"obs:000385"
+],
+[
+"obs:000386",
+"obs:000387"
+],
+[
+"obs:000388",
+"obs:000389"
+],
+[
+"obs:000390",
+"obs:000391"
+],
+[
+"obs:000392",
+"obs:000393"
+],
+[
+"obs:000394",
+"obs:000395"
+],
+[
+"obs:000396",
+"obs:000397"
+],
+[
+"obs:000398",
+"obs:000399"
+],
+[
+"obs:000400",
+"obs:000401"
+],
+[
+"obs:000402",
+"obs:000403"
+],
+[
+"obs:000404",
+"obs:000405"
+],
+[
+"obs:000406",
+"obs:000407"
+],
+[
+"obs:000408",
+"obs:000409"
+],
+[
+"obs:000410",
+"obs:000411"
+],
+[
+"obs:008648",
+"obs:008650",
+"obs:008651",
+"obs:008652",
+"obs:008653",
+"obs:008654",
+"obs:008655",
+"obs:008656",
+"obs:008657",
+"obs:008658",
+"obs:008659",
+"obs:008660",
+"obs:008661",
+"obs:013872"
+],
+[
+"obs:013721",
+"obs:013722",
+"obs:013723",
+"obs:013724",
+"obs:013725",
+"obs:013726",
+"obs:013727",
+"obs:013728",
+"obs:013729",
+"obs:013730",
+"obs:013731",
+"obs:013732",
+"obs:013733",
+"obs:013734",
+"obs:013735",
+"obs:013736",
+"obs:013737",
+"obs:013738",
+"obs:013739",
+"obs:013740",
+"obs:013741",
+"obs:013742",
+"obs:013743",
+"obs:013744",
+"obs:013745",
+"obs:013746",
+"obs:013747"
+],
+{
+"$pool": "pool:00279"
+},
+{
+"$pool": "pool:00280"
+},
+[
+"obs:011487",
+"obs:011488",
+"obs:011489"
+],
+[
+"obs:011491",
+"obs:011492",
+"obs:011493"
+],
+[
+"obs:001886",
+"obs:001891",
+"obs:001894",
+"obs:001901",
+"obs:001904"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"class": "noteheadBlackInSpace",
+"height_spaces": 1.23,
+"width_spaces": 1.33,
+"dot_size_spaces": [
+1.33,
+1.23
+],
+"owner": {
+"owns": true,
+"verdict": "vrd:372436"
+},
+"tremolo_slash_signal": {
+"angle_deg": 77.9,
+"elongation": 1.19,
+"fill": 0.7064,
+"left_share": 0.0,
+"right_share": 1.0,
+"shape_ok": false,
+"crossing_ok": false,
+"position_ok": false,
+"would_fire": false,
+"at_stem_end": {
+"fires": false,
+"via": null,
+"margin": -0.7311,
+"axis": "angle_ceiling",
+"crossing_ok": false,
+"angle_deg": 77.9,
+"elongation": 1.19,
+"fill": 0.7064
+}
+},
+"nearer_staff_signal": {
+"filed_spaces": 0.583
+}
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:381987",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "notehead_is_not_a_notehead",
+"outcome": "decided",
+"value": false,
+"decider": "adjudicate_notehead_is_not_a_notehead",
+"reason": "notehead",
+"considered": {
+"$pool": "pool:00032",
+"ins": [
+[
+0,
+"obs:001899"
+],
+[
+1,
+"vrd:372436"
+],
+[
+2,
+"obs:000381"
+],
+[
+3,
+"obs:000382"
+],
+[
+4,
+"obs:000383"
+],
+[
+5,
+"obs:000384"
+],
+[
+6,
+"obs:000385"
+],
+[
+7,
+"obs:000386"
+],
+[
+8,
+"obs:000387"
+],
+[
+9,
+"obs:000388"
+],
+[
+10,
+"obs:000389"
+],
+[
+11,
+"obs:000390"
+],
+[
+12,
+"obs:000391"
+],
+[
+13,
+"obs:000392"
+],
+[
+14,
+"obs:000393"
+],
+[
+15,
+"obs:000394"
+],
+[
+16,
+"obs:000395"
+],
+[
+17,
+"obs:000396"
+],
+[
+18,
+"obs:000397"
+],
+[
+19,
+"obs:000398"
+],
+[
+20,
+"obs:000399"
+],
+[
+21,
+"obs:000400"
+],
+[
+22,
+"obs:000401"
+],
+[
+23,
+"obs:000402"
+],
+[
+24,
+"obs:000403"
+],
+[
+25,
+"obs:000404"
+],
+[
+26,
+"obs:000405"
+],
+[
+27,
+"obs:000406"
+],
+[
+28,
+"obs:000407"
+],
+[
+29,
+"obs:000408"
+],
+[
+30,
+"obs:000409"
+],
+[
+31,
+"obs:000410"
+],
+[
+32,
+"obs:000411"
+],
+[
+33,
+"obs:008648"
+],
+[
+34,
+"obs:008650"
+],
+[
+35,
+"obs:008651"
+],
+[
+36,
+"obs:008652"
+],
+[
+37,
+"obs:008653"
+],
+[
+38,
+"obs:008654"
+],
+[
+39,
+"obs:008655"
+],
+[
+40,
+"obs:008656"
+],
+[
+41,
+"obs:008657"
+],
+[
+42,
+"obs:008658"
+],
+[
+43,
+"obs:008659"
+],
+[
+44,
+"obs:008660"
+],
+[
+45,
+"obs:008661"
+],
+[
+46,
+"obs:013448"
+],
+[
+47,
+"obs:013471"
+],
+[
+48,
+"obs:013472"
+],
+[
+49,
+"obs:013490"
+],
+[
+50,
+"obs:013498"
+],
+[
+51,
+"obs:013512"
+],
+[
+340,
+"obs:009426"
+],
+[
+341,
+"obs:001900"
+],
+[
+342,
+"obs:009430"
+],
+[
+343,
+"obs:000042"
+],
+[
+344,
+"obs:000043"
+],
+[
+345,
+"obs:011490"
+],
+[
+346,
+"obs:012992"
+],
+[
+347,
+"obs:013080"
+],
+[
+348,
+"obs:013081"
+],
+[
+349,
+"obs:011487"
+],
+[
+350,
+"obs:011488"
+],
+[
+351,
+"obs:011489"
+],
+[
+352,
+"obs:014088"
+],
+[
+353,
+"obs:001884"
+],
+[
+354,
+"obs:001887"
+],
+[
+355,
+"obs:001889"
+],
+[
+356,
+"obs:001892"
+],
+[
+357,
+"obs:001895"
+],
+[
+358,
+"obs:001897"
+],
+[
+359,
+"obs:001902"
+],
+[
+360,
+"obs:001905"
+],
+[
+361,
+"obs:011491"
+],
+[
+362,
+"obs:011492"
+],
+[
+363,
+"obs:011493"
+],
+[
+364,
+"obs:001886"
+],
+[
+365,
+"obs:001891"
+],
+[
+366,
+"obs:001894"
+],
+[
+367,
+"obs:001901"
+],
+[
+368,
+"obs:001904"
+],
+[
+369,
+"obs:012622"
+]
+]
+},
+"used": [
+"obs:001899"
+],
+"missing": [
+"glyph_band_distance",
+"head_line_cut",
+"head_oval",
+"human_box_verdict",
+"letter_look_cover",
+"notehead_stem_cross_ink",
+"stacked_head_fit"
+],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:001884",
+"obs:001887",
+"obs:001889",
+"obs:001892",
+"obs:001895",
+"obs:001897",
+"obs:001899",
+"obs:001902",
+"obs:001905"
+],
+[
+"obs:000381",
+"obs:013471",
+"obs:013472",
+"obs:013490"
+],
+[
+"obs:000382",
+"obs:000383"
+],
+[
+"obs:000384",
+"obs:000385"
+],
+[
+"obs:000386",
+"obs:000387"
+],
+[
+"obs:000388",
+"obs:000389"
+],
+[
+"obs:000390",
+"obs:000391"
+],
+[
+"obs:000392",
+"obs:000393"
+],
+[
+"obs:000394",
+"obs:000395"
+],
+[
+"obs:000396",
+"obs:000397"
+],
+[
+"obs:000398",
+"obs:000399"
+],
+[
+"obs:000400",
+"obs:000401"
+],
+[
+"obs:000402",
+"obs:000403"
+],
+[
+"obs:000404",
+"obs:000405"
+],
+[
+"obs:000406",
+"obs:000407"
+],
+[
+"obs:000408",
+"obs:000409"
+],
+[
+"obs:000410",
+"obs:000411"
+],
+[
+"obs:008648",
+"obs:008650",
+"obs:008651",
+"obs:008652",
+"obs:008653",
+"obs:008654",
+"obs:008655",
+"obs:008656",
+"obs:008657",
+"obs:008658",
+"obs:008659",
+"obs:008660",
+"obs:008661",
+"obs:013872"
+],
+[
+"obs:013721",
+"obs:013722",
+"obs:013723",
+"obs:013724",
+"obs:013725",
+"obs:013726",
+"obs:013727",
+"obs:013728",
+"obs:013729",
+"obs:013730",
+"obs:013731",
+"obs:013732",
+"obs:013733",
+"obs:013734",
+"obs:013735",
+"obs:013736",
+"obs:013737",
+"obs:013738",
+"obs:013739",
+"obs:013740",
+"obs:013741",
+"obs:013742",
+"obs:013743",
+"obs:013744",
+"obs:013745",
+"obs:013746",
+"obs:013747"
+],
+{
+"$pool": "pool:00279"
+},
+{
+"$pool": "pool:00280"
+},
+[
+"obs:013080",
+"obs:013081"
+],
+[
+"obs:011487",
+"obs:011488",
+"obs:011489"
+],
+[
+"obs:011491",
+"obs:011492",
+"obs:011493"
+],
+[
+"obs:001886",
+"obs:001891",
+"obs:001894",
+"obs:001901",
+"obs:001904"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"class": "noteheadBlackOnLine",
+"height_spaces": 0.86,
+"width_spaces": 1.44,
+"dot_size_spaces": [
+1.44,
+0.86
+],
+"owner": {
+"owns": true,
+"verdict": "vrd:372436"
+},
+"nearer_staff_signal": {
+"filed_spaces": 0.0
+}
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:423348",
+"subject": "glyph/1/0/9/6/0",
+"quantity": "duration",
+"outcome": "decided",
+"value": {
+"beats": 0.5,
+"written": 0.5,
+"dots": 0,
+"beam_levels": 1
+},
+"decider": "adjudicate_duration",
+"reason": "head_and_marks",
+"considered": [
+"obs:001886",
+"vrd:381984",
+"obs:012619",
+"obs:001884",
+"obs:011487",
+"obs:011488",
+"obs:011489",
+"obs:014088",
+"obs:014108",
+"obs:012848",
+"obs:009426",
+"vrd:409183",
+"vrd:372436",
+"obs:006435",
+"obs:006436",
+"obs:006437",
+"obs:006438",
+"obs:006439",
+"obs:006440",
+"obs:006441",
+"obs:006442",
+"obs:006443",
+"obs:006444",
+"obs:006445",
+"obs:006446",
+"obs:006447",
+"obs:006448",
+"obs:006449",
+"obs:006450",
+"obs:006451",
+"obs:006452",
+"obs:006453",
+"obs:006454",
+"obs:006455",
+"obs:006456",
+"obs:006457",
+"obs:006458",
+"obs:006459",
+"obs:006460",
+"obs:011490",
+"obs:012992",
+"obs:001887",
+"obs:001889",
+"obs:001892",
+"obs:001895",
+"obs:001897",
+"obs:001899",
+"obs:001902",
+"obs:001905",
+"obs:001891",
+"obs:001894",
+"obs:001901",
+"obs:001904",
+"vrd:381985",
+"obs:012849",
+"vrd:381986",
+"obs:012850",
+"vrd:381987",
+"obs:012851",
+"vrd:394560",
+"vrd:381988",
+"obs:012852",
+"obs:009427",
+"obs:009428",
+"obs:009429",
+"obs:009430",
+"obs:009431"
+],
+"used": [
+"obs:001886",
+"obs:001884",
+"vrd:409183",
+"obs:006444",
+"obs:006446",
+"obs:011488",
+"obs:009426"
+],
+"missing": [
+"aug_dot",
+"flag",
+"glyph_owner",
+"rest",
+"second_hollow",
+"tuplet_ratio"
+],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:001886",
+"obs:001891",
+"obs:001894",
+"obs:001901",
+"obs:001904"
+],
+[
+"vrd:372436",
+"vrd:381984",
+"vrd:381985",
+"vrd:381986",
+"vrd:381987",
+"vrd:381988",
+"vrd:394560",
+"vrd:409183"
+],
+[
+"obs:001884",
+"obs:001887",
+"obs:001889",
+"obs:001892",
+"obs:001895",
+"obs:001897",
+"obs:001899",
+"obs:001902",
+"obs:001905"
+],
+[
+"obs:011487",
+"obs:011488",
+"obs:011489"
+],
+[
+"obs:012848",
+"obs:012849",
+"obs:012850",
+"obs:012851",
+"obs:012852"
+],
+[
+"obs:006435",
+"obs:006436",
+"obs:006437",
+"obs:006438",
+"obs:006439",
+"obs:006440",
+"obs:006441",
+"obs:006442",
+"obs:006443",
+"obs:006444",
+"obs:006445",
+"obs:006446",
+"obs:006447",
+"obs:006448",
+"obs:006449",
+"obs:006450",
+"obs:006451",
+"obs:006452",
+"obs:006453",
+"obs:006454",
+"obs:006455",
+"obs:006456",
+"obs:006457",
+"obs:006458",
+"obs:006459",
+"obs:006460"
+],
+[
+"obs:009427",
+"obs:009428",
+"obs:009429",
+"obs:009430",
+"obs:009431"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"head": "noteheadBlackInSpace",
+"head_is_open": false,
+"head_fill_first": {
+"fill": "black",
+"rows_share": 0.0,
+"hole_share": 0.0,
+"row": "obs:012619",
+"margin": -0.18,
+"settled": "black"
+},
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:012848",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.27,
+0.952
+],
+"not_one_head": null
+},
+"beam_evidence": "read",
+"one_beam_count": {
+"state": "read",
+"certain": 1,
+"possible": 1,
+"why": "",
+"stems": [
+{
+"stem": 9,
+"stem_row": "obs:006444",
+"side": "down",
+"certain": 1,
+"possible": 1,
+"causes": [],
+"beam_ink": [
+11
+],
+"stem_box": [
+231.0,
+512.0,
+38.0,
+406.0
+],
+"stem_touches": [
+3,
+11,
+14
+],
+"beams": [
+11
+],
+"hooks": [],
+"stubs": [],
+"doubt": [],
+"stem_beamed": true,
+"own_head": [],
+"thick_at_stem": [],
+"tip_y": 918.0
+}
+],
+"side": "down",
+"beam_rows": [
+"obs:006446"
+],
+"cell_beams": 1
+},
+"beam_voices": {
+"down": [
+1,
+1
+]
+},
+"beam_side": "down",
+"join_tolerance_px": 80.0,
+"stems_attached": 1,
+"beam_strokes": [
+"obs:006446"
+],
+"flags_attached": 0,
+"flag_levels": 0,
+"dots_attached": 0,
+"staff_space": 100.0,
+"levels_certain": 1,
+"levels_possible": 1
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:423351",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "duration",
+"outcome": "narrowed",
+"value": null,
+"decider": "adjudicate_duration",
+"reason": "beams_ambiguous",
+"considered": [
+"obs:001901",
+"vrd:381987",
+"obs:012622",
+"obs:001899",
+"obs:011487",
+"obs:011488",
+"obs:011489",
+"obs:014088",
+"obs:012851",
+"obs:009426",
+"vrd:409186",
+"vrd:372436",
+"obs:006435",
+"obs:006436",
+"obs:006437",
+"obs:006438",
+"obs:006439",
+"obs:006440",
+"obs:006441",
+"obs:006442",
+"obs:006443",
+"obs:006444",
+"obs:006445",
+"obs:006446",
+"obs:006447",
+"obs:006448",
+"obs:006449",
+"obs:006450",
+"obs:006451",
+"obs:006452",
+"obs:006453",
+"obs:006454",
+"obs:006455",
+"obs:006456",
+"obs:006457",
+"obs:006458",
+"obs:006459",
+"obs:006460",
+"obs:011490",
+"obs:012992",
+"obs:001884",
+"obs:001887",
+"obs:001889",
+"obs:001892",
+"obs:001895",
+"obs:001897",
+"obs:001902",
+"obs:001905",
+"obs:001886",
+"obs:001891",
+"obs:001894",
+"obs:001904",
+"vrd:381984",
+"obs:012848",
+"vrd:381985",
+"obs:012849",
+"vrd:381986",
+"obs:012850",
+"vrd:394560",
+"vrd:381988",
+"obs:012852",
+"obs:009427",
+"obs:009428",
+"obs:009429",
+"obs:009430",
+"obs:009431"
+],
+"used": [
+"obs:001901",
+"obs:001899",
+"obs:012851",
+"obs:011488",
+"obs:009426"
+],
+"missing": [
+"aug_dot",
+"flag",
+"glyph_owner",
+"head_stem_reach",
+"notehead_letter_ink",
+"rest",
+"second_hollow",
+"tuplet_ratio"
+],
+"declined": [
+"page_stem"
+],
+"excluded": [],
+"correlated": [
+[
+"obs:001886",
+"obs:001891",
+"obs:001894",
+"obs:001901",
+"obs:001904"
+],
+[
+"vrd:372436",
+"vrd:381984",
+"vrd:381985",
+"vrd:381986",
+"vrd:381987",
+"vrd:381988",
+"vrd:394560",
+"vrd:409186"
+],
+[
+"obs:001884",
+"obs:001887",
+"obs:001889",
+"obs:001892",
+"obs:001895",
+"obs:001897",
+"obs:001899",
+"obs:001902",
+"obs:001905"
+],
+[
+"obs:011487",
+"obs:011488",
+"obs:011489"
+],
+[
+"obs:012848",
+"obs:012849",
+"obs:012850",
+"obs:012851",
+"obs:012852"
+],
+[
+"obs:006435",
+"obs:006436",
+"obs:006437",
+"obs:006438",
+"obs:006439",
+"obs:006440",
+"obs:006441",
+"obs:006442",
+"obs:006443",
+"obs:006444",
+"obs:006445",
+"obs:006446",
+"obs:006447",
+"obs:006448",
+"obs:006449",
+"obs:006450",
+"obs:006451",
+"obs:006452",
+"obs:006453",
+"obs:006454",
+"obs:006455",
+"obs:006456",
+"obs:006457",
+"obs:006458",
+"obs:006459",
+"obs:006460"
+],
+[
+"obs:009427",
+"obs:009428",
+"obs:009429",
+"obs:009430",
+"obs:009431"
+]
+],
+"candidates": [
+{
+"value": {
+"beats": 1.0,
+"written": 1.0,
+"dots": 0,
+"beam_levels": 0
+},
+"support": 1.0
+},
+{
+"value": {
+"beats": 0.5,
+"written": 0.5,
+"dots": 0,
+"beam_levels": 1
+},
+"support": 1.0
+}
+],
+"margin": null,
+"supersedes": null,
+"detail": {
+"head": "noteheadBlackOnLine",
+"head_is_open": false,
+"head_fill_first": {
+"fill": "hollow",
+"rows_share": 0.1373,
+"hole_share": 0.0,
+"row": "obs:012622",
+"margin": -0.0427,
+"not_head_sized": true,
+"head_ink_hollow": true,
+"head_ink_row": "obs:012851"
+},
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:012851",
+"margin": 0.1533,
+"slit": 0.3333,
+"extent_sp": [
+1.651,
+0.698
+],
+"not_one_head": null
+},
+"beam_evidence": "none_over_this_note",
+"one_beam_count": {
+"state": "silent",
+"certain": null,
+"possible": null,
+"why": "several_stems",
+"stems": [],
+"side": null,
+"beam_rows": [],
+"cell_beams": 1
+},
+"beam_voices": null,
+"beam_side": null,
+"join_tolerance_px": 80.0,
+"stems_attached": 1,
+"beam_strokes": [],
+"flags_attached": 0,
+"flag_levels": 0,
+"dots_attached": 0,
+"staff_space": 100.0,
+"levels_certain": 0,
+"levels_possible": 0
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:431032",
+"subject": "glyph/1/0/9/6/0",
+"quantity": "head_stem",
+"outcome": "decided",
+"value": "obs:011488",
+"decider": "adjudicate_head_stem",
+"reason": "page_stem",
+"considered": [
+"obs:001884",
+"obs:011487",
+"obs:011488",
+"obs:011489",
+"obs:014088",
+"obs:014108"
+],
+"used": [
+"obs:001884",
+"obs:014108",
+"obs:011488"
+],
+"missing": [],
+"declined": [],
+"excluded": [],
+"correlated": [
+[
+"obs:011487",
+"obs:011488",
+"obs:011489"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"stem": "obs:011488",
+"stem_rows": [
+"obs:011488"
+],
+"stem_box": [
+235.0,
+509.0,
+25.0,
+406.0
+],
+"x_frac": 0.117,
+"flush": "left",
+"page_stroke": 1430,
+"direction": "down",
+"page_how": "engraving_side",
+"margin": 0.241
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:431035",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "head_stem",
+"outcome": "abstained",
+"value": null,
+"decider": "adjudicate_head_stem",
+"reason": "page_stem_ambiguous",
+"considered": [
+"obs:001899",
+"obs:011487",
+"obs:011488",
+"obs:011489",
+"obs:014088"
+],
+"used": [],
+"missing": [],
+"declined": [
+"page_stem"
+],
+"excluded": [],
+"correlated": [
+[
+"obs:011487",
+"obs:011488",
+"obs:011489"
+]
+],
+"candidates": [],
+"margin": null,
+"supersedes": null,
+"detail": {
+"used": [
+"obs:001899"
+],
+"page_how": "stroke_held_by_its_head_end",
+"candidates": [
+{
+"side": "right",
+"direction": "up",
+"dx": -0.159,
+"reach": 2.35,
+"gap": 0.0,
+"fit": 0.241,
+"stroke": 1430
+}
+],
+"held": [],
+"margin": 1.562
+},
+"basis_from": "considered"
+},
+{
+"id": "vrd:478103",
+"subject": "glyph/1/0/9/6/6",
+"quantity": "duration",
+"outcome": "decided",
+"value": {
+"beats": 0.5,
+"written": 0.5,
+"dots": 0,
+"beam_levels": 1,
+"reconciled_by_chord_mate": true
+},
+"decider": "reconcile_chord_duration",
+"reason": "chord_mate_shares_the_stem",
+"considered": [
+"vrd:423351",
+"vrd:423348"
+],
+"used": [
+"vrd:423351",
+"vrd:423348"
+],
+"missing": [],
+"declined": [],
+"excluded": [],
+"correlated": [],
+"candidates": [],
+"basis": [
+"vrd:423351",
+"vrd:423348"
+],
+"margin": null,
+"supersedes": "vrd:423351",
+"detail": {}
+}
+]
+}
+}

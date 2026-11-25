@@ -825,8 +825,22 @@ def _page_heads_of(one_heads: Any) -> List[Dict[str, Any]]:
         rep = max(items, key=lambda t: float(t.get("conf") or 0.0))
         box = oval_of.get(gi) or tuple(float(v) for v in rep["box"])
         out.append(dict(id=gi, members=[t["key"] for t in items], box=box, sp=float(rep.get("sp_head") or 1.0), sp_own=bool(rep.get("sp_head")),
-                        ink=gi in oval_of, strokes=strokes_of.get(gi, [])))
+                        ink=gi in oval_of, strokes=strokes_of.get(gi, []), tall=all(bool(t.get("tall")) for t in items)))
     return out
+
+
+#: ROADMAP 2.306 r22: the reading word of a box GATHER already read for the heads inside it (it takes no stem)
+TALL_HOW = "box_read_for_its_heads"
+
+
+def tall_remainders(heads: Sequence[Dict[str, Any]]) -> set:
+    """ROADMAP 2.306 r22 (Litolff 10/1/2/0: Cl. F4 and A4 half notes on one up stem, written as two voices). A box the head reader already
+    read for the heads inside it -- a dyad of halves boxed as one tall head, each head now standing on its own box (2.252 `box_kind.
+    split_tall_heads`; ADJUDICATE refuses the box as the remainder, `REASON_TALL`) -- IS those heads, not one more. It takes no stem and takes
+    no part in the page's stem reading: counted as a head of its own it paired with the upper head as "two voices in one column" (r9), and the
+    pair handed the upper head the rings' left sides for a down stem. Never drops a box that is a head of its own (a box that was not read
+    for heads, or a group holding another box). Pure: the ids of such heads."""
+    return {h["id"] for h in heads if h.get("tall")}
 
 
 def sp_of(page_map: Any, i: int) -> float:
@@ -1000,10 +1014,15 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         all_strokes[i] = dict(box=(x, y, x + w, y + h), kind=str(st.kind), touches=[(int(j), float(c)) for j, c in (getattr(st, "touches", None) or ())])
     # ROADMAP 2.306 r21: a box on a barline with no head ink of its own is the barline's: no stem, no part in the reading (`barline_boxes`)
     on_bar = barline_boxes(heads, getattr(page_map, "barlines", None) or ())
-    res = read([h for h in heads if h["id"] not in on_bar], verticals, held, crossers=crossers, strokes=all_strokes)
+    # ROADMAP 2.306 r22: a box already read for the heads inside it is those heads: no stem, no part in the reading (`tall_remainders`)
+    tall = tall_remainders(heads) - on_bar
+    res = read([h for h in heads if h["id"] not in on_bar and h["id"] not in tall], verticals, held, crossers=crossers, strokes=all_strokes)
     for hid in on_bar:
         res["heads"][hid] = dict(state="none", stroke=None, direction=None, side=None, candidates=[], held=[], near=[], margin=None, how=BARLINE_HOW)
+    for hid in tall:
+        res["heads"][hid] = dict(state="none", stroke=None, direction=None, side=None, candidates=[], held=[], near=[], margin=None, how=TALL_HOW)
     res["census"][BARLINE_HOW] = len(on_bar)
+    res["census"][TALL_HOW] = len(tall)
     from . import page_owner as PO
     frames = PO.staff_frames(cells, local)
     owners = _page_owner_rows(log, heads, Q.PAGE_MARK_OWNER, Subject)
@@ -1040,7 +1059,7 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
                     o = int(r["voices"][d]["stroke"])
                     ck = (csub.to_key(), o)
                     if ck not in views:
-                        views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][o]["box"])
+                        views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][o]["box"], detections)
                         n_a += int(from_a)
                         n_view += int(not from_a)
                     log.observe(gsub, Q.PAGE_STEM, views[ck], page_stroke=o, direction=d, side=r["voices"][d]["side"], voice=d,
@@ -1052,7 +1071,7 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
                 continue
             ck = (csub.to_key(), int(r["stroke"]))
             if ck not in views:
-                views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][int(r["stroke"])]["box"])
+                views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][int(r["stroke"])]["box"], detections)
                 n_a += int(from_a)
                 n_view += int(not from_a)
             log.observe(gsub, Q.PAGE_STEM, views[ck], page_stroke=int(r["stroke"]), direction=r["direction"], side=r["side"],
@@ -1125,10 +1144,25 @@ def own_staff(head: Dict[str, Any], frames: Dict[str, Any], owners: Optional[Dic
     return inside[0] if len(inside) == 1 and inside[0] in seen else None
 
 
-def _cell_row_for(log: Any, c: Any, csub: Any, stroke_box: Sequence[float]) -> Tuple[str, bool]:
+def view_tip_beams(log: Any, csub: Any) -> List[Any]:
+    """ROADMAP 2.306 r22: the beam strokes the cell reader handed ITS stems' tip reader -- the cell's own `Q.BEAM_STROKE` rows (reader CV_LINES),
+    as the objects `gather.stem_tip_context` reads."""
+    from types import SimpleNamespace
+    from .record import Q, READERS
+    out = []
+    for r in log.rows(Q.BEAM_STROKE, csub):
+        if r.reader == READERS.CV_LINES and isinstance(r.value, (list, tuple)) and len(r.value) >= 4:
+            bx, by, bw, bh = (float(v) for v in r.value[:4])
+            out.append(SimpleNamespace(x_canonical=bx, y_canonical=by, width_canonical=bw, height_canonical=bh))
+    return out
+
+
+def _cell_row_for(log: Any, c: Any, csub: Any, stroke_box: Sequence[float], detections: Optional[Dict[str, List[Any]]] = None) -> Tuple[str, bool]:
     """The `Q.STEM` row of cell `c` that IS this page stroke: the cell reader's row on it (its centre on the stroke's centre line, the longer on a tie),
     else a view of the stroke filed here (reader CV_PAGE_STEMS, A's row shape in cell-canonical px, not clipped to the cell) with its tip ink read as
-    `gather_cv_lines` reads a stem's (`_observe_stem_tip_ink`). Returns `(row id, from the cell reader)`."""
+    `gather_cv_lines` reads a stem's (`_observe_stem_tip_ink`), handed the SAME blockers and head boxes from the one shared place
+    (`gather.stem_tip_context`, ROADMAP 2.306 r22: until r22 the view's tip was read with none, so its window could run into its own head or a
+    neighbour's mark). Returns `(row id, from the cell reader)`."""
     from .record import Q, READERS
     from . import gather as G
     rect, up = getattr(c, "bbox_page_px", None), getattr(c, "upscale_factor", None)
@@ -1152,7 +1186,8 @@ def _cell_row_for(log: Any, c: Any, csub: Any, stroke_box: Sequence[float]) -> T
     grid = G._cell_grid(c)
     space = grid[1] * 2.0 if grid is not None else None
     try:
-        G._observe_stem_tip_ink(log, csub, frame, c, row.id, (cx, cy, cw, ch), (), space)
+        blockers, heads = G.stem_tip_context(log, csub, c, detections, view_tip_beams(log, csub), (cx, cy, cw, ch), space)
+        G._observe_stem_tip_ink(log, csub, frame, c, row.id, (cx, cy, cw, ch), blockers, space, heads=heads)
     except Exception:          # noqa: BLE001 -- a raster the tip reader cannot read leaves the view with no tip row (`_beam_reader_looked`: never ran)
         pass
     _beam_rows_for_view(log, c, csub, frame, row.id, (cx, cy, cw, ch), space)

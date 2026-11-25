@@ -5496,14 +5496,13 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                              float(d.height_canonical))
                 # ⚠️ ROADMAP 2.75: blockers PER STEM, so a flag box hanging
                 # off THIS stem's tip does not make its own tip occupied.
-                blockers = _stem_tip_blockers(
-                    found.get("beams") or (),
-                    (detections or {}).get(sub.to_key()) or (), space_c,
-                    own_stem=stem_xywh)
+                blockers, _tip_heads = stem_tip_context(
+                    log, sub, c, detections, found.get("beams") or (),
+                    stem_xywh, space_c, heads=heads)
                 if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the tip is read off the stem's stroke instead
                     _observe_stem_tip_ink(
                         log, sub, frame, c, row_id, stem_xywh,
-                        blockers, space_c, heads=heads,
+                        blockers, space_c, heads=_tip_heads,
                         slashes=slashes.get(row_id),
                         true_edges=(_stem_true_edges_for(stroke_cells, c, key, stem_xywh)
                                     if stem_tip_true_edge_enabled() and stroke_cells else None))
@@ -6334,6 +6333,22 @@ def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
         and not (own_stem is not None and _is_flag_detection(dd)
                  and _flag_box_hangs_off_stem(dd, own_stem, space)))
     return out
+
+
+def stem_tip_context(log: Optional[Log], sub: Subject, cell: Any, detections: Optional[Dict[str, List[Any]]], beams: Iterable[Any],
+                     stem_xywh: Tuple[float, float, float, float], space: Optional[float],
+                     heads: Optional[Sequence[Tuple[float, float, float, float]]] = None
+                     ) -> Tuple[List[Tuple[float, float, float, float]], Optional[list]]:
+    """ROADMAP 2.306 r22: THE ONE PLACE a stem's tip reader (`_observe_stem_tip_ink`) is told what already explains ink in its cell --
+    `(blockers, heads)`: every beam stroke read in the cell and every other detector box there (`_stem_tip_blockers`, per stem: a flag
+    hanging off THIS stem's tip does not block it), and the cell's notehead boxes so the hook count stops short of the stem's own head
+    (`_notehead_boxes_for_cell`; `heads` given = the caller already holds them). The cell reader's stems and the page stem reader's views
+    (`page_stems._cell_row_for`) both read their tips through it: a page-supplied stem's tip is never read blind into its own head or a
+    neighbour's mark. `beams`: objects with `x_canonical`, `y_canonical`, `width_canonical`, `height_canonical`."""
+    blockers = _stem_tip_blockers(beams, (detections or {}).get(sub.to_key()) or (), space, own_stem=stem_xywh)
+    if heads is None:
+        heads = _notehead_boxes_for_cell(detections, sub, cell, log=log)
+    return blockers, heads
 
 
 def _stem_true_edges_for(stroke_cells: Any, c: Any, key: Tuple[int, int], stem_xywh: Tuple[float, float, float, float]
