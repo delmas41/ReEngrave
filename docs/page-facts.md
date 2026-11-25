@@ -99,6 +99,11 @@ machine-readable form.
   is not an augmentation dot** (2026-10-07: *"they are staccato markings above
   the notes"*): a lengthening dot sits to the RIGHT of the head.
 - A dot sits a space higher on a line note (the usual case); the box window is asymmetric and misses the below-line dots (`OMR_DOT_POSITION_JOIN`).
+- Two beams printed close are still two beams: where the paper between them
+  shows beside the note's own stem the note is a sixteenth, even if the two
+  bars merge into one block right at the stem (Sean 2026-11-25, "Beams - yes";
+  SCOPE general, measured on Breitkopf Brahms and Litolff; ROADMAP 2.349).
+  Never on thickness alone: one thick beam and a fused pair can be equally thick.
 - A beam runs from the first stem it joins to the last, and a stem stands at
   the SIDE of its head -- so the outer note's centre is half a head past the
   stroke. Stems: up -> right, down -> left; right-and-down does not exist
