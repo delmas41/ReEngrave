@@ -1,6 +1,6 @@
 {
- "n_items": 185,
- "n_tiles": 2265,
+ "n_items": 186,
+ "n_tiles": 2266,
  "tiles": [
   {
    "answer": "right",
@@ -30267,6 +30267,22 @@
    "subjects": null,
    "tile": "L12",
    "value": 0.5
+  },
+  {
+   "answer": "That is a notehead but the stem ink is broken",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-25",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.347-leaves",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": "glyph/10/1/9/0/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": null
   },
   {
    "answer": "8th note on first ledger line",
