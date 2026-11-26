@@ -4485,7 +4485,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     support=1.0))
             on_arc = [(r.detail or {}).get("hook_on_arc") for r in disputed if (r.detail or {}).get("hook_on_arc")]
             if on_arc:      # ROADMAP 2.306 r21: the hook is an arc's ink (`_hooks_on_arcs`), named so it is never mistaken for a reader dispute
-                return Ruling.narrow(cands, HOOK_IS_AN_ARC_REASON, used=tuple(used), **shared, hooks_counted=counted, hook_on_arc=on_arc)
+                return Ruling.narrow(cands, "tip_hook_is_an_arc", used=tuple(used), **shared, hooks_counted=counted, hook_on_arc=on_arc)
             return Ruling.narrow(cands, "tip_readers_disagree", used=tuple(used), **shared,
                                  hooks_counted=counted)
 
