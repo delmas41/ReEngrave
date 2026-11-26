@@ -1,9 +1,23 @@
 {
-  "set": "wide-box-tiles",
-  "date": "2026-11-26",
-  "question": "24 tiles; orange box = the note detector's box at its exact size (1-13: every half note written from a too-wide box on a black-class box; 14-24: wide boxes at random). Which numbered boxes are on a real notehead?",
-  "answered_by": "Sean",
-  "verbatim": "6 of the orange boxes are actual notes nothing else is. I feel like many of those should have been ink that was already claimed and most of the boxes are just poorly sized or poorly placed boxes...",
-  "answer": "6 of the 24 boxes are on actual notes; the other 18 are not. He did not say which six.",
-  "ours": "The cutting agent's own look also found six 'one head' boxes: tiles 4, 8, 10, 12, 13, 23 -- the count matches, the identity is NOT confirmed by Sean. His two hypotheses, to be traced not assumed: (1) much of the ink under the 18 should already have been claimed by a page-wide reader (slur, stem, beam, ledger line, tremolo, dynamic) before a head box could take it; (2) most of these boxes are poorly sized or placed. By the record, 7 of tiles 1-13 were made by our own split / rescue steps."
+ "set": "wide-box-tiles",
+ "date": "2026-11-26",
+ "question": "24 tiles; orange box = the note detector's box at its exact size (1-13: every half note written from a too-wide box on a black-class box; 14-24: wide boxes at random). Which numbered boxes are on a real notehead?",
+ "answered_by": "Sean",
+ "verbatim": "6 of the orange boxes are actual notes nothing else is. I feel like many of those should have been ink that was already claimed and most of the boxes are just poorly sized or poorly placed boxes...",
+ "answer": "6 of the 24 boxes are on actual notes; the other 18 are not. He did not say which six.",
+ "ours": "The cutting agent's own look also found six 'one head' boxes: tiles 4, 8, 10, 12, 13, 23 -- the count matches, the identity is NOT confirmed by Sean. His two hypotheses, to be traced not assumed: (1) much of the ink under the 18 should already have been claimed by a page-wide reader (slur, stem, beam, ledger line, tremolo, dynamic) before a head box could take it; (2) most of these boxes are poorly sized or placed. By the record, 7 of tiles 1-13 were made by our own split / rescue steps. FOLLOW-UP 2026-11-26: Sean names five notes (4, 8, 10, 12, 23) and says tile 13 is part of an ff; he had said six, so one of his six is not identified. Tile 13 (Litolff glyph/16/0/0/7/6) is written today as a plain F4 half: a second ff written as a note (the first: Litolff glyph/4/1/7/4/18).",
+ "follow_up": {
+  "asked": "The agent's look counted six: 4, 8, 10, 12, 13, 23. Are those your six?",
+  "verbatim": "4 8 10 12 23 - 13 is part of an ff",
+  "notes": [
+   4,
+   8,
+   10,
+   12,
+   23
+  ],
+  "not_a_note": {
+   "13": "part of an ff"
+  }
+ }
 }
