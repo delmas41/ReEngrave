@@ -55,6 +55,9 @@ DUPLICATE_FATES = frozenset({
 NON_NOTE_FATES = frozenset({
     "not_a_notehead:on_a_rest", "not_a_notehead:is_a_rest_shape", "ink_is_a_whole_rest", "not_a_notehead:is_a_beam_piece",
     "not_a_notehead:is_an_arc_tail", "not_a_notehead:tremolo_slash_crosses_stem", "not_a_notehead:on_a_dynamic_letter"})
+#: ROADMAP 2.360: the two refusals that are MIXED (a real head, or ink that is something else): they are non-note ONLY where the record shows the ink is a dot
+#: the file attaches to a written note, or a rest the file writes (`note_census` `dot_boxes` / `rest_boxes`); otherwise they stay candidate-lost causes
+MIXED_FATES = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:clipped_fragment"})
 WRITTEN_FATES = frozenset({"written", "written_relocated"})
 VALUE_FATES = frozenset({"duration_narrowed", "chord_value_undecided", "duration_abstained"})
 
@@ -127,13 +130,17 @@ class _Grid:
 # ───────────────────────────── 3. the census ─────────────────────────────
 
 def note_census(heads: Dict[str, Dict[str, Any]], written_keys: Sequence[str], rest_keys: Sequence[str] = (), *,
-                only_pages: Optional[Sequence[int]] = None, keep_lists: bool = False) -> Dict[str, Any]:
+                only_pages: Optional[Sequence[int]] = None, keep_lists: bool = False,
+                dot_boxes: Sequence[Tuple[int, Sequence[float]]] = (), rest_boxes: Sequence[Tuple[int, Sequence[float]]] = ()) -> Dict[str, Any]:
     """Printed notes from the detector's head boxes.
 
     `heads`: `{glyph key: {"page": int, "box": [x0, y0, x1, y1], "fate": exporter fate or None}}` -- EVERY NOTEHEAD box of the record.
     `written_keys`: the glyph keys of the pitched `<note>` elements the file holds (a key may repeat: a head written twice).
     `rest_keys`: head boxes the file writes as a REST (an eighth rest drawn on a head-shaped box): not a note, not lost.
     `only_pages`: count only these pages (the boxes of the other pages still count as neighbours).
+    `dot_boxes`: `(page, box)` of every augmentation dot the file ATTACHES to a written note (`attached_dot_boxes`); `rest_boxes`: `(page, box)` of every
+    box the file writes as a rest. ROADMAP 2.360: a `too_narrow` / `clipped_fragment` box with no written twin that is the same ink as one of these is that dot or
+    that rest, not a second note -- `non_note_ink` (`dot_of_a_written_note` / `rest_the_file_writes`). Any other too-narrow / clipped box stays a candidate.
 
     Returns `{"notes": {...}, "boxes": {...}, "by_page": {page: {...}}, "identity": {...}}`; see the module docstring. Raises `CensusError` when a box
     is in no bucket (the identity is an equality)."""
@@ -145,6 +152,11 @@ def note_census(heads: Dict[str, Dict[str, Any]], written_keys: Sequence[str], r
         if k in wk:
             if h.get("box"):
                 written_grid.add(h["page"], k, h["box"])
+    dot_grid, rest_grid = _Grid(), _Grid()
+    for i, (pg_, b_) in enumerate(dot_boxes):
+        dot_grid.add(pg_, "dot%d" % i, b_)
+    for i, (pg_, b_) in enumerate(rest_boxes):
+        rest_grid.add(pg_, "rest%d" % i, b_)
     bucket: Dict[str, str] = {}
     detail: Dict[str, str] = {}
     unwritten: List[str] = []
@@ -165,6 +177,10 @@ def note_census(heads: Dict[str, Dict[str, Any]], written_keys: Sequence[str], r
             bucket[k] = "duplicate_of_written"
         elif g == "non_note":
             bucket[k], detail[k] = "non_note_ink", non_note_kind(h.get("fate"))
+        elif h.get("fate") in MIXED_FATES and h.get("box") and any(_same_ink(h["box"], b) for _k, b in dot_grid.near(h["page"], h["box"])):
+            bucket[k], detail[k] = "non_note_ink", "dot_of_a_written_note"      # ROADMAP 2.360: the ink is a dot the file attaches to a written note
+        elif h.get("fate") in MIXED_FATES and h.get("box") and any(_same_ink(h["box"], b) for _k, b in rest_grid.near(h["page"], h["box"])):
+            bucket[k], detail[k] = "non_note_ink", "rest_the_file_writes"       # ROADMAP 2.360: the ink is a rest the file writes
         elif g == "duplicate":
             bucket[k] = "duplicate_no_written_twin"
             unwritten.append(k)
@@ -295,6 +311,27 @@ def strip_trace(xml: str) -> str:
     return _RG.sub("<note", xml)
 
 
+def attached_dot_boxes(rec: Dict[str, Any], boxes: Dict[str, Dict[str, Any]], written_keys: Sequence[str]) -> List[Tuple[int, List[float]]]:
+    """ROADMAP 2.360: `(page, box)` of every augmentation dot the file ATTACHES to a written note -- a `Q.AUG_DOT` row whose observation id a standing
+    `Q.DURATION` verdict lists in `used` (the exporter's own test for "attached", `export._place_dot_role_marks`), where that verdict's subject head is written.
+    A dot that fed no duration, or whose note is not in the file, is not in the list: its box is no evidence that a box on it is a dot of a written note."""
+    from .record import Q
+    wk = set(written_keys)
+    superseded = {v["supersedes"] for v in rec.get("verdicts") or () if v.get("supersedes")}
+    owner_of: Dict[str, str] = {}
+    for v in rec.get("verdicts") or ():
+        if v.get("quantity") == Q.DURATION and v.get("id") not in superseded and v.get("subject") in wk:
+            for oid in v.get("used") or ():
+                owner_of[str(oid)] = v["subject"]
+    out: List[Tuple[int, List[float]]] = []
+    for o in rec.get("observations") or ():
+        if o.get("quantity") == Q.AUG_DOT and str(o.get("id")) in owner_of:
+            b = boxes.get(o.get("subject"))
+            if b:
+                out.append((b["page"], b["box"]))
+    return out
+
+
 def tapped_export(result: Dict[str, Any], strip: bool = True, only_pages: Optional[Sequence[int]] = None
                   ) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
     """`(xml, report, census)`: `export.to_musicxml(result)` with two read-only taps -- `lane_report.traced_export` (each `<note>` stamped with its glyph key,
@@ -333,7 +370,9 @@ def tapped_export(result: Dict[str, Any], strip: bool = True, only_pages: Option
         b = boxes.get(k)
         # a head with no box has no place: it can be written or not, never a twin (every head of a real record has a box; a hand-built test record may not)
         heads[k] = {"page": b["page"] if b else (LR.page_of(k) or 0), "box": b["box"] if b else None, "fate": fates.get(k)}
-    return xml, report, note_census(heads, written, rests, only_pages=only_pages)
+    dot_boxes = attached_dot_boxes(rec, boxes, written)
+    rest_boxes = [(boxes[k]["page"], boxes[k]["box"]) for k in set(rests) if k in boxes]
+    return xml, report, note_census(heads, written, rests, only_pages=only_pages, dot_boxes=dot_boxes, rest_boxes=rest_boxes)
 
 
 # ───────────────────────────── 5. arcs ─────────────────────────────
