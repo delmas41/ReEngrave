@@ -19,10 +19,17 @@ R = "relocation_inside_owner_view"
 
 class InsideViewDropMarked(unittest.TestCase):
 
-    def test_off_by_default_the_drop_is_silent(self):
+    def test_on_by_default_unset_is_on_and_explicit_off_disables(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(E.INSIDE_VIEW_DROP_MARKED_ENV, None)
-            self.assertFalse(E.inside_view_drop_marked_enabled())
+            self.assertTrue(E.inside_view_drop_marked_enabled())
+            self.assertTrue(E._dropped_head_may_be_a_note(R))
+        for v in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {E.INSIDE_VIEW_DROP_MARKED_ENV: v}):
+                self.assertFalse(E.inside_view_drop_marked_enabled())
+
+    def test_pinned_off_the_drop_is_silent(self):
+        with mock.patch.dict(os.environ, {E.INSIDE_VIEW_DROP_MARKED_ENV: "0"}):
             self.assertFalse(E._dropped_head_may_be_a_note(R))
 
     def test_on_the_drop_is_a_dropped_head(self):

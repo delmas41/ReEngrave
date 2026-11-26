@@ -8012,11 +8012,11 @@ _DROPPED_HEAD_SCRAPS = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:c
                                   "ink_not_head_shaped", "ink_straddles_a_stem"})
 
 
-#: ROADMAP 2.351 (`OMR_INSIDE_VIEW_DROP_MARKED`, default OFF). STAGED EXPORT. THE RULE: a note read and decided is never dropped
+#: ROADMAP 2.351 (`OMR_INSIDE_VIEW_DROP_MARKED`, default ON, Sean 2026-11-26 "Land the mark a dropped note."). STAGED EXPORT. THE RULE: a note read and decided is never dropped
 #: unmarked. `relocation_inside_owner_view` (2026-11-22 lane-owner-writes, ROADMAP 2.58 / 2.337, `_plan_relocation` step 3b) refuses a
 #: head another staff owns, that the owner's own bar view could see but drew no box for -- written there it could count one head's ink
 #: twice (the owner wrote it a step off) or write a ledger stroke, a tie end or a word as a note. It was filed as not-a-gap, so the
-#: note vanished silently. With this flag the refusal stands (nothing is written) and the place is MARKED like every other dropped
+#: note vanished silently. With this flag (ON) the refusal stands (nothing is written) and the place is MARKED like every other dropped
 #: head that may be a note (2.333's spot). NEVER writes the head; never marks a box whose ink a written note already holds
 #: (`_file_dropped_heads`' own test). MEASURED (20261123-night, whole movement, our look at the crops, not Sean's): 4 such drops --
 #: Litolff p10 `glyph/10/1/1/11/2`, `glyph/10/1/2/9/7`, `glyph/10/1/2/10/6`, stacked hollow half heads on one stem (real notes, lost
@@ -8025,8 +8025,8 @@ INSIDE_VIEW_DROP_MARKED_ENV = "OMR_INSIDE_VIEW_DROP_MARKED"
 
 
 def inside_view_drop_marked_enabled() -> bool:
-    """ROADMAP 2.351, `OMR_INSIDE_VIEW_DROP_MARKED`, default OFF (allow-list 1/true/yes/on)."""
-    return os.environ.get(INSIDE_VIEW_DROP_MARKED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.351, `OMR_INSIDE_VIEW_DROP_MARKED`, default ON (unset = ON; an explicit 0/false/no/off disables)."""
+    return os.environ.get(INSIDE_VIEW_DROP_MARKED_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def dropped_head_marks_mode() -> str:

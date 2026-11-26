@@ -18,6 +18,9 @@ measurement; this file is the WHEN and WHAT of each commit.
 ## 2026-11-25 -- 2.349 LANDED ON: two beams read from the ink at the note's own stem (GATHER `stroke_map.tip_columns` `OMR_STEM_TIP_COLUMNS`; ADJUDICATE `beam_strokes.two_bars_at_stem` `OMR_TWO_BEAMS_AT_STEM`; both default ON, Sean "Land on")
 - Live read on Brahms p0/17/18 and Litolff p6 agreed with the replay; 14 eighths become sixteenths on Brahms p17-18; judged right->wrong 0. Not measured on a whole movement. Not live-read: Brahms p4 (two judged sixteenths), Litolff p15 (four judged notes). Gap cut-off measured on two plates only. Brahms memory peak 9.4 -> 13.3 GB on the proof run (reader's own share at most ~1.3 GB, not isolated). Tests that pinned the old beam count carry the flags OFF (see the landing commit).
 
+## 2026-11-26 -- 2.351 `OMR_INSIDE_VIEW_DROP_MARKED` LANDED ON (STAGED EXPORT; Sean: "Land the mark a dropped note.")
+A read, decided note refused at export as `relocation_inside_owner_view` now gets the 2.333 "note not written" red mark instead of vanishing (unset = ON; explicit 0/false/no/off disables). Frozen sample off vs on: +5 Litolff, +2 Brahms marks, nothing else, judged right->wrong 0; not measured on a whole movement. `OMR_HEAD_FILL_OWN_INK` stays OFF (failed its measure; round 2 on `lane-2.351-r2`).
+
 ## 2026-11-25 -- 2.348 LANDED on main (STAGED ADJUDICATE `rhythm`; (a) unconditional, (b) under `OMR_BAR_SUM_SKIPS_REFUSED`, (c) `OMR_BAR_AGAINST_NEEDS_MAJORITY` OFF)
 - Fast tier on the merged tree: 11381 passed / 1 failed. The failure (`test_staged_narrowed_bar_length_2_162.py`, `ev=None` into `_total_staff_count`) fixed in 50d436e50 (no evidence = count unknown = silences nothing). Targeted re-run after the fix: 1549 passed. The full tier was not re-run after the fix. Flag (c) is unmeasured on a whole movement.
 
