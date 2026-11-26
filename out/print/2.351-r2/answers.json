@@ -1,0 +1,12 @@
+{
+  "set": "2.351-r2",
+  "date": "2026-11-26",
+  "question": "Litolff page 8. Orange box = one detector box that the file would write as a single quarter note. What is the ink inside the box?",
+  "answered_by": "Sean",
+  "answers": [
+    {"tile": 1, "file": "tile1_litolff_p8.png", "doc": "litolff", "page": 8, "subject": "glyph/8/1/3/18/14",
+     "verbatim": "The box is large and rectangular and is around 2 note heads - both 8th notes connected by a beam",
+     "answer": "one box around two noteheads, both eighth notes joined by a beam"}
+  ],
+  "ours": "The lane's own look ('beam smear, not a clear head') was wrong. A wide box can hold two heads side by side; reading it as ONE black head and deciding one quarter is wrong twice (count and value). This box is 3.06 spaces wide. Today the note is written in neither arm, so the file is not affected yet."
+}

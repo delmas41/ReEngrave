@@ -1,6 +1,6 @@
 {
- "n_items": 193,
- "n_tiles": 2283,
+ "n_items": 194,
+ "n_tiles": 2284,
  "tiles": [
   {
    "answer": "right",
@@ -30326,6 +30326,22 @@
    "doc": null,
    "followup": false,
    "item": "2.351",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": null
+  },
+  {
+   "answer": "one box around two noteheads, both eighth notes joined by a beam",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-26",
+   "doc": null,
+   "followup": false,
+   "item": "2.351-r2",
    "page_box": null,
    "question_kind": "unknown",
    "subject": null,
