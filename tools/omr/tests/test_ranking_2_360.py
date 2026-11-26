@@ -104,6 +104,35 @@ def test_old_tie_pairing_refusals_are_named_apart_and_every_real_loss_still_coun
     assert "tie_pitch_contradiction" in a["old_box_refusals_by_reason"]       # a real refusal of a decided tie still counts
 
 
+# ---- (c) one arc across a system break: REAL abstained system-edge runs of Litolff page 16 (staff 3, system 0 right edge / system 1 left edge) and page 2 (a lone half)
+def _run(row, home, edge):
+    return {"row": row, "status": "abstained", "why": "system_edge", "home": home, "edge": edge}
+
+
+BREAK_RECORD = {"verdicts": [
+    {"quantity": "page_arc_binding", "subject": "page/16", "detail": {"runs": [_run("obs:663435", "staff/16/0/3", "right"), _run("obs:663379", "staff/16/1/3", "left")]}},
+    {"quantity": "page_arc_binding", "subject": "page/2", "detail": {"runs": [_run("obs:057646", "staff/2/1/0", "right")]}}]}
+
+
+def test_the_two_halves_of_an_arc_across_a_system_break_are_counted_once():
+    h = CM.system_break_halves(BREAK_RECORD, [2, 16])
+    assert h == {"pairs": 1, "halves": 3}                       # page 2's half has no partner on the next system: it stays counted
+    base = CM.arcs_count(LIT_NIGHT)
+    rep = dict(LIT_NIGHT, **{CM.HALVES_KEY: h})
+    new = CM.arcs_count(rep)
+    assert base["page_runs_not_written"] == 261 and new["page_runs_not_written"] == 260      # OLD counts the arc twice, NEW once
+    assert new["not_written_total"] == base["not_written_total"] - 1
+    assert new["arc_halves_counted_once"] == 1 and base["arc_halves_counted_once"] is None  # no list filed: nothing changes, and it says so
+    # a lone half, or a pair whose page is not counted, is never merged
+    assert CM.system_break_halves(BREAK_RECORD, [2])["pairs"] == 0
+    assert CM.system_break_halves(BREAK_RECORD, [16])["pairs"] == 1
+
+
+def test_without_the_page_pass_no_halves_are_merged():
+    a = CM.arcs_count({"arcs_not_written": {"tie_end_not_in_file": 2}, "written": {}, CM.HALVES_KEY: {"pairs": 1, "halves": 2}})
+    assert a["not_written_total"] == 2
+
+
 def test_without_the_page_pass_the_old_pairing_is_the_only_tie_path_and_its_refusals_still_count():
     a = CM.arcs_count({"arcs_not_written": {"tie_pair_no_start_head": 3}, "written": {}})
     assert a["not_written_total"] == 3 and a["old_tie_pairing_refusals"] == 0

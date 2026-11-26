@@ -424,6 +424,54 @@ def old_boxes_on_page_runs(record: Dict[str, Any], count_pages: Optional[Sequenc
     return {k: dict(c) for k, c in out.items()}
 
 
+#: ROADMAP 2.360 (tooling): the report key under which a caller holding the RECORD files `system_break_halves` for `arcs_count`
+HALVES_KEY = "arcs_system_break_halves"
+
+
+def _run_edge(run: Dict[str, Any]) -> Optional[str]:
+    e = run.get("edge")
+    if e in ("left", "right"):
+        return e
+    left, right = run.get("left") or {}, run.get("right") or {}
+    if isinstance(right, dict) and right.get("edge") and not (isinstance(left, dict) and left.get("edge")):
+        return "right"
+    if isinstance(left, dict) and left.get("edge") and not (isinstance(right, dict) and right.get("edge")):
+        return "left"
+    return None
+
+
+def system_break_halves(record: Dict[str, Any], count_pages: Optional[Sequence[int]] = None) -> Dict[str, int]:
+    """ROADMAP 2.360 (Sean 2026-11-13: an arc across a system break is ONE arc in two pieces): the page runs abstained at a SYSTEM EDGE come in two halves, one
+    running off the right edge of a staff on one system and one entering at the left edge of the SAME staff on the next system of the page. The row counts a run
+    each, so the printed arc is counted twice. `pairs` = how many such arcs are counted twice (one right edge matched to one left edge, same page and staff, the
+    next system); `halves` = the abstained system-edge runs there are. Reads the standing `page_arc_binding` verdicts only; pairs within the counted pages
+    (an arc whose other half is on a page that is not counted stays counted once, as a half)."""
+    from .lane_report import page_of
+    cp = set(count_pages) if count_pages is not None else None
+    last: Dict[str, Dict[str, Any]] = {}
+    for v in record.get("verdicts") or ():
+        if v.get("quantity") == "page_arc_binding":
+            last[v["subject"]] = v
+    edges: Dict[Tuple[int, int, int, str], int] = collections.Counter()
+    halves = 0
+    for s, v in last.items():
+        if cp is not None and page_of(s) not in cp:
+            continue
+        for r in (v.get("detail") or {}).get("runs") or ():
+            if r.get("status") != "abstained" or r.get("why") != "system_edge":
+                continue
+            halves += 1
+            ed, parts = _run_edge(r), str(r.get("home") or "").split("/")
+            if ed is None or len(parts) != 4 or parts[0] != "staff":
+                continue
+            try:
+                edges[(int(parts[1]), int(parts[2]), int(parts[3]), ed)] += 1
+            except ValueError:
+                continue
+    pairs = sum(min(n, edges.get((pg, sy + 1, st, "left"), 0)) for (pg, sy, st, ed), n in list(edges.items()) if ed == "right")
+    return {"pairs": pairs, "halves": halves}
+
+
 def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
     """Arcs, not boxes, from the exporter's own report (`arcs_not_written` by reason + the page-arc counters in `written`).
 
@@ -471,6 +519,10 @@ def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
         }
     old_total = sum(old_by.values())
     page_unwritten = (page["abstained"] + slur_nif + tie_nif) if page else 0
+    halves_in = report.get(HALVES_KEY)
+    # ROADMAP 2.360: an arc across a system break was counted once per half: count it once (the other half is named apart, never dropped)
+    both_halves = min(int(halves_in["pairs"]), page["abstained"]) if (page and halves_in) else 0
+    page_unwritten -= both_halves
     return {
         "page_pass_on": page_on,
         "not_written_total": old_total + page_unwritten,
@@ -479,6 +531,7 @@ def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
         # on 2026-11-26; a SAMPLE, not a split by a record fact)
         "old_tie_pairing_refusals": sum(pairing_by.values()), "old_tie_pairing_by_reason": pairing_by,
         "page_runs_not_written": page_unwritten if page else None,
+        "arc_halves_counted_once": both_halves if halves_in is not None else None,
         "page_runs": page,
         "apart": {"replaced_by_page_arc_boxes": replaced, "old_box_path_retired_boxes": retired, "not_an_arc_boxes": sum(not_an_arc.values()),
                   "unwitnessed_page_runs": page["unwitnessed"] if page else None,
@@ -509,6 +562,8 @@ def format_arcs(a: Dict[str, Any]) -> List[str]:
                                                               ap["not_an_arc_boxes"], ap["unwitnessed_page_runs"]))
     lines.append("  named apart (2.360): old tie-pairing refusals no page run witnesses %d (that path writes nothing since 2.305; mostly boxes on ink that is no arc)" % (
         a.get("old_tie_pairing_refusals", 0)))
+    if a.get("arc_halves_counted_once") is not None:
+        lines.append("  named apart (2.360): arcs across a system break, both halves read -- counted once, %d second halves not added" % a["arc_halves_counted_once"])
     if ap.get("old_tie_boxes_on_written_page_runs") is not None:
         lines.append("  named apart (2.338): old tie boxes on a page run -- its arc written %d, the run already counted %d (one arc, never two)" % (
             ap["old_tie_boxes_on_written_page_runs"], ap["old_tie_boxes_on_counted_page_runs"]))
