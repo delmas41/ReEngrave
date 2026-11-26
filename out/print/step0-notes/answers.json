@@ -1,0 +1,24 @@
+{
+  "set": "step0-notes beam sheets",
+  "date": "2026-11-26",
+  "question": "Two sheets of notes still not written because their beam count is undecided (orange box = the notehead). What is each boxed note's value?",
+  "answered_by": "Sean",
+  "status": "PARTIAL -- sheet 1 complete; sheet 2 tiles 1-15 answered; he then slipped back to sheet 1 and said so",
+  "sheet1_litolff_beams_undecided_still_unwritten": {
+    "1": "eighth note", "2": "an sf (not a note)", "3": "eighth note", "4": "a sharp (not a note)", "5": "a sharp (not a note)",
+    "6": "eighth note", "7": "eighth note", "8": "eighth note", "9": "eighth note", "10": "a sharp (not a note)",
+    "11": "a quarter note rest (not a note)", "12": "half of a quarter note rest (not a note)", "13": "a quarter note rest (not a note)",
+    "14": "eighth note", "15": "eighth note", "16": "eighth note", "17": "eighth note", "18": "unison eighth notes",
+    "19": "eighth note", "20": "eighth note", "21": "eighth note", "22": "quarter note", "23": "eighth note", "24": "eighth note"
+  },
+  "sheet2_brahms_beams_undecided_still_unwritten": {
+    "1": "dotted quarter", "2": "dotted quarter", "3": "dotted quarter", "4": "dotted eighth", "5": "eighth note",
+    "6": "sixteenth note", "7": "dotted quarter", "8": "dotted quarter", "9": "sixteenth",
+    "10": "part of a beam -- part of a 16th beam, so there's two beams there (not a notehead)",
+    "11": "eighth note", "12": "eighth note", "13": "16th note", "14": "dotted quarter", "15": "dotted quarter"
+  },
+  "sheet2_uncertain": {"16": "eighth note (said)", "17": "eighth (said)", "note": "may already be sheet 1 again: sheet 1's 16 and 17 are also eighths"},
+  "said_for_sheet2_but_duplicates_of_sheet1": {"18": "unison eighth notes", "19": "eighth note", "20": "eighth note", "21": "eighth note", "22": "quarter", "23": "eighth note"},
+  "verbatim_end": "tile 24, oh sorry, I went to the wrong page, I went back to the wrong page, hang on, tell me which ones I did and which ones are still left, and make sure that you catch which the duplicates were.",
+  "ours": "Sheet 1: 17 of 24 are notes (16 eighths incl. one unison pair, 1 quarter); 7 are not notes (an sf, three sharps, three quarter-rest boxes) -- the trace agent's look had called all 24 real black beamed notes. Sheet 2 tiles 1-15: 14 notes (7 dotted quarters, 1 dotted eighth, 3 eighths, 3 sixteenths) and 1 box on a beam. Where the slip began is OUR inference from the repeated pattern (18 unison, 22 quarter); 16-24 of sheet 2 to be redone."
+}
