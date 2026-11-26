@@ -201,15 +201,16 @@ def _stem_columns(clean: Any, ex0: int, ex1: int, ey0: int, ey1: int, sp: float)
     return sorted(set(b for b in bands if b[1] > b[0]))
 
 
-def slit_rows_share(ink: Any, stem: Any) -> Tuple[float, int]:
+def slit_rows_share(ink: Any, stem: Any) -> Tuple[float, int, int]:
     """PURE. 2.148's slit (`gather.head_interior_white` `rows_share`, the same rows 20-80%, columns 12-88%, white run >= 5% of the width) on the
     head's crop `ink` (bool, True = ink), where a white run counts only with HEAD ink, not stem ink (`stem`, bool, same shape), on both its
-    ends: the paper between a head and its stem is not the head's inside. With no stem pixels it equals `rows_share` exactly."""
+    ends: the paper between a head and its stem is not the head's inside. With no stem pixels it equals `rows_share` exactly.
+    Returns (share, rows read, the widest white run that was not counted because it ends on the stem, px)."""
     import numpy as np
     hh, ww = ink.shape
     a, b = int(0.12 * ww), max(int(0.12 * ww) + 1, int(0.88 * ww))
     minrun = max(1, int(round(0.05 * ww)))
-    n = hit = 0
+    n = hit = widest = 0
     for yy in range(int(0.2 * hh), max(int(0.2 * hh) + 1, int(0.8 * hh))):
         r = ink[yy, a:b]
         st = stem[yy, a:b]
@@ -228,9 +229,17 @@ def slit_rows_share(ink: Any, stem: Any) -> Tuple[float, int]:
             while j <= xs[-1] and r[j]:
                 j += 1
             segs.append((s, j, bool(st[s:j].any())))
-        ok = any(segs[q + 1][0] - segs[q][1] >= minrun and not segs[q][2] and not segs[q + 1][2] for q in range(len(segs) - 1))
+        ok = False
+        for q in range(len(segs) - 1):
+            gap = segs[q + 1][0] - segs[q][1]
+            if gap < minrun:
+                continue
+            if segs[q][2] or segs[q + 1][2]:
+                widest = max(widest, gap)
+            else:
+                ok = True
         hit += ok
-    return (hit / n if n else 0.0), n
+    return (hit / n if n else 0.0), n, widest
 
 
 def _own_ink(clean: Any, ex0: int, ex1: int, ey0: int, ey1: int, sp: float,
@@ -261,7 +270,9 @@ def _own_ink(clean: Any, ex0: int, ex1: int, ey0: int, ey1: int, sp: float,
                     keep &= under
         if keep:
             drop = np.isin(lab, [i for i in range(1, k + 1) if i not in keep])
-            if drop.any():
+            # a stroke beside a head is smaller than the head: where what would leave holds as much ink as what stays, the box is not
+            # one head with a stroke beside it (Sean's clef at Litolff 14/0/3/12/4), and nothing leaves -- the size test then says why
+            if drop.any() and int(drop.sum()) < int((sub & ~drop).sum()):
                 clean = clean.copy()
                 clean[ey0:ey1, ex0:ex1] &= ~drop
                 note["apart_px"] = int(drop.sum())
@@ -276,6 +287,32 @@ def _own_ink(clean: Any, ex0: int, ex1: int, ey0: int, ey1: int, sp: float,
             stem[ey0:ey1, b0:b1] = clean[ey0:ey1, b0:b1]
         note["stems"] = len(bands)
     return clean, ex0, ex1, stem, note
+
+
+#: ROADMAP 2.355: a black head's middle is solid ink -- 2.23's centre window holds no paper at all (not a tuned cut: "all ink").
+SOLID_CENTRE = 1.0
+#: ROADMAP 2.355: the widest gap between two runs of head-tall columns that a rim lying along a staff line can leave (the line taken out
+#: takes the rim with it). A CUT-OFF MEASURED ON OUR TWO PLATES (narrow-only): the 17 thin-walled halves Sean vouched for leave gaps of
+#: 0.06-0.22 sp (trace cause B); measured on the other side in lane 2.355's offline run (every head box of the frozen sample).
+RIM_GAP_SPACES = 0.3
+
+
+def bridge_rim_on_line(runs: Sequence[Tuple[int, int]], ink: Any, bare: Any, max_gap_px: float) -> Tuple[List[Tuple[int, int]], int]:
+    """PURE. A half note is hollow even where a line runs along its rim: where a staff or ledger line was taken out along the rim, the columns
+    there are no longer head-tall and the head falls apart into two runs. Two runs join across a gap no wider than `max_gap_px` when EVERY
+    gap column still holds ink (`ink`, the head's wall or rim below the line) AND line ink was taken out of it (`bare`) -- never across
+    paper (an accidental and its head stand apart on paper once the line is out). Returns (runs, how many gaps were joined)."""
+    out: List[Tuple[int, int]] = [tuple(runs[0])]
+    n = 0
+    for r0, r1 in runs[1:]:
+        p0, p1 = out[-1]
+        gap = range(p1, r0)
+        if 0 < r0 - p1 <= max_gap_px and all(ink[:, c].any() and bare[:, c].any() for c in gap):
+            out[-1] = (p0, r1)
+            n += 1
+        else:
+            out.append((r0, r1))
+    return out, n
 
 
 def width_without_stem(head: Any, ex0: int, ex1: int, bands: Sequence[Tuple[int, int]]) -> int:
@@ -398,6 +435,7 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         while c < len(spans) and spans[c] is not None:
             c += 1
         runs.append((s0, c))
+    rim_bridged = 0
     cw = (bx1 - bx0) * (1 - CORE_SHARE) / 2.0
     kx0, kx1 = int(round(bx0 + cw)) - x0, max(int(round(bx0 + cw)) - x0 + 1, int(round(bx1 - cw)) - x0)
     over = [(min(r1, kx1) - max(r0, kx0), r0, r1) for r0, r1 in runs if min(r1, kx1) > max(r0, kx0)]
@@ -407,6 +445,14 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         out.update(clean=clean, trimmed=None, extent_sp=None, not_one_head="no_head_ink", size_margin_sp=None, foreign_share=0.0)
         return out
     _o, ex0, ex1 = max(over)
+    if own_ink() and len(runs) > 1 and (ex1 - ex0) >= MIN_SPACES * sp:
+        # ROADMAP 2.355: a half note is hollow even where a line runs along its rim. Only a run already a head's floor wide is carried on
+        # across a rim taken out with the line -- never a tie's end or a stub of a few columns grown into a head (Sean's ties, 2.164 tiles)
+        joined, n_j = bridge_rim_on_line(runs, clean[rb0:rb1], bare[rb0:rb1], RIM_GAP_SPACES * sp)
+        for j0, j1 in joined:
+            if j0 <= ex0 and ex1 <= j1 and (j0, j1) != (ex0, ex1):
+                rim_bridged = sum(1 for r0, r1 in runs if j0 <= r0 and r1 <= j1) - 1
+                ex0, ex1 = j0, j1
     # The head's ROWS: rows whose ink, across the run's columns, reaches from one side of it to the other (`ROW_WIDE_SHARE` of the
     # run's width, first ink to last -- a hollow row's two walls count). A slur's end or a stem standing on the head is narrow in every
     # row it crosses, so it does not stretch the head (Litolff p10 tile 5: slur in from the top right, stem out at the bottom left).
@@ -464,6 +510,8 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
     stem_mask = None
     if own_ink():
         clean, ex0, ex1, stem_mask, own_note = _own_ink(clean, ex0, ex1, ey0, ey1, sp, (kx0, kx1))
+        if rim_bridged:
+            own_note["rim_bridged"] = rim_bridged
         out["own_ink"] = own_note
     head = np.zeros_like(clean)
     head[ey0:ey1, ex0:ex1] = clean[ey0:ey1, ex0:ex1]
@@ -502,7 +550,7 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         noh = "too_wide"
     elif h_sp > max_h:
         noh = "too_tall"
-    elif hw_sp < MIN_SPACES or h_sp < MIN_SPACES:
+    elif w_sp < MIN_SPACES or h_sp < MIN_SPACES:          # taking the stem away never makes a head too small: the floor reads the whole width
         noh = "too_small"
     # lane-stem-end-head r3 (read by `stem_end_heads` only; no filed row carries it): the trimmed head with the rows the line-only trim
     # took back at its ends -- a black head in a space trims to ~0.63 sp on Litolff (10 of 15.75 px), the rim on its two lines included
@@ -513,7 +561,7 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         out["stem_mask"] = stem_mask
     out.update(clean=clean, trimmed=[x0 + ex0, y0 + ey0, x0 + ex1, y0 + ey1], extent_sp=[round(w_sp, 3), round(h_sp, 3)],
                not_one_head=noh, foreign_share=fs,
-               size_margin_sp=round(min(MAX_WIDTH_SPACES - hw_sp, max_h - h_sp, hw_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
+               size_margin_sp=round(min(MAX_WIDTH_SPACES - hw_sp, max_h - h_sp, w_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
     return out
 
 
@@ -540,20 +588,24 @@ def read_head_ink(page_binary: Any, box: Sequence[float], space_px: float, forei
     img = np.where(clean, 0, 255).astype(np.uint8)
     rel = (float(tx0 - ox), float(ty0 - oy), float(tx1 - tx0), float(ty1 - ty0))
     iw = slit_fn(img, rel)
-    if iw and iw.get("rows_read"):
-        out["slit"] = float(iw["rows_share"])
-        out["slit_hole_share"] = iw.get("hole_share")
-        if stem_mask is not None and SLIT_FILLED_MAX < out["slit"] < SLIT_HOLLOW_MIN:
-            # ROADMAP 2.355: the paper between a head and its stem never makes the head hollow. Read only where the slit fell between its two
-            # cuts: a white run ending on the stem does not count. It never overturns a slit that already decided (a Litolff half's stem
-            # is the wall of its hole, so its slit reads hollow on the full measure).
-            share, _n = slit_rows_share(clean[ty0 - oy:ty1 - oy, tx0 - ox:tx1 - ox], stem_mask[ty0 - oy:ty1 - oy, tx0 - ox:tx1 - ox])
-            out["slit_off_stem"] = round(share, 4)
-            if share <= SLIT_FILLED_MAX:
-                out["slit"] = out["slit_off_stem"]
     if window_fn is not None:
         win = window_fn(img, rel)
         out["window"] = (win or {}).get("windows")
+    if iw and iw.get("rows_read"):
+        out["slit"] = float(iw["rows_share"])
+        out["slit_hole_share"] = iw.get("hole_share")
+        centre = (out.get("window") or {}).get("center")
+        if stem_mask is not None and SLIT_FILLED_MAX < out["slit"] < SLIT_HOLLOW_MIN:
+            # ROADMAP 2.355: the paper between a head and its stem never makes the head hollow. Read only where the slit fell between its two
+            # cuts: a white run ending on the stem does not count. It never overturns a slit that already decided (a Litolff half's stem
+            # is the wall of its hole, so its slit reads hollow on the full measure), and it reads "black" only where the head's middle is
+            # solid ink (2.23's centre window, no paper at all) -- as on every black head Sean vouched for (441 of 441); an ff, a tremolo
+            # slash or a flag beside a stem has paper there (0.86-0.97) and stays between the cuts.
+            share, _n, gap_px = slit_rows_share(clean[ty0 - oy:ty1 - oy, tx0 - ox:tx1 - ox], stem_mask[ty0 - oy:ty1 - oy, tx0 - ox:tx1 - ox])
+            out["slit_off_stem"] = round(share, 4)
+            out["stem_gap_sp"] = round(gap_px / float(space_px), 3)
+            if share <= SLIT_FILLED_MAX and centre is not None and centre >= SOLID_CENTRE:
+                out["slit"] = out["slit_off_stem"]
     ov = HO.oval_width(page_binary, t["trimmed"], space_px)
     out["oval_width_sp"] = (ov or {}).get("oval_width_sp")
     if t["not_one_head"]:
