@@ -102,6 +102,196 @@ def own_rows() -> bool:
     return os.environ.get(OWN_ROWS_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
+OWN_INK_ENV = "OMR_HEAD_OWN_INK"
+
+
+def own_ink() -> bool:
+    """ROADMAP 2.355, default OFF (built OFF, Sean asleep; explicit 1/true/yes/on enables): the head's own ink is read from the head, not from
+    its stem or a stroke beside it that does not touch it.
+
+    As a musician says it: a black head is black whatever touches its edge; the stem is not the head; the head is the ink that crosses its
+    own middle. NEVER fill read off the paper between a head and its stem; never a stroke that does not touch the head counted in its width.
+
+    CAUSE (trace 2026-11-26, `/private/tmp/claude-501/trace-head-ink/`): of 625 heads Sean vouched for, 51 black Brahms heads abstained
+    "readers split" because the slit counted the 2-3 px paper wedge between the head and its stem (the stem stands inside the slit's middle
+    columns once the trimmed box takes the stem's hair width); 8 real heads read "too wide" with a slur end or stem stub counted in their
+    columns. The stem is found the way the stroke map defines one (`stroke_map.V_MIN_SPACES` tall, at most `STEM_THIN_SPACES` wide) --
+    measured here at the head's own x on the page raster, because the page stem reader (`page_stems`) files AFTER this GATHER reader."""
+    return os.environ.get(OWN_INK_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _stem_columns(clean: Any, ex0: int, ex1: int, ey0: int, ey1: int, sp: float) -> List[Tuple[int, int]]:
+    """PURE. The column bands of the head's box [ex0, ex1) x [ey0, ey1) (crop frame) that are a STEM: a column whose ink runs on unbroken out of
+    the head's top or bottom row, in all at least `stroke_map.V_MIN_SPACES` tall, whose run outside the head is thin (at most
+    `stroke_map.STEM_THIN_SPACES` across) for at least `stroke_map.STEM_PART_MIN_SPACES` -- the stroke map's own words for a stem."""
+    import numpy as np
+    from .stroke_map import STEM_PART_MIN_SPACES, STEM_THIN_SPACES, V_MIN_SPACES
+    H = clean.shape[0]
+    vmin, thin = V_MIN_SPACES * sp, STEM_THIN_SPACES * sp
+    bands: List[Tuple[int, int]] = []
+    for side in ("up", "down"):
+        cand = np.zeros(ex1 - ex0, bool)
+        for c in range(ex0, ex1):
+            col = clean[:, c]
+            if side == "up":
+                if ey0 - 1 < 0 or not col[ey0 - 1]:
+                    continue
+                y, n_out = ey0 - 1, 0
+                while y >= 0 and col[y]:
+                    n_out += 1
+                    y -= 1
+                y, n_in = ey0, 0
+                while y < ey1 and col[y]:
+                    n_in += 1
+                    y += 1
+            else:
+                if ey1 >= H or not col[ey1]:
+                    continue
+                y, n_out = ey1, 0
+                while y < H and col[y]:
+                    n_out += 1
+                    y += 1
+                y, n_in = ey1 - 1, 0
+                while y >= ey0 and col[y]:
+                    n_in += 1
+                    y -= 1
+            cand[c - ex0] = n_out + n_in >= vmin
+        c = 0
+        while c < len(cand):
+            if not cand[c]:
+                c += 1
+                continue
+            s = c
+            while c < len(cand) and cand[c]:
+                c += 1
+            b0, b1 = ex0 + s, ex0 + c
+            # walking out of the head row by row through the band: the stem is the part of the run that is THIN (at most
+            # `STEM_THIN_SPACES` across) for at least `STEM_PART_MIN_SPACES` -- "a thin part shorter than this is an oval's tip or a stem's
+            # stub" (stroke_map) -- so a second head stacked on this one (as wide as a head) is passed through, and the stem beyond it found
+            thin_rows, l_min, r_max = 0, None, None
+            for k in range(1, H + 1):
+                yy = ey0 - k if side == "up" else ey1 - 1 + k
+                if yy < 0 or yy >= H:
+                    break
+                row = clean[yy]
+                xs = np.nonzero(row[b0:b1])[0]
+                if not len(xs):
+                    break
+                segs = []
+                j = b0 + int(xs[0])
+                while j < b1:
+                    if not row[j]:
+                        j += 1
+                        continue
+                    l = j
+                    while l - 1 >= 0 and row[l - 1]:
+                        l -= 1
+                    r = j
+                    while r + 1 < len(row) and row[r + 1]:
+                        r += 1
+                    segs.append((l, r))
+                    j = r + 1
+                narrow = [(l, r) for l, r in segs if r - l + 1 <= thin]
+                if narrow:
+                    thin_rows += 1
+                    l_min = min([l_min] + [l for l, _ in narrow] if l_min is not None else [l for l, _ in narrow])
+                    r_max = max([r_max] + [r for _, r in narrow] if r_max is not None else [r for _, r in narrow])
+            if thin_rows >= STEM_PART_MIN_SPACES * sp and l_min is not None and r_max + 1 - l_min <= thin:
+                bands.append((max(ex0, l_min), min(ex1, r_max + 1)))
+    return sorted(set(b for b in bands if b[1] > b[0]))
+
+
+def slit_rows_share(ink: Any, stem: Any) -> Tuple[float, int]:
+    """PURE. 2.148's slit (`gather.head_interior_white` `rows_share`, the same rows 20-80%, columns 12-88%, white run >= 5% of the width) on the
+    head's crop `ink` (bool, True = ink), where a white run counts only with HEAD ink, not stem ink (`stem`, bool, same shape), on both its
+    ends: the paper between a head and its stem is not the head's inside. With no stem pixels it equals `rows_share` exactly."""
+    import numpy as np
+    hh, ww = ink.shape
+    a, b = int(0.12 * ww), max(int(0.12 * ww) + 1, int(0.88 * ww))
+    minrun = max(1, int(round(0.05 * ww)))
+    n = hit = 0
+    for yy in range(int(0.2 * hh), max(int(0.2 * hh) + 1, int(0.8 * hh))):
+        r = ink[yy, a:b]
+        st = stem[yy, a:b]
+        xs = np.nonzero(r)[0]
+        if len(xs) == 0:
+            continue
+        n += 1
+        # the row's ink as segments; a segment that holds any stem pixel is the stem (with whatever of the head is fused to it)
+        segs: List[Tuple[int, int, bool]] = []
+        j = int(xs[0])
+        while j <= xs[-1]:
+            if not r[j]:
+                j += 1
+                continue
+            s = j
+            while j <= xs[-1] and r[j]:
+                j += 1
+            segs.append((s, j, bool(st[s:j].any())))
+        ok = any(segs[q + 1][0] - segs[q][1] >= minrun and not segs[q][2] and not segs[q + 1][2] for q in range(len(segs) - 1))
+        hit += ok
+    return (hit / n if n else 0.0), n
+
+
+def _own_ink(clean: Any, ex0: int, ex1: int, ey0: int, ey1: int, sp: float,
+             core: Optional[Tuple[int, int]] = None) -> Tuple[Any, int, int, Any, Dict[str, Any]]:
+    """ROADMAP 2.355 (`OMR_HEAD_OWN_INK`). The head's own ink inside its trimmed box [ex0, ex1) x [ey0, ey1) (crop frame):
+      1. the head is the ink under the box's core that crosses its own middle: a stroke inside the box that does not reach the head's
+         middle third of rows (a slur's end, a stub above it) or never comes under the box's core columns `core` (a mark beside the head
+         that touches it only through a staff line we took out) is not the head and leaves the box -- joining goes by ink, never by box. A
+         hollow head broken in two arcs keeps both: each arc runs over the core (its rim) and down the middle (its wall);
+      2. the stem is not the head: the stem bands (`_stem_columns`) are returned as `stem` (the slit reads a white run that ends on the stem
+         as the paper between the head and its stem, `slit_rows_share`), and `note["width_px"]` is the head's width without a stem band at
+         its edge. The stem never leaves the slit's box: a Litolff half's stem is the wall of its hole (trace item 97).
+    Returns (clean with the strokes of 1 taken out of the box, ex0, ex1, stem mask or None, note)."""
+    import numpy as np
+    from scipy import ndimage as nd
+    note: Dict[str, Any] = {}
+    h = ey1 - ey0
+    sub = clean[ey0:ey1, ex0:ex1]
+    lab, k = nd.label(sub, structure=np.ones((3, 3), bool))
+    if k > 1:
+        m0, m1 = int(h / 3.0), max(int(h / 3.0) + 1, int(round(2.0 * h / 3.0)))
+        keep = set(int(v) for v in np.unique(lab[m0:m1]) if v)
+        if core is not None:
+            c0, c1 = max(0, core[0] - ex0), min(sub.shape[1], core[1] - ex0)
+            if c1 > c0:
+                under = set(int(v) for v in np.unique(lab[:, c0:c1]) if v)
+                if keep & under:
+                    keep &= under
+        if keep:
+            drop = np.isin(lab, [i for i in range(1, k + 1) if i not in keep])
+            if drop.any():
+                clean = clean.copy()
+                clean[ey0:ey1, ex0:ex1] &= ~drop
+                note["apart_px"] = int(drop.sum())
+                cols = np.nonzero(clean[ey0:ey1, ex0:ex1].any(axis=0))[0]
+                ex0, ex1 = ex0 + int(cols[0]), ex0 + int(cols[-1]) + 1
+    bands = _stem_columns(clean, ex0, ex1, ey0, ey1, sp)
+    note["_bands"] = bands
+    stem = None
+    if bands:
+        stem = np.zeros_like(clean)
+        for b0, b1 in bands:
+            stem[ey0:ey1, b0:b1] = clean[ey0:ey1, b0:b1]
+        note["stems"] = len(bands)
+    return clean, ex0, ex1, stem, note
+
+
+def width_without_stem(head: Any, ex0: int, ex1: int, bands: Sequence[Tuple[int, int]]) -> int:
+    """PURE. The width in px of the head's ink `head` (bool crop) between columns [ex0, ex1), a stem band standing at either edge left out
+    (the stem is not the head). The full width where nothing but stem is left."""
+    import numpy as np
+    w0, w1 = ex0, ex1
+    for b0, b1 in bands:
+        if b0 <= w0 + 1 and b1 < w1:
+            w0 = b1
+        elif b1 >= w1 - 1 and b0 > w0:
+            w1 = b0
+    cols = np.nonzero(head[:, w0:w1].any(axis=0))[0] if w1 > w0 else []
+    return (int(cols[-1]) - int(cols[0]) + 1) if len(cols) else ex1 - ex0
+
+
 def is_foreign_class(name: Optional[str]) -> bool:
     n = str(name or "").lower()
     return n.startswith(FOREIGN_PREFIXES) and not n.startswith(FOREIGN_EXCLUDE)
@@ -271,6 +461,10 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
             ey0 += 1
     cols = np.nonzero(clean[ey0:ey1, ex0:ex1].any(axis=0))[0]
     ex0, ex1 = ex0 + int(cols[0]), ex0 + int(cols[-1]) + 1
+    stem_mask = None
+    if own_ink():
+        clean, ex0, ex1, stem_mask, own_note = _own_ink(clean, ex0, ex1, ey0, ey1, sp, (kx0, kx1))
+        out["own_ink"] = own_note
     head = np.zeros_like(clean)
     head[ey0:ey1, ex0:ex1] = clean[ey0:ey1, ex0:ex1]
     max_h = MAX_HEIGHT_SPACES_V2 if trim_line_only_v2() else MAX_HEIGHT_SPACES
@@ -297,22 +491,29 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         tot = int(head.sum())
         fs = round(float((head & fm).sum()) / tot, 3) if tot else 0.0
     noh = None
+    # ROADMAP 2.355: the stem is not the head, so the head's width is read without a stem standing at its edge (the filed extent stays the box's)
+    hw_sp = w_sp
+    if "own_ink" in out:
+        hw_sp = width_without_stem(head, ex0, ex1, out["own_ink"].pop("_bands", ())) / sp
+        out["own_ink"]["width_sp"] = round(hw_sp, 3)
     if fs >= FOREIGN_SHARE:
         noh = "holds_another_marks_ink"
-    elif w_sp > MAX_WIDTH_SPACES:
+    elif hw_sp > MAX_WIDTH_SPACES:
         noh = "too_wide"
     elif h_sp > max_h:
         noh = "too_tall"
-    elif w_sp < MIN_SPACES or h_sp < MIN_SPACES:
+    elif hw_sp < MIN_SPACES or h_sp < MIN_SPACES:
         noh = "too_small"
     # lane-stem-end-head r3 (read by `stem_end_heads` only; no filed row carries it): the trimmed head with the rows the line-only trim
     # took back at its ends -- a black head in a space trims to ~0.63 sp on Litolff (10 of 15.75 px), the rim on its two lines included
     # it is the head a detector box would draw (Sean 2026-10-29, r2 tile 7: "too rectangular to capture the full bite")
     ry0, ry1 = (ey0, ey1) if out["stack_clipped"] else (min(ey0, rim_y0), max(ey1, rim_y1))
     out.update(rim_trimmed=[x0 + ex0, y0 + ry0, x0 + ex1, y0 + ry1], rim_extent_sp=[round(w_sp, 3), round((ry1 - ry0) / sp, 3)])
+    if stem_mask is not None:
+        out["stem_mask"] = stem_mask
     out.update(clean=clean, trimmed=[x0 + ex0, y0 + ey0, x0 + ex1, y0 + ey1], extent_sp=[round(w_sp, 3), round(h_sp, 3)],
                not_one_head=noh, foreign_share=fs,
-               size_margin_sp=round(min(MAX_WIDTH_SPACES - w_sp, max_h - h_sp, w_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
+               size_margin_sp=round(min(MAX_WIDTH_SPACES - hw_sp, max_h - h_sp, hw_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
     return out
 
 
@@ -329,6 +530,7 @@ def read_head_ink(page_binary: Any, box: Sequence[float], space_px: float, forei
     if t is None:
         return None
     clean = t.pop("clean")
+    stem_mask = t.pop("stem_mask", None)
     out = dict(t, slit=None, window=None, oval_width_sp=None, value=None, why=None, margin=None)
     if t["trimmed"] is None:
         out["why"] = "no_head_ink"
@@ -341,6 +543,14 @@ def read_head_ink(page_binary: Any, box: Sequence[float], space_px: float, forei
     if iw and iw.get("rows_read"):
         out["slit"] = float(iw["rows_share"])
         out["slit_hole_share"] = iw.get("hole_share")
+        if stem_mask is not None and SLIT_FILLED_MAX < out["slit"] < SLIT_HOLLOW_MIN:
+            # ROADMAP 2.355: the paper between a head and its stem never makes the head hollow. Read only where the slit fell between its two
+            # cuts: a white run ending on the stem does not count. It never overturns a slit that already decided (a Litolff half's stem
+            # is the wall of its hole, so its slit reads hollow on the full measure).
+            share, _n = slit_rows_share(clean[ty0 - oy:ty1 - oy, tx0 - ox:tx1 - ox], stem_mask[ty0 - oy:ty1 - oy, tx0 - ox:tx1 - ox])
+            out["slit_off_stem"] = round(share, 4)
+            if share <= SLIT_FILLED_MAX:
+                out["slit"] = out["slit_off_stem"]
     if window_fn is not None:
         win = window_fn(img, rel)
         out["window"] = (win or {}).get("windows")
@@ -350,6 +560,8 @@ def read_head_ink(page_binary: Any, box: Sequence[float], space_px: float, forei
         out["why"] = "not_one_head"
         return out
     out["value"], out["margin"], out["why"] = fill_from_slit(out["slit"])
+    if out["why"] == "readers_split" and own_ink():
+        out["why"] = "slit_between_cuts" if out["slit"] is not None else "slit_unread"
     return out
 
 

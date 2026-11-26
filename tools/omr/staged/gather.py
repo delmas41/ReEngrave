@@ -8882,13 +8882,15 @@ def gather_head_ink(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, T
                             note="no page raster, page box or staff unit")
                 continue
             detail = {k: got[k] for k in ("trimmed", "extent_sp", "not_one_head", "size_margin_sp", "foreign_share", "stack_clipped",
-                                          "slit", "window", "oval_width_sp", "line_px_out", "n_runs") if got.get(k) is not None}
+                                          "slit", "window", "oval_width_sp", "line_px_out", "n_runs", "own_ink", "slit_off_stem")
+                  if got.get(k) is not None}
             detail["page_box"] = [round(float(v), 2) for v in page_box]
             if got["value"] is not None:
                 log.observe(g, Q.HEAD_INK, got["value"], reader=READERS.CV_HEAD_INK, frame=frame, margin=got["margin"], **detail)
             else:
                 reason = {"not_one_head": ABSTAIN.NOT_ONE_HEAD, "no_head_ink": ABSTAIN.NO_HEAD_INK,
-                          "readers_split": ABSTAIN.READERS_SPLIT}[got["why"]]
+                          "readers_split": ABSTAIN.READERS_SPLIT, "slit_between_cuts": ABSTAIN.SLIT_BETWEEN_CUTS,
+                          "slit_unread": ABSTAIN.SLIT_UNREAD}[got["why"]]
                 log.abstain(g, Q.HEAD_INK, reader=READERS.CV_HEAD_INK, frame=frame, reason=reason, **detail)
         if progress:
             print(f"  gather head ink {sub.to_key()}: {len(heads)} heads")

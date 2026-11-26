@@ -3233,6 +3233,11 @@ class ABSTAIN(_Vocab):
     NO_HEAD_INK = "no_head_ink"
     #: ROADMAP 2.220: the slit on the trimmed head sits between its cuts (0.06 < slit < 0.18), or could not be read.
     READERS_SPLIT = "readers_split"
+    #: ROADMAP 2.355 (flag `OMR_HEAD_OWN_INK`; the same abstention, named for what it is -- one measure, the slit, landed between its two cuts,
+    #: not two readers disagreeing): the paper across the head's middle is more than a black head holds and less than a hollow head shows.
+    SLIT_BETWEEN_CUTS = "slit_between_cuts"
+    #: ROADMAP 2.355: the slit could not be read on the trimmed head (no middle row holds ink).
+    SLIT_UNREAD = "slit_unread"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
 
