@@ -11504,7 +11504,7 @@
 "written": 1.0
 }
 },
-"fate": null,
+"fate": "not_a_rest:claimed_by:barline",
 "pitch": null,
 "subject": "glyph/11/1/10/0/29",
 "value": [
@@ -11554,7 +11554,7 @@
 "written": 1.0
 }
 },
-"fate": null,
+"fate": "not_a_rest:claimed_by:barline",
 "pitch": null,
 "subject": "glyph/11/1/10/0/33",
 "value": [
@@ -11598,7 +11598,7 @@
 "reason": "not_a_note_mark",
 "value": null
 },
-"fate": null,
+"fate": "not_a_notehead:tremolo_slash_crosses_stem",
 "pitch": {
 "outcome": "decided",
 "reason": "position_and_clef",
@@ -11633,7 +11633,7 @@
 "written": 3.0
 }
 },
-"fate": null,
+"fate": "written",
 "pitch": {
 "outcome": "decided",
 "reason": "position_and_clef",
@@ -11661,7 +11661,7 @@
 "reason": "not_a_note_mark",
 "value": null
 },
-"fate": null,
+"fate": "not_a_notehead:tremolo_slash_crosses_stem",
 "pitch": {
 "outcome": "decided",
 "reason": "position_and_clef",
@@ -11734,7 +11734,7 @@
 "written": 3.0
 }
 },
-"fate": null,
+"fate": "written",
 "pitch": {
 "outcome": "decided",
 "reason": "position_and_clef",
@@ -11782,7 +11782,7 @@
 "reason": "not_a_note_mark",
 "value": null
 },
-"fate": null,
+"fate": "not_a_notehead:claimed_by:barline",
 "pitch": {
 "outcome": "decided",
 "reason": "position_and_clef",
@@ -11830,7 +11830,7 @@
 "reason": "not_a_note_mark",
 "value": null
 },
-"fate": null,
+"fate": "not_a_notehead:claimed_by:page_claim",
 "pitch": {
 "outcome": "decided",
 "reason": "position_and_clef",
@@ -11902,7 +11902,7 @@
 "reason": "owned_by_another_staff",
 "value": null
 },
-"fate": null,
+"fate": "owned_by_another_staff",
 "pitch": {
 "outcome": "decided",
 "reason": "reowned",

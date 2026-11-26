@@ -1,0 +1,12 @@
+{
+ "set": "2.354",
+ "question": "The box in tile 1 was first read as a note, then let go at the very end because its ink is the bass clef of the staff below. Places like this are left out today with no mark. With the new switch each one gets a red 'unread note' word so you can look. Do you want these places marked in red, or left out as now?",
+ "colours": "thick orange box = the box our reader first took for a note; nothing else is drawn",
+ "tiles": [
+  {"tile": 1, "doc": "brahms", "page": 12, "subject": "glyph/12/0/4/0/15", "page_box_from": "20261123-night record glyph_box",
+   "what_we_do_today": "decided a note (pitch and value), then dropped at EXPORT relocation_on_another_mark with no mark",
+   "with_OMR_LATE_INK_DROP_MARKED": "nothing written; a red 'unread note' word at its place"}
+ ],
+ "told_with_it": "On the 18 test pages the switch adds 18 red words and changes nothing else; in our own look (not yours) 16 sit on a clef, a flat, a flag, a word, a trill, a slur or a tremolo slash, 1 on a whole rest that is written nowhere, 1 on a hollow rectangle we cannot name; none on a note.",
+ "source": "/private/tmp/claude-501/trace-nonnotes/crops21/brahms_p12_0-4-0-15.png (crop21.py: one staff, ~12 spaces, 7 px orange box, half a space of padding)"
+}
