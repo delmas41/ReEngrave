@@ -8004,11 +8004,29 @@ _DROPPED_HEAD_REASON_WORDS = {
     "duration_narrowed": "value not read", "duration_abstained": "value not read", "duration_absent": "value not read",
     "chord_value_undecided": "chord value not read", "no_pitch": "pitch not read",
     "owned_by_another_staff": "staff not decided", "unread:wide_box_unread": "head not read",
+    "relocation_inside_owner_view": "its staff drew no head here",
 }
 #: refusals that say the box is not a whole head (the two measured scrap classes) -- never a dropped note
 _DROPPED_HEAD_SCRAPS = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:clipped_fragment",
                                   # 2.270: ink narrower than a head (a piece of a sign) / ink across a stem on both sides (a slash)
                                   "ink_not_head_shaped", "ink_straddles_a_stem"})
+
+
+#: ROADMAP 2.351 (`OMR_INSIDE_VIEW_DROP_MARKED`, default OFF). STAGED EXPORT. THE RULE: a note read and decided is never dropped
+#: unmarked. `relocation_inside_owner_view` (2026-11-22 lane-owner-writes, ROADMAP 2.58 / 2.337, `_plan_relocation` step 3b) refuses a
+#: head another staff owns, that the owner's own bar view could see but drew no box for -- written there it could count one head's ink
+#: twice (the owner wrote it a step off) or write a ledger stroke, a tie end or a word as a note. It was filed as not-a-gap, so the
+#: note vanished silently. With this flag the refusal stands (nothing is written) and the place is MARKED like every other dropped
+#: head that may be a note (2.333's spot). NEVER writes the head; never marks a box whose ink a written note already holds
+#: (`_file_dropped_heads`' own test). MEASURED (20261123-night, whole movement, our look at the crops, not Sean's): 4 such drops --
+#: Litolff p10 `glyph/10/1/1/11/2`, `glyph/10/1/2/9/7`, `glyph/10/1/2/10/6`, stacked hollow half heads on one stem (real notes, lost
+#: today), and Brahms p5 `glyph/5/0/8/3/16`, a box on the `e` of "cresc." (not a note: marked, a look for Sean, nothing invented).
+INSIDE_VIEW_DROP_MARKED_ENV = "OMR_INSIDE_VIEW_DROP_MARKED"
+
+
+def inside_view_drop_marked_enabled() -> bool:
+    """ROADMAP 2.351, `OMR_INSIDE_VIEW_DROP_MARKED`, default OFF (allow-list 1/true/yes/on)."""
+    return os.environ.get(INSIDE_VIEW_DROP_MARKED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 def dropped_head_marks_mode() -> str:
@@ -8023,6 +8041,8 @@ def _dropped_head_may_be_a_note(reason: Optional[str]) -> bool:
         return False
     if reason == "owned_by_another_staff":
         return True
+    if reason == "relocation_inside_owner_view" and inside_view_drop_marked_enabled():
+        return True             # ROADMAP 2.351: a decided head the owner drew no box for is marked, never dropped unmarked
     if reason in _NOT_A_GAP_REASONS or reason in _CLAIM_GAP_REASONS:
         return False
     if reason.startswith(("not_a_notehead:", "not_a_rest:", "rest_")) or reason in ("ink_is_a_whole_rest", _GAP_REFUSAL):
