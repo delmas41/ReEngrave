@@ -1,0 +1,2126 @@
+[
+ {
+  "doc": "litolff",
+  "page": 2,
+  "subject": "glyph/2/0/7/1/5",
+  "head_box": [
+   648.5,
+   1452.4,
+   669.3,
+   1468.4
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "D5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P8"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 488,
+     "direction": "down",
+     "reach_sp": 3.54,
+     "gap_sp": 0.0,
+     "dx_sp": 0.0
+    },
+    {
+     "stroke": 586,
+     "direction": "up",
+     "reach_sp": 1.78,
+     "gap_sp": 0.0,
+     "dx_sp": 0.169
+    }
+   ]
+  },
+  "n": 1,
+  "file": "01_litolff_p2_glyph-2-0-7-1-5.png",
+  "crop_page_px": [
+   555,
+   1396,
+   763,
+   1535
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   1439,
+   1503
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 2,
+  "subject": "glyph/2/1/2/11/1",
+  "head_box": [
+   2099.3,
+   2439.8,
+   2120.1,
+   2455.8
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Bb4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": true,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P3"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 3568,
+     "direction": "up",
+     "reach_sp": 3.05,
+     "gap_sp": 0.0,
+     "dx_sp": 0.088
+    },
+    {
+     "stroke": 3503,
+     "direction": "down",
+     "reach_sp": 2.01,
+     "gap_sp": 0.0,
+     "dx_sp": 0.137
+    }
+   ]
+  },
+  "n": 2,
+  "file": "02_litolff_p2_glyph-2-1-2-11-1.png",
+  "crop_page_px": [
+   2006,
+   2380,
+   2214,
+   2512
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   2412,
+   2476
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 2,
+  "subject": "glyph/2/1/3/2/5",
+  "head_box": [
+   775.5,
+   2559.6,
+   796.0,
+   2575.3
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Eb4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P4"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 937,
+     "direction": "up",
+     "reach_sp": 2.0,
+     "gap_sp": 0.09,
+     "dx_sp": 0.032
+    },
+    {
+     "stroke": 841,
+     "direction": "down",
+     "reach_sp": 3.15,
+     "gap_sp": 0.0,
+     "dx_sp": 0.095
+    }
+   ]
+  },
+  "n": 3,
+  "file": "03_litolff_p2_glyph-2-1-3-2-5.png",
+  "crop_page_px": [
+   683,
+   2504,
+   888,
+   2654
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2559,
+   2622
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 2,
+  "subject": "glyph/2/1/9/14/2",
+  "head_box": [
+   2483.5,
+   3477.0,
+   2504.3,
+   3493.0
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "Eb3",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P10"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 4101,
+     "direction": "down",
+     "reach_sp": 1.56,
+     "gap_sp": 0.0,
+     "dx_sp": 0.344
+    },
+    {
+     "stroke": 4127,
+     "direction": "up",
+     "reach_sp": 4.38,
+     "gap_sp": 0.0,
+     "dx_sp": -0.363
+    }
+   ]
+  },
+  "n": 4,
+  "file": "04_litolff_p2_glyph-2-1-9-14-2.png",
+  "crop_page_px": [
+   2390,
+   3369,
+   2598,
+   3563
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   3401,
+   3465
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/7/4/18",
+  "head_box": [
+   1090.0,
+   3167.3,
+   1108.6,
+   3183.2
+  ],
+  "head_has_oval": false,
+  "cause": "ends_at_another_head",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "G4",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P8"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 1623,
+     "direction": "down",
+     "reach_sp": 2.05,
+     "gap_sp": 0.0,
+     "dx_sp": -0.188
+    },
+    {
+     "stroke": 1688,
+     "direction": "up",
+     "reach_sp": 4.39,
+     "gap_sp": 0.0,
+     "dx_sp": -0.191
+    }
+   ]
+  },
+  "n": 5,
+  "file": "05_litolff_p4_glyph-4-1-7-4-18.png",
+  "crop_page_px": [
+   995,
+   3095,
+   1203,
+   3253
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   3127,
+   3191
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 6,
+  "subject": "glyph/6/0/3/7/1",
+  "head_box": [
+   1678.2,
+   839.7,
+   1698.7,
+   855.4
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "C4",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P4"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 2097,
+     "direction": "up",
+     "reach_sp": 3.21,
+     "gap_sp": 0.0,
+     "dx_sp": -0.108
+    },
+    {
+     "stroke": 2053,
+     "direction": "down",
+     "reach_sp": 3.9,
+     "gap_sp": 0.0,
+     "dx_sp": 0.114
+    }
+   ]
+  },
+  "n": 6,
+  "file": "06_litolff_p6_glyph-6-0-3-7-1.png",
+  "crop_page_px": [
+   1586,
+   778,
+   1791,
+   922
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   827,
+   890
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 6,
+  "subject": "glyph/6/0/3/7/4",
+  "head_box": [
+   1703.5,
+   845.0,
+   1729.3,
+   866.1
+  ],
+  "head_has_oval": false,
+  "cause": "ends_at_another_head",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "Bb3",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P4"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 2135,
+     "direction": "up",
+     "reach_sp": 3.65,
+     "gap_sp": 0.0,
+     "dx_sp": -0.273
+    },
+    {
+     "stroke": 2119,
+     "direction": "down",
+     "reach_sp": 3.33,
+     "gap_sp": 0.0,
+     "dx_sp": 0.287
+    }
+   ]
+  },
+  "n": 7,
+  "file": "07_litolff_p6_glyph-6-0-3-7-4.png",
+  "crop_page_px": [
+   1614,
+   790,
+   1819,
+   922
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   827,
+   890
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 6,
+  "subject": "glyph/6/0/8/12/1",
+  "head_box": [
+   2542.0,
+   1548.0,
+   2565.0,
+   1565.0
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "D4",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P11"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 3871,
+     "direction": "up",
+     "reach_sp": 4.03,
+     "gap_sp": 2.0,
+     "dx_sp": 0.19
+    },
+    {
+     "stroke": 3828,
+     "direction": "down",
+     "reach_sp": 4.67,
+     "gap_sp": 1.11,
+     "dx_sp": 0.222
+    }
+   ]
+  },
+  "n": 8,
+  "file": "08_litolff_p6_glyph-6-0-8-12-1.png",
+  "crop_page_px": [
+   2451,
+   1475,
+   2656,
+   1688
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   1593,
+   1656
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 8,
+  "subject": "glyph/8/1/0/1/4",
+  "head_box": [
+   694.0,
+   1902.0,
+   720.0,
+   1923.0
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "B5",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P1"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 854,
+     "direction": "up",
+     "reach_sp": 2.0,
+     "gap_sp": 0.0,
+     "dx_sp": -0.159
+    },
+    {
+     "stroke": 749,
+     "direction": "down",
+     "reach_sp": 3.71,
+     "gap_sp": 0.0,
+     "dx_sp": 0.222
+    }
+   ]
+  },
+  "n": 9,
+  "file": "09_litolff_p8_glyph-8-1-0-1-4.png",
+  "crop_page_px": [
+   605,
+   1846,
+   809,
+   2030
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   1935,
+   1998
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 10,
+  "subject": "glyph/10/1/1/9/10",
+  "head_box": [
+   1904.0,
+   2242.1,
+   1924.5,
+   2257.8
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "F5",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P2"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 2965,
+     "direction": "down",
+     "reach_sp": 3.56,
+     "gap_sp": 0.0,
+     "dx_sp": 0.095
+    },
+    {
+     "stroke": 3066,
+     "direction": "up",
+     "reach_sp": 2.09,
+     "gap_sp": 0.38,
+     "dx_sp": -0.381
+    }
+   ]
+  },
+  "n": 10,
+  "file": "10_litolff_p10_glyph-10-1-1-9-10.png",
+  "crop_page_px": [
+   1812,
+   2186,
+   2017,
+   2344
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2249,
+   2312
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 10,
+  "subject": "glyph/10/1/2/1/3",
+  "head_box": [
+   660.4,
+   2401.3,
+   680.8,
+   2417.1
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "A4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": true,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P3"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 739,
+     "direction": "down",
+     "reach_sp": 2.15,
+     "gap_sp": 0.0,
+     "dx_sp": -0.025
+    },
+    {
+     "stroke": 808,
+     "direction": "up",
+     "reach_sp": 2.87,
+     "gap_sp": 0.0,
+     "dx_sp": -0.051
+    }
+   ]
+  },
+  "n": 11,
+  "file": "11_litolff_p10_glyph-10-1-2-1-3.png",
+  "crop_page_px": [
+   568,
+   2346,
+   773,
+   2472
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2377,
+   2440
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 10,
+  "subject": "glyph/10/1/9/3/1",
+  "head_box": [
+   911.2,
+   3469.4,
+   931.7,
+   3485.2
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Eb3",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P10"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 1242,
+     "direction": "up",
+     "reach_sp": 3.96,
+     "gap_sp": 0.0,
+     "dx_sp": 0.114
+    },
+    {
+     "stroke": 1202,
+     "direction": "down",
+     "reach_sp": 2.08,
+     "gap_sp": 0.0,
+     "dx_sp": 0.146
+    }
+   ]
+  },
+  "n": 12,
+  "file": "12_litolff_p10_glyph-10-1-9-3-1.png",
+  "crop_page_px": [
+   819,
+   3376,
+   1024,
+   3548
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   3408,
+   3471
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 16,
+  "subject": "glyph/16/0/4/6/4",
+  "head_box": [
+   1241.0,
+   980.0,
+   1266.0,
+   991.0
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "E5",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P5"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 1672,
+     "direction": "down",
+     "reach_sp": 3.71,
+     "gap_sp": 0.0,
+     "dx_sp": 0.095
+    },
+    {
+     "stroke": 1755,
+     "direction": "up",
+     "reach_sp": 3.14,
+     "gap_sp": 0.0,
+     "dx_sp": -0.222
+    }
+   ]
+  },
+  "n": 13,
+  "file": "13_litolff_p16_glyph-16-0-4-6-4.png",
+  "crop_page_px": [
+   1151,
+   919,
+   1356,
+   1068
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   974,
+   1037
+  ]
+ },
+ {
+  "doc": "brahms",
+  "page": 5,
+  "subject": "glyph/5/1/5/0/7",
+  "head_box": [
+   1083.0,
+   5238.0,
+   1118.4,
+   5265.2
+  ],
+  "head_has_oval": true,
+  "cause": "ends_at_another_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "C4",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P6"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "ends_at_another_head",
+   "strokes": [
+    {
+     "stroke": 1082,
+     "direction": "up",
+     "reach_sp": 3.11,
+     "gap_sp": 0.0,
+     "dx_sp": 0.077
+    },
+    {
+     "stroke": 1022,
+     "direction": "down",
+     "reach_sp": 3.02,
+     "gap_sp": 0.0,
+     "dx_sp": 0.128
+    }
+   ]
+  },
+  "n": 14,
+  "file": "14_brahms_p5_glyph-5-1-5-0-7.png",
+  "crop_page_px": [
+   924,
+   5060,
+   1278,
+   5361
+  ],
+  "scale": 3,
+  "staff_space_px": 27.25,
+  "staff_top_bottom": [
+   5114,
+   5223
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/0/12/2",
+  "head_box": [
+   2255.4,
+   2096.0,
+   2282.4,
+   2118.0
+  ],
+  "head_has_oval": false,
+  "cause": "head_ink_unread",
+  "r23_list": "count_matches_r23",
+  "old_join_writes": {
+   "pitch": "G6",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P1"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "head_ink_unread",
+   "strokes": [
+    {
+     "stroke": 3885,
+     "direction": "down",
+     "reach_sp": 6.73,
+     "gap_sp": 0.0,
+     "dx_sp": 0.322
+    },
+    {
+     "stroke": 3895,
+     "direction": "up",
+     "reach_sp": 3.43,
+     "gap_sp": 0.0,
+     "dx_sp": -0.34
+    }
+   ]
+  },
+  "n": 15,
+  "file": "15_litolff_p4_glyph-4-1-0-12-2.png",
+  "crop_page_px": [
+   2167,
+   1993,
+   2371,
+   2272
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2178,
+   2241
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/2/5/14",
+  "head_box": [
+   1259.1,
+   2467.1,
+   1279.6,
+   2482.8
+  ],
+  "head_has_oval": true,
+  "cause": "head_ink_unread",
+  "r23_list": "count_matches_r23",
+  "old_join_writes": {
+   "pitch": "C5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P3"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "head_ink_unread",
+   "strokes": [
+    {
+     "stroke": 1995,
+     "direction": "up",
+     "reach_sp": 1.58,
+     "gap_sp": 0.0,
+     "dx_sp": 0.089
+    },
+    {
+     "stroke": 1968,
+     "direction": "down",
+     "reach_sp": 3.56,
+     "gap_sp": 0.0,
+     "dx_sp": 0.248
+    }
+   ]
+  },
+  "n": 16,
+  "file": "16_litolff_p4_glyph-4-1-2-5-14.png",
+  "crop_page_px": [
+   1167,
+   2411,
+   1372,
+   2546
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2451,
+   2514
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/4/13/8",
+  "head_box": [
+   2408.1,
+   2748.9,
+   2431.5,
+   2769.8
+  ],
+  "head_has_oval": false,
+  "cause": "head_ink_unread",
+  "r23_list": "count_matches_r23",
+  "old_join_writes": {
+   "pitch": "G4",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P5"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "head_ink_unread",
+   "strokes": [
+    {
+     "stroke": 4142,
+     "direction": "up",
+     "reach_sp": 3.96,
+     "gap_sp": 0.0,
+     "dx_sp": 0.161
+    },
+    {
+     "stroke": 4117,
+     "direction": "down",
+     "reach_sp": 3.47,
+     "gap_sp": 0.0,
+     "dx_sp": 0.245
+    }
+   ]
+  },
+  "n": 17,
+  "file": "17_litolff_p4_glyph-4-1-4-13-8.png",
+  "crop_page_px": [
+   2317,
+   2678,
+   2522,
+   2830
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2710,
+   2773
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 2,
+  "subject": "glyph/2/1/2/12/3",
+  "head_box": [
+   2220.6,
+   2442.9,
+   2241.4,
+   2458.9
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "A4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": true,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P3"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 3725,
+     "direction": "up",
+     "reach_sp": 3.06,
+     "gap_sp": 0.0,
+     "dx_sp": 0.006
+    },
+    {
+     "stroke": 3663,
+     "direction": "down",
+     "reach_sp": 2.19,
+     "gap_sp": 0.0,
+     "dx_sp": 0.025
+    }
+   ]
+  },
+  "n": 18,
+  "file": "18_litolff_p2_glyph-2-1-2-12-3.png",
+  "crop_page_px": [
+   2127,
+   2380,
+   2335,
+   2515
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   2412,
+   2476
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/0/14/2",
+  "head_box": [
+   2490.0,
+   2160.0,
+   2513.0,
+   2176.0
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "G5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "2",
+   "guessed_blue": false,
+   "part": "P1"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 4196,
+     "direction": "down",
+     "reach_sp": 4.44,
+     "gap_sp": 0.0,
+     "dx_sp": 0.159
+    },
+    {
+     "stroke": 4234,
+     "direction": "up",
+     "reach_sp": 3.24,
+     "gap_sp": 0.0,
+     "dx_sp": -0.222
+    }
+   ]
+  },
+  "n": 19,
+  "file": "19_litolff_p4_glyph-4-1-0-14-2.png",
+  "crop_page_px": [
+   2399,
+   2090,
+   2604,
+   2272
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2178,
+   2241
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 8,
+  "subject": "glyph/8/0/2/17/3",
+  "head_box": [
+   2105.9,
+   728.6,
+   2126.3,
+   744.4
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "C5",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P3"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 3427,
+     "direction": "down",
+     "reach_sp": 3.14,
+     "gap_sp": 0.0,
+     "dx_sp": 0.038
+    },
+    {
+     "stroke": 3476,
+     "direction": "up",
+     "reach_sp": 1.62,
+     "gap_sp": 0.0,
+     "dx_sp": -0.083
+    }
+   ]
+  },
+  "n": 20,
+  "file": "20_litolff_p8_glyph-8-0-2-17-3.png",
+  "crop_page_px": [
+   2014,
+   674,
+   2218,
+   810
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   715,
+   778
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 8,
+  "subject": "glyph/8/1/1/18/9",
+  "head_box": [
+   2483.7,
+   2078.1,
+   2504.2,
+   2093.8
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "F5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P2"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 3960,
+     "direction": "up",
+     "reach_sp": 2.98,
+     "gap_sp": 0.0,
+     "dx_sp": -0.076
+    },
+    {
+     "stroke": 3927,
+     "direction": "down",
+     "reach_sp": 3.69,
+     "gap_sp": 0.0,
+     "dx_sp": 0.083
+    }
+   ]
+  },
+  "n": 21,
+  "file": "21_litolff_p8_glyph-8-1-1-18-9.png",
+  "crop_page_px": [
+   2392,
+   2020,
+   2596,
+   2180
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2085,
+   2148
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 8,
+  "subject": "glyph/8/1/4/14/5",
+  "head_box": [
+   1849.2,
+   2578.4,
+   1869.7,
+   2594.2
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "D5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P5"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 2924,
+     "direction": "down",
+     "reach_sp": 3.79,
+     "gap_sp": 0.0,
+     "dx_sp": 0.083
+    },
+    {
+     "stroke": 2977,
+     "direction": "up",
+     "reach_sp": 3.19,
+     "gap_sp": 0.0,
+     "dx_sp": -0.14
+    }
+   ]
+  },
+  "n": 22,
+  "file": "22_litolff_p8_glyph-8-1-4-14-5.png",
+  "crop_page_px": [
+   1757,
+   2519,
+   1962,
+   2664
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2569,
+   2632
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 9,
+  "subject": "glyph/9/0/2/10/5",
+  "head_box": [
+   1815.9,
+   729.6,
+   1836.3,
+   745.4
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "A4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": true,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P3"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 2488,
+     "direction": "up",
+     "reach_sp": 3.21,
+     "gap_sp": 0.0,
+     "dx_sp": 0.108
+    },
+    {
+     "stroke": 2476,
+     "direction": "down",
+     "reach_sp": 2.0,
+     "gap_sp": 0.0,
+     "dx_sp": 0.133
+    }
+   ]
+  },
+  "n": 23,
+  "file": "23_litolff_p9_glyph-9-0-2-10-5.png",
+  "crop_page_px": [
+   1724,
+   664,
+   1928,
+   800
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   696,
+   759
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 9,
+  "subject": "glyph/9/0/4/1/4",
+  "head_box": [
+   684.7,
+   1009.0,
+   704.2,
+   1024.0
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "D5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P5"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 580,
+     "direction": "up",
+     "reach_sp": 3.37,
+     "gap_sp": 0.0,
+     "dx_sp": -0.047
+    },
+    {
+     "stroke": 531,
+     "direction": "down",
+     "reach_sp": 3.9,
+     "gap_sp": 0.0,
+     "dx_sp": 0.12
+    }
+   ]
+  },
+  "n": 24,
+  "file": "24_litolff_p9_glyph-9-0-4-1-4.png",
+  "crop_page_px": [
+   597,
+   950,
+   792,
+   1094
+  ],
+  "scale": 5,
+  "staff_space_px": 15.0,
+  "staff_top_bottom": [
+   1004,
+   1064
+  ]
+ },
+ {
+  "doc": "brahms",
+  "page": 0,
+  "subject": "glyph/0/0/11/1/13",
+  "head_box": [
+   2549.0,
+   6013.0,
+   2590.3,
+   6050.1
+  ],
+  "head_has_oval": false,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Eb4",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "2",
+   "guessed_blue": false,
+   "part": "P12"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 1544,
+     "direction": "up",
+     "reach_sp": 3.96,
+     "gap_sp": 0.0,
+     "dx_sp": -0.039
+    },
+    {
+     "stroke": 1519,
+     "direction": "down",
+     "reach_sp": 3.49,
+     "gap_sp": 0.0,
+     "dx_sp": 0.124
+    }
+   ]
+  },
+  "n": 25,
+  "file": "25_brahms_p0_glyph-0-0-11-1-13.png",
+  "crop_page_px": [
+   2360,
+   5888,
+   2779,
+   6192
+  ],
+  "scale": 3,
+  "staff_space_px": 32.25,
+  "staff_top_bottom": [
+   5998,
+   6127
+  ]
+ },
+ {
+  "doc": "brahms",
+  "page": 5,
+  "subject": "glyph/5/1/5/5/4",
+  "head_box": [
+   3456.5,
+   5128.3,
+   3491.9,
+   5155.5
+  ],
+  "head_has_oval": true,
+  "cause": "one_stem_passes_the_head",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "D5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P6"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_stem_passes_the_head",
+   "strokes": [
+    {
+     "stroke": 4273,
+     "direction": "up",
+     "reach_sp": 2.93,
+     "gap_sp": 0.0,
+     "dx_sp": -0.015
+    },
+    {
+     "stroke": 4219,
+     "direction": "down",
+     "reach_sp": 3.67,
+     "gap_sp": 0.0,
+     "dx_sp": 0.11
+    }
+   ]
+  },
+  "n": 26,
+  "file": "26_brahms_p5_glyph-5-1-5-5-4.png",
+  "crop_page_px": [
+   3297,
+   5028,
+   3651,
+   5278
+  ],
+  "scale": 3,
+  "staff_space_px": 27.25,
+  "staff_top_bottom": [
+   5114,
+   5223
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/0/4/11/7",
+  "head_box": [
+   2087.6,
+   1020.0,
+   2108.0,
+   1035.8
+  ],
+  "head_has_oval": true,
+  "cause": "a_stroke_shorter_than_a_stem",
+  "r23_list": "count_matches_r23",
+  "old_join_writes": {
+   "pitch": "E5",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": true,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P5"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "a_stroke_shorter_than_a_stem",
+   "strokes": [
+    {
+     "stroke": 3372,
+     "direction": "down",
+     "reach_sp": 5.72,
+     "gap_sp": 0.0,
+     "dx_sp": 0.089
+    },
+    {
+     "stroke": 3532,
+     "direction": "up",
+     "reach_sp": 1.9,
+     "gap_sp": 0.06,
+     "dx_sp": 0.159
+    }
+   ]
+  },
+  "n": 27,
+  "file": "27_litolff_p4_glyph-4-0-4-11-7.png",
+  "crop_page_px": [
+   1995,
+   930,
+   2200,
+   1126
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   1020,
+   1083
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 10,
+  "subject": "glyph/10/0/8/6/3",
+  "head_box": [
+   1424.2,
+   1588.8,
+   1444.6,
+   1604.5
+  ],
+  "head_has_oval": true,
+  "cause": "a_stroke_shorter_than_a_stem",
+  "r23_list": "count_matches_r23",
+  "old_join_writes": {
+   "pitch": "G4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P9"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "a_stroke_shorter_than_a_stem",
+   "strokes": [
+    {
+     "stroke": 2040,
+     "direction": "down",
+     "reach_sp": 1.86,
+     "gap_sp": 0.02,
+     "dx_sp": -0.044
+    },
+    {
+     "stroke": 2091,
+     "direction": "up",
+     "reach_sp": 3.09,
+     "gap_sp": 0.0,
+     "dx_sp": -0.133
+    }
+   ]
+  },
+  "n": 28,
+  "file": "28_litolff_p10_glyph-10-0-8-6-3.png",
+  "crop_page_px": [
+   1332,
+   1526,
+   1537,
+   1660
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   1557,
+   1620
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/8/4/16",
+  "head_box": [
+   1103.0,
+   3292.0,
+   1124.0,
+   3309.0
+  ],
+  "head_has_oval": true,
+  "cause": "one_touches",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Ab4",
+   "type": "half",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P9"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 1708,
+     "direction": "up",
+     "reach_sp": 3.72,
+     "gap_sp": 0.0,
+     "dx_sp": -0.188
+    },
+    {
+     "stroke": 1663,
+     "direction": "down",
+     "reach_sp": 3.34,
+     "gap_sp": 0.0,
+     "dx_sp": -0.312
+    }
+   ]
+  },
+  "n": 29,
+  "file": "29_litolff_p4_glyph-4-1-8-4-16.png",
+  "crop_page_px": [
+   1010,
+   3228,
+   1218,
+   3368
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   3260,
+   3324
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 6,
+  "subject": "glyph/6/1/3/1/1",
+  "head_box": [
+   760.0,
+   2425.0,
+   780.0,
+   2445.0
+  ],
+  "head_has_oval": true,
+  "cause": "one_touches",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "A3",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P4"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 864,
+     "direction": "up",
+     "reach_sp": 2.97,
+     "gap_sp": 0.0,
+     "dx_sp": -0.161
+    },
+    {
+     "stroke": 820,
+     "direction": "down",
+     "reach_sp": 2.26,
+     "gap_sp": 0.0,
+     "dx_sp": -0.387
+    }
+   ]
+  },
+  "n": 30,
+  "file": "30_litolff_p6_glyph-6-1-3-1-1.png",
+  "crop_page_px": [
+   669,
+   2373,
+   871,
+   2528
+  ],
+  "scale": 5,
+  "staff_space_px": 15.5,
+  "staff_top_bottom": [
+   2435,
+   2497
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 8,
+  "subject": "glyph/8/1/1/15/3",
+  "head_box": [
+   2096.8,
+   2054.1,
+   2119.2,
+   2076.2
+  ],
+  "head_has_oval": false,
+  "cause": "one_touches",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Ab5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P2"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 3465,
+     "direction": "up",
+     "reach_sp": 2.99,
+     "gap_sp": 0.0,
+     "dx_sp": -0.203
+    },
+    {
+     "stroke": 3419,
+     "direction": "down",
+     "reach_sp": 3.93,
+     "gap_sp": 0.0,
+     "dx_sp": 0.233
+    }
+   ]
+  },
+  "n": 31,
+  "file": "31_litolff_p8_glyph-8-1-1-15-3.png",
+  "crop_page_px": [
+   2006,
+   1995,
+   2210,
+   2180
+  ],
+  "scale": 5,
+  "staff_space_px": 15.75,
+  "staff_top_bottom": [
+   2085,
+   2148
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 9,
+  "subject": "glyph/9/0/1/0/8",
+  "head_box": [
+   607.3,
+   524.8,
+   629.8,
+   537.9
+  ],
+  "head_has_oval": false,
+  "cause": "one_touches",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "Ab5",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": true,
+   "part": "P2"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 491,
+     "direction": "up",
+     "reach_sp": 2.56,
+     "gap_sp": 0.0,
+     "dx_sp": -0.147
+    },
+    {
+     "stroke": 441,
+     "direction": "down",
+     "reach_sp": 4.81,
+     "gap_sp": 0.0,
+     "dx_sp": 0.169
+    }
+   ]
+  },
+  "n": 32,
+  "file": "32_litolff_p9_glyph-9-0-1-0-8.png",
+  "crop_page_px": [
+   518,
+   449,
+   719,
+   648
+  ],
+  "scale": 5,
+  "staff_space_px": 15.5,
+  "staff_top_bottom": [
+   555,
+   617
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 10,
+  "subject": "glyph/10/1/10/11/1",
+  "head_box": [
+   2245.0,
+   3611.0,
+   2266.0,
+   3622.0
+  ],
+  "head_has_oval": true,
+  "cause": "one_touches",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "Ab2",
+   "type": "eighth",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P11"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 3845,
+     "direction": "down",
+     "reach_sp": 1.84,
+     "gap_sp": 0.28,
+     "dx_sp": -0.219
+    },
+    {
+     "stroke": 3862,
+     "direction": "up",
+     "reach_sp": 3.66,
+     "gap_sp": 0.0,
+     "dx_sp": -0.281
+    }
+   ]
+  },
+  "n": 33,
+  "file": "33_litolff_p10_glyph-10-1-10-11-1.png",
+  "crop_page_px": [
+   2152,
+   3523,
+   2360,
+   3683
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   3555,
+   3619
+  ]
+ },
+ {
+  "doc": "brahms",
+  "page": 8,
+  "subject": "glyph/8/0/3/1/10",
+  "head_box": [
+   1254.1,
+   1517.4,
+   1290.2,
+   1545.1
+  ],
+  "head_has_oval": true,
+  "cause": "one_touches",
+  "r23_list": "named_in_r23",
+  "old_join_writes": {
+   "pitch": "D4",
+   "type": "half",
+   "dots": 1,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "2",
+   "guessed_blue": false,
+   "part": "P4"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 839,
+     "direction": "up",
+     "reach_sp": 3.86,
+     "gap_sp": 0.48,
+     "dx_sp": -0.169
+    },
+    {
+     "stroke": 806,
+     "direction": "down",
+     "reach_sp": 3.88,
+     "gap_sp": 0.0,
+     "dx_sp": -0.202
+    }
+   ]
+  },
+  "n": 34,
+  "file": "34_brahms_p8_glyph-8-0-3-1-10.png",
+  "crop_page_px": [
+   1092,
+   1410,
+   1453,
+   1680
+  ],
+  "scale": 3,
+  "staff_space_px": 27.75,
+  "staff_top_bottom": [
+   1514,
+   1625
+  ]
+ },
+ {
+  "doc": "brahms",
+  "page": 8,
+  "subject": "glyph/8/1/7/8/2",
+  "head_box": [
+   3663.9,
+   6152.8,
+   3703.7,
+   6187.1
+  ],
+  "head_has_oval": false,
+  "cause": "one_touches",
+  "r23_list": "reconstruction_only",
+  "old_join_writes": {
+   "pitch": "C4",
+   "type": "quarter",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P11"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "one_touches",
+   "strokes": [
+    {
+     "stroke": 2671,
+     "direction": "down",
+     "reach_sp": 3.23,
+     "gap_sp": 1.25,
+     "dx_sp": -0.05
+    },
+    {
+     "stroke": 2723,
+     "direction": "up",
+     "reach_sp": 4.62,
+     "gap_sp": 1.58,
+     "dx_sp": -0.097
+    }
+   ]
+  },
+  "n": 35,
+  "file": "35_brahms_p8_glyph-8-1-7-8-2.png",
+  "crop_page_px": [
+   3507,
+   5980,
+   3861,
+   6309
+  ],
+  "scale": 3,
+  "staff_space_px": 27.25,
+  "staff_top_bottom": [
+   6034,
+   6143
+  ]
+ },
+ {
+  "doc": "litolff",
+  "page": 4,
+  "subject": "glyph/4/1/5/6/2",
+  "head_box": [
+   1364.6,
+   2833.9,
+   1385.4,
+   2849.9
+  ],
+  "head_has_oval": true,
+  "cause": "stroke_holds_another_head",
+  "r23_list": "count_matches_r23",
+  "old_join_writes": {
+   "pitch": "G5",
+   "type": "quarter",
+   "dots": 0,
+   "tuplet": null,
+   "chord": false,
+   "stem": null,
+   "voice": "1",
+   "guessed_blue": false,
+   "part": "P6"
+  },
+  "page_reader": {
+   "how": "two_voices",
+   "why": "stroke_holds_another_head",
+   "strokes": [
+    {
+     "stroke": 2140,
+     "direction": "down",
+     "reach_sp": 3.57,
+     "gap_sp": 0.0,
+     "dx_sp": 0.025
+    },
+    {
+     "stroke": 2177,
+     "direction": "up",
+     "reach_sp": 8.68,
+     "gap_sp": 0.0,
+     "dx_sp": -0.338
+    }
+   ]
+  },
+  "n": 36,
+  "file": "36_litolff_p4_glyph-4-1-5-6-2.png",
+  "crop_page_px": [
+   1271,
+   2695,
+   1479,
+   2989
+  ],
+  "scale": 5,
+  "staff_space_px": 16.0,
+  "staff_top_bottom": [
+   2846,
+   2910
+  ]
+ }
+]
