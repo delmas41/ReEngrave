@@ -1,6 +1,6 @@
 {
- "n_items": 194,
- "n_tiles": 2284,
+ "n_items": 195,
+ "n_tiles": 2285,
  "tiles": [
   {
    "answer": "right",
@@ -40494,6 +40494,22 @@
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "9",
+   "value": null
+  },
+  {
+   "answer": "not an arc",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-26",
+   "doc": null,
+   "followup": false,
+   "item": "step0-arcs",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "14",
    "value": null
   },
   {

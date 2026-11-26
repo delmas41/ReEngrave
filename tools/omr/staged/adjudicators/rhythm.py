@@ -5532,12 +5532,15 @@ def _bar_lengths_for(ev: Evidence) -> dict:
     """{cell_index: [length per staff]} for every bar of this system that can
     speak about its own LENGTH. See `_corroborate` for why a whole rest is
     never read here."""
-    whole_rests = {r.subject for r in
-                   ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
-                   if r.value == "restWhole"}
+    rest_rows = ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
+    whole_rests = {r.subject for r in rest_rows if r.value == "restWhole"}
+    rests = {r.subject for r in rest_rows}
     bars: dict = {}
     # ROADMAP 2.346: the refusals `_glyph_left_the_bar` reads, named here so the inventory's read check sees them from this witness.
     _refusals = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST)  # noqa: F841
+    # ROADMAP 2.356: the contest rows `_rest_contested_between_staves` reads, named here for the same check.
+    _contest = (Q.GLYPH_BAND_DISTANCE,)  # noqa: F841
+    skip = bar_sum_skips_refused_enabled()
     for grouping in ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS):
         if grouping.outcome is not Outcome.DECIDED:
             continue
@@ -5559,6 +5562,18 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         if any(_sub(gi) in whole_rests
                for e in events for gi in (e.get("glyphs") or [])):
             continue
+        # ⚠️⚠️ ROADMAP 2.356: THE SAME RULE FOR A REST CONTESTED BETWEEN TWO STAVES. Whether such a rest is in this bar is not
+        # known until the meter is: `consequences.reinstate_rest_between_staves` (EVALUATE, cause the METER) may overturn its
+        # `rest_outside_its_staff` refusal, using the meter's bar length. Reading that refusal here (2.346) put it in the
+        # meter's basis, so the rule stood on its own conclusion (meter -> rest -> meter, `UphillConsequence`, Brahms
+        # glyph/21/0/4/1/2). A bar holding a rest the meter may reinstate cannot corroborate that meter: it is left out
+        # WHOLE, before any refusal or duration in it is asked, and it is found from GATHER rows only (`Q.REST` and
+        # `Q.GLYPH_BAND_DISTANCE` naming another staff -- the rule's own contest test), never from the refusal itself.
+        # Never: a rest with no rival staff, or a contested NOTEHEAD (no meter-caused rule rewrites its refusal), takes a
+        # bar out. Flag off the bar is summed as before (the refusals are not read, so there is no loop to break).
+        if skip and any(_rest_contested_between_staves(ev, _sub(gi), rests)
+                        for e in events for gi in (e.get("glyphs") or [])):
+            continue
         # ⚠️ ROADMAP 2.162 / 2.165: THE ONE BAR-LENGTH HELPER (`staged.bar_length`). Flag off it is the old sum (a narrowing
         # at its first candidate); under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` a staff bar holding a NARROWED note is a RANGE,
         # recorded as a (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter inside it and never refute one.
@@ -5567,7 +5582,6 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         # (2.143 is parked OFF), so clef/key ink at a system start (`claimed_by:leading_column`) was summed here as a note: EVALUATE and
         # INFER already leave it out (`consequences._left_the_bar`), this witness did not. Only a DECIDED refusal removes a glyph; an
         # abstained or narrowed verdict leaves it in, so the bar stays a range / unknown exactly as before.
-        skip = bar_sum_skips_refused_enabled()
         got = _BL.length_of_events(
             ([ev.verdict(Q.DURATION, subject=_sub(gi)) for gi in (event.get("glyphs") or [])
               if not (skip and _glyph_left_the_bar(ev, cell, gi, reinstated_stays=True))] for event in events),
@@ -7552,7 +7566,9 @@ def _bar_corroboration_margin(ev: Evidence, candidate: dict) -> Optional[float]:
                    Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
                    # ROADMAP 2.346: the bar sum leaves out a glyph with a DECIDED refusal (`_glyph_left_the_bar`).
-                   Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
+                   Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST,
+                   # ROADMAP 2.356: a rest contested with another staff takes its bar out of the sum (`_rest_contested_between_staves`).
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
            Q.METER_OCR, Q.METER_OCR_AT_BAR,
@@ -7560,7 +7576,7 @@ def _bar_corroboration_margin(ev: Evidence, candidate: dict) -> Optional[float]:
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
            Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS,
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
+           Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST, Q.GLYPH_BAND_DISTANCE),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              # ⚠️ ROADMAP 2.22b: the carry held where the bars were silent.
@@ -9003,6 +9019,18 @@ def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int, reinstated_stays: b
         if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
             return True
     return False
+
+
+def _rest_contested_between_staves(ev: Evidence, sub: Subject, rests) -> bool:
+    """ROADMAP 2.356: a rest box (`Q.REST`, in `rests`) that GATHER also measured against ANOTHER staff (a `Q.GLYPH_BAND_DISTANCE`
+    row naming a staff other than its own) -- exactly the contest `consequences.reinstate_rest_between_staves` asks for before it
+    may overturn the rest's `rest_outside_its_staff` refusal with the meter. Read off GATHER rows only: the refusal is never asked,
+    so asking this puts nothing a meter-caused rule rewrites into the asker's basis."""
+    if sub not in rests:
+        return False
+    own = sub.at(Kind.STAFF).to_key()
+    return any(r.detail and r.detail.get("candidate") is not None and str(r.detail.get("candidate")) != own
+               for r in ev.rows(Q.GLYPH_BAND_DISTANCE, subject=sub))
 
 
 def _rest_own_voice_split(ev: Evidence, events):
