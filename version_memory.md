@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-26 -- 2.306 r25 (lane, not landed): round 9 -- the rings' side told by the partner's ink, not its box; the shared-head stroke-map item stopped (STAGED GATHER; inside `OMR_PAGE_STEMS`, no new flag)
+
+`lane-2.306-r25`: `page_stems._rings_side_by_ink` (from `_chord_stem`, switch `R25_PARTNER_INK`); real-window controls `test_page_stems_2_306_r25.py`; no stroke-map change (item 1 stopped, table in FINDINGS "2.306 r25"); scripts `benchmarks/page-ledger-2026-11/2306/r25_*`.
+
 ## 2026-11-26 -- 2.306 r24 (lane, not landed): round 8 -- a head on its chord partner's stem; a stem ends at a note; a note's ink holds its stroke over a box at the tip; the stroke it touches (STAGED GATHER; inside `OMR_PAGE_STEMS`, no new flag)
 
 `lane-2.306-r24`: `page_stems._chord_stem`, `_heads_a_stroke_can_end_at`, `_free_from_tip_boxes`, how `the_stroke_it_touches`; `rhythm.py` hook-on-arc reason as a literal (the 241st check finding); real-window controls `test_page_stems_2_306_r24.py`. Old join's written heads 21 -> 11 Litolff, 2 -> 2 Brahms. Full frozen sample both arms: judged right->wrong 0, unwritten->wrong 0, red 126 -> 96 / 108 -> 80. FINDINGS r22/r23 "chord dots" lines corrected (2.350 withdrawn). Flags stay OFF.

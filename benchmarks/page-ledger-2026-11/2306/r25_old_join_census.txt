@@ -1,0 +1,44 @@
+== litolff
+      8  ('page:two_voices/one_touches', 'no_stem')
+      8  ('page:two_voices/head_ink_unread', 'no_stem')
+      6  ('page:two_voices/head_ink_unread', 'stem')
+      4  ('page:two_voices/one_touches', 'stem')
+      3  ('page:two_voices/stroke_holds_another_head', 'no_stem')
+      3  ('page:two_voices/one_stem_passes_the_head', 'no_stem')
+      3  ('page:two_voices/ends_at_another_head', 'no_stem')
+      2  ('page:two_voices/one_stem_passes_the_head', 'stem')
+      2  ('page:two_voices/ends_at_another_head', 'stem')
+      2  ('page:two_voices/stroke_read_other_way', 'no_stem')
+      2  ('page:two_voices/stroke_read_other_way', 'stem')
+      1  ('page:two_voices/a_stroke_shorter_than_a_stem', 'no_stem')
+      1  ('page:two_voices/stroke_holds_another_head', 'stem')
+      1  ('page:two_voices/a_stroke_shorter_than_a_stem', 'stem')
+given a stem by the old join:
+      4  ('page:two_voices/one_touches', 'unwritten')
+      3  ('page:two_voices/head_ink_unread', 'unwritten')
+      3  ('page:two_voices/head_ink_unread', 'written')
+          ['glyph/4/1/0/12/2', 'glyph/4/1/2/5/14', 'glyph/4/1/4/13/8']
+      2  ('page:two_voices/ends_at_another_head', 'written')
+          ['glyph/4/1/1/4/14', 'glyph/16/0/4/6/4']
+      2  ('page:two_voices/one_stem_passes_the_head', 'written')
+          ['glyph/4/1/0/14/2', 'glyph/8/0/2/17/3']
+      2  ('page:two_voices/stroke_read_other_way', 'written')
+          ['glyph/4/1/7/4/18', 'glyph/6/0/3/7/4']
+      1  ('page:two_voices/a_stroke_shorter_than_a_stem', 'written')
+          ['glyph/10/0/8/6/3']
+      1  ('page:two_voices/stroke_holds_another_head', 'written')
+          ['glyph/4/1/5/6/2']
+WRITTEN heads the old join gives a stem: 11
+== brahms
+heads the page answered: 5645
+old join decides (kept heads), by why:
+      1  ('page:two_voices/one_stem_passes_the_head', 'stem')
+      1  ('page:two_voices/one_stem_passes_the_head', 'no_stem')
+      1  ('page:two_voices/one_touches', 'stem')
+      1  ('page:two_voices/one_touches', 'no_stem')
+given a stem by the old join:
+      1  ('page:two_voices/one_stem_passes_the_head', 'written')
+          ['glyph/0/0/11/1/13']
+      1  ('page:two_voices/one_touches', 'written')
+          ['glyph/8/0/3/1/10']
+WRITTEN heads the old join gives a stem: 2
