@@ -1,0 +1,70 @@
+{
+ "set": "step0-redbars brahms",
+ "date": "2026-11-26",
+ "question": "24 Brahms bars in 6/8 that the file marks red although every note was read with confidence. For each number, what is in the boxed bar, left to right (lengths, with dots)?",
+ "answered_by": "Sean",
+ "answers": {
+  "1": "dotted half",
+  "2": "dotted quarter, [flat sign] dotted quarter",
+  "3": "whole rest",
+  "4": "dotted quarter, dotted quarter",
+  "5": "eighth rest, eighth rest, dotted quarter [as said]",
+  "6": "dotted quarter, dotted quarter",
+  "7": "quarter, eighth rest, quarter rest, eighth rest",
+  "8": "eighth rest, eighth rest, quarter rest, eighth rest [as said; the tile shows an eighth note first]",
+  "9": "two voices -- top: quarter, eighth rest, dotted quarter; bottom: quarter, quarter rest, eighth rest",
+  "10": "dotted quarter, dotted quarter",
+  "11": "dotted quarter, dotted quarter",
+  "12": "dotted quarter, dotted quarter",
+  "13": "eighth, two eighth rests, eighth, two eighth rests",
+  "14": "quarter, eighth [as said; only half a 6/8 bar]",
+  "15": "quarter rest, eighth, quarter, eighth",
+  "16": "dotted quarter, dotted quarter",
+  "17": "dotted quarter, dotted quarter",
+  "18": "dotted half",
+  "19": "eighth, two eighth rests, quarter rest, eighth rest",
+  "20": "two voices -- top: quarter rest, eighth rest, dotted quarter; bottom: dotted half",
+  "21": "dotted quarter (unison), then three eighths in two voices, though the stems all go one way",
+  "22": "quarter rest, eighth, quarter, eighth",
+  "23": "dotted quarter, dotted quarter",
+  "24": "two voices -- top: dotted quarter, quarter, eighth rest; bottom: quarter, eighth rest, quarter rest, eighth rest"
+ },
+ "note": "a faithful condensation of his dictation; bracketed remarks are OURS",
+ "compared_with_the_file": {
+  "a printed dot missing from the written note": {
+   "1": "dotted half -> half",
+   "2": "both dotted quarters -> quarters",
+   "4": "first",
+   "10": "first",
+   "11": "second",
+   "16": "both",
+   "17": "first",
+   "23": "first"
+  },
+  "an extra note or rest written": {
+   "3": "whole rest + an extra quarter rest",
+   "5": "an extra eighth note and quarter rest",
+   "6": "a half note between the two dotted quarters",
+   "8": "an extra quarter note",
+   "13": "an extra quarter rest",
+   "19": "an extra eighth note"
+  },
+  "two voices added end to end": {
+   "9": "counted 4.5",
+   "20": "counted 6",
+   "24": "counted 5",
+   "15": "the chord notes counted one after another"
+  },
+  "a written value wrong": {
+   "14": "an eighth written as a quarter",
+   "18": "dotted half written as a quarter",
+   "21": "three beamed eighths written as quarters",
+   "22": "an eighth written as a 16th"
+  },
+  "an extra dot written": {
+   "7": "quarter written dotted, twice, and a rest dotted",
+   "12": "a dotted quarter written double-dotted"
+  },
+  "ours": "Sorting is OURS. 8 of 24 bars (10 notes) are a printed dot not written on its note -- Sean's readings confirm the trace's claim. This does not contradict the 2.350 withdrawal, which counted only dots that already NAME a head; these dots are read as dots and never bound to a note. Sean's reading of tiles 5, 8 and 14 does not fill a 6/8 bar as dictated; left as said."
+ }
+}
