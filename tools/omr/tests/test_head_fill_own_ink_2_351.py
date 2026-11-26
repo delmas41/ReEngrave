@@ -27,6 +27,7 @@ from tools.omr.staged.record import Outcome, Q, Subject
 from tools.omr.staged.review import rerun as RR
 
 FIX = json.loads(gzip.decompress((pathlib.Path(__file__).parent / "fixtures" / "head_fill_own_ink_2_351.json.gz").read_bytes()))
+FIX2 = json.loads(gzip.decompress((pathlib.Path(__file__).parent / "fixtures" / "head_fill_own_ink_2_351_r2.json.gz").read_bytes()))
 FLAG = rhythm.HEAD_FILL_OWN_INK_ENV
 
 #: a box wider than one head whose own ink is not a hollow head: written a half on main (our look: a black head, or no head at all)
@@ -49,10 +50,10 @@ JUDGED_UNCHANGED = {
 }
 
 
-def _verdict(key, on):
-    sub = Subject.from_key(key.split("|")[1])
+def _verdict(key, on, fix=None):
+    sub = Subject.from_key(key.split("|")[1].split("#")[0])
     with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
-        log, _ = RR.rebuild_gather(FIX[key])
+        log, _ = RR.rebuild_gather((fix or FIX)[key])
         adjudicate.run(log)
     return log.verdict(Q.DURATION, sub)
 
@@ -90,6 +91,48 @@ class WideBoxOwnInk(unittest.TestCase):
         for k in JUDGED_UNCHANGED:
             with self.subTest(k):
                 self.assertEqual(_written(_verdict(k, True)), _written(_verdict(k, False)))
+
+
+def _candidates(v):
+    return sorted({(c.value or {}).get("written") for c in (v.candidates or ())} - {None})
+
+
+#: ROUND 2 (2026-11-26). The rule's nevers, enforced on the REAL rows: never a hollow read off paper beside the head; never a head its own ink
+#: reads hollow turned black; and never "own ink UNREAD" read as "black" -- where the head's own ink cannot tell, the window's hollow does not
+#: DECIDE a half, and the note keeps what read it before (the narrowing black / half / whole), never a plain quarter (CLAUDE rule 8).
+JUDGED_HALF = "litolff|glyph/9/0/4/2/8"       # Sean 2.158-review tile 11, "2" = a half; box 1.91 sp, own ink (old reader) not_one_head too_wide
+SLUR_BOX = "litolff|glyph/11/1/5/0/4"          # a box 3.81 sp on a slur: own ink no_head_ink; the record narrowed it
+JUDGED_QUARTER = "litolff|glyph/2/0/10/2/13"   # Sean 2026-11-25 "was a quarter": box 2.74 sp, own ink READ filled
+UNREAD_WRONG_HALVES = ("litolff|glyph/2/0/1/4/7", "litolff|glyph/4/1/4/5/7")   # boxes on a stem / on beams; own ink not one head
+
+
+class OwnInkUnreadIsNotBlack(unittest.TestCase):
+
+    def test_judged_half_is_not_turned_into_a_plain_quarter(self):
+        v = _verdict(JUDGED_HALF, True, FIX2)
+        self.assertNotEqual((v.outcome, _written(v)[2]), (Outcome.DECIDED, 1.0))
+        self.assertEqual(_written(v), _written(_verdict(JUDGED_HALF, False, FIX2)))   # what read it before (the narrowing) stands
+        self.assertIn(2.0, _candidates(v))
+
+    def test_judged_half_with_the_head_ink_of_2_355_is_a_half(self):
+        k = JUDGED_HALF + "#new_ink"
+        for on in (False, True):
+            self.assertEqual(_written(_verdict(k, on, FIX2))[2], 2.0)
+
+    def test_slur_box_stays_narrowed_never_a_plain_quarter(self):
+        v = _verdict(SLUR_BOX, True, FIX2)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(_written(v), _written(_verdict(SLUR_BOX, False, FIX2)))
+
+    def test_unread_wide_boxes_are_narrowed_not_halves_and_not_black(self):
+        for k in UNREAD_WRONG_HALVES:
+            with self.subTest(k):
+                v = _verdict(k, True)
+                self.assertEqual(v.outcome, Outcome.NARROWED)
+                self.assertTrue({1.0, 2.0} <= set(_candidates(v)))
+
+    def test_judged_quarter_is_not_a_half_and_black_head_read_filled_stays_black(self):
+        self.assertEqual(_written(_verdict(JUDGED_QUARTER, True)), (Outcome.DECIDED, "head_and_marks", 1.0))
 
 
 if __name__ == "__main__":

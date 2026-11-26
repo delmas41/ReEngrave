@@ -2601,13 +2601,17 @@ def head_fill_own_ink_enabled() -> bool:
     return os.environ.get(HEAD_FILL_OWN_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
-def _window_off_the_head(ev: Evidence, head_box, space) -> bool:
-    """2.351: True where the box is wider than one head and the head's own ink (`Q.HEAD_INK`) does not read hollow -- the 2.23 window
-    then says nothing about this head. False on a box one head wide, an unknown box or space (unchanged), or own ink hollow."""
+def _wide_box_own_ink(ev: Evidence, head_box, space) -> Optional[str]:
+    """2.351 round 2: what the head's OWN ink (`Q.HEAD_INK`) says where the box is wider than one head and the 2.23 window reads hollow.
+    None: the box is one head wide or its size / the staff space is unknown -- the window stands, unchanged. "hollow": the head's own
+    ink reads hollow -- the window stands. "filled": the head's own ink READS black -- the window's hollow was paper beside the head.
+    "unread": the own ink cannot tell (no row, not one head, no head ink, a slit between the cuts, a black reading with no solid middle) --
+    the window's hollow may not DECIDE a half, and the note is NOT turned black either: it keeps whatever read it before (rule 8)."""
     if head_box is None or not space or space <= 0 or head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES:
-        return False
+        return None
     hi = _head_ink(ev)
-    return not (hi is not None and hi.get("value") == "hollow")
+    v = None if hi is None else hi.get("value")
+    return "hollow" if v == "hollow" else "filled" if v == "filled" else "unread"
 
 
 HOLLOW_HEAD_WINS_ENV = "OMR_HOLLOW_HEAD_WINS"
@@ -4246,8 +4250,16 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                   and _ink_reads_decisively_hollow(fill_row.detail or {}))
     if head_first is not None and head_first.get("settled") == "black":
         ink_hollow = False   # 2.148: the first step read the head solid; the late window does not overrule it
-    if ink_hollow and head_fill_own_ink_enabled() and _window_off_the_head(ev, head_box, space):
-        ink_hollow = False   # ROADMAP 2.351: the box is wider than one head; the head's own ink does not read hollow
+    # ROADMAP 2.351 (round 2): on a box wider than one head the head's OWN ink says which. READ black: the window's hollow was paper
+    # beside the head, the detector's black stands. READ hollow: unchanged. UNREAD: the window may not decide a half (2.70) but the
+    # note is not turned black either -- `ink_hollow` stays, so the narrowing below (black / half / whole) still holds it (rule 8).
+    wide_box_unread = False
+    if ink_hollow and head_fill_own_ink_enabled():
+        _own = _wide_box_own_ink(ev, head_box, space)
+        if _own == "filled":
+            ink_hollow = False
+        elif _own == "unread":
+            wide_box_unread = True
 
     # ⚠️⚠️ ROADMAP 2.70 (Sean, DECISIONS 2026-10-09): *"A hollow note with
     # nothing on the stem is always a half note."* CONVENTION CONFIRMED. The
@@ -4267,7 +4279,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # is unknown cannot be said to (rule 8) and does not decide a half either.
     one_head_box = (head_box is not None and space is not None and space > 0
                     and head_box[3] / space <= HEAD_BOX_MAX_SPACES)
-    if ink_hollow and own_stems and not flags \
+    if ink_hollow and not wide_box_unread and own_stems and not flags \
             and strokes_before_hollow == (0, 0, 0) and one_head_box:
         beam_reader = beam_looked
         tip_looked, tip_rows = tip_ink, (tip_ink_rows or ())
