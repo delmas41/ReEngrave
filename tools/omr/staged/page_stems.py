@@ -491,8 +491,33 @@ def chord_partner_on() -> bool:
     return R24_CHORD_PARTNER
 
 
+#: ROADMAP 2.306 r25 (round 9, tiles 18 and 23 of `out/print/2.306-r24-old-join`): the rings' side is told from the partner's own INK, not its box
+#: (Sean 2026-11-18: "when joining things or separating things, we use the ink"); the switch exists so a control can show it failing
+R25_PARTNER_INK = True
+
+
+def _rings_side_by_ink(h: Dict[str, Any], o2: int, other: str, c2: Dict[str, Any], partners: Sequence[Dict[str, Any]], touches_ink: Any) -> bool:
+    """ROADMAP 2.306 r25 (round 9; Litolff 2/1/2/12/3 and 9/0/2/10/5, tiles 18 and 23: two half notes a third apart on one up stem, the upper
+    head's left stroke runs down the two rings' common side into the lower ring -- 0.26 and 0.03 spaces past the lower head's BOX, where a tie
+    leaving the lower ring fuses onto it). The stroke on the other side of the head is the rings' side, not a stem, where its ink joins the
+    partner's own head ink (the page map's contact) and it runs toward the partner and is shorter than a stem (`STEM_MIN_SP`, the engraving
+    convention; round 8 measured ring sides 1.56-2.19 spaces, second stems at these heads 2.93 and up). Never by the partner's box; never where
+    the stroke is a stem's length (a second voice's stem may pass its partner's ring and touch it); never where the stroke does not touch the
+    partner's ink. Pure."""
+    if not R25_PARTNER_INK or touches_ink is None or float(c2.get("reach") or 0.0) >= STEM_MIN_SP:
+        return False
+    cy = (float(h["box"][1]) + float(h["box"][3])) / 2.0
+    for p in partners:
+        py = (float(p["box"][1]) + float(p["box"][3])) / 2.0
+        toward = py > cy if other == "down" else py < cy
+        if toward and touches_ink(p["id"], o2):
+            return True
+    return False
+
+
 def _chord_stem(h: Dict[str, Any], by_dir: Dict[str, Dict[str, Any]], touch: Dict[str, bool], stems: Dict[int, Dict[str, Any]],
-                notes: Sequence[Dict[str, Any]], hink: Optional[Dict[Any, set]], vbox: Optional[Dict[int, Any]]) -> Optional[str]:
+                notes: Sequence[Dict[str, Any]], hink: Optional[Dict[Any, set]], vbox: Optional[Dict[int, Any]],
+                touches_ink: Any = None) -> Optional[str]:
     """ROADMAP 2.306 r24 (round 8; tiles 2, 3, 9, 10, 11, 12: two half notes a third apart on one stem, Sean 2026-11-25 "two half notes, a third
     apart" on the same figure; tiles 27, 28: the top or bottom head of a chord). A head with a stroke up at its right and a stroke down at its
     left, both touching its ink: where another NOTE of the chord already stands on one stroke and reads it the way it points from this head --
@@ -513,7 +538,7 @@ def _chord_stem(h: Dict[str, Any], by_dir: Dict[str, Dict[str, Any]], touch: Dic
         o2 = int(by_dir[other]["stroke"])
         if o2 in stems and stems[o2]["heads"]:
             continue
-        ring = _ends_at_another_head(h, o2, other, partners, vbox)
+        ring = _ends_at_another_head(h, o2, other, partners, vbox) or _rings_side_by_ink(h, o2, other, by_dir[other], partners, touches_ink)
         short = float(by_dir[other].get("reach") or 0.0) < UNISON_REACH_SP
         if ring or short:
             return d
@@ -558,7 +583,7 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             h, int(by_dir[d]["stroke"]), d, _heads_a_stroke_can_end_at(h, by_dir[d], heads), vbox)]
         keep = [d for d in ("up", "down") if touch[d] and d not in outline]
         # ROADMAP 2.306 r24: a head on its chord partner's stem (`_chord_stem`); where one stroke is an outline the r19 / r23 rules below read it first
-        shared = None if (len(keep) == 1 and outline) or not chord_partner_on() else _chord_stem(h, by_dir, touch, stems, heads, hink, vbox)
+        shared = None if (len(keep) == 1 and outline) or not chord_partner_on() else _chord_stem(h, by_dir, touch, stems, heads, hink, vbox, touches_ink)
         if shared is not None:
             c = by_dir[shared]
             o = int(c["stroke"])
@@ -631,7 +656,7 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 s["heads"].append(h["id"])
                 r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how=TOUCHED_HOW)
                 continue
-        shared = _chord_stem(h, by_dir, touch, stems, heads, hink, vbox) if chord_partner_on() else None
+        shared = _chord_stem(h, by_dir, touch, stems, heads, hink, vbox, touches_ink) if chord_partner_on() else None
         if shared is not None:
             c = by_dir[shared]
             o = int(c["stroke"])
