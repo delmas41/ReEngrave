@@ -155,7 +155,8 @@ def test_never_when_the_head_it_ends_at_has_no_head_ink_of_its_own():
     note (Brahms 5/1/5/0's staccato dot): left unresolved. The control can fail: with the box given an oval, the rule takes it."""
     w, heads, verts, held, cross, strokes = _window("ends_never_no_oval_litolff_4_1_7_4_18")
     got = PS.read(heads, verts, held, crossers=cross, strokes=strokes)["heads"][w["head"]]
-    assert got["state"] == "two_voices" and got.get("why") == "ends_at_another_head", got
+    # r24: Sean 2026-11-25 (tile 5) -- the head here is an "ff", not a notehead; it must stay unresolved (r24: `stroke_read_other_way`)
+    assert got["state"] == "two_voices" and got["how"] == "two_voices", got
     inked = [dict(h, ink=True) for h in heads]
     got = PS.read(inked, verts, held, crossers=cross, strokes=strokes)["heads"][w["head"]]
     assert got["how"] == PS.OTHER_STEM_HOW, got

@@ -142,31 +142,43 @@ def test_reach_never_when_the_outline_is_a_stems_length():
     length cut lifted it is read as one up stem again."""
     w, r = _read("unison_litolff_6_0_3_7")
     assert r[w["head"]]["how"] != "other_stroke_is_an_outline", r[w["head"]]
-    old = PS.OUTLINE_REACH_SP
+    old, old24 = PS.OUTLINE_REACH_SP, PS.R24_STEM_ENDS_AT_A_NOTE
     try:
         PS.OUTLINE_REACH_SP = 10.0
+        PS.R24_STEM_ENDS_AT_A_NOTE = False      # r24: the box at the beam has no head ink, so the stem does not "end at" it either
         w, r = _read("unison_litolff_6_0_3_7")
         assert r[w["head"]]["how"] == "other_stroke_is_an_outline" and r[w["head"]]["direction"] == "up", r[w["head"]]
     finally:
-        PS.OUTLINE_REACH_SP = old
+        PS.OUTLINE_REACH_SP, PS.R24_STEM_ENDS_AT_A_NOTE = old, old24
 
 
 def test_reach_never_a_stub_left_beside_a_long_stem():
-    """Litolff 2/1/9/14: the stroke left is a 1.6-space stub at the head's left; the long up stroke runs to a chord-mate. Stays abstained."""
+    """Litolff 2/1/9/14: the stroke left is a 1.6-space stub at the head's left; the long up stroke runs to a chord-mate. The OUTLINE rule never
+    takes it (the stub ends at no head). r24 (Sean 2026-11-25, tile 4 of the old-join set: "easily seen as noteheads with stems"; our look: the
+    half note stands on the up stem its chord-mates stand on, a string staff) -- the chord-partner rule reads it, by the chord-mates' reading."""
     w, r = _read("stub_litolff_2_1_9_14")
-    assert r[w["head"]]["state"] != "one", r[w["head"]]
+    assert r[w["head"]]["how"] != "other_stroke_is_an_outline", r[w["head"]]
+    assert r[w["head"]]["how"] == PS.CHORD_HOW and r[w["head"]]["direction"] == "up", r[w["head"]]
+    old = PS.R24_CHORD_PARTNER
+    try:
+        PS.R24_CHORD_PARTNER = False
+        w, r = _read("stub_litolff_2_1_9_14")
+        assert r[w["head"]]["state"] != "one", r[w["head"]]
+    finally:
+        PS.R24_CHORD_PARTNER = old
 
 
 def test_reach_control_without_the_outline_rule_the_same_heads_stay_abstained():
     """The control can fail: with the outline rule's guard refusing everything, the three heads are abstained as before."""
-    old = PS._outline_leaves_one_stem
+    old, old24 = PS._outline_leaves_one_stem, PS.R24_CHORD_PARTNER
     try:
         PS._outline_leaves_one_stem = lambda *a: False
+        PS.R24_CHORD_PARTNER = False            # r24's chord-partner reading reads the same three heads (the same stroke) by another witness
         for name in ("outline_litolff_2_1_4_0", "outline_litolff_2_1_2_10", "outline_litolff_16_0_1_9"):
             w, r = _read(name)
             assert r[w["head"]]["state"] == "two_voices", (name, r[w["head"]])
     finally:
-        PS._outline_leaves_one_stem = old
+        PS._outline_leaves_one_stem, PS.R24_CHORD_PARTNER = old, old24
 
 
 def test_a_control_measured_in_the_strokes_own_space_the_upper_voice_is_lost():

@@ -434,6 +434,89 @@ def _is_the_stem_of_the_head_it_ends_at(h: Dict[str, Any], o: int, d: str, stems
     return bool(owners) and _ends_at_another_head(h, int(o), d, owners, vbox)
 
 
+#: ROADMAP 2.306 r24 (Sean 2026-11-25 on the 36 old-join tiles: "all easily seen as noteheads with stems"): the two readings below are switched
+#: together with the reader (inside `OMR_PAGE_STEMS`, no flag of their own); these switches exist so a control can show each one failing
+R24_CHORD_PARTNER = True
+#: the reading word of a head that stands on the stem its chord partner stands on
+CHORD_HOW = "chord_partner_on_the_stem"
+#: a stem is about an octave (3.5 spaces) and is shortened no further than about 2.5 (engraving convention; round 8 measured both sides: ring
+#: sides 1.56-2.19, stems 2.93 and up) -- used only to tell a second stem from a ring's side at a head with a stroke each way
+STEM_MIN_SP = 2.5
+
+
+R24_STEM_ENDS_AT_A_NOTE = True
+
+
+def _heads_a_stroke_can_end_at(h: Dict[str, Any], c: Dict[str, Any], heads: Sequence[Dict[str, Any]]) -> Sequence[Dict[str, Any]]:
+    """ROADMAP 2.306 r24 (round 8; Litolff 2/0/7/1/5, 6/0/3/7/1, 6/0/8/12/1, Brahms 5/1/5/0/7: a stem running a stem's length to its beam or
+    tip, where the detector drew a box with no head ink -- on the beam, the flag or the stem's end). A stroke is ANOTHER head's outline only where
+    it stops at a NOTE: a stroke a stem's length (`STEM_MIN_SP`) stops at the box at its tip because a stem ends there, and that box is no head
+    unless it has head ink of its own (the 2.290 oval). Never changes a stroke shorter than a stem (a ring's side ends at its partner whatever the
+    partner's box: Litolff 10/1/2/0, r19's dyads). Pure: the heads `_ends_at_another_head` may name for candidate `c`."""
+    if not R24_STEM_ENDS_AT_A_NOTE or float(c.get("reach") or 0.0) < STEM_MIN_SP:
+        return heads
+    return [k for k in heads if k["id"] == h["id"] or k.get("ink")]
+
+
+R24_NOTE_BEFORE_TIP_BOX = True
+#: the reading word of a box with no head ink at a stem's far end whose stroke a note's ink touches (it takes no stem)
+TIP_BOX_HOW = "box_at_a_notes_stem_tip"
+
+
+def _free_from_tip_boxes(h: Dict[str, Any], by_dir: Dict[str, Dict[str, Any]], touch: Dict[str, bool], stems: Dict[int, Dict[str, Any]],
+                         readings: Dict[Any, Dict[str, Any]], heads: Sequence[Dict[str, Any]]) -> None:
+    """ROADMAP 2.306 r24 (round 8; Litolff 6/0/8/12/1: an eighth's down stem runs to the beam, where a detector box with no head ink read the
+    same stroke as ITS up stem, so the note could not take it). A stem has one head end (the rule the page already applies to a stroke two heads
+    read both ways, by head ink). Where a NOTE with its own head ink touches a stroke a stem's length that only boxes with no head ink read, and
+    read the other way, the note holds it and those boxes take no stem. Never where this head has no head ink of its own (Litolff 4/1/7/4/18 --
+    Sean 2026-11-25: an "ff", not a notehead -- has none, and the box it 'shares' the stroke with is the note), never where an inked head reads
+    the stroke, never a stroke shorter than a stem. Mutates `stems` and `readings`."""
+    hb = {k["id"]: k for k in heads}
+    for d, c in by_dir.items():
+        o = int(c["stroke"])
+        s = stems.get(o)
+        if not touch.get(d) or not s or s["directions"] == {d} or float(c.get("reach") or 0.0) < STEM_MIN_SP:
+            continue
+        if any(hb.get(k, {}).get("ink") for k in s["heads"]):
+            continue
+        for k in list(s["heads"]):
+            readings[k].update(state="none", stroke=None, direction=None, side=None, how=TIP_BOX_HOW)
+        del stems[o]
+
+
+def chord_partner_on() -> bool:
+    return R24_CHORD_PARTNER
+
+
+def _chord_stem(h: Dict[str, Any], by_dir: Dict[str, Dict[str, Any]], touch: Dict[str, bool], stems: Dict[int, Dict[str, Any]],
+                notes: Sequence[Dict[str, Any]], hink: Optional[Dict[Any, set]], vbox: Optional[Dict[int, Any]]) -> Optional[str]:
+    """ROADMAP 2.306 r24 (round 8; tiles 2, 3, 9, 10, 11, 12: two half notes a third apart on one stem, Sean 2026-11-25 "two half notes, a third
+    apart" on the same figure; tiles 27, 28: the top or bottom head of a chord). A head with a stroke up at its right and a stroke down at its
+    left, both touching its ink: where another NOTE of the chord already stands on one stroke and reads it the way it points from this head --
+    the two heads share that stem (page-facts: every head on one stem) -- and the other stroke is only the rings' side, running from this head
+    to that partner and stopping there, or shorter than a stem past this head, the shared stroke is this head's stem.
+    Never where the other stroke is a stem's length and leaves the pair (two voices: the r9 column, Brahms 8/0/3/1/10), never where any head
+    stands on the other stroke, never where a head on the shared stroke reads it the other way. Returns the direction, or None. Pure."""
+    if not (touch.get("up") and touch.get("down")):
+        return None
+    mine = (hink or {}).get(h["id"]) or set()
+    for d, other in (("up", "down"), ("down", "up")):
+        s = stems.get(int(by_dir[d]["stroke"]))
+        if not s or s["directions"] != {d}:
+            continue
+        partners = [k for k in notes if k["id"] in s["heads"] and k["id"] != h["id"] and not (((hink or {}).get(k["id"]) or set()) & mine)]
+        if not partners:
+            continue
+        o2 = int(by_dir[other]["stroke"])
+        if o2 in stems and stems[o2]["heads"]:
+            continue
+        ring = _ends_at_another_head(h, o2, other, partners, vbox)
+        short = float(by_dir[other].get("reach") or 0.0) < UNISON_REACH_SP
+        if ring or short:
+            return d
+    return None
+
+
 def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
                   hink: Optional[Dict[Any, set]], touches_ink: Any, vbox: Optional[Dict[int, Any]] = None) -> int:
     """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
@@ -466,8 +549,19 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             r["why"] = "head_ink_unread"
             continue
         touch = {d: bool(touches_ink(h["id"], c["stroke"])) for d, c in by_dir.items()}
-        outline = [d for d in ("up", "down") if touch[d] and _ends_at_another_head(h, int(by_dir[d]["stroke"]), d, heads, vbox)]
+        if R24_NOTE_BEFORE_TIP_BOX and h.get("ink"):
+            _free_from_tip_boxes(h, by_dir, touch, stems, readings, heads)
+        outline = [d for d in ("up", "down") if touch[d] and _ends_at_another_head(
+            h, int(by_dir[d]["stroke"]), d, _heads_a_stroke_can_end_at(h, by_dir[d], heads), vbox)]
         keep = [d for d in ("up", "down") if touch[d] and d not in outline]
+        # ROADMAP 2.306 r24: a head on its chord partner's stem (`_chord_stem`); where one stroke is an outline the r19 / r23 rules below read it first
+        shared = None if (len(keep) == 1 and outline) or not chord_partner_on() else _chord_stem(h, by_dir, touch, stems, heads, hink, vbox)
+        if shared is not None:
+            c = by_dir[shared]
+            o = int(c["stroke"])
+            stems[o]["heads"].append(h["id"])
+            r.update(state="one", stroke=o, direction=shared, side=c["side"], margin=c.get("fit"), how=CHORD_HOW)
+            continue
         if len(keep) == 2 and _passes_beside_the_other(h, int(by_dir["up"]["stroke"]), int(by_dir["down"]["stroke"]), vbox):
             r["why"] = "one_stem_passes_the_head"
             continue
@@ -516,6 +610,13 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 s["heads"].append(h["id"])
                 r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how=OTHER_STEM_HOW)
                 continue
+        shared = _chord_stem(h, by_dir, touch, stems, heads, hink, vbox) if chord_partner_on() else None
+        if shared is not None:
+            c = by_dir[shared]
+            o = int(c["stroke"])
+            stems[o]["heads"].append(h["id"])
+            r.update(state="one", stroke=o, direction=shared, side=c["side"], margin=c.get("fit"), how=CHORD_HOW)
+            continue
         if len(keep) < 2:
             # not two voices on the ink; which stroke is the head's one stem is NOT decided here (r23: where the untouched stroke belongs to no
             # other head it may be this head's own second voice whose contact the map missed) -- the old path stays, counted
