@@ -177,17 +177,27 @@ def test_never_two_stacked_heads_beside_their_natural():
     # notehead's round ends, no upright sticks out (the first check of this lane lost these two real notes)
     chord = [(2196, 2416, 2219, 2434), (2195, 2395, 2218, 2416)]
     meta, strokes, masks, heads = region("litolff_p6_6_1_3_9_stacked_chord_beside_natural")
-    *_, on, why = read("litolff_p6_6_1_3_9_stacked_chord_beside_natural", True)
-    for box in chord:
-        assert not [c for c in covers(on, box) if c.get("how") == "sharp_stack"]
-    assert why.get("fused_stack:rounded_ends", 0) >= 1          # the never fired here: without it the stack is claimed (the control can fail)
-    saved = PAI.STACK_END_MAX_SP
+    # ROADMAP 2.352 r3: the only head the box measure found beside this block (Litolff 6/1/3/9, a detector box 1 sp to its right, conf 0.29) holds no head ink -- a sharp reader
+    # measuring by ink leaves the block unclaimed before this ground is reached -- so the rounded-ends ground is shown with the old box-edge measure for the head.
+    saved_ink = PAI.head_ink_left
+    PAI.head_ink_left = lambda strokes, masks, scale, head, exclude=(): head.box[0]
     try:
-        PAI.STACK_END_MAX_SP = 9.0
-        *_, on2, _ = read("litolff_p6_6_1_3_9_stacked_chord_beside_natural", True)
-        assert any(c.get("how") == "sharp_stack" for box in chord for c in covers(on2, box))
+        *_, on, why = read("litolff_p6_6_1_3_9_stacked_chord_beside_natural", True)
+        for box in chord:
+            assert not [c for c in covers(on, box) if c.get("how") == "sharp_stack"]
+        assert why.get("fused_stack:rounded_ends", 0) >= 1          # the never fired here: without it the stack is claimed (the control can fail)
+        saved = PAI.STACK_END_MAX_SP
+        try:
+            PAI.STACK_END_MAX_SP = 9.0
+            *_, on2, _ = read("litolff_p6_6_1_3_9_stacked_chord_beside_natural", True)
+            assert any(c.get("how") == "sharp_stack" for box in chord for c in covers(on2, box))
+        finally:
+            PAI.STACK_END_MAX_SP = saved
     finally:
-        PAI.STACK_END_MAX_SP = saved
+        PAI.head_ink_left = saved_ink
+    *_, on3, why3 = read("litolff_p6_6_1_3_9_stacked_chord_beside_natural", True)          # by ink, the block has no note beside it: unclaimed either way
+    for box in chord:
+        assert not [c for c in covers(on3, box) if c.get("how") == "sharp_stack"]
 
 
 def test_head_box_on_a_natural_fused_into_the_barline_is_refused_by_the_claims_together():
