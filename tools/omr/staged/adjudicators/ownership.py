@@ -3087,6 +3087,11 @@ def _head_read(ev: Evidence, key: str) -> bool:
         # note a WORD's claimed area happens to cover is held in doubt only because the word was read first; its own head reading stands, and EXPORT
         # writes it (`guessed_by_rule:claim_narrowed:word`). An arc may end at it. A head a KEY's or another mark's claim narrowed stays no note.
         return True
+    if v.outcome is Outcome.NARROWED and str(v.reason or "") == "stem_end_ink_only":
+        # ROADMAP 2.358 (i) (`OMR_ARC_END_AT_INK_HEAD`, default OFF; the rule and its cause: `page_arc_bind`'s 2.358 block): a head the page ink alone
+        # read at a stem end is written (blue) by EXPORT; an arc may end at it, and its ink is no "unread" second head at the arc's end
+        from .. import page_arc_bind as _PB
+        return _PB.end_at_ink_head_enabled()
     return v.outcome is not Outcome.NARROWED
 
 
@@ -6874,6 +6879,13 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
                 if other.get("head") and not (b["left"].get("edge") and b["right"].get("edge")):
                     e = (dt.get("core_ends") or dt["ends"])[0 if side == "left" else 1]
                     entry.update(edge=side, edge_head=str(other["head"]), x_end=float(e[0]), sp=sp, staff_key=home)
+                    if PB.join_by_height_enabled() and b.get("side") in ("above", "below") and sp > 0:
+                        # ROADMAP 2.358 (iii): the piece's curve and the height of its edge end below its own staff's top line -- what the join across
+                        # the break compares (`page_arc_bind.pair_by_height`)
+                        sl = [r_ for r_ in ev.rows(Q.STAFF_LINES, subject=R.Subject.from_key(home))
+                              if isinstance(r_.value, (list, tuple)) and len(r_.value) == 5]
+                        if sl:
+                            entry.update(shape=b["side"], y_end_spaces=round((float(e[1]) - float(sl[-1].value[0])) / sp, 3))
             if b.get("relation") is not None:
                 entry["relation"] = b.get("relation")
             if b.get("start") and b.get("stop"):
