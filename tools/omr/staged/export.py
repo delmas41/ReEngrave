@@ -8005,6 +8005,9 @@ _DROPPED_HEAD_REASON_WORDS = {
     "chord_value_undecided": "chord value not read", "no_pitch": "pitch not read",
     "owned_by_another_staff": "staff not decided", "unread:wide_box_unread": "head not read",
     "relocation_inside_owner_view": "its staff drew no head here",
+    # ROADMAP 2.354: what the late ink tests saw, never "not a note"
+    "relocation_not_a_head_by_ink": "head shape not clear", "relocation_on_another_mark": "on another sign's ink",
+    "ink_is_a_whole_rest": "note or whole rest", "ink_straddles_a_stem": "head or slash", "ink_not_head_shaped": "head shape not clear",
 }
 #: refusals that say the box is not a whole head (the two measured scrap classes) -- never a dropped note
 _DROPPED_HEAD_SCRAPS = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:clipped_fragment",
@@ -8029,6 +8032,39 @@ def inside_view_drop_marked_enabled() -> bool:
     return os.environ.get(INSIDE_VIEW_DROP_MARKED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: ROADMAP 2.354 (`OMR_LATE_INK_DROP_MARKED`, default OFF). STAGED EXPORT. THE RULE, as a musician says it: the box says where to look;
+#: the ink says whether a head is there -- and a note we read, with its pitch and its value, is never dropped without a mark.
+#: CAUSE: five late tests at EXPORT refuse a DECIDED note on its own ink after ADJUDICATE has called it a notehead: two in
+#: `_not_a_head_owned_elsewhere` for a head another staff owns (`relocation_not_a_head_by_ink`: `Q.HEAD_INK` is not "one head, hollow
+#: or filled"; `relocation_on_another_mark`: the box CENTRE stands inside a clef / key / accidental / flag / tremolo / dynamic box or a
+#: word) and three from the whole-rest verdict (`ink_is_a_whole_rest`, `ink_straddles_a_stem`, `ink_not_head_shaped`). The first two
+#: sat in `_NOT_A_GAP_REASONS` and the last two in `_DROPPED_HEAD_SCRAPS`, so the note vanished with no mark.
+#: WHY THEY MAY NOT DROP SILENTLY (step 0, 20261123-night records, 625 heads Sean vouched for -- judged tiles, his Brahms p0 hand labels,
+#: the 2.306-r24 heads -- and 69 marks he said are not heads): "`Q.HEAD_INK` is not one head" holds on 86 of the 625 real heads
+#: (too small 17, too wide 13, too tall 4, readers split 51, no head ink 1 -- that one a 0.6 sp box his labels call both a head and a
+#: dot), and "the box centre inside another mark's box" on 14 of them (a down-flag's box holds its own head). Neither test can say
+#: "not a note", so neither may hide one. NO late test was shown clean, so none is excepted.
+#: With the flag the refusal stands (nothing is written, nothing is invented) and the place carries 2.333's dropped-head mark, for a
+#: DECIDED note only (value and pitch decided; a box with neither was never a read note). NEVER: writes the head; marks a box whose
+#: ink a written note or rest already holds (`_file_dropped_heads`' own test, `judged.boxes_overlap`); touches a written note.
+LATE_INK_DROP_MARKED_ENV = "OMR_LATE_INK_DROP_MARKED"
+#: the late ink refusals the flag marks (`_not_a_head_owned_elsewhere` and the whole-rest verdict's three)
+_LATE_INK_REFUSALS = frozenset({"relocation_not_a_head_by_ink", "relocation_on_another_mark",
+                                "ink_is_a_whole_rest", "ink_straddles_a_stem", "ink_not_head_shaped"})
+
+
+def late_ink_drop_marked_enabled() -> bool:
+    """ROADMAP 2.354, `OMR_LATE_INK_DROP_MARKED`, default OFF (allow-list 1/true/yes/on)."""
+    return os.environ.get(LATE_INK_DROP_MARKED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _read_note(rec: Record, sub: str) -> bool:
+    """ROADMAP 2.354: was this box read as a note -- its value DECIDED as one value and its pitch decided?"""
+    d = rec.verdict(Q.DURATION, sub) or {}
+    p = rec.verdict(Q.PITCH, sub) or {}
+    return d.get("outcome") == "decided" and isinstance(d.get("value"), dict) and p.get("outcome") == "decided"
+
+
 def dropped_head_marks_mode() -> str:
     """`OMR_DROPPED_HEAD_MARKS`: `spot` (DEFAULT, unset; Sean 2026-11-23) or `bar`; `off`/`0`/anything else is `off`."""
     v = os.environ.get(DROPPED_HEAD_MARKS_ENV, "spot").strip().lower()
@@ -8037,7 +8073,11 @@ def dropped_head_marks_mode() -> str:
 
 def _dropped_head_may_be_a_note(reason: Optional[str]) -> bool:
     """The refusal half of the rule: refused for its value, pitch, owner or chord -- not as a scrap, not as other ink."""
-    if not reason or reason in ("written", "written_relocated") or reason in _DROPPED_HEAD_SCRAPS:
+    if not reason or reason in ("written", "written_relocated"):
+        return False
+    if reason in _LATE_INK_REFUSALS and late_ink_drop_marked_enabled():
+        return True             # ROADMAP 2.354: a late ink test is not proof of "not a note" (filed only for a read note: `_file_dropped_heads`)
+    if reason in _DROPPED_HEAD_SCRAPS:
         return False
     if reason == "owned_by_another_staff":
         return True
@@ -8079,6 +8119,9 @@ def _file_dropped_heads(rec: Record, runs: Dict[str, StaffRun], fates: Dict[str,
         if not _dropped_head_may_be_a_note(reason):
             continue
         if not rec.obs(Q.NOTEHEAD_CLASS, sub) or rec.obs(Q.REST, sub):
+            continue
+        if reason in _LATE_INK_REFUSALS and not _read_note(rec, sub):
+            out["late_ink_not_a_read_note"] += 1         # ROADMAP 2.354: only a note read with its value and pitch is marked
             continue
         if sub not in page_box:
             out["no_page_box"] += 1

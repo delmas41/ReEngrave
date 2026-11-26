@@ -1,0 +1,11945 @@
+{
+"brahms_clef_tail": {
+"boxes": [
+{
+"bbox_page_px": [
+674.15,
+1231.41,
+778.37,
+1327.59
+],
+"cls": "clefF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/2",
+"value": [
+"clefF",
+105,
+395,
+363,
+335
+]
+},
+{
+"bbox_page_px": [
+827.46,
+1222.51,
+859.62,
+1294.29
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/7",
+"value": [
+"accidentalFlat",
+639,
+364,
+112,
+250
+]
+},
+{
+"bbox_page_px": [
+644.86,
+1230.83,
+1232.0,
+1351.99
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/11",
+"value": [
+"staff",
+3,
+393,
+2045,
+422
+]
+},
+{
+"bbox_page_px": [
+856.75,
+1277.06,
+888.33,
+1351.42
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/12",
+"value": [
+"accidentalFlat",
+741,
+554,
+110,
+259
+]
+},
+{
+"bbox_page_px": [
+796.74,
+1256.67,
+828.9,
+1338.21
+],
+"cls": "keyFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/15",
+"value": [
+"keyFlat",
+532,
+483,
+112,
+284
+]
+},
+{
+"bbox_page_px": [
+652.33,
+1393.62,
+1232.0,
+1427.79
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A3"
+},
+"subject": "glyph/12/0/3/0/18",
+"value": [
+"beam",
+29,
+960,
+2019,
+119
+]
+},
+{
+"bbox_page_px": [
+796.46,
+1256.96,
+828.61,
+1339.94
+],
+"cls": "accidentalNatural",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/19",
+"value": [
+"accidentalNatural",
+531,
+484,
+112,
+289
+]
+},
+{
+"bbox_page_px": [
+797.03,
+1436.4,
+828.04,
+1520.23
+],
+"cls": "keyFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/4/0/1",
+"value": [
+"keyFlat",
+533,
+489,
+108,
+292
+]
+},
+{
+"bbox_page_px": [
+689.94,
+1411.99,
+780.09,
+1507.89
+],
+"cls": "clefF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/4/0/2",
+"value": [
+"clefF",
+160,
+404,
+314,
+334
+]
+},
+{
+"bbox_page_px": [
+828.32,
+1397.35,
+860.19,
+1473.43
+],
+"cls": "keyFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/4/0/3",
+"value": [
+"keyFlat",
+642,
+353,
+111,
+265
+]
+},
+{
+"bbox_page_px": [
+705.44,
+1296.0,
+750.8,
+1319.54
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:notehead_is_a_duplicate_box",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "B2"
+},
+"subject": "glyph/12/0/4/0/7",
+"value": [
+"noteheadBlackOnLine",
+214,
+0,
+158,
+82
+]
+},
+{
+"bbox_page_px": [
+714.34,
+1296.0,
+750.8,
+1315.52
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:notehead_is_a_duplicate_box",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "B2"
+},
+"subject": "glyph/12/0/4/0/9",
+"value": [
+"noteheadBlackOnLine",
+245,
+0,
+127,
+68
+]
+},
+{
+"bbox_page_px": [
+798.46,
+1298.3,
+828.61,
+1337.34
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "relocation_not_a_head_by_ink",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A2"
+},
+"subject": "glyph/12/0/4/0/12",
+"value": [
+"noteheadBlackOnLine",
+538,
+8,
+105,
+136
+]
+},
+{
+"bbox_page_px": [
+797.32,
+1296.0,
+826.6,
+1343.66
+],
+"cls": "flag16thDown",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/4/0/13",
+"value": [
+"flag16thDown",
+534,
+0,
+102,
+166
+]
+},
+{
+"bbox_page_px": [
+693.67,
+1296.0,
+751.09,
+1329.02
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "relocation_on_another_mark",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "B2"
+},
+"subject": "glyph/12/0/4/0/15",
+"value": [
+"noteheadBlackOnLine",
+173,
+0,
+200,
+115
+]
+},
+{
+"bbox_page_px": [
+651.18,
+1395.34,
+1232.0,
+1433.81
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/4/0/16",
+"value": [
+"tie",
+25,
+346,
+2023,
+134
+]
+},
+{
+"bbox_page_px": [
+692.52,
+1310.64,
+728.98,
+1329.3
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "ink_not_head_shaped",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A2"
+},
+"subject": "glyph/12/0/4/0/17",
+"value": [
+"noteheadBlackOnLine",
+169,
+51,
+127,
+65
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/12/0/4/0/15",
+"why": "our look: the tail of the next staff's bass clef; relocation_on_another_mark"
+},
+"brahms_flag": {
+"boxes": [
+{
+"bbox_page_px": [
+2728.56,
+4776.17,
+2767.97,
+4809.75
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "E4"
+},
+"subject": "glyph/4/1/2/3/4",
+"value": [
+"noteheadBlackOnLine",
+1375,
+1179,
+142,
+121
+]
+},
+{
+"bbox_page_px": [
+2726.34,
+4818.63,
+2777.12,
+4827.23
+],
+"cls": "restHalf",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"written": 2.0
+}
+},
+"fate": "not_a_rest:rest_outside_its_staff",
+"pitch": null,
+"subject": "glyph/4/1/2/3/16",
+"value": [
+"restHalf",
+1367,
+1332,
+183,
+31
+]
+},
+{
+"bbox_page_px": [
+2554.29,
+4742.32,
+2804.88,
+4808.64
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "G4"
+},
+"subject": "glyph/4/1/2/3/17",
+"value": [
+"beam",
+747,
+1057,
+903,
+239
+]
+},
+{
+"bbox_page_px": [
+2729.32,
+4776.74,
+2768.83,
+4810.53
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/4/1/3/3/3",
+"value": [
+"noteheadBlackOnLine",
+1403,
+322,
+145,
+124
+]
+},
+{
+"bbox_page_px": [
+2596.34,
+4942.97,
+2632.85,
+4977.03
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G2"
+},
+"subject": "glyph/4/1/3/3/4",
+"value": [
+"noteheadBlackOnLine",
+915,
+932,
+134,
+125
+]
+},
+{
+"bbox_page_px": [
+2545.38,
+4986.02,
+2754.66,
+5008.37
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/6",
+"value": [
+"beam",
+728,
+1090,
+768,
+82
+]
+},
+{
+"bbox_page_px": [
+2597.43,
+4847.32,
+2636.12,
+4879.75
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G3"
+},
+"subject": "glyph/4/1/3/3/10",
+"value": [
+"noteheadBlackInSpace",
+919,
+581,
+142,
+119
+]
+},
+{
+"bbox_page_px": [
+2546.74,
+4997.47,
+2753.84,
+5019.0
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C4"
+},
+"subject": "glyph/4/1/3/3/11",
+"value": [
+"beam",
+733,
+1132,
+760,
+79
+]
+},
+{
+"bbox_page_px": [
+2729.86,
+4874.3,
+2769.92,
+4907.55
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/4/1/3/3/13",
+"value": [
+"noteheadBlackInSpace",
+1405,
+680,
+147,
+122
+]
+},
+{
+"bbox_page_px": [
+2573.18,
+4745.95,
+2803.16,
+4809.72
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/15",
+"value": [
+"beam",
+830,
+209,
+844,
+234
+]
+},
+{
+"bbox_page_px": [
+2588.43,
+4942.7,
+2797.99,
+4965.04
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/20",
+"value": [
+"tie",
+886,
+931,
+769,
+82
+]
+},
+{
+"bbox_page_px": [
+2726.86,
+4819.8,
+2777.82,
+4829.34
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/23",
+"value": [
+"ledgerLine",
+1394,
+480,
+187,
+35
+]
+},
+{
+"bbox_page_px": [
+2763.11,
+4872.66,
+2807.8,
+4881.39
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/24",
+"value": [
+"ledgerLine",
+1527,
+674,
+164,
+32
+]
+},
+{
+"bbox_page_px": [
+2576.17,
+4928.53,
+2649.75,
+4935.34
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/25",
+"value": [
+"ledgerLine",
+841,
+879,
+270,
+25
+]
+},
+{
+"bbox_page_px": [
+2723.59,
+4872.66,
+2788.45,
+4881.93
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/27",
+"value": [
+"ledgerLine",
+1382,
+674,
+238,
+34
+]
+},
+{
+"bbox_page_px": [
+2777.55,
+4956.6,
+2807.8,
+4962.86
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/28",
+"value": [
+"ledgerLine",
+1580,
+982,
+111,
+23
+]
+},
+{
+"bbox_page_px": [
+2736.95,
+4929.89,
+2807.8,
+4935.89
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/29",
+"value": [
+"ledgerLine",
+1431,
+884,
+260,
+22
+]
+},
+{
+"bbox_page_px": [
+2561.73,
+4956.05,
+2641.03,
+4965.04
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/32",
+"value": [
+"ledgerLine",
+788,
+980,
+291,
+33
+]
+},
+{
+"bbox_page_px": [
+2578.62,
+4901.28,
+2641.03,
+4909.18
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/38",
+"value": [
+"ledgerLine",
+850,
+779,
+229,
+29
+]
+},
+{
+"bbox_page_px": [
+2528.21,
+4872.66,
+2630.4,
+4881.66
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/39",
+"value": [
+"ledgerLine",
+665,
+674,
+375,
+33
+]
+},
+{
+"bbox_page_px": [
+2771.01,
+4843.78,
+2806.16,
+4853.59
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/40",
+"value": [
+"ledgerLine",
+1556,
+568,
+129,
+36
+]
+},
+{
+"bbox_page_px": [
+2549.47,
+4986.02,
+2754.39,
+5007.28
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/41",
+"value": [
+"tie",
+743,
+1090,
+752,
+78
+]
+},
+{
+"bbox_page_px": [
+2824.62,
+4955.23,
+2883.76,
+5021.99
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/4/9",
+"value": [
+"dynamicF",
+61,
+977,
+217,
+245
+]
+},
+{
+"bbox_page_px": [
+2860.59,
+4850.05,
+2899.29,
+4878.11
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G3"
+},
+"subject": "glyph/4/1/3/4/12",
+"value": [
+"noteheadBlackInSpace",
+193,
+591,
+142,
+103
+]
+},
+{
+"bbox_page_px": [
+2851.33,
+4817.89,
+2903.38,
+4826.34
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/4/15",
+"value": [
+"ledgerLine",
+159,
+473,
+191,
+31
+]
+},
+{
+"bbox_page_px": [
+2812.09,
+4927.16,
+3357.36,
+4971.85
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/4/22",
+"value": [
+"tie",
+15,
+874,
+2001,
+164
+]
+},
+{
+"bbox_page_px": [
+2812.36,
+4872.66,
+2908.28,
+4879.2
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/4/23",
+"value": [
+"ledgerLine",
+16,
+674,
+352,
+24
+]
+},
+{
+"bbox_page_px": [
+2856.23,
+4770.75,
+2867.41,
+4965.59
+],
+"cls": "stem",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/4/24",
+"value": [
+"stem",
+177,
+300,
+41,
+715
+]
+},
+{
+"bbox_page_px": [
+2808.55,
+4845.41,
+2906.37,
+4853.59
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/4/25",
+"value": [
+"ledgerLine",
+2,
+574,
+359,
+30
+]
+},
+{
+"bbox_page_px": [
+2546.2,
+4987.49,
+2754.39,
+5004.39
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "D2"
+},
+"subject": "glyph/4/1/4/3/0",
+"value": [
+"beam",
+731,
+233,
+764,
+62
+]
+},
+{
+"bbox_page_px": [
+2596.88,
+4943.89,
+2632.85,
+4977.14
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "G2"
+},
+"subject": "glyph/4/1/4/3/2",
+"value": [
+"noteheadBlackOnLine",
+917,
+73,
+132,
+122
+]
+},
+{
+"bbox_page_px": [
+2545.38,
+5000.85,
+2755.48,
+5017.47
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/4/3/3",
+"value": [
+"beam",
+728,
+282,
+771,
+61
+]
+},
+{
+"bbox_page_px": [
+2739.67,
+4924.0,
+2772.64,
+4962.69
+],
+"cls": "flag8thDown",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A2"
+},
+"subject": "glyph/4/1/4/3/5",
+"value": [
+"flag8thDown",
+1441,
+0,
+121,
+142
+]
+},
+{
+"bbox_page_px": [
+2354.63,
+4932.45,
+2798.53,
+4964.6
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A2"
+},
+"subject": "glyph/4/1/4/3/6",
+"value": [
+"tie",
+28,
+31,
+1629,
+118
+]
+},
+{
+"bbox_page_px": [
+2740.76,
+4924.0,
+2772.92,
+4961.6
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "relocation_not_a_head_by_ink",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A2"
+},
+"subject": "glyph/4/1/4/3/7",
+"value": [
+"noteheadBlackOnLine",
+1445,
+0,
+118,
+138
+]
+},
+{
+"bbox_page_px": [
+2779.73,
+4955.34,
+2807.8,
+4962.42
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "G2"
+},
+"subject": "glyph/4/1/4/3/8",
+"value": [
+"tie",
+1588,
+115,
+103,
+26
+]
+},
+{
+"bbox_page_px": [
+2824.35,
+4950.43,
+2888.93,
+5021.56
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E2"
+},
+"subject": "glyph/4/1/4/4/1",
+"value": [
+"dynamicF",
+60,
+97,
+237,
+261
+]
+},
+{
+"bbox_page_px": [
+2808.0,
+4925.36,
+3357.9,
+4970.05
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "E3"
+},
+"subject": "glyph/4/1/4/4/11",
+"value": [
+"tie",
+0,
+5,
+2018,
+164
+]
+},
+{
+"bbox_page_px": [
+2815.36,
+4942.26,
+3357.36,
+4969.51
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "D3"
+},
+"subject": "glyph/4/1/4/4/13",
+"value": [
+"tie",
+27,
+67,
+1989,
+100
+]
+},
+{
+"bbox_page_px": [
+2808.0,
+5042.27,
+3357.9,
+5067.61
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/4/4/15",
+"value": [
+"tie",
+0,
+434,
+2018,
+93
+]
+},
+{
+"bbox_page_px": [
+2738.04,
+4895.56,
+2773.46,
+4969.95
+],
+"cls": "flag8thDown",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/42",
+"value": [
+"flag8thDown",
+1435,
+758,
+130,
+273
+]
+},
+{
+"bbox_page_px": [
+2569.28,
+4744.81,
+2807.93,
+4813.36
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "F4"
+},
+"subject": "glyph/4/1/2/3/32",
+"value": [
+"slur",
+801,
+1066,
+860,
+247
+]
+},
+{
+"bbox_page_px": [
+2573.99,
+4743.5,
+2807.8,
+4809.72
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/1/3/3/44",
+"value": [
+"slur",
+833,
+200,
+858,
+243
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/4/1/4/3/7",
+"why": "our look: an eighth flag of the staff above; relocation_not_a_head_by_ink (HEAD_INK too small)"
+},
+"brahms_tremolo": {
+"boxes": [
+{
+"bbox_page_px": [
+3023.55,
+2739.19,
+3279.4,
+2755.84
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/9/7/1",
+"value": [
+"beam",
+20,
+1125,
+922,
+60
+]
+},
+{
+"bbox_page_px": [
+3030.21,
+2640.95,
+3278.3,
+2661.49
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/9/7/5",
+"value": [
+"tie",
+44,
+771,
+894,
+74
+]
+},
+{
+"bbox_page_px": [
+3290.16,
+2738.08,
+3589.03,
+2756.67
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F5"
+},
+"subject": "glyph/12/0/9/8/1",
+"value": [
+"beam",
+33,
+1121,
+1077,
+67
+]
+},
+{
+"bbox_page_px": [
+3289.88,
+2637.62,
+3588.75,
+2656.77
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/9/8/6",
+"value": [
+"tie",
+32,
+759,
+1077,
+69
+]
+},
+{
+"bbox_page_px": [
+3024.94,
+2638.94,
+3279.68,
+2658.09
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "E4"
+},
+"subject": "glyph/12/0/10/7/2",
+"value": [
+"beam",
+25,
+7,
+918,
+69
+]
+},
+{
+"bbox_page_px": [
+3018.0,
+2703.88,
+3280.79,
+2868.99
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/7/3",
+"value": [
+"staff",
+0,
+241,
+947,
+595
+]
+},
+{
+"bbox_page_px": [
+3094.87,
+2838.47,
+3277.74,
+2871.76
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/7/7",
+"value": [
+"tie",
+277,
+726,
+659,
+120
+]
+},
+{
+"bbox_page_px": [
+3298.76,
+2814.05,
+3326.79,
+2901.74
+],
+"cls": "accidentalNatural",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/0",
+"value": [
+"accidentalNatural",
+64,
+638,
+101,
+316
+]
+},
+{
+"bbox_page_px": [
+3281.0,
+2737.45,
+3591.8,
+2875.65
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/1",
+"value": [
+"staff",
+0,
+362,
+1120,
+498
+]
+},
+{
+"bbox_page_px": [
+3288.49,
+2637.55,
+3587.91,
+2658.09
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "E4"
+},
+"subject": "glyph/12/0/10/8/2",
+"value": [
+"beam",
+27,
+2,
+1079,
+74
+]
+},
+{
+"bbox_page_px": [
+3333.45,
+2837.63,
+3377.01,
+2873.71
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 3.0,
+"dots": 1,
+"written": 3.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/12/0/10/8/3",
+"value": [
+"noteheadHalfOnLine",
+189,
+723,
+157,
+130
+]
+},
+{
+"bbox_page_px": [
+3386.17,
+2837.08,
+3399.77,
+2851.23
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/4",
+"value": [
+"augmentationDot",
+379,
+721,
+49,
+51
+]
+},
+{
+"bbox_page_px": [
+3298.76,
+2814.6,
+3326.79,
+2902.01
+],
+"cls": "accidentalSharp",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/5",
+"value": [
+"accidentalSharp",
+64,
+640,
+101,
+315
+]
+},
+{
+"bbox_page_px": [
+3372.3,
+2844.01,
+3589.3,
+2868.16
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/6",
+"value": [
+"tie",
+329,
+746,
+782,
+87
+]
+},
+{
+"bbox_page_px": [
+3357.31,
+2776.03,
+3396.44,
+2797.12
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "stem_value_follows",
+"value": {
+"beam_levels": 0,
+"beats": 3.0,
+"dots": 1,
+"head_fill": "half",
+"shared_stem": "obs:738834",
+"written": 3.0
+}
+},
+"fate": "ink_straddles_a_stem",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C5"
+},
+"subject": "glyph/12/0/10/8/7",
+"value": [
+"noteheadBlackOnLine",
+275,
+501,
+141,
+76
+]
+},
+{
+"bbox_page_px": [
+3281.0,
+2737.18,
+3589.86,
+2758.27
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/8",
+"value": [
+"beam",
+0,
+361,
+1113,
+76
+]
+},
+{
+"bbox_page_px": [
+3371.47,
+2818.21,
+3588.75,
+2840.41
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/10/8/9",
+"value": [
+"tie",
+326,
+653,
+783,
+80
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/12/0/10/8/7",
+"why": "our look: a tremolo slash on a stem; ink_straddles_a_stem"
+},
+"hand_black_head": {
+"boxes": [
+{
+"bbox_page_px": [
+4730.41,
+1845.78,
+5234.34,
+1905.94
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/0/0/0/6/1",
+"value": [
+"beam",
+135,
+1323,
+1466,
+175
+]
+},
+{
+"bbox_page_px": [
+4730.41,
+1845.78,
+5234.0,
+1905.94
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/0/0/0/6/5",
+"value": [
+"slur",
+135,
+1323,
+1465,
+175
+]
+},
+{
+"bbox_page_px": [
+5276.62,
+1949.22,
+5316.84,
+1986.0
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F5"
+},
+"subject": "glyph/0/0/1/6/2",
+"value": [
+"noteheadBlackOnLine",
+1724,
+501,
+117,
+107
+]
+},
+{
+"bbox_page_px": [
+4731.78,
+1843.34,
+5282.12,
+1941.31
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/5",
+"value": [
+"slur",
+139,
+193,
+1601,
+285
+]
+},
+{
+"bbox_page_px": [
+5275.94,
+1986.69,
+5313.75,
+2102.88
+],
+"cls": "flag8thDown",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/10",
+"value": [
+"flag8thDown",
+1722,
+610,
+110,
+338
+]
+},
+{
+"bbox_page_px": [
+5275.94,
+1983.25,
+5317.19,
+2018.66
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D5"
+},
+"subject": "glyph/0/0/1/6/12",
+"value": [
+"noteheadBlackOnLine",
+1722,
+600,
+120,
+103
+]
+},
+{
+"bbox_page_px": [
+4684.69,
+1958.16,
+5386.97,
+2009.72
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/13",
+"value": [
+"tie",
+2,
+527,
+2043,
+150
+]
+},
+{
+"bbox_page_px": [
+4732.47,
+1841.62,
+5280.41,
+1942.34
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/15",
+"value": [
+"beam",
+141,
+188,
+1594,
+293
+]
+},
+{
+"bbox_page_px": [
+4935.28,
+1969.5,
+5388.0,
+2007.66
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/19",
+"value": [
+"tie",
+731,
+560,
+1317,
+111
+]
+},
+{
+"bbox_page_px": [
+4684.0,
+1995.28,
+5384.91,
+2040.66
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/20",
+"value": [
+"tie",
+0,
+635,
+2039,
+132
+]
+},
+{
+"bbox_page_px": [
+4684.34,
+1980.16,
+5388.0,
+2086.72
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/6/21",
+"value": [
+"tie",
+1,
+591,
+2047,
+310
+]
+},
+{
+"bbox_page_px": [
+5431.2,
+1965.16,
+5479.84,
+2028.84
+],
+"cls": "timeSig9",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/7/0",
+"value": [
+"timeSig9",
+135,
+588,
+152,
+199
+]
+},
+{
+"bbox_page_px": [
+5427.68,
+2065.0,
+5476.96,
+2099.24
+],
+"cls": "timeSig8",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/7/1",
+"value": [
+"timeSig8",
+124,
+900,
+154,
+107
+]
+},
+{
+"bbox_page_px": [
+5429.6,
+2036.52,
+5474.72,
+2066.92
+],
+"cls": "timeSig8",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/0/0/1/7/2",
+"value": [
+"timeSig8",
+130,
+811,
+141,
+95
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/0/0/1/6/2",
+"why": "Sean's hand label, Brahms p0: a black head (HEAD_INK readers split)"
+},
+"judged_hollow_on_line": {
+"boxes": [
+{
+"bbox_page_px": [
+1283.47,
+1486.45,
+1367.27,
+1493.69
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/5/3",
+"value": [
+"beam",
+130,
+860,
+532,
+46
+]
+},
+{
+"bbox_page_px": [
+1263.0,
+1412.27,
+1398.92,
+1480.31
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/5/5",
+"value": [
+"staff",
+0,
+389,
+863,
+432
+]
+},
+{
+"bbox_page_px": [
+1400.0,
+1412.27,
+1543.95,
+1476.53
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/6/0",
+"value": [
+"staff",
+0,
+389,
+914,
+408
+]
+},
+{
+"bbox_page_px": [
+1417.48,
+1416.84,
+1426.93,
+1482.51
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/6/1",
+"value": [
+"arpeggiato",
+111,
+418,
+60,
+417
+]
+},
+{
+"bbox_page_px": [
+1544.0,
+1412.9,
+1691.58,
+1478.73
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/7/0",
+"value": [
+"staff",
+0,
+393,
+937,
+418
+]
+},
+{
+"bbox_page_px": [
+1562.27,
+1441.25,
+1571.25,
+1498.42
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/7/7",
+"value": [
+"arpeggiato",
+116,
+573,
+57,
+363
+]
+},
+{
+"bbox_page_px": [
+1562.9,
+1484.88,
+1659.29,
+1491.81
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/7/7/9",
+"value": [
+"beam",
+120,
+850,
+612,
+44
+]
+},
+{
+"bbox_page_px": [
+1278.43,
+1602.2,
+1301.12,
+1623.46
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F4"
+},
+"subject": "glyph/10/0/8/5/0",
+"value": [
+"noteheadBlackInSpace",
+98,
+687,
+144,
+135
+]
+},
+{
+"bbox_page_px": [
+1308.83,
+1588.82,
+1331.83,
+1605.04
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A4"
+},
+"subject": "glyph/10/0/8/5/1",
+"value": [
+"noteheadBlackInSpace",
+291,
+602,
+146,
+103
+]
+},
+{
+"bbox_page_px": [
+1364.27,
+1602.52,
+1387.11,
+1622.68
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F4"
+},
+"subject": "glyph/10/0/8/5/2",
+"value": [
+"noteheadBlackInSpace",
+643,
+689,
+145,
+128
+]
+},
+{
+"bbox_page_px": [
+1297.34,
+1543.61,
+1384.43,
+1551.33
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/8/5/3",
+"value": [
+"beam",
+218,
+315,
+553,
+49
+]
+},
+{
+"bbox_page_px": [
+1303.32,
+1542.51,
+1384.59,
+1548.65
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/8/5/4",
+"value": [
+"beam",
+256,
+308,
+516,
+39
+]
+},
+{
+"bbox_page_px": [
+1337.65,
+1587.08,
+1362.38,
+1605.83
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A4"
+},
+"subject": "glyph/10/0/8/5/5",
+"value": [
+"noteheadBlackInSpace",
+474,
+591,
+157,
+119
+]
+},
+{
+"bbox_page_px": [
+1416.54,
+1614.33,
+1543.95,
+1648.51
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/8/6/0",
+"value": [
+"slur",
+105,
+764,
+809,
+217
+]
+},
+{
+"bbox_page_px": [
+1455.12,
+1674.49,
+1541.28,
+1683.0
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/8/6/1",
+"value": [
+"tie",
+350,
+1146,
+547,
+54
+]
+},
+{
+"bbox_page_px": [
+1443.63,
+1673.71,
+1541.59,
+1683.0
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/8/6/2",
+"value": [
+"slur",
+277,
+1141,
+622,
+59
+]
+},
+{
+"bbox_page_px": [
+1559.43,
+1594.33,
+1582.74,
+1615.9
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/10/0/8/7/3",
+"value": [
+"noteheadBlackOnLine",
+98,
+637,
+148,
+137
+]
+},
+{
+"bbox_page_px": [
+1364.59,
+1716.12,
+1387.9,
+1735.81
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D4"
+},
+"subject": "glyph/10/0/9/5/0",
+"value": [
+"noteheadBlackInSpace",
+645,
+496,
+148,
+125
+]
+},
+{
+"bbox_page_px": [
+1281.43,
+1717.38,
+1303.79,
+1733.6
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D4"
+},
+"subject": "glyph/10/0/9/5/1",
+"value": [
+"noteheadBlackInSpace",
+117,
+504,
+142,
+103
+]
+},
+{
+"bbox_page_px": [
+1310.72,
+1713.29,
+1318.28,
+1775.18
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/9/5/3",
+"value": [
+"arpeggiato",
+303,
+478,
+48,
+393
+]
+},
+{
+"bbox_page_px": [
+1312.61,
+1702.26,
+1333.72,
+1717.38
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F4"
+},
+"subject": "glyph/10/0/9/5/4",
+"value": [
+"noteheadBlackInSpace",
+315,
+408,
+134,
+96
+]
+},
+{
+"bbox_page_px": [
+1337.34,
+1704.15,
+1358.92,
+1717.38
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F4"
+},
+"subject": "glyph/10/0/9/5/5",
+"value": [
+"noteheadBlackInSpace",
+472,
+420,
+137,
+84
+]
+},
+{
+"bbox_page_px": [
+1420.79,
+1674.07,
+1543.17,
+1708.09
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/9/6/0",
+"value": [
+"slur",
+132,
+229,
+777,
+216
+]
+},
+{
+"bbox_page_px": [
+1447.09,
+1638.0,
+1537.97,
+1648.08
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/9/6/1",
+"value": [
+"tie",
+299,
+0,
+577,
+64
+]
+},
+{
+"bbox_page_px": [
+1404.57,
+1673.6,
+1542.38,
+1716.28
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/9/6/2",
+"value": [
+"slur",
+29,
+226,
+875,
+271
+]
+},
+{
+"bbox_page_px": [
+1423.78,
+1700.84,
+1444.73,
+1729.98
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/10/0/9/6/3",
+"value": [
+"noteheadBlackInSpace",
+151,
+399,
+133,
+185
+]
+},
+{
+"bbox_page_px": [
+1561.95,
+1706.67,
+1584.16,
+1727.62
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/10/0/9/7/0",
+"value": [
+"noteheadBlackOnLine",
+114,
+436,
+141,
+133
+]
+},
+{
+"bbox_page_px": [
+1418.59,
+1585.19,
+1445.36,
+1623.78
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/10/0/8/6/3",
+"value": [
+"noteheadHalfOnLine",
+118,
+579,
+170,
+245
+]
+},
+{
+"bbox_page_px": [
+1544.0,
+1673.75,
+1567.15,
+1703.99
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/0/9/7/8",
+"value": [
+"slur",
+0,
+227,
+147,
+192
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/10/0/8/6/3",
+"why": "Sean 2026-11-25 2.306-r24 t28: a hollow head on a line (HEAD_INK too tall)"
+},
+"judged_ledger_head": {
+"boxes": [
+{
+"bbox_page_px": [
+1703.0,
+2104.36,
+1885.9,
+2180.47
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/0/8/0",
+"value": [
+"staff",
+0,
+583,
+1180,
+491
+]
+},
+{
+"bbox_page_px": [
+1770.89,
+2184.97,
+1880.47,
+2211.01
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/10/1/0/8/1",
+"value": [
+"slur",
+438,
+1103,
+707,
+168
+]
+},
+{
+"bbox_page_px": [
+1770.73,
+2184.66,
+1883.11,
+2210.85
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "F6"
+},
+"subject": "glyph/10/1/0/8/4",
+"value": [
+"beam",
+437,
+1101,
+725,
+169
+]
+},
+{
+"bbox_page_px": [
+1745.47,
+2134.28,
+1799.26,
+2185.59
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/0/8/10",
+"value": [
+"dynamicF",
+274,
+776,
+347,
+331
+]
+},
+{
+"bbox_page_px": [
+1932.19,
+2194.11,
+2029.53,
+2218.91
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "D6"
+},
+"subject": "glyph/10/1/0/9/0",
+"value": [
+"slur",
+298,
+1162,
+628,
+160
+]
+},
+{
+"bbox_page_px": [
+1905.53,
+2105.14,
+2031.7,
+2132.73
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/0/9/1",
+"value": [
+"slur",
+126,
+588,
+814,
+178
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2103.28,
+2033.87,
+2167.61
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/0/9/2",
+"value": [
+"staff",
+0,
+576,
+954,
+415
+]
+},
+{
+"bbox_page_px": [
+1902.59,
+2215.97,
+1929.09,
+2230.69
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "A5"
+},
+"subject": "glyph/10/1/0/9/3",
+"value": [
+"noteheadBlackOnLine",
+107,
+1303,
+171,
+95
+]
+},
+{
+"bbox_page_px": [
+1901.5,
+2215.97,
+1933.43,
+2230.69
+],
+"cls": "noteheadWholeOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "A5"
+},
+"subject": "glyph/10/1/0/9/7",
+"value": [
+"noteheadWholeOnLine",
+100,
+1303,
+206,
+95
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2104.36,
+2181.09,
+2168.84
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/0/10/0",
+"value": [
+"staff",
+0,
+583,
+949,
+416
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2103.9,
+2178.61,
+2137.69
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/0/10/5",
+"value": [
+"slur",
+0,
+580,
+933,
+218
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2196.12,
+2053.99,
+2218.45
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "D6"
+},
+"subject": "glyph/10/1/0/10/6",
+"value": [
+"beam",
+0,
+1175,
+129,
+144
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2184.81,
+2054.46,
+2218.29
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/10/1/0/10/7",
+"value": [
+"beam",
+0,
+1102,
+132,
+216
+]
+},
+{
+"bbox_page_px": [
+1772.14,
+2340.51,
+1885.23,
+2368.54
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/10/1/1/8/0",
+"value": [
+"slur",
+439,
+981,
+718,
+178
+]
+},
+{
+"bbox_page_px": [
+1771.2,
+2186.16,
+1880.19,
+2211.04
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/8/1",
+"value": [
+"slur",
+433,
+1,
+692,
+158
+]
+},
+{
+"bbox_page_px": [
+1703.0,
+2245.22,
+1883.02,
+2314.36
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/8/2",
+"value": [
+"staff",
+0,
+376,
+1143,
+439
+]
+},
+{
+"bbox_page_px": [
+1739.7,
+2255.3,
+1883.18,
+2283.65
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/8/9",
+"value": [
+"beam",
+233,
+440,
+911,
+180
+]
+},
+{
+"bbox_page_px": [
+1748.52,
+2283.97,
+1792.14,
+2331.69
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/8/10",
+"value": [
+"dynamicF",
+289,
+622,
+277,
+303
+]
+},
+{
+"bbox_page_px": [
+1935.61,
+2339.72,
+2029.64,
+2368.86
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/10/1/1/9/0",
+"value": [
+"slur",
+315,
+976,
+597,
+185
+]
+},
+{
+"bbox_page_px": [
+1931.05,
+2257.51,
+2030.11,
+2282.07
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/1",
+"value": [
+"beam",
+286,
+454,
+629,
+156
+]
+},
+{
+"bbox_page_px": [
+1902.38,
+2363.66,
+1927.58,
+2375.0
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "G5"
+},
+"subject": "glyph/10/1/1/9/2",
+"value": [
+"noteheadBlackOnLine",
+104,
+1128,
+160,
+72
+]
+},
+{
+"bbox_page_px": [
+1931.05,
+2194.03,
+2028.07,
+2219.23
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/3",
+"value": [
+"beam",
+286,
+51,
+616,
+160
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2245.53,
+2032.63,
+2313.1
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/4",
+"value": [
+"staff",
+0,
+378,
+931,
+429
+]
+},
+{
+"bbox_page_px": [
+1903.17,
+2215.61,
+1930.1,
+2233.09
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/10/1/1/9/5",
+"value": [
+"noteheadHalfInSpace",
+109,
+188,
+171,
+111
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2263.18,
+1934.98,
+2268.69
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/6",
+"value": [
+"ledgerLine",
+0,
+490,
+311,
+35
+]
+},
+{
+"bbox_page_px": [
+1900.49,
+2224.74,
+1937.03,
+2229.63
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/7",
+"value": [
+"ledgerLine",
+92,
+246,
+232,
+31
+]
+},
+{
+"bbox_page_px": [
+1922.38,
+2244.43,
+2031.21,
+2251.2
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/8",
+"value": [
+"tie",
+231,
+371,
+691,
+43
+]
+},
+{
+"bbox_page_px": [
+2034.63,
+2344.76,
+2067.07,
+2364.61
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/10/1/1/10/1",
+"value": [
+"beam",
+4,
+1008,
+206,
+126
+]
+},
+{
+"bbox_page_px": [
+2034.16,
+2203.95,
+2053.84,
+2218.6
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/10/3",
+"value": [
+"beam",
+1,
+114,
+125,
+93
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2246.16,
+2181.89,
+2318.14
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/10/4",
+"value": [
+"staff",
+0,
+382,
+939,
+457
+]
+},
+{
+"bbox_page_px": [
+2034.16,
+2279.4,
+2108.18,
+2284.44
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/10/8",
+"value": [
+"ledgerLine",
+1,
+593,
+470,
+32
+]
+},
+{
+"bbox_page_px": [
+1772.3,
+2340.62,
+1885.23,
+2368.81
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/8/0",
+"value": [
+"slur",
+440,
+169,
+717,
+179
+]
+},
+{
+"bbox_page_px": [
+1749.62,
+2314.0,
+1786.0,
+2331.48
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "D4"
+},
+"subject": "glyph/10/1/2/8/2",
+"value": [
+"dynamicF",
+296,
+0,
+231,
+111
+]
+},
+{
+"bbox_page_px": [
+1703.0,
+2373.53,
+1884.28,
+2429.92
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/8/3",
+"value": [
+"staff",
+0,
+378,
+1151,
+358
+]
+},
+{
+"bbox_page_px": [
+1935.61,
+2339.36,
+2029.8,
+2368.65
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/9/0",
+"value": [
+"slur",
+315,
+161,
+598,
+186
+]
+},
+{
+"bbox_page_px": [
+1903.17,
+2363.77,
+1927.74,
+2387.39
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F5"
+},
+"subject": "glyph/10/1/2/9/2",
+"value": [
+"noteheadHalfInSpace",
+109,
+316,
+156,
+150
+]
+},
+{
+"bbox_page_px": [
+2035.1,
+2344.55,
+2067.07,
+2364.56
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/10/0",
+"value": [
+"beam",
+7,
+194,
+203,
+127
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2375.58,
+2181.89,
+2453.39
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/10/3",
+"value": [
+"staff",
+0,
+391,
+939,
+494
+]
+},
+{
+"bbox_page_px": [
+1887.42,
+2201.59,
+1901.28,
+2213.56
+],
+"cls": "flag8thUp",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/9",
+"value": [
+"flag8thUp",
+9,
+99,
+88,
+76
+]
+},
+{
+"bbox_page_px": [
+1903.01,
+2235.93,
+1926.95,
+2259.87
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F5"
+},
+"subject": "glyph/10/1/1/9/10",
+"value": [
+"noteheadHalfOnLine",
+108,
+317,
+152,
+152
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2184.81,
+1904.29,
+2210.7
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "F6"
+},
+"subject": "glyph/10/1/0/9/10",
+"value": [
+"slur",
+0,
+1102,
+118,
+167
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2193.8,
+2056.01,
+2217.36
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/10/1/0/10/9",
+"value": [
+"slur",
+0,
+1160,
+142,
+152
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2340.03,
+2066.13,
+2368.07
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/10/1/1/10/9",
+"value": [
+"slur",
+0,
+978,
+204,
+178
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2341.14,
+1903.17,
+2368.07
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/10/1/1/9/11",
+"value": [
+"slur",
+0,
+985,
+109,
+171
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2186.0,
+1899.7,
+2210.73
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/1/9/12",
+"value": [
+"slur",
+0,
+0,
+87,
+157
+]
+},
+{
+"bbox_page_px": [
+2034.0,
+2339.83,
+2063.93,
+2367.86
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/10/7",
+"value": [
+"slur",
+0,
+164,
+190,
+178
+]
+},
+{
+"bbox_page_px": [
+1886.0,
+2340.93,
+1903.17,
+2368.97
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/2/9/9",
+"value": [
+"slur",
+0,
+171,
+109,
+178
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/10/1/1/9/10",
+"why": "Sean 2026-11-25 2.306-r24 t10: a head on ledger lines (HEAD_INK too tall)"
+},
+"litolff_whole_rest": {
+"boxes": [
+{
+"bbox_page_px": [
+1416.65,
+440.82,
+1438.54,
+451.22
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/8/0/0/10/0",
+"value": [
+"restWhole",
+220,
+710,
+139,
+66
+]
+},
+{
+"bbox_page_px": [
+1384.36,
+472.33,
+1415.86,
+476.42
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/10/1",
+"value": [
+"ledgerLine",
+15,
+910,
+200,
+26
+]
+},
+{
+"bbox_page_px": [
+1382.0,
+426.34,
+1477.92,
+492.33
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/10/2",
+"value": [
+"staff",
+0,
+618,
+609,
+419
+]
+},
+{
+"bbox_page_px": [
+1383.73,
+424.6,
+1476.03,
+429.96
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/10/3",
+"value": [
+"beam",
+11,
+607,
+586,
+34
+]
+},
+{
+"bbox_page_px": [
+1384.68,
+457.05,
+1473.98,
+460.67
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/10/4",
+"value": [
+"ledgerLine",
+17,
+813,
+567,
+23
+]
+},
+{
+"bbox_page_px": [
+1384.05,
+457.05,
+1454.77,
+460.2
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/10/5",
+"value": [
+"ledgerLine",
+13,
+813,
+449,
+20
+]
+},
+{
+"bbox_page_px": [
+1507.14,
+355.62,
+1522.57,
+395.62
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/0",
+"value": [
+"accidentalFlat",
+185,
+169,
+98,
+254
+]
+},
+{
+"bbox_page_px": [
+1506.82,
+533.59,
+1519.27,
+548.87
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/1",
+"value": [
+"accidentalFlat",
+183,
+1299,
+79,
+97
+]
+},
+{
+"bbox_page_px": [
+1480.36,
+455.63,
+1586.05,
+460.2
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/2",
+"value": [
+"ledgerLine",
+15,
+804,
+671,
+29
+]
+},
+{
+"bbox_page_px": [
+1529.5,
+368.53,
+1553.13,
+392.0
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D6"
+},
+"subject": "glyph/8/0/0/11/3",
+"value": [
+"noteheadHalfInSpace",
+327,
+251,
+150,
+149
+]
+},
+{
+"bbox_page_px": [
+1479.42,
+424.29,
+1585.1,
+428.38
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/4",
+"value": [
+"ledgerLine",
+9,
+605,
+671,
+26
+]
+},
+{
+"bbox_page_px": [
+1524.62,
+405.86,
+1555.65,
+411.53
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/5",
+"value": [
+"ledgerLine",
+296,
+488,
+197,
+36
+]
+},
+{
+"bbox_page_px": [
+1479.1,
+472.01,
+1587.93,
+475.63
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/6",
+"value": [
+"ledgerLine",
+7,
+908,
+691,
+23
+]
+},
+{
+"bbox_page_px": [
+1479.42,
+472.01,
+1546.51,
+475.63
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/7",
+"value": [
+"ledgerLine",
+9,
+908,
+426,
+23
+]
+},
+{
+"bbox_page_px": [
+1481.31,
+439.56,
+1585.57,
+443.82
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/8",
+"value": [
+"ledgerLine",
+21,
+702,
+662,
+27
+]
+},
+{
+"bbox_page_px": [
+1481.15,
+439.72,
+1544.46,
+443.98
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/9",
+"value": [
+"ledgerLine",
+20,
+703,
+402,
+27
+]
+},
+{
+"bbox_page_px": [
+1480.2,
+487.6,
+1548.88,
+491.38
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/10",
+"value": [
+"ledgerLine",
+14,
+1007,
+436,
+24
+]
+},
+{
+"bbox_page_px": [
+1480.05,
+471.7,
+1568.4,
+476.26
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/11",
+"value": [
+"ledgerLine",
+13,
+906,
+561,
+29
+]
+},
+{
+"bbox_page_px": [
+1480.36,
+487.6,
+1587.93,
+491.38
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/12",
+"value": [
+"ledgerLine",
+15,
+1007,
+683,
+24
+]
+},
+{
+"bbox_page_px": [
+1525.09,
+471.85,
+1545.72,
+482.88
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "ink_is_a_whole_rest",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F4"
+},
+"subject": "glyph/8/0/0/11/13",
+"value": [
+"noteheadBlackInSpace",
+299,
+907,
+131,
+70
+]
+},
+{
+"bbox_page_px": [
+1480.52,
+439.56,
+1512.96,
+443.98
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/14",
+"value": [
+"ledgerLine",
+16,
+702,
+206,
+28
+]
+},
+{
+"bbox_page_px": [
+1523.67,
+471.85,
+1545.88,
+482.72
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "abstained",
+"reason": "rest_stands_where_no_rest_hangs",
+"value": null
+},
+"fate": "rest_duration_abstained",
+"pitch": null,
+"subject": "glyph/8/0/0/11/15",
+"value": [
+"restWhole",
+290,
+907,
+141,
+69
+]
+},
+{
+"bbox_page_px": [
+1478.0,
+425.23,
+1587.31,
+491.23
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/11/16",
+"value": [
+"staff",
+0,
+611,
+694,
+419
+]
+},
+{
+"bbox_page_px": [
+1645.96,
+496.11,
+1671.16,
+525.4
+],
+"cls": "dynamicP",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/12/0",
+"value": [
+"dynamicP",
+368,
+1061,
+160,
+186
+]
+},
+{
+"bbox_page_px": [
+1622.02,
+439.72,
+1644.54,
+450.75
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/8/0/0/12/1",
+"value": [
+"restWhole",
+216,
+703,
+143,
+70
+]
+},
+{
+"bbox_page_px": [
+1588.0,
+472.8,
+1599.18,
+516.58
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/12/2",
+"value": [
+"accidentalFlat",
+0,
+913,
+71,
+278
+]
+},
+{
+"bbox_page_px": [
+1589.1,
+486.19,
+1678.88,
+490.44
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/0/12/3",
+"value": [
+"ledgerLine",
+7,
+998,
+570,
+27
+]
+},
+{
+"bbox_page_px": [
+1384.36,
+594.33,
+1448.78,
+597.48
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/10/0",
+"value": [
+"ledgerLine",
+15,
+510,
+409,
+20
+]
+},
+{
+"bbox_page_px": [
+1384.52,
+577.95,
+1475.4,
+581.73
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/10/1",
+"value": [
+"ledgerLine",
+16,
+406,
+577,
+24
+]
+},
+{
+"bbox_page_px": [
+1417.12,
+593.22,
+1440.59,
+605.03
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/8/0/1/10/2",
+"value": [
+"restWhole",
+223,
+503,
+149,
+75
+]
+},
+{
+"bbox_page_px": [
+1506.66,
+533.53,
+1518.95,
+596.22
+],
+"cls": "accidentalNatural",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/11/0",
+"value": [
+"accidentalNatural",
+182,
+124,
+78,
+398
+]
+},
+{
+"bbox_page_px": [
+1527.61,
+547.86,
+1553.76,
+571.49
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/8/0/1/11/2",
+"value": [
+"noteheadBlackOnLine",
+315,
+215,
+166,
+150
+]
+},
+{
+"bbox_page_px": [
+1527.77,
+547.71,
+1554.55,
+572.12
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "mark_group_duplicate",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/8/0/1/11/4",
+"value": [
+"noteheadHalfOnLine",
+316,
+214,
+170,
+155
+]
+},
+{
+"bbox_page_px": [
+1479.58,
+577.95,
+1518.16,
+581.25
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/11/5",
+"value": [
+"ledgerLine",
+10,
+406,
+245,
+21
+]
+},
+{
+"bbox_page_px": [
+1505.25,
+577.47,
+1586.05,
+581.1
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/11/6",
+"value": [
+"ledgerLine",
+173,
+403,
+513,
+23
+]
+},
+{
+"bbox_page_px": [
+1480.05,
+593.7,
+1509.34,
+597.95
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/11/7",
+"value": [
+"ledgerLine",
+13,
+506,
+186,
+27
+]
+},
+{
+"bbox_page_px": [
+1506.66,
+533.37,
+1519.11,
+596.06
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/11/9",
+"value": [
+"accidentalFlat",
+182,
+123,
+79,
+398
+]
+},
+{
+"bbox_page_px": [
+1480.99,
+593.22,
+1586.2,
+597.63
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/11/12",
+"value": [
+"ledgerLine",
+19,
+503,
+668,
+28
+]
+},
+{
+"bbox_page_px": [
+1620.44,
+594.96,
+1642.02,
+603.62
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/8/0/1/12/2",
+"value": [
+"restWhole",
+206,
+514,
+137,
+55
+]
+},
+{
+"bbox_page_px": [
+1645.49,
+514.0,
+1658.4,
+525.34
+],
+"cls": "dynamicP",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/12/3",
+"value": [
+"dynamicP",
+365,
+0,
+82,
+72
+]
+},
+{
+"bbox_page_px": [
+1621.55,
+514.0,
+1632.89,
+517.94
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:clipped_fragment",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G6"
+},
+"subject": "glyph/8/0/1/12/6",
+"value": [
+"noteheadBlackInSpace",
+213,
+0,
+72,
+25
+]
+},
+{
+"bbox_page_px": [
+1593.51,
+576.84,
+1678.4,
+580.94
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/8/0/1/12/9",
+"value": [
+"ledgerLine",
+35,
+399,
+539,
+26
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/8/0/0/11/13",
+"why": "our look: a whole rest, written nowhere; ink_is_a_whole_rest"
+},
+"never_value_not_read": {
+"boxes": [
+{
+"bbox_page_px": [
+378.33,
+2525.46,
+424.95,
+2639.64
+],
+"cls": "clefG",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/0",
+"value": [
+"clefG",
+237,
+441,
+296,
+725
+]
+},
+{
+"bbox_page_px": [
+361.16,
+2546.56,
+650.96,
+2613.66
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/1",
+"value": [
+"staff",
+128,
+575,
+1840,
+426
+]
+},
+{
+"bbox_page_px": [
+469.84,
+2627.05,
+529.53,
+2642.01
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/2",
+"value": [
+"slur",
+818,
+1086,
+379,
+95
+]
+},
+{
+"bbox_page_px": [
+543.7,
+2556.49,
+552.37,
+2606.41
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/3",
+"value": [
+"arpeggiato",
+1287,
+638,
+55,
+317
+]
+},
+{
+"bbox_page_px": [
+646.39,
+2547.19,
+650.96,
+2581.37
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/4",
+"value": [
+"arpeggiato",
+1939,
+579,
+29,
+217
+]
+},
+{
+"bbox_page_px": [
+646.39,
+2546.72,
+650.96,
+2606.26
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/5",
+"value": [
+"arpeggiato",
+1939,
+576,
+29,
+378
+]
+},
+{
+"bbox_page_px": [
+523.7,
+2595.39,
+550.48,
+2622.01
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/11/1/4/0/6",
+"value": [
+"noteheadHalfOnLine",
+1160,
+885,
+170,
+169
+]
+},
+{
+"bbox_page_px": [
+523.7,
+2596.49,
+550.32,
+2622.48
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "mark_group_duplicate",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/11/1/4/0/7",
+"value": [
+"noteheadBlackOnLine",
+1160,
+892,
+169,
+165
+]
+},
+{
+"bbox_page_px": [
+544.17,
+2556.33,
+551.58,
+2618.22
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/4/0/8",
+"value": [
+"arpeggiato",
+1290,
+637,
+47,
+393
+]
+},
+{
+"bbox_page_px": [
+554.88,
+2738.18,
+576.78,
+2758.5
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G2"
+},
+"subject": "glyph/11/1/5/0/0",
+"value": [
+"noteheadBlackOnLine",
+1358,
+744,
+139,
+129
+]
+},
+{
+"bbox_page_px": [
+581.5,
+2736.45,
+602.61,
+2758.5
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G2"
+},
+"subject": "glyph/11/1/5/0/1",
+"value": [
+"noteheadBlackOnLine",
+1527,
+733,
+134,
+140
+]
+},
+{
+"bbox_page_px": [
+610.33,
+2736.61,
+633.0,
+2758.03
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G2"
+},
+"subject": "glyph/11/1/5/0/2",
+"value": [
+"noteheadBlackOnLine",
+1710,
+734,
+144,
+136
+]
+},
+{
+"bbox_page_px": [
+445.58,
+2699.75,
+451.72,
+2704.63
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/3",
+"value": [
+"augmentationDot",
+664,
+500,
+39,
+31
+]
+},
+{
+"bbox_page_px": [
+469.68,
+2626.36,
+529.68,
+2642.74
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "narrowed",
+"reason": "head_fill_from_ink",
+"value": null
+},
+"fate": "relocation_not_a_head_by_ink",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "C4"
+},
+"subject": "glyph/11/1/5/0/4",
+"value": [
+"noteheadBlackOnLine",
+817,
+34,
+381,
+104
+]
+},
+{
+"bbox_page_px": [
+557.25,
+2681.01,
+650.33,
+2686.2
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/5",
+"value": [
+"beam",
+1373,
+381,
+591,
+33
+]
+},
+{
+"bbox_page_px": [
+361.32,
+2682.11,
+650.8,
+2687.31
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/6",
+"value": [
+"beam",
+129,
+388,
+1838,
+33
+]
+},
+{
+"bbox_page_px": [
+570.32,
+2692.03,
+631.12,
+2696.44
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/7",
+"value": [
+"beam",
+1456,
+451,
+386,
+28
+]
+},
+{
+"bbox_page_px": [
+416.6,
+2701.95,
+424.63,
+2711.56
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/8",
+"value": [
+"augmentationDot",
+480,
+514,
+51,
+61
+]
+},
+{
+"bbox_page_px": [
+570.79,
+2691.72,
+630.96,
+2698.18
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/9",
+"value": [
+"beam",
+1459,
+449,
+382,
+41
+]
+},
+{
+"bbox_page_px": [
+469.84,
+2627.77,
+529.68,
+2642.74
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B3"
+},
+"subject": "glyph/11/1/5/0/10",
+"value": [
+"tie",
+818,
+43,
+380,
+95
+]
+},
+{
+"bbox_page_px": [
+362.89,
+2684.0,
+650.8,
+2749.99
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/5/0/11",
+"value": [
+"staff",
+139,
+400,
+1828,
+419
+]
+},
+{
+"bbox_page_px": [
+523.7,
+2705.42,
+545.59,
+2733.77
+],
+"cls": "rest8th",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 0.5,
+"dots": 0,
+"is_rest": true,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/11/1/5/0/12",
+"value": [
+"rest8th",
+1160,
+536,
+139,
+180
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/11/1/5/0/4",
+"why": "a late-ink drop with no decided value (fate relocation_not_a_head_by_ink)"
+},
+"never_written_note_on_its_ink": {
+"boxes": [
+{
+"bbox_page_px": [
+2396.38,
+1161.95,
+2418.08,
+1173.27
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/1/0/0/14/0",
+"value": [
+"restWhole",
+396,
+690,
+140,
+73
+]
+},
+{
+"bbox_page_px": [
+2335.62,
+1146.76,
+2457.91,
+1151.88
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/1/0/0/14/1",
+"value": [
+"beam",
+4,
+592,
+789,
+33
+]
+},
+{
+"bbox_page_px": [
+2520.31,
+1163.81,
+2541.7,
+1174.51
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/1/0/0/15/0",
+"value": [
+"restWhole",
+402,
+702,
+138,
+69
+]
+},
+{
+"bbox_page_px": [
+2520.93,
+1164.12,
+2541.86,
+1174.66
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "ink_is_a_whole_rest",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D5"
+},
+"subject": "glyph/1/0/0/15/1",
+"value": [
+"noteheadBlackInSpace",
+406,
+704,
+135,
+68
+]
+},
+{
+"bbox_page_px": [
+2601.99,
+1144.12,
+2610.99,
+1215.12
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/1/0/0/15/2",
+"value": [
+"arpeggiato",
+929,
+575,
+58,
+458
+]
+},
+{
+"bbox_page_px": [
+2508.22,
+1179.46,
+2539.07,
+1183.34
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/1/0/0/15/3",
+"value": [
+"ledgerLine",
+324,
+803,
+199,
+25
+]
+},
+{
+"bbox_page_px": [
+2461.57,
+1194.04,
+2492.26,
+1198.84
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/1/0/0/15/4",
+"value": [
+"ledgerLine",
+23,
+897,
+198,
+31
+]
+},
+{
+"bbox_page_px": [
+2458.0,
+1148.62,
+2610.99,
+1210.31
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/1/0/0/15/5",
+"value": [
+"staff",
+0,
+604,
+987,
+398
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/1/0/0/15/1",
+"why": "a late-ink drop whose ink a written note holds (fate ink_is_a_whole_rest)"
+},
+"sean_broken_stem_head": {
+"boxes": [
+{
+"bbox_page_px": [
+511.92,
+3325.72,
+555.28,
+3372.76
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/8/0/1",
+"value": [
+"dynamicF",
+1112,
+842,
+271,
+294
+]
+},
+{
+"bbox_page_px": [
+595.92,
+3487.85,
+615.45,
+3507.22
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C3"
+},
+"subject": "glyph/10/1/9/0/0",
+"value": [
+"noteheadBlackInSpace",
+1663,
+907,
+124,
+123
+]
+},
+{
+"bbox_page_px": [
+510.4,
+3467.53,
+545.52,
+3516.52
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/9/0/1",
+"value": [
+"dynamicF",
+1120,
+778,
+223,
+311
+]
+},
+{
+"bbox_page_px": [
+518.9,
+3411.94,
+542.06,
+3431.47
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/10/1/9/0/2",
+"value": [
+"noteheadBlackOnLine",
+1174,
+425,
+147,
+124
+]
+},
+{
+"bbox_page_px": [
+569.46,
+3486.43,
+591.2,
+3507.54
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C3"
+},
+"subject": "glyph/10/1/9/0/3",
+"value": [
+"noteheadBlackInSpace",
+1495,
+898,
+138,
+134
+]
+},
+{
+"bbox_page_px": [
+620.81,
+3489.74,
+640.81,
+3507.38
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:page_claim",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C3"
+},
+"subject": "glyph/10/1/9/0/4",
+"value": [
+"noteheadBlackInSpace",
+1821,
+919,
+127,
+112
+]
+},
+{
+"bbox_page_px": [
+619.39,
+3468.32,
+641.6,
+3489.9
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/10/1/9/0/5",
+"value": [
+"noteheadBlackInSpace",
+1812,
+783,
+141,
+137
+]
+},
+{
+"bbox_page_px": [
+569.15,
+3467.85,
+593.25,
+3487.85
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/10/1/9/0/7",
+"value": [
+"noteheadBlackInSpace",
+1493,
+780,
+153,
+127
+]
+},
+{
+"bbox_page_px": [
+620.81,
+3483.28,
+642.7,
+3506.91
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:page_claim",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C3"
+},
+"subject": "glyph/10/1/9/0/8",
+"value": [
+"noteheadBlackInSpace",
+1821,
+878,
+139,
+150
+]
+},
+{
+"bbox_page_px": [
+596.39,
+3467.38,
+616.4,
+3490.22
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/10/1/9/0/10",
+"value": [
+"noteheadBlackInSpace",
+1666,
+777,
+127,
+145
+]
+},
+{
+"bbox_page_px": [
+557.81,
+3417.92,
+642.07,
+3427.06
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/9/0/13",
+"value": [
+"tie",
+1421,
+463,
+535,
+58
+]
+},
+{
+"bbox_page_px": [
+511.5,
+3345.0,
+539.07,
+3372.72
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "G3"
+},
+"subject": "glyph/10/1/9/0/14",
+"value": [
+"dynamicF",
+1127,
+0,
+175,
+176
+]
+},
+{
+"bbox_page_px": [
+512.45,
+3419.97,
+548.2,
+3424.07
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/9/0/17",
+"value": [
+"ledgerLine",
+1133,
+476,
+227,
+26
+]
+},
+{
+"bbox_page_px": [
+352.27,
+3404.69,
+645.85,
+3472.42
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/9/0/18",
+"value": [
+"staff",
+116,
+379,
+1864,
+430
+]
+},
+{
+"bbox_page_px": [
+663.48,
+3488.95,
+688.21,
+3509.74
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C3"
+},
+"subject": "glyph/10/1/9/1/0",
+"value": [
+"noteheadHalfInSpace",
+111,
+914,
+157,
+132
+]
+},
+{
+"bbox_page_px": [
+662.54,
+3468.64,
+688.21,
+3491.63
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/10/1/9/1/1",
+"value": [
+"noteheadHalfInSpace",
+105,
+785,
+163,
+146
+]
+},
+{
+"bbox_page_px": [
+351.28,
+3550.84,
+646.0,
+3619.8
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/10/0/0",
+"value": [
+"staff",
+108,
+374,
+1842,
+431
+]
+},
+{
+"bbox_page_px": [
+620.88,
+3491.32,
+640.88,
+3507.16
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:page_claim",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "B2"
+},
+"subject": "glyph/10/1/10/0/1",
+"value": [
+"noteheadBlackInSpace",
+1793,
+2,
+125,
+99
+]
+},
+{
+"bbox_page_px": [
+507.28,
+3609.72,
+547.12,
+3662.84
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/10/0/5",
+"value": [
+"dynamicF",
+1083,
+742,
+249,
+332
+]
+},
+{
+"bbox_page_px": [
+569.52,
+3491.0,
+589.84,
+3507.64
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "C3"
+},
+"subject": "glyph/10/1/10/0/6",
+"value": [
+"noteheadBlackInSpace",
+1472,
+0,
+127,
+104
+]
+},
+{
+"bbox_page_px": [
+596.08,
+3491.16,
+615.28,
+3507.16
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "C3"
+},
+"subject": "glyph/10/1/10/0/7",
+"value": [
+"noteheadBlackInSpace",
+1638,
+1,
+120,
+100
+]
+},
+{
+"bbox_page_px": [
+510.48,
+3491.0,
+536.72,
+3516.6
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B2"
+},
+"subject": "glyph/10/1/10/0/8",
+"value": [
+"dynamicF",
+1103,
+0,
+164,
+160
+]
+},
+{
+"bbox_page_px": [
+536.72,
+3537.72,
+545.68,
+3602.36
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/10/0/13",
+"value": [
+"arpeggiato",
+1267,
+292,
+56,
+404
+]
+},
+{
+"bbox_page_px": [
+663.44,
+3491.0,
+693.2,
+3510.36
+],
+"cls": "clefG",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/10/1/0",
+"value": [
+"clefG",
+109,
+0,
+186,
+121
+]
+},
+{
+"bbox_page_px": [
+521.27,
+3424.85,
+543.95,
+3477.77
+],
+"cls": "flag16thDown",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/10/1/9/0/19",
+"value": [
+"flag16thDown",
+1189,
+507,
+144,
+336
+]
+},
+{
+"bbox_page_px": [
+518.48,
+3579.16,
+545.68,
+3603.64
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C3"
+},
+"subject": "glyph/10/1/10/0/14",
+"value": [
+"noteheadHalfOnLine",
+1153,
+551,
+170,
+153
+]
+},
+{
+"bbox_page_px": [
+674.0,
+3593.08,
+686.96,
+3604.12
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "hollow_head_bare_stem",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"head_fill": "half",
+"written": 2.0
+}
+},
+"fate": "not_a_notehead:too_narrow",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "B2"
+},
+"subject": "glyph/10/1/10/1/3",
+"value": [
+"noteheadBlackOnLine",
+175,
+638,
+81,
+69
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/10/1/9/0/5",
+"why": "Sean 2026-11-25: 'That is a notehead but the stem ink is broken'"
+},
+"sean_head_under_barline_claim": {
+"boxes": [
+{
+"bbox_page_px": [
+2259.75,
+3094.84,
+2313.93,
+3105.87
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "A5"
+},
+"subject": "glyph/2/1/6/12/0",
+"value": [
+"beam",
+373,
+1326,
+344,
+70
+]
+},
+{
+"bbox_page_px": [
+2173.26,
+3101.22,
+2195.62,
+3122.01
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G5"
+},
+"subject": "glyph/2/1/7/11/0",
+"value": [
+"noteheadBlackInSpace",
+554,
+503,
+142,
+132
+]
+},
+{
+"bbox_page_px": [
+2090.57,
+3165.95,
+2176.88,
+3170.21
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/11/4",
+"value": [
+"ledgerLine",
+29,
+914,
+548,
+27
+]
+},
+{
+"bbox_page_px": [
+2268.25,
+3157.92,
+2290.93,
+3179.5
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/2/1/7/12/0",
+"value": [
+"noteheadBlackOnLine",
+427,
+863,
+144,
+137
+]
+},
+{
+"bbox_page_px": [
+2261.01,
+3094.92,
+2314.87,
+3111.46
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/12/1",
+"value": [
+"beam",
+381,
+463,
+342,
+105
+]
+},
+{
+"bbox_page_px": [
+2295.82,
+3157.61,
+2321.8,
+3180.76
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/2/1/7/12/2",
+"value": [
+"noteheadBlackOnLine",
+602,
+861,
+165,
+147
+]
+},
+{
+"bbox_page_px": [
+2215.49,
+3117.6,
+2241.16,
+3138.39
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E5"
+},
+"subject": "glyph/2/1/7/12/3",
+"value": [
+"noteheadBlackInSpace",
+92,
+607,
+163,
+132
+]
+},
+{
+"bbox_page_px": [
+2220.53,
+3117.6,
+2240.22,
+3187.69
+],
+"cls": "flag8thDown",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/12/4",
+"value": [
+"flag8thDown",
+124,
+607,
+125,
+445
+]
+},
+{
+"bbox_page_px": [
+2231.55,
+3228.48,
+2249.2,
+3241.87
+],
+"cls": "accidentalSharp",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/12/5",
+"value": [
+"accidentalSharp",
+194,
+1311,
+112,
+85
+]
+},
+{
+"bbox_page_px": [
+2261.64,
+3151.47,
+2321.49,
+3155.88
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/12/6",
+"value": [
+"ledgerLine",
+385,
+822,
+380,
+28
+]
+},
+{
+"bbox_page_px": [
+2244.63,
+3183.44,
+2279.75,
+3188.32
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/12/7",
+"value": [
+"ledgerLine",
+277,
+1025,
+223,
+31
+]
+},
+{
+"bbox_page_px": [
+2212.34,
+3118.07,
+2241.16,
+3187.53
+],
+"cls": "flag8thDown",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/12/8",
+"value": [
+"flag8thDown",
+72,
+610,
+183,
+441
+]
+},
+{
+"bbox_page_px": [
+2342.7,
+3175.72,
+2365.69,
+3197.3
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/2/1/7/13/0",
+"value": [
+"noteheadBlackOnLine",
+106,
+976,
+146,
+137
+]
+},
+{
+"bbox_page_px": [
+2390.57,
+3193.2,
+2411.99,
+3215.25
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C4"
+},
+"subject": "glyph/2/1/7/13/1",
+"value": [
+"noteheadBlackOnLine",
+410,
+1087,
+136,
+140
+]
+},
+{
+"bbox_page_px": [
+2416.72,
+3194.3,
+2441.92,
+3216.2
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C4"
+},
+"subject": "glyph/2/1/7/13/2",
+"value": [
+"noteheadBlackOnLine",
+576,
+1094,
+160,
+139
+]
+},
+{
+"bbox_page_px": [
+2363.96,
+3191.0,
+2389.47,
+3215.88
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C4"
+},
+"subject": "glyph/2/1/7/13/3",
+"value": [
+"noteheadBlackOnLine",
+241,
+1073,
+162,
+158
+]
+},
+{
+"bbox_page_px": [
+2326.0,
+3120.44,
+2452.0,
+3204.23
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/13/4",
+"value": [
+"staff",
+0,
+625,
+800,
+532
+]
+},
+{
+"bbox_page_px": [
+2331.04,
+3168.16,
+2379.55,
+3172.26
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/13/5",
+"value": [
+"ledgerLine",
+32,
+928,
+308,
+26
+]
+},
+{
+"bbox_page_px": [
+2361.59,
+3204.39,
+2393.09,
+3207.38
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/13/6",
+"value": [
+"ledgerLine",
+226,
+1158,
+200,
+19
+]
+},
+{
+"bbox_page_px": [
+2356.55,
+3123.59,
+2439.72,
+3144.06
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/13/7",
+"value": [
+"beam",
+194,
+645,
+528,
+130
+]
+},
+{
+"bbox_page_px": [
+2327.89,
+3183.59,
+2372.78,
+3188.32
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/13/8",
+"value": [
+"ledgerLine",
+12,
+1026,
+285,
+30
+]
+},
+{
+"bbox_page_px": [
+2332.61,
+3152.57,
+2381.6,
+3156.98
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/7/13/9",
+"value": [
+"ledgerLine",
+42,
+829,
+311,
+28
+]
+},
+{
+"bbox_page_px": [
+2099.23,
+3258.05,
+2196.88,
+3263.4
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/8/11/3",
+"value": [
+"ledgerLine",
+84,
+413,
+620,
+34
+]
+},
+{
+"bbox_page_px": [
+2221.63,
+3230.33,
+2249.2,
+3252.22
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:page_claim",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/2/1/8/12/1",
+"value": [
+"noteheadBlackOnLine",
+131,
+237,
+175,
+139
+]
+},
+{
+"bbox_page_px": [
+2214.86,
+3273.01,
+2241.16,
+3294.74
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C5"
+},
+"subject": "glyph/2/1/8/12/2",
+"value": [
+"noteheadHalfOnLine",
+88,
+508,
+167,
+138
+]
+},
+{
+"bbox_page_px": [
+2213.28,
+3291.44,
+2245.57,
+3296.01
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/2/1/8/12/3",
+"value": [
+"ledgerLine",
+78,
+625,
+205,
+29
+]
+},
+{
+"bbox_page_px": [
+2390.73,
+3193.16,
+2412.15,
+3215.21
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "C4"
+},
+"subject": "glyph/2/1/8/13/0",
+"value": [
+"noteheadBlackOnLine",
+411,
+1,
+136,
+140
+]
+},
+{
+"bbox_page_px": [
+2364.11,
+3193.0,
+2388.68,
+3215.99
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "C4"
+},
+"subject": "glyph/2/1/8/13/1",
+"value": [
+"noteheadBlackOnLine",
+242,
+0,
+156,
+146
+]
+},
+{
+"bbox_page_px": [
+2417.03,
+3194.1,
+2442.08,
+3216.15
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "C4"
+},
+"subject": "glyph/2/1/8/13/2",
+"value": [
+"noteheadBlackOnLine",
+578,
+7,
+159,
+140
+]
+},
+{
+"bbox_page_px": [
+2351.83,
+3237.73,
+2379.24,
+3258.68
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:page_claim",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/2/1/8/13/5",
+"value": [
+"noteheadBlackInSpace",
+164,
+284,
+174,
+133
+]
+},
+{
+"bbox_page_px": [
+2343.8,
+3193.0,
+2361.91,
+3197.41
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "not_a_notehead:clipped_fragment",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned_by_ledger_reading",
+"value": "D4"
+},
+"subject": "glyph/2/1/8/13/7",
+"value": [
+"noteheadBlackOnLine",
+113,
+0,
+115,
+28
+]
+},
+{
+"bbox_page_px": [
+2354.66,
+3238.05,
+2379.55,
+3253.95
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:page_claim",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/2/1/8/13/8",
+"value": [
+"noteheadBlackInSpace",
+182,
+286,
+158,
+101
+]
+},
+{
+"bbox_page_px": [
+2243.37,
+3136.82,
+2266.52,
+3154.93
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C5"
+},
+"subject": "glyph/2/1/7/12/9",
+"value": [
+"noteheadBlackInSpace",
+269,
+729,
+147,
+115
+]
+},
+{
+"bbox_page_px": [
+2343.95,
+3273.95,
+2369.0,
+3299.0
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "C5"
+},
+"subject": "glyph/2/1/8/13/9",
+"value": [
+"noteheadHalfInSpace",
+114,
+514,
+159,
+159
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/2/1/7/12/2",
+"why": "Sean 2026-11-25 written-on-claimed-ink tile 7: a notehead"
+},
+"sean_head_under_clef_claim": {
+"boxes": [
+{
+"bbox_page_px": [
+1987.0,
+689.96,
+2146.68,
+756.04
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/11/0",
+"value": [
+"staff",
+0,
+381,
+998,
+413
+]
+},
+{
+"bbox_page_px": [
+1987.32,
+752.04,
+2144.28,
+757.32
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/11/2",
+"value": [
+"beam",
+2,
+769,
+981,
+33
+]
+},
+{
+"bbox_page_px": [
+2224.32,
+695.24,
+2235.52,
+748.04
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/12/1",
+"value": [
+"arpeggiato",
+477,
+414,
+70,
+330
+]
+},
+{
+"bbox_page_px": [
+2148.0,
+690.12,
+2300.0,
+758.92
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/12/3",
+"value": [
+"staff",
+0,
+382,
+950,
+430
+]
+},
+{
+"bbox_page_px": [
+2224.64,
+696.36,
+2235.68,
+748.52
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": "not_a_rest:rest_stroke_into_a_head",
+"pitch": null,
+"subject": "glyph/14/0/2/12/4",
+"value": [
+"restQuarter",
+479,
+421,
+69,
+326
+]
+},
+{
+"bbox_page_px": [
+2229.6,
+736.84,
+2295.04,
+741.8
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/12/7",
+"value": [
+"ledgerLine",
+510,
+674,
+409,
+31
+]
+},
+{
+"bbox_page_px": [
+2300.0,
+690.44,
+2453.92,
+756.68
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/13/1",
+"value": [
+"staff",
+0,
+384,
+962,
+414
+]
+},
+{
+"bbox_page_px": [
+1987.0,
+832.44,
+2147.0,
+899.8
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/11/0",
+"value": [
+"staff",
+0,
+384,
+1000,
+421
+]
+},
+{
+"bbox_page_px": [
+1988.12,
+831.0,
+2144.76,
+836.6
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/11/3",
+"value": [
+"beam",
+7,
+375,
+979,
+35
+]
+},
+{
+"bbox_page_px": [
+2148.0,
+831.48,
+2300.0,
+900.12
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/12/0",
+"value": [
+"staff",
+0,
+378,
+950,
+429
+]
+},
+{
+"bbox_page_px": [
+2224.32,
+839.48,
+2246.4,
+859.8
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "F3"
+},
+"subject": "glyph/14/0/3/12/1",
+"value": [
+"noteheadBlackOnLine",
+477,
+428,
+138,
+127
+]
+},
+{
+"bbox_page_px": [
+2235.2,
+834.84,
+2294.88,
+882.84
+],
+"cls": "clefF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/12/2",
+"value": [
+"clefF",
+545,
+399,
+373,
+300
+]
+},
+{
+"bbox_page_px": [
+2165.28,
+842.68,
+2174.4,
+911.8
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/12/3",
+"value": [
+"arpeggiato",
+108,
+448,
+57,
+432
+]
+},
+{
+"bbox_page_px": [
+2250.4,
+835.32,
+2295.04,
+883.0
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:claimed_by:clef",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "E3"
+},
+"subject": "glyph/14/0/3/12/4",
+"value": [
+"noteheadBlackOnLine",
+640,
+402,
+279,
+298
+]
+},
+{
+"bbox_page_px": [
+2164.64,
+848.12,
+2190.08,
+864.6
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 4.0,
+"dots": 0,
+"is_rest": true,
+"written": 4.0
+}
+},
+"fate": "not_a_rest:rest_has_a_stem",
+"pitch": null,
+"subject": "glyph/14/0/3/12/5",
+"value": [
+"restWhole",
+104,
+482,
+159,
+103
+]
+},
+{
+"bbox_page_px": [
+2164.8,
+848.28,
+2190.08,
+863.32
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "B3"
+},
+"subject": "glyph/14/0/3/12/6",
+"value": [
+"noteheadBlackInSpace",
+105,
+483,
+158,
+94
+]
+},
+{
+"bbox_page_px": [
+2222.88,
+842.52,
+2233.12,
+905.56
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/12/7",
+"value": [
+"arpeggiato",
+468,
+447,
+64,
+394
+]
+},
+{
+"bbox_page_px": [
+2250.4,
+831.64,
+2295.04,
+851.96
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "narrowed",
+"reason": "head_fill_from_ink",
+"value": null
+},
+"fate": "not_a_notehead:claimed_by:clef",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "G3"
+},
+"subject": "glyph/14/0/3/12/8",
+"value": [
+"noteheadBlackInSpace",
+640,
+379,
+279,
+127
+]
+},
+{
+"bbox_page_px": [
+2250.4,
+849.4,
+2295.04,
+869.72
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:claimed_by:clef",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "E3"
+},
+"subject": "glyph/14/0/3/12/9",
+"value": [
+"noteheadBlackInSpace",
+640,
+490,
+279,
+127
+]
+},
+{
+"bbox_page_px": [
+2309.92,
+823.64,
+2333.92,
+844.76
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "A3"
+},
+"subject": "glyph/14/0/3/13/0",
+"value": [
+"noteheadBlackOnLine",
+62,
+329,
+150,
+132
+]
+},
+{
+"bbox_page_px": [
+2300.0,
+831.16,
+2453.92,
+899.32
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/13/1",
+"value": [
+"staff",
+0,
+376,
+962,
+426
+]
+},
+{
+"bbox_page_px": [
+2305.44,
+895.0,
+2452.48,
+900.6
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/13/3",
+"value": [
+"beam",
+34,
+775,
+919,
+35
+]
+},
+{
+"bbox_page_px": [
+2311.52,
+884.76,
+2316.96,
+891.64
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/13/4",
+"value": [
+"augmentationDot",
+72,
+711,
+34,
+43
+]
+},
+{
+"bbox_page_px": [
+1987.79,
+972.06,
+2144.34,
+977.1
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/4/11/1",
+"value": [
+"beam",
+5,
+375,
+994,
+32
+]
+},
+{
+"bbox_page_px": [
+2169.42,
+971.9,
+2298.73,
+976.95
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/4/12/2",
+"value": [
+"beam",
+136,
+374,
+821,
+32
+]
+},
+{
+"bbox_page_px": [
+2300.0,
+972.06,
+2453.88,
+977.1
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/4/13/2",
+"value": [
+"beam",
+0,
+375,
+977,
+32
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/14/0/3/12/1",
+"why": "Sean 2026-11-25 written-on-claimed-ink tile 5: a notehead"
+},
+"sean_head_under_whole_rest_claim": {
+"boxes": [
+{
+"bbox_page_px": [
+5097.45,
+1843.65,
+5167.02,
+1908.0
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "D6"
+},
+"subject": "glyph/4/0/5/10/0",
+"value": [
+"dynamicF",
+158,
+966,
+253,
+234
+]
+},
+{
+"bbox_page_px": [
+5140.62,
+1864.28,
+5171.98,
+1896.45
+],
+"cls": "dynamicZ",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/5/10/7",
+"value": [
+"dynamicZ",
+315,
+1041,
+114,
+117
+]
+},
+{
+"bbox_page_px": [
+4977.0,
+1984.55,
+5011.38,
+2036.8
+],
+"cls": "rest8th",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 0.5,
+"dots": 0,
+"is_rest": true,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/4/0/6/9/10",
+"value": [
+"rest8th",
+1400,
+522,
+125,
+190
+]
+},
+{
+"bbox_page_px": [
+5098.27,
+1841.55,
+5160.98,
+1913.33
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/6/10/0",
+"value": [
+"dynamicF",
+161,
+2,
+228,
+261
+]
+},
+{
+"bbox_page_px": [
+5092.23,
+2054.68,
+5154.38,
+2124.53
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/6/10/1",
+"value": [
+"dynamicF",
+139,
+777,
+226,
+254
+]
+},
+{
+"bbox_page_px": [
+5178.02,
+1985.1,
+5191.23,
+1997.75
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/6/10/2",
+"value": [
+"augmentationDot",
+451,
+524,
+48,
+46
+]
+},
+{
+"bbox_page_px": [
+5179.68,
+1958.15,
+5191.77,
+1969.97
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/6/10/3",
+"value": [
+"augmentationDot",
+457,
+426,
+44,
+43
+]
+},
+{
+"bbox_page_px": [
+5127.98,
+1949.62,
+5170.32,
+1980.7
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 3.0,
+"dots": 1,
+"written": 3.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E5"
+},
+"subject": "glyph/4/0/6/10/4",
+"value": [
+"noteheadHalfInSpace",
+269,
+395,
+154,
+113
+]
+},
+{
+"bbox_page_px": [
+5087.82,
+1960.9,
+5134.02,
+1994.17
+],
+"cls": "noteheadWholeOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "whole_class_on_a_stem",
+"value": {
+"beam_levels": 0,
+"beats": 3.0,
+"dots": 1,
+"head_fill": "half",
+"written": 3.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D5"
+},
+"subject": "glyph/4/0/6/10/5",
+"value": [
+"noteheadWholeOnLine",
+123,
+436,
+168,
+121
+]
+},
+{
+"bbox_page_px": [
+5054.0,
+1957.33,
+5498.12,
+2079.15
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/6/10/6",
+"value": [
+"staff",
+0,
+423,
+1615,
+443
+]
+},
+{
+"bbox_page_px": [
+5110.1,
+1949.62,
+5170.32,
+1980.97
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "not_a_notehead:notehead_is_a_duplicate_box",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E5"
+},
+"subject": "glyph/4/0/6/10/8",
+"value": [
+"noteheadHalfInSpace",
+204,
+395,
+219,
+114
+]
+},
+{
+"bbox_page_px": [
+5139.8,
+2076.4,
+5169.23,
+2109.68
+],
+"cls": "dynamicZ",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/6/10/9",
+"value": [
+"dynamicZ",
+312,
+856,
+107,
+121
+]
+},
+{
+"bbox_page_px": [
+4592.0,
+2027.0,
+5053.76,
+2071.68
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/7/9/10",
+"value": [
+"tie",
+0,
+0,
+1664,
+161
+]
+},
+{
+"bbox_page_px": [
+4592.0,
+2027.0,
+5053.76,
+2039.49
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/7/9/13",
+"value": [
+"tie",
+0,
+0,
+1664,
+45
+]
+},
+{
+"bbox_page_px": [
+4593.94,
+2033.38,
+5053.76,
+2066.68
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/4/0/7/9/14",
+"value": [
+"tie",
+7,
+23,
+1657,
+120
+]
+},
+{
+"bbox_page_px": [
+5141.41,
+2074.18,
+5168.89,
+2108.31
+],
+"cls": "dynamicZ",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C4"
+},
+"subject": "glyph/4/0/7/10/0",
+"value": [
+"dynamicZ",
+315,
+170,
+99,
+123
+]
+},
+{
+"bbox_page_px": [
+5092.02,
+2054.75,
+5158.62,
+2123.85
+],
+"cls": "dynamicF",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C4"
+},
+"subject": "glyph/4/0/7/10/2",
+"value": [
+"dynamicF",
+137,
+100,
+240,
+249
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/4/0/6/10/5",
+"why": "Sean 2026-11-25 written-on-claimed-ink tile 3: a notehead"
+},
+"sean_not_head_clef_ring": {
+"boxes": [
+{
+"bbox_page_px": [
+2268.25,
+2503.95,
+2284.78,
+2553.57
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/15/1/2/17/1",
+"value": [
+"restQuarter",
+573,
+387,
+105,
+315
+]
+},
+{
+"bbox_page_px": [
+2178.0,
+2503.8,
+2341.64,
+2574.2
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/2/17/2",
+"value": [
+"staff",
+0,
+386,
+1039,
+447
+]
+},
+{
+"bbox_page_px": [
+2423.7,
+2617.35,
+2444.8,
+2631.21
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "narrowed",
+"reason": "beams_ambiguous",
+"value": null
+},
+"fate": "duration_narrowed",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F4"
+},
+"subject": "glyph/15/1/2/18/0",
+"value": [
+"noteheadBlackInSpace",
+506,
+1107,
+134,
+88
+]
+},
+{
+"bbox_page_px": [
+2493.31,
+2617.67,
+2514.73,
+2631.53
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F4"
+},
+"subject": "glyph/15/1/2/18/1",
+"value": [
+"noteheadBlackInSpace",
+948,
+1109,
+136,
+88
+]
+},
+{
+"bbox_page_px": [
+2455.2,
+2617.98,
+2475.67,
+2631.37
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F4"
+},
+"subject": "glyph/15/1/2/18/2",
+"value": [
+"noteheadBlackInSpace",
+706,
+1111,
+130,
+85
+]
+},
+{
+"bbox_page_px": [
+2366.21,
+2523.95,
+2387.31,
+2554.04
+],
+"cls": "rest8th",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 0.5,
+"dots": 0,
+"is_rest": true,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/15/1/2/18/3",
+"value": [
+"rest8th",
+141,
+514,
+134,
+191
+]
+},
+{
+"bbox_page_px": [
+2344.0,
+2501.75,
+2540.56,
+2573.25
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/2/18/5",
+"value": [
+"staff",
+0,
+373,
+1248,
+454
+]
+},
+{
+"bbox_page_px": [
+2382.74,
+2618.14,
+2395.66,
+2631.05
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "not_a_notehead:too_narrow",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F4"
+},
+"subject": "glyph/15/1/2/18/7",
+"value": [
+"noteheadBlackInSpace",
+246,
+1112,
+82,
+82
+]
+},
+{
+"bbox_page_px": [
+2402.12,
+2502.69,
+2419.91,
+2551.36
+],
+"cls": "accidentalSharp",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/2/18/10",
+"value": [
+"accidentalSharp",
+369,
+379,
+113,
+309
+]
+},
+{
+"bbox_page_px": [
+2424.32,
+2568.68,
+2496.14,
+2580.81
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "abstained",
+"reason": "rest_stands_where_no_rest_hangs",
+"value": null
+},
+"fate": "not_a_rest:rest_has_a_stem",
+"pitch": null,
+"subject": "glyph/15/1/2/18/13",
+"value": [
+"restWhole",
+510,
+798,
+456,
+77
+]
+},
+{
+"bbox_page_px": [
+2265.41,
+2635.68,
+2283.21,
+2682.93
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/15/1/3/17/0",
+"value": [
+"restQuarter",
+555,
+398,
+113,
+300
+]
+},
+{
+"bbox_page_px": [
+2178.0,
+2633.8,
+2341.8,
+2703.57
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/17/2",
+"value": [
+"staff",
+0,
+386,
+1040,
+443
+]
+},
+{
+"bbox_page_px": [
+2422.91,
+2617.57,
+2444.64,
+2649.23
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "E4"
+},
+"subject": "glyph/15/1/3/18/0",
+"value": [
+"noteheadBlackInSpace",
+501,
+283,
+138,
+201
+]
+},
+{
+"bbox_page_px": [
+2454.57,
+2618.68,
+2475.67,
+2639.78
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "F4"
+},
+"subject": "glyph/15/1/3/18/1",
+"value": [
+"noteheadBlackInSpace",
+702,
+290,
+134,
+134
+]
+},
+{
+"bbox_page_px": [
+2492.84,
+2618.36,
+2514.73,
+2639.31
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "F4"
+},
+"subject": "glyph/15/1/3/18/2",
+"value": [
+"noteheadBlackInSpace",
+945,
+288,
+139,
+133
+]
+},
+{
+"bbox_page_px": [
+2422.75,
+2634.74,
+2444.49,
+2655.06
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "mark_group_duplicate",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "D4"
+},
+"subject": "glyph/15/1/3/18/3",
+"value": [
+"noteheadBlackInSpace",
+500,
+392,
+138,
+129
+]
+},
+{
+"bbox_page_px": [
+2344.0,
+2629.07,
+2540.88,
+2703.09
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/4",
+"value": [
+"staff",
+0,
+356,
+1250,
+470
+]
+},
+{
+"bbox_page_px": [
+2492.36,
+2637.73,
+2514.73,
+2654.11
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "D4"
+},
+"subject": "glyph/15/1/3/18/5",
+"value": [
+"noteheadBlackInSpace",
+942,
+411,
+142,
+104
+]
+},
+{
+"bbox_page_px": [
+2382.43,
+2618.68,
+2394.87,
+2629.7
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:claimed_by:clef",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "G4"
+},
+"subject": "glyph/15/1/3/18/6",
+"value": [
+"noteheadBlackInSpace",
+244,
+290,
+79,
+70
+]
+},
+{
+"bbox_page_px": [
+2424.01,
+2573.47,
+2495.83,
+2580.09
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/7",
+"value": [
+"beam",
+508,
+3,
+456,
+42
+]
+},
+{
+"bbox_page_px": [
+2454.72,
+2633.8,
+2475.2,
+2656.79
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 1,
+"beats": 0.5,
+"dots": 0,
+"written": 0.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "D4"
+},
+"subject": "glyph/15/1/3/18/8",
+"value": [
+"noteheadBlackInSpace",
+703,
+386,
+130,
+146
+]
+},
+{
+"bbox_page_px": [
+2487.17,
+2651.59,
+2538.83,
+2655.06
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/9",
+"value": [
+"ledgerLine",
+909,
+499,
+328,
+22
+]
+},
+{
+"bbox_page_px": [
+2490.16,
+2666.08,
+2539.93,
+2671.44
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/10",
+"value": [
+"ledgerLine",
+928,
+591,
+316,
+34
+]
+},
+{
+"bbox_page_px": [
+2424.48,
+2573.63,
+2495.36,
+2581.19
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 4.0,
+"dots": 0,
+"is_rest": true,
+"written": 4.0
+}
+},
+"fate": "not_a_rest:rest_clipped_by_crop",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "D4"
+},
+"subject": "glyph/15/1/3/18/11",
+"value": [
+"restWhole",
+511,
+4,
+450,
+48
+]
+},
+{
+"bbox_page_px": [
+2535.05,
+2588.75,
+2540.88,
+2700.73
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/12",
+"value": [
+"arpeggiato",
+1213,
+100,
+37,
+711
+]
+},
+{
+"bbox_page_px": [
+2396.61,
+2659.78,
+2424.32,
+2677.11
+],
+"cls": "noteheadWholeOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "whole_class_on_a_stem",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"head_fill": "half",
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_change",
+"value": "A3"
+},
+"subject": "glyph/15/1/3/18/13",
+"value": [
+"noteheadWholeOnLine",
+334,
+551,
+176,
+110
+]
+},
+{
+"bbox_page_px": [
+2490.79,
+2624.66,
+2499.77,
+2699.95
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/14",
+"value": [
+"arpeggiato",
+932,
+328,
+57,
+478
+]
+},
+{
+"bbox_page_px": [
+2360.22,
+2652.22,
+2381.96,
+2683.41
+],
+"cls": "accidentalDoubleSharp",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/18/15",
+"value": [
+"accidentalDoubleSharp",
+103,
+503,
+138,
+198
+]
+},
+{
+"bbox_page_px": [
+2541.95,
+2634.58,
+2594.24,
+2639.94
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/3/19/5",
+"value": [
+"ledgerLine",
+6,
+391,
+332,
+34
+]
+},
+{
+"bbox_page_px": [
+2265.73,
+2762.28,
+2284.18,
+2812.19
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/15/1/4/17/0",
+"value": [
+"restQuarter",
+566,
+376,
+119,
+322
+]
+},
+{
+"bbox_page_px": [
+2178.0,
+2762.59,
+2343.23,
+2835.59
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/4/17/1",
+"value": [
+"staff",
+0,
+378,
+1066,
+471
+]
+},
+{
+"bbox_page_px": [
+2424.45,
+2778.86,
+2447.07,
+2790.18
+],
+"cls": "restWhole",
+"duration": {
+"outcome": "decided",
+"reason": "whole_rest_means_the_bar",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"is_rest": true,
+"measure_rest": true,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": null,
+"subject": "glyph/15/1/4/18/0",
+"value": [
+"restWhole",
+519,
+483,
+146,
+73
+]
+},
+{
+"bbox_page_px": [
+2535.58,
+2764.61,
+2540.7,
+2834.66
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/15/1/4/18/1",
+"value": [
+"arpeggiato",
+1236,
+391,
+33,
+452
+]
+},
+{
+"bbox_page_px": [
+2344.0,
+2763.68,
+2349.58,
+2800.72
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": "not_a_rest:claimed_by:barline",
+"pitch": null,
+"subject": "glyph/15/1/4/18/3",
+"value": [
+"restQuarter",
+0,
+385,
+36,
+239
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/15/1/3/18/13",
+"why": "Sean 2026-11-25 tile 6 (not in his list of noteheads)"
+},
+"sean_not_head_sharp_b": {
+"boxes": [
+{
+"bbox_page_px": [
+1491.04,
+1201.11,
+1515.02,
+1224.0
+],
+"cls": "accidentalFlat",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/1/8",
+"value": [
+"accidentalFlat",
+224,
+1116,
+88,
+84
+]
+},
+{
+"bbox_page_px": [
+1696.78,
+1218.55,
+1706.86,
+1224.0
+],
+"cls": "articStaccatoAbove",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/2/1/10",
+"value": [
+"articStaccatoAbove",
+979,
+1180,
+37,
+20
+]
+},
+{
+"bbox_page_px": [
+1666.78,
+1365.45,
+1704.17,
+1399.28
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.5,
+"dots": 1,
+"written": 1.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F2"
+},
+"subject": "glyph/14/0/3/1/0",
+"value": [
+"noteheadBlackInSpace",
+861,
+798,
+136,
+123
+]
+},
+{
+"bbox_page_px": [
+1667.33,
+1268.1,
+1704.17,
+1303.03
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.5,
+"dots": 1,
+"written": 1.5
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F3"
+},
+"subject": "glyph/14/0/3/1/1",
+"value": [
+"noteheadBlackOnLine",
+863,
+444,
+134,
+127
+]
+},
+{
+"bbox_page_px": [
+1503.7,
+1378.1,
+1517.72,
+1391.58
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/2",
+"value": [
+"augmentationDot",
+268,
+844,
+51,
+49
+]
+},
+{
+"bbox_page_px": [
+1629.38,
+1285.7,
+1665.4,
+1314.3
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/14/0/3/1/5",
+"value": [
+"noteheadBlackInSpace",
+725,
+508,
+131,
+104
+]
+},
+{
+"bbox_page_px": [
+1716.0,
+1378.1,
+1730.3,
+1391.58
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/6",
+"value": [
+"augmentationDot",
+1040,
+844,
+52,
+49
+]
+},
+{
+"bbox_page_px": [
+1629.1,
+1341.25,
+1660.17,
+1423.47
+],
+"cls": "accidentalSharp",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/7",
+"value": [
+"accidentalSharp",
+724,
+710,
+113,
+299
+]
+},
+{
+"bbox_page_px": [
+1714.9,
+1265.08,
+1730.03,
+1279.38
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:too_narrow",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G3"
+},
+"subject": "glyph/14/0/3/1/8",
+"value": [
+"noteheadBlackOnLine",
+1036,
+433,
+55,
+52
+]
+},
+{
+"bbox_page_px": [
+1507.0,
+1244.72,
+1701.7,
+1263.42
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/10",
+"value": [
+"tie",
+280,
+359,
+708,
+68
+]
+},
+{
+"bbox_page_px": [
+1629.38,
+1341.53,
+1662.1,
+1424.3
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/11",
+"value": [
+"arpeggiato",
+725,
+711,
+119,
+301
+]
+},
+{
+"bbox_page_px": [
+1666.71,
+1367.15,
+1704.17,
+1399.9
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F2"
+},
+"subject": "glyph/14/0/4/1/2",
+"value": [
+"noteheadBlackInSpace",
+853,
+51,
+135,
+118
+]
+},
+{
+"bbox_page_px": [
+1715.83,
+1378.25,
+1730.26,
+1392.13
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/4/1/5",
+"value": [
+"augmentationDot",
+1030,
+91,
+52,
+50
+]
+},
+{
+"bbox_page_px": [
+1430.0,
+1353.0,
+1866.78,
+1373.54
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/4/1/9",
+"value": [
+"tie",
+0,
+0,
+1574,
+74
+]
+},
+{
+"bbox_page_px": [
+1628.41,
+1353.0,
+1662.27,
+1424.04
+],
+"cls": "rest16th",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 0.375,
+"dots": 1,
+"is_rest": true,
+"written": 0.375
+}
+},
+"fate": "not_a_rest:rest_is_an_accidentals_ink",
+"pitch": null,
+"subject": "glyph/14/0/4/1/12",
+"value": [
+"rest16th",
+715,
+0,
+122,
+256
+]
+},
+{
+"bbox_page_px": [
+1503.26,
+1377.7,
+1517.97,
+1391.57
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "F2"
+},
+"subject": "glyph/14/0/4/1/13",
+"value": [
+"augmentationDot",
+264,
+89,
+53,
+50
+]
+},
+{
+"bbox_page_px": [
+1716.0,
+1265.62,
+1730.3,
+1279.92
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/13",
+"value": [
+"augmentationDot",
+1040,
+435,
+52,
+52
+]
+},
+{
+"bbox_page_px": [
+1506.72,
+1263.42,
+1527.62,
+1277.72
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/14/0/3/1/14",
+"value": [
+"augmentationDot",
+279,
+427,
+76,
+52
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/14/0/3/1/5",
+"why": "Sean 2026-11-25 tile 2 (not in his list of noteheads)"
+},
+"sean_not_head_sharp_l": {
+"boxes": [
+{
+"bbox_page_px": [
+351.14,
+577.37,
+648.9,
+647.27
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/1/0/3",
+"value": [
+"staff",
+59,
+454,
+1921,
+451
+]
+},
+{
+"bbox_page_px": [
+557.61,
+657.2,
+648.28,
+671.14
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/12/0/1/0/5",
+"value": [
+"tie",
+1391,
+969,
+585,
+90
+]
+},
+{
+"bbox_page_px": [
+640.38,
+561.1,
+648.9,
+660.91
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/1/0/8",
+"value": [
+"arpeggiato",
+1925,
+349,
+55,
+644
+]
+},
+{
+"bbox_page_px": [
+527.38,
+684.94,
+545.98,
+692.85
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "not_a_notehead:clipped_fragment",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/12/0/1/0/12",
+"value": [
+"noteheadBlackOnLine",
+1196,
+1148,
+120,
+51
+]
+},
+{
+"bbox_page_px": [
+649.15,
+657.35,
+719.06,
+677.03
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/12/0/1/1/0",
+"value": [
+"beam",
+1,
+970,
+451,
+127
+]
+},
+{
+"bbox_page_px": [
+649.0,
+578.92,
+762.92,
+646.03
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/1/1/4",
+"value": [
+"staff",
+0,
+464,
+735,
+433
+]
+},
+{
+"bbox_page_px": [
+651.33,
+640.14,
+757.65,
+646.65
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/1/1/8",
+"value": [
+"tie",
+15,
+859,
+686,
+42
+]
+},
+{
+"bbox_page_px": [
+784.54,
+680.91,
+805.16,
+693.0
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B5"
+},
+"subject": "glyph/12/0/1/2/1",
+"value": [
+"noteheadBlackInSpace",
+139,
+1122,
+133,
+78
+]
+},
+{
+"bbox_page_px": [
+763.0,
+664.63,
+775.4,
+693.0
+],
+"cls": "accidentalSharp",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C6"
+},
+"subject": "glyph/12/0/1/2/2",
+"value": [
+"accidentalSharp",
+0,
+1017,
+80,
+183
+]
+},
+{
+"bbox_page_px": [
+763.0,
+579.08,
+910.72,
+647.89
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/1/2/3",
+"value": [
+"staff",
+0,
+465,
+953,
+444
+]
+},
+{
+"bbox_page_px": [
+525.96,
+684.55,
+546.12,
+705.81
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "B5"
+},
+"subject": "glyph/12/0/2/0/1",
+"value": [
+"noteheadBlackInSpace",
+1168,
+213,
+128,
+135
+]
+},
+{
+"bbox_page_px": [
+574.79,
+693.84,
+598.57,
+714.95
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/12/0/2/0/2",
+"value": [
+"noteheadBlackOnLine",
+1478,
+272,
+151,
+134
+]
+},
+{
+"bbox_page_px": [
+524.54,
+743.92,
+548.96,
+765.03
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "B4"
+},
+"subject": "glyph/12/0/2/0/4",
+"value": [
+"noteheadBlackOnLine",
+1159,
+590,
+155,
+134
+]
+},
+{
+"bbox_page_px": [
+488.48,
+799.05,
+531.95,
+811.34
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/6",
+"value": [
+"tie",
+930,
+940,
+276,
+78
+]
+},
+{
+"bbox_page_px": [
+352.24,
+717.94,
+648.97,
+787.71
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/7",
+"value": [
+"staff",
+65,
+425,
+1884,
+443
+]
+},
+{
+"bbox_page_px": [
+557.62,
+656.83,
+648.97,
+671.0
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/8",
+"value": [
+"tie",
+1369,
+37,
+580,
+90
+]
+},
+{
+"bbox_page_px": [
+525.49,
+808.66,
+551.63,
+834.17
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C4"
+},
+"subject": "glyph/12/0/2/0/9",
+"value": [
+"noteheadHalfInSpace",
+1165,
+1001,
+166,
+162
+]
+},
+{
+"bbox_page_px": [
+575.73,
+752.12,
+599.83,
+772.12
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A4"
+},
+"subject": "glyph/12/0/2/0/10",
+"value": [
+"noteheadBlackInSpace",
+1484,
+642,
+153,
+127
+]
+},
+{
+"bbox_page_px": [
+569.12,
+701.4,
+603.29,
+706.28
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/11",
+"value": [
+"ledgerLine",
+1442,
+320,
+217,
+31
+]
+},
+{
+"bbox_page_px": [
+548.33,
+776.84,
+648.34,
+830.08
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/12",
+"value": [
+"slur",
+1310,
+799,
+635,
+338
+]
+},
+{
+"bbox_page_px": [
+627.08,
+737.78,
+647.55,
+740.14
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/13",
+"value": [
+"ledgerLine",
+1810,
+551,
+130,
+15
+]
+},
+{
+"bbox_page_px": [
+573.37,
+704.08,
+582.03,
+802.67
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/14",
+"value": [
+"arpeggiato",
+1469,
+337,
+55,
+626
+]
+},
+{
+"bbox_page_px": [
+575.1,
+736.84,
+622.66,
+740.77
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/15",
+"value": [
+"ledgerLine",
+1480,
+545,
+302,
+25
+]
+},
+{
+"bbox_page_px": [
+566.91,
+721.56,
+644.56,
+724.71
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/16",
+"value": [
+"ledgerLine",
+1428,
+448,
+493,
+20
+]
+},
+{
+"bbox_page_px": [
+623.3,
+753.06,
+648.65,
+755.89
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/17",
+"value": [
+"ledgerLine",
+1786,
+648,
+161,
+18
+]
+},
+{
+"bbox_page_px": [
+521.08,
+702.82,
+547.54,
+708.33
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/0/18",
+"value": [
+"ledgerLine",
+1137,
+329,
+168,
+35
+]
+},
+{
+"bbox_page_px": [
+649.0,
+657.62,
+719.09,
+676.99
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/1/0",
+"value": [
+"beam",
+0,
+42,
+445,
+123
+]
+},
+{
+"bbox_page_px": [
+707.12,
+691.32,
+733.58,
+712.11
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A5"
+},
+"subject": "glyph/12/0/2/1/1",
+"value": [
+"noteheadBlackOnLine",
+369,
+256,
+168,
+132
+]
+},
+{
+"bbox_page_px": [
+673.1,
+702.98,
+694.99,
+722.82
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G5"
+},
+"subject": "glyph/12/0/2/1/2",
+"value": [
+"noteheadBlackInSpace",
+153,
+330,
+139,
+126
+]
+},
+{
+"bbox_page_px": [
+674.04,
+759.36,
+695.3,
+780.78
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/12/0/2/1/3",
+"value": [
+"noteheadBlackOnLine",
+159,
+688,
+135,
+136
+]
+},
+{
+"bbox_page_px": [
+669.16,
+806.77,
+696.88,
+837.16
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C4"
+},
+"subject": "glyph/12/0/2/1/4",
+"value": [
+"noteheadHalfInSpace",
+128,
+989,
+176,
+193
+]
+},
+{
+"bbox_page_px": [
+708.22,
+751.96,
+733.74,
+771.8
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A4"
+},
+"subject": "glyph/12/0/2/1/5",
+"value": [
+"noteheadBlackInSpace",
+376,
+641,
+162,
+126
+]
+},
+{
+"bbox_page_px": [
+649.63,
+737.0,
+717.36,
+740.62
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/1/6",
+"value": [
+"ledgerLine",
+4,
+546,
+430,
+23
+]
+},
+{
+"bbox_page_px": [
+649.0,
+749.6,
+670.11,
+793.85
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "stem_value_follows",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"head_fill": "black",
+"shared_stem": "obs:447432",
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/12/0/2/1/7",
+"value": [
+"noteheadBlackInSpace",
+0,
+626,
+134,
+281
+]
+},
+{
+"bbox_page_px": [
+664.28,
+702.03,
+695.15,
+724.24
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "not_a_notehead:notehead_is_a_duplicate_box",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G5"
+},
+"subject": "glyph/12/0/2/1/8",
+"value": [
+"noteheadBlackInSpace",
+97,
+324,
+196,
+141
+]
+},
+{
+"bbox_page_px": [
+783.95,
+680.61,
+805.21,
+702.66
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "flag_ink_in_beamless_cell",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "B5"
+},
+"subject": "glyph/12/0/2/2/0",
+"value": [
+"noteheadBlackInSpace",
+133,
+188,
+135,
+140
+]
+},
+{
+"bbox_page_px": [
+783.32,
+742.98,
+806.31,
+764.56
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "flag_ink_in_beamless_cell",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"written": 1.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "B4"
+},
+"subject": "glyph/12/0/2/2/2",
+"value": [
+"noteheadBlackOnLine",
+129,
+584,
+146,
+137
+]
+},
+{
+"bbox_page_px": [
+763.0,
+664.7,
+775.13,
+706.12
+],
+"cls": "accidentalNatural",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/2/3",
+"value": [
+"accidentalNatural",
+0,
+87,
+77,
+263
+]
+},
+{
+"bbox_page_px": [
+763.0,
+721.09,
+912.0,
+793.85
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/2/6",
+"value": [
+"staff",
+0,
+445,
+946,
+462
+]
+},
+{
+"bbox_page_px": [
+783.0,
+807.08,
+807.73,
+829.45
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": "owned_by_another_staff",
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "D4"
+},
+"subject": "glyph/12/0/2/2/7",
+"value": [
+"noteheadHalfInSpace",
+127,
+991,
+157,
+142
+]
+},
+{
+"bbox_page_px": [
+776.86,
+829.13,
+810.09,
+833.38
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "B3"
+},
+"subject": "glyph/12/0/2/2/10",
+"value": [
+"ledgerLine",
+88,
+1131,
+211,
+27
+]
+},
+{
+"bbox_page_px": [
+778.43,
+702.66,
+801.27,
+706.28
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/2/12",
+"value": [
+"ledgerLine",
+98,
+328,
+145,
+23
+]
+},
+{
+"bbox_page_px": [
+776.07,
+830.24,
+809.15,
+833.07
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "B3"
+},
+"subject": "glyph/12/0/2/2/13",
+"value": [
+"ledgerLine",
+83,
+1138,
+210,
+18
+]
+},
+{
+"bbox_page_px": [
+541.24,
+903.06,
+648.65,
+931.88
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/1",
+"value": [
+"beam",
+1265,
+794,
+682,
+183
+]
+},
+{
+"bbox_page_px": [
+353.97,
+845.25,
+648.97,
+912.66
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/3",
+"value": [
+"staff",
+76,
+427,
+1873,
+428
+]
+},
+{
+"bbox_page_px": [
+522.97,
+829.66,
+553.52,
+832.97
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/7",
+"value": [
+"ledgerLine",
+1149,
+328,
+194,
+21
+]
+},
+{
+"bbox_page_px": [
+488.32,
+798.63,
+531.79,
+811.39
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "A3"
+},
+"subject": "glyph/12/0/3/0/8",
+"value": [
+"tie",
+929,
+131,
+276,
+81
+]
+},
+{
+"bbox_page_px": [
+525.33,
+808.71,
+551.0,
+832.81
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D4"
+},
+"subject": "glyph/12/0/3/0/9",
+"value": [
+"noteheadHalfInSpace",
+1164,
+195,
+163,
+153
+]
+},
+{
+"bbox_page_px": [
+547.07,
+905.42,
+648.97,
+913.29
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/11",
+"value": [
+"tie",
+1302,
+809,
+647,
+50
+]
+},
+{
+"bbox_page_px": [
+549.74,
+783.67,
+647.87,
+824.15
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B3"
+},
+"subject": "glyph/12/0/3/0/12",
+"value": [
+"slur",
+1319,
+36,
+623,
+257
+]
+},
+{
+"bbox_page_px": [
+490.21,
+798.63,
+532.42,
+811.23
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "A3"
+},
+"subject": "glyph/12/0/3/0/13",
+"value": [
+"slur",
+941,
+131,
+268,
+80
+]
+},
+{
+"bbox_page_px": [
+641.25,
+843.21,
+648.81,
+912.82
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/15",
+"value": [
+"arpeggiato",
+1900,
+414,
+48,
+442
+]
+},
+{
+"bbox_page_px": [
+358.22,
+836.9,
+648.81,
+854.23
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/0/16",
+"value": [
+"tie",
+103,
+374,
+1845,
+110
+]
+},
+{
+"bbox_page_px": [
+525.96,
+864.62,
+553.52,
+885.57
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E3"
+},
+"subject": "glyph/12/0/3/0/19",
+"value": [
+"noteheadHalfInSpace",
+1168,
+550,
+175,
+133
+]
+},
+{
+"bbox_page_px": [
+669.63,
+807.14,
+696.57,
+833.75
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D4"
+},
+"subject": "glyph/12/0/3/1/0",
+"value": [
+"noteheadHalfInSpace",
+131,
+185,
+171,
+169
+]
+},
+{
+"bbox_page_px": [
+649.32,
+844.94,
+680.66,
+849.66
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/1/1",
+"value": [
+"ledgerLine",
+2,
+425,
+199,
+30
+]
+},
+{
+"bbox_page_px": [
+672.94,
+861.95,
+700.03,
+889.83
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D3"
+},
+"subject": "glyph/12/0/3/1/2",
+"value": [
+"noteheadHalfOnLine",
+152,
+533,
+172,
+177
+]
+},
+{
+"bbox_page_px": [
+649.32,
+876.44,
+701.76,
+881.79
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/1/3",
+"value": [
+"ledgerLine",
+2,
+625,
+333,
+34
+]
+},
+{
+"bbox_page_px": [
+649.16,
+892.19,
+683.97,
+897.23
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/1/4",
+"value": [
+"ledgerLine",
+1,
+725,
+221,
+32
+]
+},
+{
+"bbox_page_px": [
+763.0,
+846.04,
+912.0,
+914.24
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/2/2",
+"value": [
+"staff",
+0,
+432,
+946,
+433
+]
+},
+{
+"bbox_page_px": [
+783.32,
+807.29,
+807.73,
+828.87
+],
+"cls": "noteheadHalfInSpace",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "not_a_notehead:stacked_head_duplicate",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D4"
+},
+"subject": "glyph/12/0/3/2/3",
+"value": [
+"noteheadHalfInSpace",
+129,
+186,
+155,
+137
+]
+},
+{
+"bbox_page_px": [
+788.36,
+778.0,
+883.01,
+821.0
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B3"
+},
+"subject": "glyph/12/0/3/2/4",
+"value": [
+"slur",
+161,
+0,
+601,
+273
+]
+},
+{
+"bbox_page_px": [
+777.17,
+830.45,
+808.67,
+833.12
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/2/5",
+"value": [
+"ledgerLine",
+90,
+333,
+200,
+17
+]
+},
+{
+"bbox_page_px": [
+771.5,
+846.2,
+829.62,
+849.35
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/2/6",
+"value": [
+"ledgerLine",
+54,
+433,
+369,
+20
+]
+},
+{
+"bbox_page_px": [
+782.69,
+778.0,
+887.74,
+809.66
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "C4"
+},
+"subject": "glyph/12/0/3/2/7",
+"value": [
+"slur",
+125,
+0,
+667,
+201
+]
+},
+{
+"bbox_page_px": [
+778.12,
+826.83,
+808.52,
+832.97
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/2/8",
+"value": [
+"ledgerLine",
+96,
+310,
+193,
+39
+]
+},
+{
+"bbox_page_px": [
+777.17,
+828.56,
+809.15,
+833.28
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/2/9",
+"value": [
+"ledgerLine",
+90,
+321,
+203,
+30
+]
+},
+{
+"bbox_page_px": [
+782.06,
+861.95,
+807.1,
+888.88
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 2.0,
+"dots": 0,
+"written": 2.0
+}
+},
+"fate": "written",
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "D3"
+},
+"subject": "glyph/12/0/3/2/10",
+"value": [
+"noteheadHalfOnLine",
+121,
+533,
+159,
+171
+]
+},
+{
+"bbox_page_px": [
+649.0,
+655.64,
+718.75,
+676.88
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E6"
+},
+"subject": "glyph/12/0/1/1/9",
+"value": [
+"slur",
+0,
+959,
+450,
+137
+]
+},
+{
+"bbox_page_px": [
+649.0,
+652.1,
+718.77,
+677.77
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/2/1/9",
+"value": [
+"slur",
+0,
+7,
+443,
+163
+]
+},
+{
+"bbox_page_px": [
+649.0,
+797.48,
+667.43,
+822.05
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "E4"
+},
+"subject": "glyph/12/0/2/1/10",
+"value": [
+"slur",
+0,
+930,
+117,
+156
+]
+},
+{
+"bbox_page_px": [
+649.0,
+903.21,
+667.43,
+932.35
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/12/0/3/1/5",
+"value": [
+"slur",
+0,
+795,
+117,
+185
+]
+},
+{
+"bbox_page_px": [
+649.0,
+797.06,
+668.53,
+820.52
+],
+"cls": "slur",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "A3"
+},
+"subject": "glyph/12/0/3/1/6",
+"value": [
+"slur",
+0,
+121,
+124,
+149
+]
+}
+],
+"plate": "litolff",
+"target": "glyph/12/0/2/1/7",
+"why": "Sean 2026-11-25 tile 4 (not in his list of noteheads)"
+},
+"sean_not_head_tremolo": {
+"boxes": [
+{
+"bbox_page_px": [
+1433.06,
+6158.2,
+1440.0,
+6317.9
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/9/0/12",
+"value": [
+"arpeggiato",
+2030,
+449,
+18,
+414
+]
+},
+{
+"bbox_page_px": [
+733.32,
+6332.97,
+1440.0,
+6379.64
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/0/26",
+"value": [
+"beam",
+216,
+311,
+1832,
+121
+]
+},
+{
+"bbox_page_px": [
+1433.06,
+6213.77,
+1440.0,
+6290.92
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B3"
+},
+"subject": "glyph/11/1/10/0/27",
+"value": [
+"arpeggiato",
+2030,
+2,
+18,
+200
+]
+},
+{
+"bbox_page_px": [
+1430.36,
+6402.4,
+1440.0,
+6548.98
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/0/29",
+"value": [
+"restQuarter",
+2023,
+491,
+25,
+380
+]
+},
+{
+"bbox_page_px": [
+658.1,
+6327.95,
+1440.0,
+6441.75
+],
+"cls": "staff",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/0/32",
+"value": [
+"staff",
+21,
+298,
+2027,
+295
+]
+},
+{
+"bbox_page_px": [
+1429.58,
+6444.83,
+1440.0,
+6548.98
+],
+"cls": "restQuarter",
+"duration": {
+"outcome": "decided",
+"reason": "rest_class",
+"value": {
+"beam_levels": 0,
+"beats": 1.0,
+"dots": 0,
+"is_rest": true,
+"written": 1.0
+}
+},
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/0/33",
+"value": [
+"restQuarter",
+2021,
+601,
+27,
+270
+]
+},
+{
+"bbox_page_px": [
+1545.0,
+6472.28,
+1559.28,
+6485.16
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/1/0",
+"value": [
+"augmentationDot",
+375,
+926,
+51,
+46
+]
+},
+{
+"bbox_page_px": [
+1515.88,
+6377.92,
+1554.8,
+6407.04
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A4"
+},
+"subject": "glyph/11/1/10/1/1",
+"value": [
+"noteheadBlackInSpace",
+271,
+589,
+139,
+104
+]
+},
+{
+"bbox_page_px": [
+1516.44,
+6405.08,
+1553.68,
+6427.76
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "stem_value_follows",
+"value": {
+"beam_levels": 0,
+"beats": 3.0,
+"dots": 1,
+"head_fill": "half",
+"shared_stem": "obs:675563",
+"written": 3.0
+}
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "G4"
+},
+"subject": "glyph/11/1/10/1/3",
+"value": [
+"noteheadBlackOnLine",
+273,
+686,
+133,
+81
+]
+},
+{
+"bbox_page_px": [
+1511.96,
+6379.6,
+1546.12,
+6411.8
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A4"
+},
+"subject": "glyph/11/1/10/1/4",
+"value": [
+"noteheadBlackInSpace",
+257,
+595,
+122,
+115
+]
+},
+{
+"bbox_page_px": [
+1440.0,
+6348.8,
+1905.92,
+6364.76
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/1/5",
+"value": [
+"tie",
+0,
+485,
+1664,
+57
+]
+},
+{
+"bbox_page_px": [
+1440.84,
+6404.24,
+1904.52,
+6418.52
+],
+"cls": "tie",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/1/6",
+"value": [
+"tie",
+3,
+683,
+1656,
+51
+]
+},
+{
+"bbox_page_px": [
+1492.36,
+6475.92,
+1529.6,
+6510.64
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "decided",
+"reason": "head_and_marks",
+"value": {
+"beam_levels": 0,
+"beats": 3.0,
+"dots": 1,
+"written": 3.0
+}
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "A3"
+},
+"subject": "glyph/11/1/10/1/8",
+"value": [
+"noteheadHalfOnLine",
+187,
+939,
+133,
+124
+]
+},
+{
+"bbox_page_px": [
+1485.08,
+6489.36,
+1544.16,
+6494.96
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/1/9",
+"value": [
+"ledgerLine",
+161,
+987,
+211,
+20
+]
+},
+{
+"bbox_page_px": [
+1440.0,
+6422.16,
+1447.28,
+6448.2
+],
+"cls": "noteheadBlackOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "E4"
+},
+"subject": "glyph/11/1/10/1/10",
+"value": [
+"noteheadBlackOnLine",
+0,
+747,
+26,
+93
+]
+},
+{
+"bbox_page_px": [
+1484.24,
+6430.84,
+1898.36,
+6444.56
+],
+"cls": "beam",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/10/1/11",
+"value": [
+"beam",
+158,
+778,
+1479,
+49
+]
+},
+{
+"bbox_page_px": [
+1510.84,
+6412.08,
+1542.48,
+6436.72
+],
+"cls": "noteheadBlackInSpace",
+"duration": {
+"outcome": "abstained",
+"reason": "not_a_note_mark",
+"value": null
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef",
+"value": "F4"
+},
+"subject": "glyph/11/1/10/1/12",
+"value": [
+"noteheadBlackInSpace",
+253,
+711,
+113,
+88
+]
+},
+{
+"bbox_page_px": [
+1431.51,
+6464.54,
+1440.0,
+6631.96
+],
+"cls": "arpeggiato",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/11/0/27",
+"value": [
+"arpeggiato",
+2026,
+4,
+22,
+434
+]
+},
+{
+"bbox_page_px": [
+1545.17,
+6471.6,
+1559.05,
+6485.48
+],
+"cls": "augmentationDot",
+"duration": null,
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "position_and_clef_ledger_unread",
+"value": "B3"
+},
+"subject": "glyph/11/1/11/1/1",
+"value": [
+"augmentationDot",
+379,
+31,
+50,
+50
+]
+},
+{
+"bbox_page_px": [
+1492.72,
+6486.31,
+1529.63,
+6509.62
+],
+"cls": "noteheadHalfOnLine",
+"duration": {
+"outcome": "abstained",
+"reason": "owned_by_another_staff",
+"value": null
+},
+"fate": null,
+"pitch": {
+"outcome": "decided",
+"reason": "reowned",
+"value": "A3"
+},
+"subject": "glyph/11/1/11/1/9",
+"value": [
+"noteheadHalfOnLine",
+190,
+84,
+133,
+84
+]
+},
+{
+"bbox_page_px": [
+1484.68,
+6463.0,
+1541.29,
+6469.1
+],
+"cls": "ledgerLine",
+"duration": null,
+"fate": null,
+"pitch": null,
+"subject": "glyph/11/1/11/1/11",
+"value": [
+"ledgerLine",
+161,
+0,
+204,
+22
+]
+}
+],
+"plate": "brahms",
+"target": "glyph/11/1/10/1/3",
+"why": "Sean 2026-11-25 tile 1 (not in his list of noteheads)"
+}
+}
