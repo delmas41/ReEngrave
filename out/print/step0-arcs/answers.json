@@ -1,0 +1,13 @@
+{
+  "set": "step0-arcs",
+  "date": "2026-11-26",
+  "question": "Three sheets of ties and slurs that are read but not written (sheet 1 Litolff 'unread ink at its end', sheet 2 Litolff 'end too far from its note', sheet 3 Brahms 'runs to the edge of the system'). On those three sheets, is any boxed mark not a tie or slur?",
+  "answered_by": "Sean",
+  "verbatim": "3rd sheet 14 is not an arc. Sheet 1 8 and 9 the boxes are cutting off a good part of the arc. Everything else looks pretty straightforward",
+  "answers": [
+    {"sheet": "brahms_B1_system_edge.png", "tile": 14, "subject": "glyph/5/0/8/0/15", "answer": "not an arc"},
+    {"sheet": "litolff_L2_unread_ink_at_end.png", "tiles": [8, 9], "subject": "obs:138435", "answer": "the box cuts off a good part of the arc"},
+    {"sheets": "all three, every other tile", "answer": "straightforward: a tie or slur"}
+  ],
+  "ours": "Sheet 3 tile 14 is an OLD detector tie box (reason enters_from_previous_system), one of the boxes the trace says are mostly not arcs. Sheet 1 tiles 8 and 9 are the SAME page-wide run (obs:138435) drawn twice in the sample, and the box is the run's own ink extent -- so the page reader holds that arc only in part (read short, or in pieces). The other 69 tiles: Sean confirms they are ties or slurs; he did not say which notes each joins."
+}

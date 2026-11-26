@@ -1,0 +1,1712 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/step0-blue/sheets/brahms_onset_from_partial_bar.png",
+ "rule": "onset_from_partial_bar",
+ "population_distinct_heads": 100,
+ "shown": 24,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over distinct head subjects sorted by (page, subject)",
+ "question_for_sean": "Counting from the barline at the left of the bar, on which beat does each boxed note start (for example beat 1, the 'and' after beat 1, beat 2 ...)? The whole bar is shown, barline to barline.",
+ "note": "manifest is for the manager only; never shown to Sean",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/5/1/9/7/5",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "43",
+     "pitch": "D5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/9",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    4187.3,
+    6081.7,
+    4226.6,
+    6116.3
+   ],
+   "cell": "cell/5/1/9/7",
+   "cell_box": [
+    4156.0,
+    5964.0,
+    4573.0,
+    6291.0
+   ],
+   "rect_tile_px": [
+    78,
+    98,
+    208,
+    219
+   ],
+   "tile_px": [
+    901,
+    426
+   ],
+   "scale": 1.954,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "43",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/5/1/9/6/0",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "42",
+     "pitch": "G5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/9",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    3700.5,
+    6041.1,
+    3740.3,
+    6074.1
+   ],
+   "cell": "cell/5/1/9/6",
+   "cell_box": [
+    3670.0,
+    5964.0,
+    4156.0,
+    6291.0
+   ],
+   "rect_tile_px": [
+    66,
+    47,
+    180,
+    149
+   ],
+   "tile_px": [
+    901,
+    401
+   ],
+   "scale": 1.699,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "42",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/4/0/13/5/3",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P14",
+     "measure": "13",
+     "pitch": "C#4",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/0/13",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    3024.3,
+    3624.0,
+    3061.7,
+    3657.0
+   ],
+   "cell": "cell/4/0/13/5",
+   "cell_box": [
+    2727.0,
+    3558.0,
+    3205.0,
+    3943.0
+   ],
+   "rect_tile_px": [
+    527,
+    47,
+    639,
+    151
+   ],
+   "tile_px": [
+    900,
+    431
+   ],
+   "scale": 1.724,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P14",
+      "measure": "13",
+      "voice": 1,
+      "onset_quarters": 1.5,
+      "onset_eighths": 3.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/19/0/4/0/8",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P5",
+     "measure": "114",
+     "pitch": "D3",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/0/4",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    944.2,
+    1573.1,
+    981.9,
+    1606.4
+   ],
+   "cell": "cell/19/0/4/0",
+   "cell_box": [
+    636.0,
+    1426.0,
+    1535.0,
+    1756.0
+   ],
+   "rect_tile_px": [
+    316,
+    78,
+    382,
+    139
+   ],
+   "tile_px": [
+    943,
+    220
+   ],
+   "scale": 1.0,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P5",
+      "measure": "114",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/19/1/8/7/6",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "132",
+     "pitch": "B4",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/1/8",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    4449.6,
+    6013.8,
+    4490.3,
+    6049.2
+   ],
+   "cell": "cell/19/1/8/7",
+   "cell_box": [
+    4385.0,
+    5868.0,
+    4904.0,
+    6198.0
+   ],
+   "rect_tile_px": [
+    116,
+    123,
+    226,
+    224
+   ],
+   "tile_px": [
+    900,
+    352
+   ],
+   "scale": 1.599,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "132",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/4/0/9/9/1",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "17",
+     "pitch": "G5",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/0/9",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    4673.4,
+    2618.2,
+    4709.4,
+    2650.4
+   ],
+   "cell": "cell/4/0/9/9",
+   "cell_box": [
+    4592.0,
+    2536.0,
+    5054.0,
+    2866.0
+   ],
+   "rect_tile_px": [
+    159,
+    49,
+    272,
+    155
+   ],
+   "tile_px": [
+    900,
+    416
+   ],
+   "scale": 1.779,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "17",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/5/0/2/1/2",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "29",
+     "pitch": "F5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/2",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1485.3,
+    992.0,
+    1524.3,
+    1025.8
+   ],
+   "cell": "cell/5/0/2/1",
+   "cell_box": [
+    1442.0,
+    902.0,
+    2029.0,
+    1229.0
+   ],
+   "rect_tile_px": [
+    74,
+    39,
+    168,
+    126
+   ],
+   "tile_px": [
+    901,
+    318
+   ],
+   "scale": 1.427,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "29",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/5/0/2/6/6",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "34",
+     "pitch": "D5",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/2",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    4384.7,
+    1020.7,
+    4425.8,
+    1055.6
+   ],
+   "cell": "cell/5/0/2/6",
+   "cell_box": [
+    4342.0,
+    902.0,
+    4914.0,
+    1229.0
+   ],
+   "rect_tile_px": [
+    75,
+    75,
+    175,
+    166
+   ],
+   "tile_px": [
+    901,
+    319
+   ],
+   "scale": 1.462,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "34",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/19/1/10/5/2",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P12",
+     "measure": "130",
+     "pitch": "E4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/1/10",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    3359.9,
+    6454.1,
+    3398.4,
+    6488.2
+   ],
+   "cell": "cell/19/1/10/5",
+   "cell_box": [
+    3281.0,
+    6335.0,
+    3827.0,
+    6665.0
+   ],
+   "rect_tile_px": [
+    133,
+    77,
+    234,
+    171
+   ],
+   "tile_px": [
+    900,
+    336
+   ],
+   "scale": 1.525,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P12",
+      "measure": "130",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/5/0/0/1/15",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P1",
+     "measure": "29",
+     "pitch": "Eb6",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    },
+    {
+     "part": "P1",
+     "measure": "29",
+     "pitch": "Eb6",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/0",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1485.0,
+    429.1,
+    1525.1,
+    464.3
+   ],
+   "cell": "cell/5/0/0/1",
+   "cell_box": [
+    1442.0,
+    368.0,
+    2029.0,
+    749.0
+   ],
+   "rect_tile_px": [
+    73,
+    39,
+    169,
+    128
+   ],
+   "tile_px": [
+    901,
+    437
+   ],
+   "scale": 1.427,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P1",
+      "measure": "29",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     },
+     {
+      "part": "P1",
+      "measure": "29",
+      "voice": 2,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/19/0/8/1/0",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "115",
+     "pitch": "Ab6",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/0/8",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1817.3,
+    2488.3,
+    1855.2,
+    2520.2
+   ],
+   "cell": "cell/19/0/8/1",
+   "cell_box": [
+    1535.0,
+    2239.0,
+    1980.0,
+    2566.0
+   ],
+   "rect_tile_px": [
+    535,
+    333,
+    655,
+    442
+   ],
+   "tile_px": [
+    901,
+    492
+   ],
+   "scale": 1.842,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "115",
+      "voice": 1,
+      "onset_quarters": 1.5,
+      "onset_eighths": 3.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/25/0/10/1/7",
+   "page": 25,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P11",
+     "measure": "135",
+     "pitch": "C5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/25/0/10",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    1834.9,
+    3108.4,
+    1873.8,
+    3142.5
+   ],
+   "cell": "cell/25/0/10/1",
+   "cell_box": [
+    1427.0,
+    2976.0,
+    1931.0,
+    3309.0
+   ],
+   "rect_tile_px": [
+    683,
+    103,
+    792,
+    204
+   ],
+   "tile_px": [
+    899,
+    364
+   ],
+   "scale": 1.641,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P11",
+      "measure": "135",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/25/0/9/0/11",
+   "page": 25,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "134",
+     "pitch": "C5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/25/0/9",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1307.3,
+    2844.6,
+    1345.4,
+    2877.0
+   ],
+   "cell": "cell/25/0/9/0",
+   "cell_box": [
+    646.0,
+    2713.0,
+    1427.0,
+    3040.0
+   ],
+   "rect_tile_px": [
+    731,
+    69,
+    802,
+    134
+   ],
+   "tile_px": [
+    900,
+    238
+   ],
+   "scale": 1.091,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "134",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/4/1/13/5/0",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P14",
+     "measure": "24",
+     "pitch": "D3",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/1/13",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    3404.1,
+    7053.3,
+    3442.9,
+    7086.0
+   ],
+   "cell": "cell/4/1/13/5",
+   "cell_box": [
+    3358.0,
+    6904.0,
+    3904.0,
+    7292.0
+   ],
+   "rect_tile_px": [
+    83,
+    121,
+    184,
+    213
+   ],
+   "tile_px": [
+    899,
+    338
+   ],
+   "scale": 1.524,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P14",
+      "measure": "24",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/5/1/5/0/1",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P6",
+     "measure": "36",
+     "pitch": "C4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/5",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1159.9,
+    5234.4,
+    1198.4,
+    5268.2
+   ],
+   "cell": "cell/5/1/5/0",
+   "cell_box": [
+    639.0,
+    5005.0,
+    1330.0,
+    5332.0
+   ],
+   "rect_tile_px": [
+    649,
+    197,
+    729,
+    272
+   ],
+   "tile_px": [
+    900,
+    305
+   ],
+   "scale": 1.225,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P6",
+      "measure": "36",
+      "voice": 1,
+      "onset_quarters": 1.5,
+      "onset_eighths": 3.0,
+      "blue": false,
+      "rules": []
+     },
+     {
+      "part": "P6",
+      "measure": "36",
+      "voice": 2,
+      "onset_quarters": 2.0,
+      "onset_eighths": 4.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/5/0/3/3/4",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "31",
+     "pitch": "Eb4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/3",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    2618.2,
+    1258.0,
+    2655.8,
+    1293.2
+   ],
+   "cell": "cell/5/0/3/3",
+   "cell_box": [
+    2580.0,
+    1167.0,
+    3133.0,
+    1494.0
+   ],
+   "rect_tile_px": [
+    70,
+    41,
+    168,
+    135
+   ],
+   "tile_px": [
+    901,
+    336
+   ],
+   "scale": 1.509,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P4",
+      "measure": "31",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": false,
+      "rules": []
+     },
+     {
+      "part": "P4",
+      "measure": "31",
+      "voice": 2,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/5/0/1/6/14",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "34",
+     "pitch": "C5",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/1",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    4383.6,
+    776.0,
+    4423.3,
+    806.5
+   ],
+   "cell": "cell/5/0/1/6",
+   "cell_box": [
+    4342.0,
+    640.0,
+    4914.0,
+    970.0
+   ],
+   "rect_tile_px": [
+    73,
+    98,
+    171,
+    183
+   ],
+   "tile_px": [
+    900,
+    321
+   ],
+   "scale": 1.461,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P2",
+      "measure": "34",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/8/0/2/12/3",
+   "page": 8,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "58",
+     "pitch": "F5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/2",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    5394.6,
+    1183.2,
+    5432.3,
+    1216.8
+   ],
+   "cell": "cell/8/0/2/12",
+   "cell_box": [
+    5124.0,
+    1043.0,
+    5492.0,
+    1483.0
+   ],
+   "rect_tile_px": [
+    609,
+    60,
+    752,
+    193
+   ],
+   "tile_px": [
+    900,
+    505
+   ],
+   "scale": 2.184,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "58",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/4/1/2/3/13",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "22",
+     "pitch": "F#4",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/1/2",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    2535.1,
+    4639.9,
+    2572.6,
+    4670.2
+   ],
+   "cell": "cell/4/1/2/3",
+   "cell_box": [
+    2347.0,
+    4449.0,
+    2808.0,
+    4837.0
+   ],
+   "rect_tile_px": [
+    350,
+    217,
+    466,
+    321
+   ],
+   "tile_px": [
+    899,
+    395
+   ],
+   "scale": 1.781,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "22",
+      "voice": 2,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/8/0/1/5/5",
+   "page": 8,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "51",
+     "pitch": "Cb6",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/1",
+   "staff_space_px": 28.5,
+   "head_box_page_px": [
+    3087.8,
+    842.9,
+    3127.4,
+    878.8
+   ],
+   "cell": "cell/8/0/1/5",
+   "cell_box": [
+    2786.0,
+    742.0,
+    3179.0,
+    1141.0
+   ],
+   "rect_tile_px": [
+    637,
+    59,
+    777,
+    191
+   ],
+   "tile_px": [
+    901,
+    583
+   ],
+   "scale": 2.052,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P2",
+      "measure": "51",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/8/0/3/8/3",
+   "page": 8,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "54",
+     "pitch": "Cb4",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/3",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    4018.0,
+    1522.3,
+    4057.9,
+    1556.1
+   ],
+   "cell": "cell/8/0/3/8",
+   "cell_box": [
+    3829.0,
+    1348.0,
+    4131.0,
+    1791.0
+   ],
+   "rect_tile_px": [
+    512,
+    131,
+    688,
+    291
+   ],
+   "tile_px": [
+    899,
+    577
+   ],
+   "scale": 2.598,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P4",
+      "measure": "54",
+      "voice": 1,
+      "onset_quarters": 1.0,
+      "onset_eighths": 2.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/5/1/13/3/0",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P14",
+     "measure": "39",
+     "pitch": "G2",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/13",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    2542.7,
+    7136.3,
+    2582.6,
+    7171.0
+   ],
+   "cell": "cell/5/1/13/3",
+   "cell_box": [
+    2271.0,
+    6932.0,
+    2758.0,
+    7317.0
+   ],
+   "rect_tile_px": [
+    474,
+    230,
+    589,
+    335
+   ],
+   "tile_px": [
+    900,
+    381
+   ],
+   "scale": 1.695,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P14",
+      "measure": "39",
+      "voice": 1,
+      "onset_quarters": 2.0,
+      "onset_eighths": 4.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/5/1/12/3/1",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P13",
+     "measure": "39",
+     "pitch": "G2",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/12",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    2310.9,
+    6901.1,
+    2347.7,
+    6936.3
+   ],
+   "cell": "cell/5/1/12/3",
+   "cell_box": [
+    2271.0,
+    6699.0,
+    2758.0,
+    7029.0
+   ],
+   "rect_tile_px": [
+    82,
+    226,
+    191,
+    332
+   ],
+   "tile_px": [
+    900,
+    380
+   ],
+   "scale": 1.695,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P13",
+      "measure": "39",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/5/0/3/6/5",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "34",
+     "pitch": "D4",
+     "value": "16th, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/3",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    4701.2,
+    1272.3,
+    4741.7,
+    1306.4
+   ],
+   "cell": "cell/5/0/3/6",
+   "cell_box": [
+    4342.0,
+    1167.0,
+    4914.0,
+    1494.0
+   ],
+   "rect_tile_px": [
+    537,
+    54,
+    636,
+    143
+   ],
+   "tile_px": [
+    901,
+    319
+   ],
+   "scale": 1.462,
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P4",
+      "measure": "34",
+      "voice": 1,
+      "onset_quarters": 2.25,
+      "onset_eighths": 4.5,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,360 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/brahms_arcs_system_edge.png",
+ "row": "arcs",
+ "cause": "page run abstained: system_edge",
+ "n_cases_in_cause": 114,
+ "n_cases_with_a_box": 108,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "obs:884139",
+   "page": 14,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5209,
+    6428,
+    5594,
+    6665
+   ],
+   "scale": 2.857,
+   "staff": "staff/14/1/9",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    5312.7,
+    6455.6,
+    5489.7,
+    6497.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    677
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 2,
+   "subject": "obs:884135",
+   "page": 14,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5174,
+    5921,
+    5559,
+    6176
+   ],
+   "scale": 2.857,
+   "staff": "staff/14/1/7",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    5264.5,
+    5948.6,
+    5469.1,
+    6027.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    729
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 3,
+   "subject": "obs:284639",
+   "page": 4,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5147,
+    4463,
+    5552,
+    4726
+   ],
+   "scale": 2.716,
+   "staff": "staff/4/1/2",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    5230.2,
+    4491.1,
+    5469.1,
+    4611.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    714
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 4,
+   "subject": "obs:1214813",
+   "page": 19,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    3025,
+    5671,
+    3601,
+    5982
+   ],
+   "scale": 1.91,
+   "staff": "staff/19/1/7",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    3107.5,
+    5889.3,
+    3518.3,
+    5954.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    594
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 5,
+   "subject": "obs:1214864",
+   "page": 19,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5218,
+    1667,
+    5607,
+    1898
+   ],
+   "scale": 2.828,
+   "staff": "staff/19/0/5",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    5338.4,
+    1694.7,
+    5486.2,
+    1750.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    653
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 6,
+   "subject": "obs:284645",
+   "page": 4,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5142,
+    4504,
+    5557,
+    4830
+   ],
+   "scale": 2.651,
+   "staff": "staff/4/1/2",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    5225.0,
+    4730.9,
+    5474.2,
+    4802.2
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    864
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 7,
+   "subject": "obs:508813",
+   "page": 8,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    1942,
+    1548,
+    2588,
+    1980
+   ],
+   "scale": 1.703,
+   "staff": "staff/8/0/4",
+   "staff_space_px": 28.0,
+   "mark_box_page_px": [
+    2025.8,
+    1576.5,
+    2504.4,
+    1651.1
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    736
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 8,
+   "subject": "obs:508881",
+   "page": 8,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5186,
+    2320,
+    5581,
+    2546
+   ],
+   "scale": 2.785,
+   "staff": "staff/8/0/6",
+   "staff_space_px": 28.25,
+   "mark_box_page_px": [
+    5293.3,
+    2370.9,
+    5473.7,
+    2465.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 9,
+   "subject": "obs:1214860",
+   "page": 19,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5232,
+    1676,
+    5620,
+    1905
+   ],
+   "scale": 2.835,
+   "staff": "staff/19/0/5",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    5372.8,
+    1847.7,
+    5479.4,
+    1876.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    649
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 10,
+   "subject": "obs:362530",
+   "page": 5,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    5226,
+    340,
+    5608,
+    694
+   ],
+   "scale": 2.88,
+   "staff": "staff/5/0/0",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    5325.7,
+    367.0,
+    5507.9,
+    416.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    1019
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 11,
+   "subject": "obs:1214857",
+   "page": 19,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    4888,
+    1834,
+    5345,
+    2115
+   ],
+   "scale": 2.407,
+   "staff": "staff/19/0/6",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    4970.6,
+    1861.4,
+    5262.8,
+    1927.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    676
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  },
+  {
+   "tile": 12,
+   "subject": "obs:362362",
+   "page": 5,
+   "reason_word": "system_edge",
+   "sub_reason": null,
+   "crop_page_px": [
+    750,
+    3862,
+    1135,
+    4216
+   ],
+   "scale": 2.857,
+   "staff": "staff/5/1/0",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    914.6,
+    3889.9,
+    970.8,
+    3908.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    1011
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: system_edge)"
+  }
+ ]
+}

@@ -1,0 +1,385 @@
+{
+ "plate": "litolff",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/litolff_arcs_unread_ink_at_end.png",
+ "row": "arcs",
+ "cause": "page run abstained: end_unbound / unread_ink_at_end",
+ "n_cases_in_cause": 42,
+ "n_cases_with_a_box": 42,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "obs:663413",
+   "page": 16,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1618,
+    475,
+    1839,
+    626
+   ],
+   "scale": 4.977,
+   "staff": "staff/16/0/1",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1678.0,
+    491.0,
+    1779.0,
+    519.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    752
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 2,
+   "subject": "obs:336509",
+   "page": 9,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1054,
+    958,
+    1264,
+    1094
+   ],
+   "scale": 5.238,
+   "staff": "staff/9/0/4",
+   "staff_space_px": 15.0,
+   "mark_box_page_px": [
+    1099.0,
+    972.5,
+    1219.0,
+    1020.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    712
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 3,
+   "subject": "obs:138426",
+   "page": 4,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    861,
+    676,
+    1116,
+    806
+   ],
+   "scale": 4.314,
+   "staff": "staff/4/0/2",
+   "staff_space_px": 16.25,
+   "mark_box_page_px": [
+    910.0,
+    722.5,
+    1067.0,
+    754.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    561
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 4,
+   "subject": "obs:382614",
+   "page": 10,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1023,
+    2184,
+    1264,
+    2344
+   ],
+   "scale": 4.564,
+   "staff": "staff/10/1/1",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1070.0,
+    2200.0,
+    1217.0,
+    2250.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    730
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 5,
+   "subject": "obs:382553",
+   "page": 10,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1709,
+    2769,
+    1966,
+    2896
+   ],
+   "scale": 4.28,
+   "staff": "staff/10/1/5",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1756.0,
+    2785.0,
+    1919.0,
+    2869.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    544
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 6,
+   "subject": "obs:211846",
+   "page": 6,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    485,
+    2246,
+    706,
+    2372
+   ],
+   "scale": 4.977,
+   "staff": "staff/6/1/2",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    536.0,
+    2313.0,
+    655.0,
+    2338.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    627
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 7,
+   "subject": "obs:409366",
+   "page": 11,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    2385,
+    698,
+    2605,
+    824
+   ],
+   "scale": 5.0,
+   "staff": "staff/11/0/2",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2443.0,
+    724.0,
+    2547.0,
+    773.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 8,
+   "subject": "obs:138435",
+   "page": 4,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    451,
+    1436,
+    671,
+    1583
+   ],
+   "scale": 5.0,
+   "staff": "staff/4/0/7",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    537.0,
+    1535.5,
+    585.0,
+    1567.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    735
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 9,
+   "subject": "obs:382607",
+   "page": 10,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    741,
+    2636,
+    972,
+    2762
+   ],
+   "scale": 4.762,
+   "staff": "staff/10/1/4",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    788.0,
+    2688.5,
+    925.0,
+    2727.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    600
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 10,
+   "subject": "obs:409364",
+   "page": 11,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1550,
+    552,
+    1835,
+    678
+   ],
+   "scale": 3.86,
+   "staff": "staff/11/0/1",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1597.0,
+    578.5,
+    1788.0,
+    650.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    486
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 11,
+   "subject": "obs:382572",
+   "page": 10,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1177,
+    2203,
+    1455,
+    2344
+   ],
+   "scale": 3.957,
+   "staff": "staff/10/1/1",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1224.0,
+    2219.0,
+    1408.0,
+    2287.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    558
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / unread_ink_at_end)"
+  },
+  {
+   "tile": 12,
+   "subject": "obs:138447",
+   "page": 4,
+   "reason_word": "end_unbound",
+   "sub_reason": [
+    "head_on_the_arcs_far_side",
+    "unread_ink_at_end"
+   ],
+   "crop_page_px": [
+    1045,
+    2550,
+    1265,
+    2676
+   ],
+   "scale": 5.0,
+   "staff": "staff/4/1/3",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1101.0,
+    2576.0,
+    1209.0,
+    2617.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": "nothing from this run: no tie or slur written for it (record reason: end_unbound / head_on_the_arcs_far_side,unread_ink_at_end)"
+  }
+ ]
+}

@@ -1,0 +1,398 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/brahms_notes_beams_ambiguous.png",
+ "row": "notes",
+ "cause": "value_undecided / beams_ambiguous",
+ "n_cases_in_cause": 48,
+ "n_cases_with_a_box": 45,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/5/0/2/7/3",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    5049,
+    956,
+    5431,
+    1174
+   ],
+   "scale": 2.88,
+   "staff": "staff/5/0/2",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    5219.1,
+    998.2,
+    5260.6,
+    1032.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    628
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/5/0/2/7/3"
+   ]
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/4/0/9/10/9",
+   "page": 4,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    5222,
+    2591,
+    5607,
+    2811
+   ],
+   "scale": 2.857,
+   "staff": "staff/4/0/9",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    5396.1,
+    2646.8,
+    5432.4,
+    2677.3
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/4/0/9/10/9"
+   ]
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/8/0/5/3/1",
+   "page": 8,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    2001,
+    2010,
+    2393,
+    2234
+   ],
+   "scale": 2.806,
+   "staff": "staff/8/0/5",
+   "staff_space_px": 28.0,
+   "mark_box_page_px": [
+    2177.6,
+    2075.2,
+    2217.1,
+    2108.8
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/8/0/5/3/1"
+   ]
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/5/0/3/5/15",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4100,
+    1222,
+    4481,
+    1440
+   ],
+   "scale": 2.887,
+   "staff": "staff/5/0/3",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    4271.5,
+    1272.3,
+    4309.9,
+    1304.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/5/0/3/5/15"
+   ]
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/4/0/9/10/1",
+   "page": 4,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    5264,
+    2591,
+    5649,
+    2811
+   ],
+   "scale": 2.857,
+   "staff": "staff/4/0/9",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    5437.9,
+    2660.8,
+    5474.8,
+    2694.1
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/4/0/9/10/1"
+   ]
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/5/0/1/6/6",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4678,
+    695,
+    5063,
+    915
+   ],
+   "scale": 2.857,
+   "staff": "staff/5/0/1",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    4850.3,
+    733.6,
+    4890.3,
+    767.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/5/0/0/6/26",
+    "glyph/5/0/1/6/6"
+   ]
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/12/0/12/12/6",
+   "page": 12,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4827,
+    3184,
+    5215,
+    3406
+   ],
+   "scale": 2.835,
+   "staff": "staff/12/0/12",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    5002.0,
+    3289.9,
+    5040.0,
+    3321.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/12/0/12/12/6"
+   ]
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/5/0/3/6/1",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4675,
+    1220,
+    5057,
+    1440
+   ],
+   "scale": 2.88,
+   "staff": "staff/5/0/3",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    4845.6,
+    1246.9,
+    4886.1,
+    1280.1
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    634
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/5/0/3/6/1"
+   ]
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/25/0/11/1/5",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1663,
+    3320,
+    2048,
+    3540
+   ],
+   "scale": 2.857,
+   "staff": "staff/25/0/11",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    1835.4,
+    3411.0,
+    1875.8,
+    3445.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/25/0/11/1/5"
+   ]
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/4/1/13/5/3",
+   "page": 4,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    3565,
+    6960,
+    3954,
+    7182
+   ],
+   "scale": 2.828,
+   "staff": "staff/4/1/13",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    3740.9,
+    7041.9,
+    3778.4,
+    7072.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    628
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/4/1/13/5/3"
+   ]
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/25/0/11/0/0",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    940,
+    3320,
+    1325,
+    3540
+   ],
+   "scale": 2.857,
+   "staff": "staff/25/0/11",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    1112.8,
+    3410.7,
+    1152.4,
+    3445.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/25/0/11/0/0"
+   ]
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/5/0/1/7/6",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    5254,
+    678,
+    5639,
+    915
+   ],
+   "scale": 2.857,
+   "staff": "staff/5/0/1",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    5422.9,
+    705.2,
+    5470.3,
+    739.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    677
+   ],
+   "what_the_file_writes": "nothing: no <note> element for this head (not written)",
+   "boxes_of_this_note": [
+    "glyph/5/0/0/7/9",
+    "glyph/5/0/1/7/6"
+   ]
+  }
+ ]
+}

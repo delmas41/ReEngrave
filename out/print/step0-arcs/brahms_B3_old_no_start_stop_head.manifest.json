@@ -1,0 +1,1063 @@
+{
+ "plate": "brahms",
+ "sheet": "B3_old_no_start_stop_head",
+ "note": "manager only; nearest_head_* = (distance in staff spaces from the arc end to the head box, glyph, written or not, fate); my_category is the lane agent's own look",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/19/0/3/2/11",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    5.83,
+    "glyph/19/0/3/2/16",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    4.19,
+    "glyph/19/0/3/2/16",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 4.1,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): hairpin",
+   "crop_page_px": [
+    2031,
+    1230,
+    2467,
+    1476
+   ],
+   "scale": 2.064,
+   "staff": "staff/19/0/3",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    2192.8,
+    1421.2,
+    2304.8,
+    1435.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    508
+   ]
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/19/0/1/2/18",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    3.96,
+    "glyph/19/0/1/2/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.77,
+    "glyph/19/0/1/2/14",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 4.3,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): hairpin",
+   "crop_page_px": [
+    2032,
+    724,
+    2472,
+    955
+   ],
+   "scale": 2.045,
+   "staff": "staff/19/0/1",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2192.3,
+    896.1,
+    2310.8,
+    913.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    472
+   ]
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/19/1/8/2/13",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_stop_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.88,
+    "glyph/19/1/8/2/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    3.08,
+    "glyph/19/1/8/2/7",
+    "written",
+    "written"
+   ],
+   "width_sp": 14.5,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): staff line/accidentals",
+   "crop_page_px": [
+    1647,
+    5923,
+    2266,
+    6143
+   ],
+   "scale": 1.454,
+   "staff": "staff/19/1/8",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1756.9,
+    5988.2,
+    2156.5,
+    6012.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    320
+   ]
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/25/0/3/9/18",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    4.49,
+    "glyph/25/0/3/9/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    3.79,
+    "glyph/25/0/3/9/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 0.8,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): text letter",
+   "crop_page_px": [
+    4922,
+    1224,
+    5366,
+    1544
+   ],
+   "scale": 2.027,
+   "staff": "staff/25/0/3",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    5132.8,
+    1266.0,
+    5154.5,
+    1270.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    649
+   ]
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/4/1/8/1/10",
+   "page": 4,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.95,
+    "glyph/4/1/8/1/6",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    0.11,
+    "glyph/4/1/8/1/9",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 1.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rest",
+   "crop_page_px": [
+    1621,
+    5792,
+    2069,
+    6016
+   ],
+   "scale": 2.009,
+   "staff": "staff/4/1/8",
+   "staff_space_px": 28.0,
+   "arc_ink_box_page_px": [
+    1818.6,
+    5923.3,
+    1871.8,
+    5931.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/25/1/1/5/10",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    3.25,
+    "glyph/25/1/1/6/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.67,
+    "glyph/25/1/1/6/6",
+    "written",
+    "written"
+   ],
+   "width_sp": 1.6,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rest",
+   "crop_page_px": [
+    3457,
+    4649,
+    3897,
+    4869
+   ],
+   "scale": 2.045,
+   "staff": "staff/25/1/1",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3655.5,
+    4752.1,
+    3698.9,
+    4763.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/19/0/7/2/0",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    27.45,
+    "glyph/19/0/7/0/3",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    28.62,
+    "glyph/19/0/7/0/3",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 1.2,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): barline/staff piece",
+   "crop_page_px": [
+    2071,
+    2098,
+    2511,
+    2318
+   ],
+   "scale": 2.045,
+   "staff": "staff/19/0/7",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2274.5,
+    2203.6,
+    2307.2,
+    2215.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/19/1/6/1/21",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_stop_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.29,
+    "glyph/19/1/6/0/20",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    1.47,
+    "glyph/19/1/6/1/16",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 15.4,
+   "continuation": null,
+   "my_category": "REAL ARC (old box only: no page run traced)",
+   "crop_page_px": [
+    1222,
+    5485,
+    1864,
+    5709
+   ],
+   "scale": 1.402,
+   "staff": "staff/19/1/6",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1332.0,
+    5526.1,
+    1754.4,
+    5590.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    314
+   ]
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/19/0/6/10/16",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.75,
+    "glyph/19/0/6/10/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.42,
+    "glyph/19/0/6/10/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 2.3,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): barline/staff piece",
+   "crop_page_px": [
+    4907,
+    1895,
+    5347,
+    2115
+   ],
+   "scale": 2.045,
+   "staff": "staff/19/0/6",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    5095.6,
+    2052.8,
+    5158.2,
+    2062.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/25/1/9/4/12",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_stop_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    6.97,
+    "glyph/25/1/9/4/4",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    4.93,
+    "glyph/25/1/9/4/4",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "width_sp": 2.3,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rest",
+   "crop_page_px": [
+    2627,
+    6560,
+    3067,
+    6780
+   ],
+   "scale": 2.045,
+   "staff": "staff/25/1/9",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2814.8,
+    6691.2,
+    2878.9,
+    6708.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/5/1/6/7/4",
+   "page": 5,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.05,
+    "glyph/5/1/6/7/6",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    0.1,
+    "glyph/5/1/6/7/6",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 1.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rest",
+   "crop_page_px": [
+    4334,
+    5284,
+    4770,
+    5502
+   ],
+   "scale": 2.064,
+   "staff": "staff/5/1/6",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    4537.8,
+    5385.7,
+    4566.4,
+    5394.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/8/1/3/4/10",
+   "page": 8,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    5.6,
+    "glyph/8/1/3/4/9",
+    "NOT written",
+    "not_a_notehead:too_narrow"
+   ],
+   "nearest_head_to_right_end": [
+    0.93,
+    "glyph/8/1/3/4/9",
+    "NOT written",
+    "not_a_notehead:too_narrow"
+   ],
+   "width_sp": 5.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rests",
+   "crop_page_px": [
+    2265,
+    4795,
+    2689,
+    5007
+   ],
+   "scale": 2.123,
+   "staff": "staff/8/1/3",
+   "staff_space_px": 26.5,
+   "arc_ink_box_page_px": [
+    2405.6,
+    4897.3,
+    2548.7,
+    4908.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/14/0/6/4/17",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    5.43,
+    "glyph/14/0/6/4/0",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    0.11,
+    "glyph/14/0/6/4/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 9.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rests",
+   "crop_page_px": [
+    2710,
+    1905,
+    3179,
+    2125
+   ],
+   "scale": 1.919,
+   "staff": "staff/14/0/6",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2820.4,
+    1980.1,
+    3068.8,
+    2004.3
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    422
+   ]
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/12/1/3/5/19",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    6.85,
+    "glyph/12/1/3/5/8",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.3,
+    "glyph/12/1/3/5/8",
+    "written",
+    "written"
+   ],
+   "width_sp": 6.6,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rests",
+   "crop_page_px": [
+    3076,
+    4638,
+    3516,
+    4858
+   ],
+   "scale": 2.045,
+   "staff": "staff/12/1/3",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3206.0,
+    4712.0,
+    3386.2,
+    4756.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/19/0/3/2/15",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    5.45,
+    "glyph/19/0/3/2/16",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    3.7,
+    "glyph/19/0/3/2/16",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 4.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): hairpin",
+   "crop_page_px": [
+    2031,
+    1230,
+    2467,
+    1463
+   ],
+   "scale": 2.064,
+   "staff": "staff/19/0/3",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    2193.9,
+    1407.4,
+    2303.2,
+    1421.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    481
+   ]
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/12/0/7/12/1",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    37.26,
+    "glyph/12/0/7/9/0",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    38.48,
+    "glyph/12/0/7/9/0",
+    "written",
+    "written"
+   ],
+   "width_sp": 1.2,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): notehead",
+   "crop_page_px": [
+    4482,
+    1907,
+    4926,
+    2226
+   ],
+   "scale": 2.027,
+   "staff": "staff/12/0/7",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    4687.0,
+    1949.0,
+    4721.4,
+    1954.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    647
+   ]
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/4/1/10/8/16",
+   "page": 4,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_stop_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    4.03,
+    "glyph/4/1/10/8/0",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    3.66,
+    "glyph/4/1/10/8/0",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "width_sp": 2.3,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): rest",
+   "crop_page_px": [
+    4766,
+    6243,
+    5206,
+    6463
+   ],
+   "scale": 2.045,
+   "staff": "staff/4/1/10",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    4954.6,
+    6377.5,
+    5017.8,
+    6393.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/19/0/1/8/7",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/19/0/1/8/4",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    2.24,
+    "glyph/19/0/1/8/4",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "width_sp": 2.5,
+   "continuation": null,
+   "my_category": "REAL ARC (old box only: no page run traced)",
+   "crop_page_px": [
+    4467,
+    724,
+    4907,
+    1004
+   ],
+   "scale": 2.045,
+   "staff": "staff/19/0/1",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    4652.6,
+    946.5,
+    4722.2,
+    963.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    573
+   ]
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/14/1/11/8/1",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    63.66,
+    "glyph/14/1/11/4/3",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "nearest_head_to_right_end": [
+    64.58,
+    "glyph/14/1/11/4/3",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "width_sp": 0.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): notehead",
+   "crop_page_px": [
+    4855,
+    6829,
+    5295,
+    7145
+   ],
+   "scale": 2.045,
+   "staff": "staff/14/1/11",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    5061.9,
+    6870.0,
+    5087.2,
+    6873.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    646
+   ]
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/0/0/9/5/18",
+   "page": 0,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    7.07,
+    "glyph/0/0/9/5/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    5.01,
+    "glyph/0/0/9/6/15",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.8,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): beam/staff line",
+   "crop_page_px": [
+    3979,
+    5098,
+    4812,
+    5360
+   ],
+   "scale": 1.08,
+   "staff": "staff/0/0/9",
+   "staff_space_px": 32.25,
+   "arc_ink_box_page_px": [
+    4108.3,
+    5278.6,
+    4683.3,
+    5311.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    283
+   ]
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/25/0/12/9/17",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    3.14,
+    "glyph/25/0/12/9/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.49,
+    "glyph/25/0/12/9/2",
+    "written",
+    "written"
+   ],
+   "width_sp": 0.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): text letter",
+   "crop_page_px": [
+    4959,
+    3497,
+    5403,
+    3816
+   ],
+   "scale": 2.027,
+   "staff": "staff/25/0/12",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    5168.9,
+    3539.0,
+    5192.8,
+    3545.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    647
+   ]
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/14/1/11/8/2",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    66.14,
+    "glyph/14/1/11/4/3",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "nearest_head_to_right_end": [
+    67.1,
+    "glyph/14/1/11/4/3",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "width_sp": 1.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): notehead",
+   "crop_page_px": [
+    4923,
+    6829,
+    5363,
+    7145
+   ],
+   "scale": 2.045,
+   "staff": "staff/14/1/11",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    5129.9,
+    6870.0,
+    5156.5,
+    6874.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    646
+   ]
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/25/1/10/6/18",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.91,
+    "glyph/25/1/10/6/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    5.75,
+    "glyph/25/1/10/6/10",
+    "written",
+    "written"
+   ],
+   "width_sp": 11.8,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): hairpin",
+   "crop_page_px": [
+    3700,
+    6720,
+    4240,
+    7034
+   ],
+   "scale": 1.667,
+   "staff": "staff/25/1/10",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    3808.8,
+    6761.0,
+    4131.2,
+    6782.3
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    523
+   ]
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/12/0/11/2/4",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_start_head",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    4.38,
+    "glyph/12/0/11/2/1",
+    "NOT written",
+    "not_a_notehead:claimed_by:page_claim"
+   ],
+   "nearest_head_to_right_end": [
+    4.12,
+    "glyph/12/0/11/2/1",
+    "NOT written",
+    "not_a_notehead:claimed_by:page_claim"
+   ],
+   "width_sp": 1.5,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): notehead",
+   "crop_page_px": [
+    1365,
+    2841,
+    1809,
+    3160
+   ],
+   "scale": 2.027,
+   "staff": "staff/12/0/11",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    1566.3,
+    2883.0,
+    1608.0,
+    2893.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    647
+   ]
+  }
+ ]
+}

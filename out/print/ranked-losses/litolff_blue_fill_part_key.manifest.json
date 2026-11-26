@@ -1,0 +1,504 @@
+{
+ "plate": "litolff",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/litolff_blue_fill_part_key.png",
+ "row": "blue",
+ "cause": "note / fill_part_key",
+ "n_cases_in_cause": 192,
+ "n_cases_with_a_box": 192,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/8/1/9/18/5",
+   "page": 8,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    2435,
+    3330,
+    2659,
+    3458
+   ],
+   "scale": 4.911,
+   "staff": "staff/8/1/9",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    2536.8,
+    3415.3,
+    2558.2,
+    3436.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A-12 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P11",
+    "measure": "145"
+   }
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/6/1/3/9/4",
+   "page": 6,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    2070,
+    2404,
+    2287,
+    2528
+   ],
+   "scale": 5.069,
+   "staff": "staff/6/1/3",
+   "staff_space_px": 15.5,
+   "mark_box_page_px": [
+    2167.4,
+    2424.9,
+    2189.4,
+    2446.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A-13 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P4",
+    "measure": "101"
+   }
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/8/1/8/13/5",
+   "page": 8,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    1669,
+    3175,
+    1893,
+    3303
+   ],
+   "scale": 4.911,
+   "staff": "staff/8/1/8",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    1770.3,
+    3246.4,
+    1792.5,
+    3266.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A-13 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P10",
+    "measure": "140"
+   }
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/6/1/10/0/2",
+   "page": 6,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    471,
+    3386,
+    691,
+    3530
+   ],
+   "scale": 5.0,
+   "staff": "staff/6/1/10",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    569.8,
+    3402.0,
+    592.1,
+    3422.1
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    720
+   ],
+   "what_the_file_writes": {
+    "note": "B-13 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P11",
+    "measure": "92"
+   }
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/6/1/3/11/1",
+   "page": 6,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    2351,
+    2404,
+    2568,
+    2528
+   ],
+   "scale": 5.069,
+   "staff": "staff/6/1/3",
+   "staff_space_px": 15.5,
+   "mark_box_page_px": [
+    2445.7,
+    2422.6,
+    2473.9,
+    2444.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A-13 half no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P4",
+    "measure": "103"
+   }
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/8/1/8/13/3",
+   "page": 8,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    1697,
+    3175,
+    1921,
+    3303
+   ],
+   "scale": 4.911,
+   "staff": "staff/8/1/8",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    1797.5,
+    3245.4,
+    1820.0,
+    3266.8
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A-13 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P10",
+    "measure": "140"
+   }
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/11/1/3/12/1",
+   "page": 11,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    1958,
+    2334,
+    2178,
+    2460
+   ],
+   "scale": 5.0,
+   "staff": "staff/11/1/3",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2059.4,
+    2410.4,
+    2076.8,
+    2427.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": {
+    "note": "A-12 half no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P4",
+    "measure": "232"
+   }
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/2/1/9/10/1",
+   "page": 2,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    1865,
+    3369,
+    2089,
+    3497
+   ],
+   "scale": 4.911,
+   "staff": "staff/2/1/9",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    1965.9,
+    3415.1,
+    1988.8,
+    3436.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "E-14 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P10",
+    "measure": "44"
+   }
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/4/1/10/10/0",
+   "page": 4,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    1830,
+    3497,
+    2054,
+    3625
+   ],
+   "scale": 4.911,
+   "staff": "staff/4/1/10",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    1930.7,
+    3565.6,
+    1953.9,
+    3587.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "B-12 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P11",
+    "measure": "74"
+   }
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/4/1/10/2/0",
+   "page": 4,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    669,
+    3495,
+    893,
+    3625
+   ],
+   "scale": 4.911,
+   "staff": "staff/4/1/10",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    770.8,
+    3510.6,
+    792.1,
+    3530.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    638
+   ],
+   "what_the_file_writes": {
+    "note": "B-13 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P11",
+    "measure": "66"
+   }
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/4/1/1/6/8",
+   "page": 4,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    1307,
+    2284,
+    1527,
+    2410
+   ],
+   "scale": 5.0,
+   "staff": "staff/4/1/1",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1404.8,
+    2310.7,
+    1429.4,
+    2331.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": {
+    "note": "E-15 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P2",
+    "measure": "70"
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/4/0/6/12/3",
+   "page": 4,
+   "reason_word": "fill_part_key",
+   "sub_reason": null,
+   "crop_page_px": [
+    2072,
+    1265,
+    2292,
+    1418
+   ],
+   "scale": 5.0,
+   "staff": "staff/4/0/6",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2170.6,
+    1280.5,
+    2193.2,
+    1302.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    765
+   ],
+   "what_the_file_writes": {
+    "note": "B-15 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "key_signature",
+      "rule": "fill_part_key",
+      "stage": "INFER"
+     }
+    ],
+    "part": "P8",
+    "measure": "61"
+   }
+  }
+ ]
+}

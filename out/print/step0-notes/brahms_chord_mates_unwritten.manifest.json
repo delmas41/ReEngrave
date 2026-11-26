@@ -1,0 +1,1413 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/step0-notes/sheets/brahms_chord_mates_unwritten.png",
+ "set": "chord_mates_unwritten",
+ "n_population_of_this_kind": 31,
+ "seed": 20261126,
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/8/0/2/4/10",
+   "page": 8,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    2421,
+    1113,
+    2806,
+    1445
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    2593.6,
+    1264.1,
+    2632.9,
+    1293.8
+   ],
+   "staff": "staff/8/0/2",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 462.0
+     },
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1181.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/8/0/2/4/10"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/5/1/10/7/2",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4197,
+    6260,
+    4582,
+    6660
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4369.7,
+    6475.6,
+    4408.7,
+    6508.9
+   ],
+   "staff": "staff/5/1/10",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [
+       15
+      ],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 669.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/10/7/2",
+    "glyph/5/1/11/7/2"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/19/1/8/7/4",
+   "page": 19,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4500,
+    5923,
+    4885,
+    6269
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4672.6,
+    6088.3,
+    4712.0,
+    6117.4
+   ],
+   "staff": "staff/19/1/8",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1081.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/19/1/8/7/4",
+    "glyph/19/1/9/7/11"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/4/0/9/9/5",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4678,
+    2591,
+    5063,
+    2999
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4852.7,
+    2817.6,
+    4889.0,
+    2847.6
+   ],
+   "staff": "staff/4/0/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": []
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/10/9/13",
+    "glyph/4/0/9/9/5"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/5/1/9/6/8",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    3776,
+    5878,
+    4157,
+    6236
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3946.6,
+    6027.5,
+    3986.6,
+    6062.6
+   ],
+   "staff": "staff/5/1/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 88.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/9/6/8"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/4/0/1/10/10",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4954,
+    585,
+    5342,
+    923
+   ],
+   "scale": 2.32,
+   "staff_space_px": 27.75,
+   "box_page_px": [
+    5125.9,
+    737.9,
+    5170.3,
+    770.4
+   ],
+   "staff": "staff/4/0/1",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 3.0,
+     "written": 3.0,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 669.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/0/10/17",
+    "glyph/4/0/1/10/10"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/5/1/9/7/7",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4198,
+    6018,
+    4579,
+    6362
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    4368.6,
+    6177.6,
+    4408.1,
+    6212.0
+   ],
+   "staff": "staff/5/1/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1025.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/9/7/7"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/12/1/0/0/14",
+   "page": 12,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    1007,
+    3957,
+    1392,
+    4288
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1184.3,
+    4118.3,
+    1214.2,
+    4136.4
+   ],
+   "staff": "staff/12/1/0",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 899.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/12/1/0/0/14"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/4/0/9/9/7",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4678,
+    2535,
+    5063,
+    2872
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4853.0,
+    2686.7,
+    4889.0,
+    2720.5
+   ],
+   "staff": "staff/4/0/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": []
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/9/9/7"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/4/0/1/10/12",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4955,
+    547,
+    5343,
+    920
+   ],
+   "scale": 2.32,
+   "staff_space_px": 27.75,
+   "box_page_px": [
+    5127.8,
+    699.9,
+    5170.3,
+    732.6
+   ],
+   "staff": "staff/4/0/1",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 3.0,
+     "written": 3.0,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 669.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/0/10/14",
+    "glyph/4/0/1/10/12"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/19/1/8/7/2",
+   "page": 19,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4501,
+    5781,
+    4886,
+    6143
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4673.8,
+    5932.1,
+    4713.4,
+    5965.6
+   ],
+   "staff": "staff/19/1/8",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1081.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/19/1/7/7/6",
+    "glyph/19/1/8/7/2"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/8/0/1/3/3",
+   "page": 8,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    1998,
+    746,
+    2397,
+    1094
+   ],
+   "scale": 2.256,
+   "staff_space_px": 28.5,
+   "box_page_px": [
+    2177.8,
+    902.7,
+    2217.7,
+    937.2
+   ],
+   "staff": "staff/8/0/1",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 312.0
+     },
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1076.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/8/0/1/3/3"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/5/1/10/7/8",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4198,
+    6203,
+    4583,
+    6537
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4371.1,
+    6354.1,
+    4410.9,
+    6386.2
+   ],
+   "staff": "staff/5/1/10",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 256.0
+     },
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [
+       15
+      ],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1088.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/10/7/8"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/4/0/9/9/8",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4679,
+    2469,
+    5064,
+    2811
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4853.0,
+    2619.9,
+    4890.6,
+    2652.1
+   ],
+   "staff": "staff/4/0/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": []
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/9/9/8"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/5/1/9/7/12",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4199,
+    5930,
+    4581,
+    6264
+   ],
+   "scale": 2.356,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    4368.8,
+    6079.8,
+    4410.8,
+    6114.4
+   ],
+   "staff": "staff/5/1/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1025.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/9/7/12"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/8/0/1/3/5",
+   "page": 8,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    1998,
+    774,
+    2397,
+    1122
+   ],
+   "scale": 2.256,
+   "staff_space_px": 28.5,
+   "box_page_px": [
+    2178.1,
+    931.2,
+    2217.4,
+    965.4
+   ],
+   "staff": "staff/8/0/1",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 312.0
+     },
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1076.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/8/0/1/3/5"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/4/0/1/10/21",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4973,
+    672,
+    5362,
+    994
+   ],
+   "scale": 2.314,
+   "staff_space_px": 27.75,
+   "box_page_px": [
+    5151.4,
+    824.2,
+    5183.6,
+    841.7
+   ],
+   "staff": "staff/4/0/1",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [
+       13,
+       16
+      ],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 844.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/1/10/21"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/0/0/13/1/1",
+   "page": 0,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    2025,
+    6630,
+    2473,
+    7021
+   ],
+   "scale": 2.009,
+   "staff_space_px": 32.0,
+   "box_page_px": [
+    2227.5,
+    6806.0,
+    2271.4,
+    6844.8
+   ],
+   "staff": "staff/0/0/13",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 3.0,
+     "written": 3.0,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 1,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 1,
+      "possible": 1,
+      "causes": [],
+      "beams": [
+       13
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": true,
+      "thick_at_stem": [],
+      "tip_y": 506.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/0/0/13/1/1"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/19/1/2/2/9",
+   "page": 19,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    1857,
+    4464,
+    2245,
+    4805
+   ],
+   "scale": 2.32,
+   "staff_space_px": 27.75,
+   "box_page_px": [
+    2031.7,
+    4616.4,
+    2070.5,
+    4651.9
+   ],
+   "staff": "staff/19/1/2",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 294.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/19/1/2/2/9"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/5/1/9/6/14",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    3777,
+    5932,
+    4159,
+    6265
+   ],
+   "scale": 2.356,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3947.4,
+    6081.4,
+    3988.3,
+    6115.0
+   ],
+   "staff": "staff/5/1/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 88.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/9/6/14"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/5/1/9/6/1",
+   "page": 5,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    3777,
+    6018,
+    4158,
+    6362
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3949.0,
+    6179.3,
+    3986.1,
+    6212.5
+   ],
+   "staff": "staff/5/1/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 88.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/5/1/9/6/1"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/12/1/0/0/6",
+   "page": 12,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    1006,
+    3778,
+    1391,
+    4177
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1179.8,
+    3929.4,
+    1217.2,
+    3961.2
+   ],
+   "staff": "staff/12/1/0",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 633.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/12/1/0/0/6"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/19/1/8/7/7",
+   "page": 19,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4499,
+    5864,
+    4884,
+    6201
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4673.2,
+    6015.4,
+    4709.2,
+    6049.8
+   ],
+   "staff": "staff/19/1/8",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 0,
+      "causes": [],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 1081.0
+     }
+    ]
+   },
+   "chord_cluster_members": [
+    "glyph/19/1/8/7/7"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/4/0/9/9/10",
+   "page": 4,
+   "reason_word": "chord_value_undecided",
+   "sub_reason": "head_and_marks",
+   "crop_page_px": [
+    4678,
+    2591,
+    5063,
+    2942
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4852.1,
+    2758.8,
+    4888.4,
+    2790.7
+   ],
+   "staff": "staff/4/0/9",
+   "record_duration": {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "value": {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    },
+    "candidates": []
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "read",
+    "certain": 0,
+    "possible": 0,
+    "stems": []
+   },
+   "chord_cluster_members": [
+    "glyph/4/0/9/9/10"
+   ],
+   "export_fate": "chord_value_undecided: the file refuses every head of a stem whose heads were decided with different values"
+  }
+ ],
+ "note": "our_reading per tile is NOT filled except where stated; every cause_class and record field is from the 20261123-night record; the question to put to Sean is in questions.txt"
+}

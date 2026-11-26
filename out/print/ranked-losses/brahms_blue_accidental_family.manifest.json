@@ -1,0 +1,504 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/brahms_blue_accidental_family.png",
+ "row": "blue",
+ "cause": "note / accidental_family",
+ "n_cases_in_cause": 145,
+ "n_cases_with_a_box": 133,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/25/0/13/3/7",
+   "page": 25,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2508,
+    3870,
+    2889,
+    4088
+   ],
+   "scale": 2.887,
+   "staff": "staff/25/0/13",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    2679.7,
+    3960.7,
+    2716.8,
+    3995.8
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "D-13 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P14",
+    "measure": "137"
+   }
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/19/1/9/5/7",
+   "page": 19,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    3322,
+    6132,
+    3703,
+    6350
+   ],
+   "scale": 2.887,
+   "staff": "staff/19/1/9",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    3493.3,
+    6239.0,
+    3531.4,
+    6271.2
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A14 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P11",
+    "measure": "130"
+   }
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/19/1/1/1/1",
+   "page": 19,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    1227,
+    4294,
+    1608,
+    4512
+   ],
+   "scale": 2.887,
+   "staff": "staff/19/1/1",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    1398.2,
+    4361.3,
+    1436.4,
+    4393.1
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "D-15 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P2",
+    "measure": "126"
+   }
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/19/1/8/3/1",
+   "page": 19,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2277,
+    5923,
+    2662,
+    6143
+   ],
+   "scale": 2.857,
+   "staff": "staff/19/1/8",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    2448.2,
+    5989.3,
+    2491.4,
+    6022.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "D15 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P10",
+    "measure": "128"
+   }
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/4/1/11/6/8",
+   "page": 4,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    3927,
+    6512,
+    4315,
+    6734
+   ],
+   "scale": 2.835,
+   "staff": "staff/4/1/11",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    4102.4,
+    6625.7,
+    4139.3,
+    6653.2
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "B3 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P12",
+    "measure": "25"
+   }
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/19/0/1/0/5",
+   "page": 19,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    1029,
+    705,
+    1414,
+    944
+   ],
+   "scale": 2.857,
+   "staff": "staff/19/0/1",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    1200.1,
+    732.6,
+    1242.2,
+    766.9
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    683
+   ],
+   "what_the_file_writes": {
+    "note": "A5 quarter dotted no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P2",
+    "measure": "114"
+   }
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/19/0/3/0/6",
+   "page": 19,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    1295,
+    1230,
+    1677,
+    1448
+   ],
+   "scale": 2.88,
+   "staff": "staff/19/0/3",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    1467.8,
+    1268.2,
+    1504.3,
+    1302.4
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    628
+   ],
+   "what_the_file_writes": {
+    "note": "A3 16th no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P4",
+    "measure": "114"
+   }
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/14/1/3/0/0",
+   "page": 14,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    792,
+    4888,
+    1174,
+    5106
+   ],
+   "scale": 2.88,
+   "staff": "staff/14/1/3",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    963.7,
+    4915.9,
+    1002.4,
+    4947.1
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    628
+   ],
+   "what_the_file_writes": {
+    "note": "B3 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P4",
+    "measure": "105"
+   }
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/12/0/9/13/1",
+   "page": 12,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    4935,
+    2482,
+    5324,
+    2704
+   ],
+   "scale": 2.828,
+   "staff": "staff/12/0/9",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    5111.0,
+    2542.7,
+    5148.1,
+    2576.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    628
+   ],
+   "what_the_file_writes": {
+    "note": "D-15 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P10",
+    "measure": "84"
+   }
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/19/1/1/4/10",
+   "page": 19,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2678,
+    4294,
+    3060,
+    4512
+   ],
+   "scale": 2.88,
+   "staff": "staff/19/1/1",
+   "staff_space_px": 27.25,
+   "mark_box_page_px": [
+    2849.2,
+    4347.4,
+    2888.5,
+    4379.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    628
+   ],
+   "what_the_file_writes": {
+    "note": "E-15 quarter dotted no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P2",
+    "measure": "129"
+   }
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/25/0/4/2/4",
+   "page": 25,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2052,
+    1563,
+    2441,
+    1790
+   ],
+   "scale": 2.828,
+   "staff": "staff/25/0/4",
+   "staff_space_px": 27.75,
+   "mark_box_page_px": [
+    2227.9,
+    1591.1,
+    2264.8,
+    1624.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    642
+   ],
+   "what_the_file_writes": {
+    "note": "B-13 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P5",
+    "measure": "136"
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/8/1/9/6/4",
+   "page": 8,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    3040,
+    6586,
+    3425,
+    6806
+   ],
+   "scale": 2.857,
+   "staff": "staff/8/1/9",
+   "staff_space_px": 27.5,
+   "mark_box_page_px": [
+    3210.5,
+    6730.4,
+    3254.2,
+    6765.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "G-12 half no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P13",
+    "measure": "65"
+   }
+  }
+ ]
+}

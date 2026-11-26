@@ -1,0 +1,1537 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/step0-notes/sheets/brahms_beams_undecided_still_unwritten.png",
+ "set": "beams_undecided_still_unwritten",
+ "n_population_of_this_kind": 31,
+ "seed": 20261126,
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/8/0/5/3/2",
+   "page": 8,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    2002,
+    1951,
+    2394,
+    2293
+   ],
+   "scale": 2.296,
+   "staff_space_px": 28.0,
+   "box_page_px": [
+    2177.6,
+    2105.2,
+    2218.5,
+    2138.8
+   ],
+   "staff": "staff/8/0/5",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 918.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/8/0/5/3/1",
+   "page": 8,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    2001,
+    1921,
+    2393,
+    2263
+   ],
+   "scale": 2.296,
+   "staff_space_px": 28.0,
+   "box_page_px": [
+    2177.6,
+    2075.2,
+    2217.1,
+    2108.8
+   ],
+   "staff": "staff/8/0/5",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 918.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/4/0/13/5/0",
+   "page": 4,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    2636,
+    3555,
+    3021,
+    3891
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    2810.3,
+    3706.5,
+    2846.6,
+    3739.8
+   ],
+   "staff": "staff/4/0/13",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 888.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/19/0/12/0/21",
+   "page": 19,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1036,
+    3195,
+    1421,
+    3529
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1209.3,
+    3346.3,
+    1247.9,
+    3377.5
+   ],
+   "staff": "staff/19/0/12",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "mark_at_bare_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [
+       27
+      ],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 537.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a mark at a bare tip"
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/25/0/11/0/0",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    940,
+    3259,
+    1325,
+    3596
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1112.8,
+    3410.7,
+    1152.4,
+    3445.0
+   ],
+   "staff": "staff/25/0/11",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "doubt"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [
+       36
+      ],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 668.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a stroke at the tip is in doubt (beam or other ink)"
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/4/1/12/5/1",
+   "page": 4,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    3617,
+    6651,
+    3998,
+    6984
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3788.3,
+    6800.7,
+    3826.4,
+    6834.5
+   ],
+   "staff": "staff/4/1/12",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      0.5,
+      1,
+      2.0
+     ],
+     [
+      0.25,
+      2,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "read",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 1,
+    "possible": 2,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 1,
+      "possible": 2,
+      "causes": [
+       "thick_at_stem"
+      ],
+      "beams": [
+       10
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": true,
+      "thick_at_stem": [
+       {
+        "stroke": 10,
+        "here": 1.354,
+        "corrected": 0.854,
+        "median": 0.766
+       }
+      ],
+      "tip_y": 887.0
+     }
+    ]
+   },
+   "cause_class": "beam joined, thick at stem: one beam or two"
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/5/0/3/5/1",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    3619,
+    1066,
+    4001,
+    1440
+   ],
+   "scale": 2.356,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3790.4,
+    1215.8,
+    3829.9,
+    1252.0
+   ],
+   "staff": "staff/5/0/3",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 823.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/5/0/3/5/2",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    3619,
+    1163,
+    4000,
+    1497
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3789.8,
+    1313.0,
+    3829.0,
+    1347.5
+   ],
+   "staff": "staff/5/0/3",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 823.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/19/0/4/0/6",
+   "page": 19,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1215,
+    1449,
+    1600,
+    1785
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1388.8,
+    1600.3,
+    1425.7,
+    1634.1
+   ],
+   "staff": "staff/19/0/4",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      0.5,
+      1,
+      2.0
+     ],
+     [
+      0.25,
+      2,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "read",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 1,
+    "possible": 2,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 1,
+      "possible": 2,
+      "causes": [
+       "thick_at_stem"
+      ],
+      "beams": [
+       35
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": true,
+      "thick_at_stem": [
+       {
+        "stroke": 35,
+        "here": 1.417,
+        "corrected": 0.917,
+        "median": 1.23
+       }
+      ],
+      "tip_y": 215.0
+     }
+    ]
+   },
+   "cause_class": "beam joined, thick at stem: one beam or two"
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/5/0/1/7/20",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    5223,
+    652,
+    5608,
+    979
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    5401.3,
+    802.9,
+    5430.2,
+    827.5
+   ],
+   "staff": "staff/5/0/1",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      1.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "silent",
+    "certain": null,
+    "possible": null,
+    "stems": []
+   },
+   "cause_class": "no stem in the stroke map; cv stem decided/one_stem"
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/25/0/11/0/10",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    879,
+    3217,
+    1264,
+    3554
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1053.7,
+    3368.7,
+    1090.3,
+    3402.3
+   ],
+   "staff": "staff/25/0/11",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "doubt"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [
+       36
+      ],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 591.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a stroke at the tip is in doubt (beam or other ink)"
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/25/0/11/1/4",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1608,
+    3176,
+    1993,
+    3540
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1781.5,
+    3327.2,
+    1819.4,
+    3362.3
+   ],
+   "staff": "staff/25/0/11",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "doubt"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [
+       29
+      ],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 812.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a stroke at the tip is in doubt (beam or other ink)"
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/4/1/12/5/3",
+   "page": 4,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    3569,
+    6669,
+    3951,
+    6997
+   ],
+   "scale": 2.356,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    3740.9,
+    6819.0,
+    3779.6,
+    6847.3
+   ],
+   "staff": "staff/4/1/12",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      0.5,
+      1,
+      2.0
+     ],
+     [
+      0.25,
+      2,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "read",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 1,
+    "possible": 2,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 1,
+      "possible": 2,
+      "causes": [
+       "thick_at_stem"
+      ],
+      "beams": [
+       10
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": true,
+      "thick_at_stem": [
+       {
+        "stroke": 10,
+        "here": 1.125,
+        "corrected": 0.875,
+        "median": 0.766
+       }
+      ],
+      "tip_y": 900.0
+     }
+    ]
+   },
+   "cause_class": "beam joined, thick at stem: one beam or two"
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/8/0/3/5/6",
+   "page": 8,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    2806,
+    1362,
+    3195,
+    1697
+   ],
+   "scale": 2.314,
+   "staff_space_px": 27.75,
+   "box_page_px": [
+    2980.5,
+    1515.1,
+    3020.5,
+    1544.2
+   ],
+   "staff": "staff/8/0/3",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "mark_at_bare_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [
+       31
+      ],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 344.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a mark at a bare tip"
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/5/1/7/2/0",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1923,
+    5496,
+    2308,
+    5833
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    2096.1,
+    5646.9,
+    2135.7,
+    5681.8
+   ],
+   "staff": "staff/5/1/7",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.5,
+      0,
+      2.0
+     ],
+     [
+      0.75,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "reader_declined",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 200.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/25/0/9/0/2",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    882,
+    2652,
+    1263,
+    2986
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    1053.7,
+    2802.2,
+    1091.8,
+    2836.2
+   ],
+   "staff": "staff/25/0/9",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      1.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "silent",
+    "certain": null,
+    "possible": null,
+    "stems": []
+   },
+   "cause_class": "no stem in the stroke map; cv stem decided/one_stem"
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/5/0/1/7/6",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    5254,
+    554,
+    5639,
+    915
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    5422.9,
+    705.2,
+    5470.3,
+    739.7
+   ],
+   "staff": "staff/5/0/1",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      0.5,
+      1,
+      2.0
+     ],
+     [
+      0.25,
+      2,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "read",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 1,
+    "possible": 2,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 1,
+      "possible": 2,
+      "causes": [
+       "thick_at_stem"
+      ],
+      "beams": [
+       13
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": true,
+      "thick_at_stem": [
+       {
+        "stroke": 13,
+        "here": 1.375,
+        "corrected": 0.875,
+        "median": 1.289
+       }
+      ],
+      "tip_y": 505.0
+     }
+    ]
+   },
+   "cause_class": "beam joined, thick at stem: one beam or two"
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/8/0/2/12/13",
+   "page": 8,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4982,
+    1062,
+    5367,
+    1451
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    5157.0,
+    1213.5,
+    5191.1,
+    1299.8
+   ],
+   "staff": "staff/8/0/2",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      1.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "silent",
+    "certain": null,
+    "possible": null,
+    "stems": []
+   },
+   "cause_class": "no stem in the stroke map; cv stem decided/one_stem"
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/25/0/11/1/5",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1663,
+    3260,
+    2048,
+    3597
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1835.4,
+    3411.0,
+    1875.8,
+    3445.9
+   ],
+   "staff": "staff/25/0/11",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "doubt"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [
+       29
+      ],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 925.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a stroke at the tip is in doubt (beam or other ink)"
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/25/0/9/1/12",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1665,
+    2694,
+    2047,
+    3026
+   ],
+   "scale": 2.356,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    1836.0,
+    2844.1,
+    1876.4,
+    2875.7
+   ],
+   "staff": "staff/25/0/9",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      0.5,
+      1,
+      2.0
+     ],
+     [
+      0.25,
+      2,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "read",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 1,
+    "possible": 2,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 1,
+      "possible": 2,
+      "causes": [
+       "doubt"
+      ],
+      "beams": [
+       1
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [
+       33
+      ],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 857.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a stroke at the tip is in doubt (beam or other ink)"
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/25/0/11/1/1",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    1375,
+    3189,
+    1760,
+    3540
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    1549.9,
+    3340.6,
+    1585.7,
+    3375.0
+   ],
+   "staff": "staff/25/0/11",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "thin_line_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 812.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a thin line at the tip (beam or line?)"
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/25/0/9/0/6",
+   "page": 25,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    937,
+    2694,
+    1318,
+    3025
+   ],
+   "scale": 2.362,
+   "staff_space_px": 27.25,
+   "box_page_px": [
+    1108.2,
+    2844.2,
+    1146.7,
+    2875.1
+   ],
+   "staff": "staff/25/0/9",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "claimed_ink_at_tip"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 613.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; ink at the stem tip claimed by another reader"
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/5/0/1/6/6",
+   "page": 5,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4678,
+    582,
+    5063,
+    919
+   ],
+   "scale": 2.338,
+   "staff_space_px": 27.5,
+   "box_page_px": [
+    4850.3,
+    733.6,
+    4890.3,
+    767.9
+   ],
+   "staff": "staff/5/0/1",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      0.5,
+      1,
+      2.0
+     ],
+     [
+      0.25,
+      2,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "read",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 1,
+    "possible": 2,
+    "stems": [
+     {
+      "side": "down",
+      "certain": 1,
+      "possible": 2,
+      "causes": [
+       "thick_at_stem"
+      ],
+      "beams": [
+       35
+      ],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [],
+      "stem_beamed": true,
+      "thick_at_stem": [
+       {
+        "stroke": 35,
+        "here": 0.875,
+        "corrected": 0.625,
+        "median": 1.296
+       }
+      ],
+      "tip_y": 615.0
+     }
+    ]
+   },
+   "cause_class": "beam joined, thick at stem: one beam or two"
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/12/0/12/12/5",
+   "page": 12,
+   "reason_word": "duration_narrowed",
+   "sub_reason": "beams_ambiguous",
+   "crop_page_px": [
+    4774,
+    3122,
+    5162,
+    3461
+   ],
+   "scale": 2.32,
+   "staff_space_px": 27.75,
+   "box_page_px": [
+    4950.1,
+    3275.0,
+    4986.1,
+    3308.5
+   ],
+   "staff": "staff/12/0/12",
+   "record_duration": {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "value": null,
+    "candidates": [
+     [
+      1.0,
+      0,
+      2.0
+     ],
+     [
+      0.5,
+      1,
+      1.0
+     ]
+    ]
+   },
+   "beam_evidence": "none_over_this_note",
+   "one_beam_count": {
+    "state": "narrowed",
+    "certain": 0,
+    "possible": 1,
+    "stems": [
+     {
+      "side": "up",
+      "certain": 0,
+      "possible": 1,
+      "causes": [
+       "doubt"
+      ],
+      "beams": [],
+      "hooks": [],
+      "stubs": [],
+      "doubt": [
+       51
+      ],
+      "stem_beamed": false,
+      "thick_at_stem": [],
+      "tip_y": 256.0
+     }
+    ]
+   },
+   "cause_class": "no beam joined; a stroke at the tip is in doubt (beam or other ink)"
+  }
+ ],
+ "note": "our_reading per tile is NOT filled except where stated; every cause_class and record field is from the 20261123-night record; the question to put to Sean is in questions.txt"
+}

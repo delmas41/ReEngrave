@@ -1,0 +1,1324 @@
+{
+ "plate": "brahms",
+ "sheet": "brahms_red_bars_READ_only.png",
+ "question": "How many beats does each boxed bar hold, and what is its time signature?",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "bar page/system/staff/cell=[8, 0, 8, 1]",
+   "page": 8,
+   "parts": [
+    "P12"
+   ],
+   "measure": 47,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "D4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 2.0
+    }
+   ],
+   "file_counted_quarters": [
+    2.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 2,
+   "subject": "bar page/system/staff/cell=[8, 0, 9, 8]",
+   "page": 8,
+   "parts": [
+    "P13"
+   ],
+   "measure": 54,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Db4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Cb4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    2.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 3,
+   "subject": "bar page/system/staff/cell=[8, 1, 5, 9]",
+   "page": 8,
+   "parts": [
+    "P7"
+   ],
+   "measure": 68,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "whole",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 4.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    5.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "c",
+   "my_reading": "an extra note or rest is written that is not on the page",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 4,
+   "subject": "bar page/system/staff/cell=[8, 0, 7, 10]",
+   "page": 8,
+   "parts": [
+    "P11"
+   ],
+   "measure": 56,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Eb4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Eb4",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    2.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 5,
+   "subject": "bar page/system/staff/cell=[4, 1, 13, 0]",
+   "page": 4,
+   "parts": [
+    "P14"
+   ],
+   "measure": 19,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "C3",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "C3",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    4.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "c",
+   "my_reading": "an extra note or rest is written that is not on the page",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 6,
+   "subject": "bar page/system/staff/cell=[12, 1, 10, 5]",
+   "page": 12,
+   "parts": [
+    "P11"
+   ],
+   "measure": 90,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Eb5",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "note",
+     "pitch": "D5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 2.0
+    },
+    {
+     "kind": "note",
+     "pitch": "D5",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    5.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "g",
+   "my_reading": "two voices written as one",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 7,
+   "subject": "bar page/system/staff/cell=[14, 0, 1, 6]",
+   "page": 14,
+   "parts": [
+    "P2"
+   ],
+   "measure": 101,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "D5",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "note",
+     "pitch": "B5",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.75
+    }
+   ],
+   "file_counted_quarters": [
+    3.75
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "j",
+   "my_reading": "cannot tell from the print",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 8,
+   "subject": "bar page/system/staff/cell=[14, 0, 13, 4]",
+   "page": 14,
+   "parts": [
+    "P14"
+   ],
+   "measure": 99,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "G2",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "C3",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    4.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "c",
+   "my_reading": "an extra note or rest is written that is not on the page",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 9,
+   "subject": "bar page/system/staff/cell=[12, 0, 2, 9]",
+   "page": 12,
+   "parts": [
+    "P3"
+   ],
+   "measure": 80,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "F#4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "A4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "A4",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    4.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "g",
+   "my_reading": "two voices written as one",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 10,
+   "subject": "bar page/system/staff/cell=[8, 1, 9, 1]",
+   "page": 8,
+   "parts": [
+    "P13"
+   ],
+   "measure": 60,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Ab2",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "G2",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    2.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 11,
+   "subject": "bar page/system/staff/cell=[19, 0, 11, 4]",
+   "page": 19,
+   "parts": [
+    "P12"
+   ],
+   "measure": 118,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Db3",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "note",
+     "pitch": "D4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    2.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 12,
+   "subject": "bar page/system/staff/cell=[4, 0, 11, 4]",
+   "page": 4,
+   "parts": [
+    "P12"
+   ],
+   "measure": 12,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Ab4",
+     "type": "quarter",
+     "dots": 2,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.75
+    },
+    {
+     "kind": "note",
+     "pitch": "E4",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    3.25
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 13,
+   "subject": "bar page/system/staff/cell=[5, 1, 2, 7]",
+   "page": 5,
+   "parts": [
+    "P3"
+   ],
+   "measure": 43,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "F5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "E5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    4.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "c",
+   "my_reading": "an extra note or rest is written that is not on the page",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 14,
+   "subject": "bar page/system/staff/cell=[5, 1, 10, 0]",
+   "page": 5,
+   "parts": [
+    "P11"
+   ],
+   "measure": 36,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "G4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Eb5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "C5",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Ab4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    3.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "d",
+   "my_reading": "a plain note is written with the wrong value",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 15,
+   "subject": "bar page/system/staff/cell=[19, 0, 5, 6]",
+   "page": 19,
+   "parts": [
+    "P6"
+   ],
+   "measure": 120,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "E4",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "C5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "G4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "D5",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "C5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "E5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    3.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "g",
+   "my_reading": "two voices written as one",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 16,
+   "subject": "bar page/system/staff/cell=[8, 0, 6, 12]",
+   "page": 8,
+   "parts": [
+    "P10"
+   ],
+   "measure": 58,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Cb5",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Bb4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    2.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 17,
+   "subject": "bar page/system/staff/cell=[8, 0, 8, 12]",
+   "page": 8,
+   "parts": [
+    "P12"
+   ],
+   "measure": 58,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "F3",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Eb3",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    2.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 18,
+   "subject": "bar page/system/staff/cell=[8, 0, 8, 7]",
+   "page": 8,
+   "parts": [
+    "P12"
+   ],
+   "measure": 53,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "F4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    1.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "d",
+   "my_reading": "a plain note is written with the wrong value",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 19,
+   "subject": "bar page/system/staff/cell=[5, 0, 7, 1]",
+   "page": 5,
+   "parts": [
+    "P8"
+   ],
+   "measure": 29,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "C4",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "C5",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    4.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "c",
+   "my_reading": "an extra note or rest is written that is not on the page",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 20,
+   "subject": "bar page/system/staff/cell=[8, 0, 3, 3]",
+   "page": 8,
+   "parts": [
+    "P4"
+   ],
+   "measure": 49,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Ab3",
+     "type": "half",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 3.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "note",
+     "pitch": "D4",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    6.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "g",
+   "my_reading": "two voices written as one",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 21,
+   "subject": "bar page/system/staff/cell=[12, 1, 6, 7]",
+   "page": 12,
+   "parts": [
+    "P7"
+   ],
+   "measure": 92,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Bb4",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "note",
+     "pitch": "G3",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "G5",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "G3",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "G5",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "G3",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "G5",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    }
+   ],
+   "file_counted_quarters": [
+    4.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "d",
+   "my_reading": "a plain note is written with the wrong value",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 22,
+   "subject": "bar page/system/staff/cell=[4, 1, 13, 8]",
+   "page": 4,
+   "parts": [
+    "P14"
+   ],
+   "measure": 27,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "F2",
+     "type": "16th",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.25
+    },
+    {
+     "kind": "note",
+     "pitch": "Ab2",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "F3",
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    2.75
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "d",
+   "my_reading": "a plain note is written with the wrong value",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 23,
+   "subject": "bar page/system/staff/cell=[8, 1, 7, 2]",
+   "page": 8,
+   "parts": [
+    "P11"
+   ],
+   "measure": 61,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "Eb4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "Bb3",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    }
+   ],
+   "file_counted_quarters": [
+    2.5
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "e",
+   "my_reading": "a printed augmentation dot is not attached to its note",
+   "mine_not_judged": true
+  },
+  {
+   "tile": 24,
+   "subject": "bar page/system/staff/cell=[8, 0, 1, 9]",
+   "page": 8,
+   "parts": [
+    "P2"
+   ],
+   "measure": 55,
+   "meter_in_force": "6/8",
+   "meter_source": "printed at the start of the movement (first system, time signature shown in the left part of the tile); the file carries one meter, no change",
+   "file_writes_in_order_unsorted": [
+    {
+     "kind": "note",
+     "pitch": "C5",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "note",
+     "pitch": "Eb5",
+     "type": "quarter",
+     "dots": 1,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "note",
+     "pitch": "A4",
+     "type": "quarter",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 1.0
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    },
+    {
+     "kind": "rest",
+     "pitch": null,
+     "type": "eighth",
+     "dots": 0,
+     "tuplet": false,
+     "colour": "plain (black)",
+     "beats_quarters": 0.5
+    }
+   ],
+   "file_counted_quarters": [
+    5.0
+   ],
+   "file_wanted_quarters": 3.0,
+   "my_category": "g",
+   "my_reading": "two voices written as one",
+   "mine_not_judged": true
+  }
+ ]
+}

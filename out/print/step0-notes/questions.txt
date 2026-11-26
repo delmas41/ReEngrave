@@ -1,0 +1,8 @@
+Four contact sheets (24 tiles each, one orange box, a plain number above each; the boxed head is the one the file does not write).
+
+litolff_beams_undecided_still_unwritten.png / brahms_beams_undecided_still_unwritten.png
+  Question: What is each boxed note's value? (quarter, eighth, sixteenth, or "not a note")
+  (Notes the record could not settle between one beam and two, or between a beam and none, and that today's main export (with the two-beams reader) still does not write.)
+
+litolff_chord_mates_unwritten.png / brahms_chord_mates_unwritten.png
+  Question: What is each boxed head's value, and is every note on that stem the same length? (a boxed mark that is a rest or a letter: say so)

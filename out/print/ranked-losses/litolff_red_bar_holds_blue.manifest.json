@@ -1,0 +1,762 @@
+{
+ "plate": "litolff",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/litolff_red_bar_holds_blue.png",
+ "row": "red",
+ "cause": "bar holds a blue (guessed) note or rest",
+ "n_cases_in_cause": 30,
+ "n_cases_with_a_box": 30,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "8/1/12",
+   "page": 8,
+   "reason_word": "does not add up: should hold 2, counted 2.5 (quarters)",
+   "sub_reason": "bar_disagrees_with_decided",
+   "crop_page_px": [
+    1488,
+    3488,
+    1745,
+    3616
+   ],
+   "scale": 4.28,
+   "staff": "staff/8/1/10",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    1536.0,
+    3520,
+    1697.0,
+    3584
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    548
+   ],
+   "what_the_file_writes": {
+    "bar": "8/1/12",
+    "part": "P12",
+    "measure": 139,
+    "record_words": "does not add up: should hold 2, counted 2.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/8/1/10/12/4",
+      "record_status": "GUESSED",
+      "file": "B2 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/8/1/10/12/8",
+      "record_status": "READ",
+      "file": "A-13 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/8/1/10/12/6",
+      "record_status": "READ",
+      "file": "A-13 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/8/1/10/12/5",
+      "record_status": "READ",
+      "file": "A-13 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 2,
+   "subject": "16/1/2",
+   "page": 16,
+   "reason_word": "does not add up: should hold 2, counted 2.5 (quarters)",
+   "sub_reason": "accidental_family",
+   "crop_page_px": [
+    763,
+    2322,
+    1063,
+    2448
+   ],
+   "scale": 3.667,
+   "staff": "staff/16/1/2",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    810.0,
+    2354,
+    1016.0,
+    2417
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    462
+   ],
+   "what_the_file_writes": {
+    "bar": "16/1/2",
+    "part": "P3",
+    "measure": 256,
+    "record_words": "does not add up: should hold 2, counted 2.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/16/1/2/2/3",
+      "record_status": "READ",
+      "file": "D5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/16/1/2/2/11",
+      "record_status": "READ",
+      "file": "rest eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/16/1/2/2/12",
+      "record_status": "GUESSED",
+      "file": "C15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/16/1/2/2/7",
+      "record_status": "READ",
+      "file": "E5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/16/1/2/2/8",
+      "record_status": "GUESSED",
+      "file": "C15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/16/1/2/2/5",
+      "record_status": "GUESSED",
+      "file": "C15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/16/1/2/2/15",
+      "record_status": "READ",
+      "file": "E5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 3,
+   "subject": "16/1/4",
+   "page": 16,
+   "reason_word": "does not add up: should hold 2, counted 1.5 (quarters)",
+   "sub_reason": "accidental_family",
+   "crop_page_px": [
+    1087,
+    3060,
+    1362,
+    3186
+   ],
+   "scale": 4.0,
+   "staff": "staff/16/1/7",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1134.0,
+    3092,
+    1315.0,
+    3155
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    504
+   ],
+   "what_the_file_writes": {
+    "bar": "16/1/4",
+    "part": "P8",
+    "measure": 258,
+    "record_words": "does not add up: should hold 2, counted 1.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     1.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/16/1/7/4/7",
+      "record_status": "GUESSED",
+      "file": "B4 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/16/1/7/4/3",
+      "record_status": "READ",
+      "file": "G5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/16/1/7/4/5",
+      "record_status": "GUESSED",
+      "file": "B4 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/16/1/7/4/2",
+      "record_status": "READ",
+      "file": "G5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/16/1/7/4/4",
+      "record_status": "GUESSED",
+      "file": "B4 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/16/1/7/4/1",
+      "record_status": "READ",
+      "file": "G5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 4,
+   "subject": "4/0/0",
+   "page": 4,
+   "reason_word": "does not add up: should hold 2, counted 3 (quarters)",
+   "sub_reason": "fill_part_key",
+   "crop_page_px": [
+    301,
+    1292,
+    639,
+    1418
+   ],
+   "scale": 3.254,
+   "staff": "staff/4/0/6",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    348.0,
+    1323,
+    592.0,
+    1386
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    410
+   ],
+   "what_the_file_writes": {
+    "bar": "4/0/0",
+    "part": "P8",
+    "measure": 49,
+    "record_words": "does not add up: should hold 2, counted 3 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     3.0
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/4/0/6/0/7",
+      "record_status": "GUESSED",
+      "file": "E-15 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/4/0/6/0/1",
+      "record_status": "READ",
+      "file": "F5 half no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 5,
+   "subject": "6/1/7",
+   "page": 6,
+   "reason_word": "does not add up: should hold 2, counted 5.5 (quarters)",
+   "sub_reason": "whole_rest_from_ink",
+   "crop_page_px": [
+    1706,
+    2246,
+    1954,
+    2372
+   ],
+   "scale": 4.435,
+   "staff": "staff/6/1/2",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1753.0,
+    2278,
+    1907.0,
+    2341
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    559
+   ],
+   "what_the_file_writes": {
+    "bar": "6/1/7",
+    "part": "P3",
+    "measure": 99,
+    "record_words": "does not add up: should hold 2, counted 5.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     5.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/6/1/2/7/4",
+      "record_status": "READ",
+      "file": "A4 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/6/1/2/7/6",
+      "record_status": "GUESSED",
+      "file": "rest whole no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/6/1/2/7/5",
+      "record_status": "READ",
+      "file": "C5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/6/1/2/7/2",
+      "record_status": "READ",
+      "file": "D5 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 6,
+   "subject": "10/0/2",
+   "page": 10,
+   "reason_word": "does not add up: should hold 2, counted 2.5 (quarters)",
+   "sub_reason": "bar_disagrees_with_decided",
+   "crop_page_px": [
+    764,
+    1382,
+    1022,
+    1508
+   ],
+   "scale": 4.264,
+   "staff": "staff/10/0/7",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    811.0,
+    1414,
+    975.0,
+    1477
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    537
+   ],
+   "what_the_file_writes": {
+    "bar": "10/0/2",
+    "part": "P8",
+    "measure": 175,
+    "record_words": "does not add up: should hold 2, counted 2.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/10/0/7/2/0",
+      "record_status": "GUESSED",
+      "file": "G3 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/10/0/7/2/2",
+      "record_status": "READ",
+      "file": "B4 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/10/0/7/2/1",
+      "record_status": "READ",
+      "file": "B4 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/10/0/7/2/4",
+      "record_status": "READ",
+      "file": "B4 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 7,
+   "subject": "6/0/8",
+   "page": 6,
+   "reason_word": "does not add up: should hold 2, counted 1 (quarters)",
+   "sub_reason": "accidental_family",
+   "crop_page_px": [
+    1695,
+    1562,
+    1987,
+    1688
+   ],
+   "scale": 3.767,
+   "staff": "staff/6/0/8",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1742.0,
+    1593,
+    1940.0,
+    1656
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    475
+   ],
+   "what_the_file_writes": {
+    "bar": "6/0/8",
+    "part": "P11",
+    "measure": 87,
+    "record_words": "does not add up: should hold 2, counted 1 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     1.0
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/6/0/8/8/2",
+      "record_status": "GUESSED",
+      "file": "F13 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 8,
+   "subject": "10/1/10",
+   "page": 10,
+   "reason_word": "does not add up: should hold 2, counted 2.5 (quarters)",
+   "sub_reason": "fill_part_key,bar_disagrees_with_decided",
+   "crop_page_px": [
+    1987,
+    3074,
+    2229,
+    3200
+   ],
+   "scale": 4.545,
+   "staff": "staff/10/1/7",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2034.0,
+    3106,
+    2182.0,
+    3169
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    573
+   ],
+   "what_the_file_writes": {
+    "bar": "10/1/10",
+    "part": "P8",
+    "measure": 197,
+    "record_words": "does not add up: should hold 2, counted 2.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/10/1/7/10/3",
+      "record_status": "GUESSED",
+      "file": "F15 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/10/1/7/10/1",
+      "record_status": "GUESSED",
+      "file": "E-15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/10/1/7/10/7",
+      "record_status": "GUESSED",
+      "file": "E-15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/10/1/7/10/5",
+      "record_status": "GUESSED",
+      "file": "E-15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 9,
+   "subject": "8/1/2",
+   "page": 8,
+   "reason_word": "does not add up: should hold 2, counted 1 (quarters)",
+   "sub_reason": "folded_head_pitch_disagrees",
+   "crop_page_px": [
+    668,
+    3018,
+    892,
+    3146
+   ],
+   "scale": 4.911,
+   "staff": "staff/8/1/7",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    745.0,
+    3050,
+    816.0,
+    3114
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "bar": "8/1/2",
+    "part": "P9",
+    "measure": 129,
+    "record_words": "does not add up: should hold 2, counted 1 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     1.0
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/8/1/7/2/0",
+      "record_status": "GUESSED",
+      "file": "D4 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 10,
+   "subject": "6/1/9",
+   "page": 6,
+   "reason_word": "does not add up: should hold 2, counted 2.5 (quarters)",
+   "sub_reason": "fill_part_key",
+   "crop_page_px": [
+    2022,
+    2404,
+    2282,
+    2528
+   ],
+   "scale": 4.231,
+   "staff": "staff/6/1/3",
+   "staff_space_px": 15.5,
+   "mark_box_page_px": [
+    2068.0,
+    2435,
+    2236.0,
+    2497
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    525
+   ],
+   "what_the_file_writes": {
+    "bar": "6/1/9",
+    "part": "P4",
+    "measure": 101,
+    "record_words": "does not add up: should hold 2, counted 2.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/6/1/3/9/350000",
+      "record_status": "READ",
+      "file": "rest eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/6/1/3/9/7",
+      "record_status": "READ",
+      "file": "G3 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/6/1/3/9/3",
+      "record_status": "GUESSED",
+      "file": "B-13 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/6/1/3/9/4",
+      "record_status": "GUESSED",
+      "file": "A-13 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/6/1/3/9/2",
+      "record_status": "READ",
+      "file": "C4 quarter no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     },
+     {
+      "glyph": "glyph/6/1/3/9/12",
+      "record_status": "GUESSED",
+      "file": "B-13 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/6/1/3/9/1",
+      "record_status": "READ",
+      "file": "C4 eighth no dot no tuplet black (no colour attribute)",
+      "colour_attr": ""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 11,
+   "subject": "4/1/11",
+   "page": 4,
+   "reason_word": "does not add up: should hold 2, counted 1.5 (quarters)",
+   "sub_reason": "bar_sum_wrong_after_claimed_gap",
+   "crop_page_px": [
+    1934,
+    3228,
+    2179,
+    3356
+   ],
+   "scale": 4.49,
+   "staff": "staff/4/1/8",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    1982.0,
+    3260,
+    2131.0,
+    3324
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    575
+   ],
+   "what_the_file_writes": {
+    "bar": "4/1/11",
+    "part": "P9",
+    "measure": 75,
+    "record_words": "does not add up: should hold 2, counted 1.5 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     1.5
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/4/1/8/11/1",
+      "record_status": "GUESSED",
+      "file": "B-14 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/4/1/8/11/2",
+      "record_status": "GUESSED",
+      "file": "B-15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/4/1/8/11/3",
+      "record_status": "GUESSED",
+      "file": "B-15 eighth no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     }
+    ]
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "10/1/12",
+   "page": 10,
+   "reason_word": "does not add up: should hold 2, counted 1 (quarters)",
+   "sub_reason": "accidental_family",
+   "crop_page_px": [
+    2289,
+    2218,
+    2510,
+    2344
+   ],
+   "scale": 4.977,
+   "staff": "staff/10/1/1",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2346.0,
+    2249,
+    2453.0,
+    2312
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    627
+   ],
+   "what_the_file_writes": {
+    "bar": "10/1/12",
+    "part": "P2",
+    "measure": 199,
+    "record_words": "does not add up: should hold 2, counted 1 (quarters)",
+    "want_quarters": 2.0,
+    "counted_quarters": [
+     1.0
+    ],
+    "notes": [
+     {
+      "glyph": "glyph/10/1/1/12/1",
+      "record_status": "GUESSED",
+      "file": "F15 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     },
+     {
+      "glyph": "glyph/10/1/1/12/0",
+      "record_status": "GUESSED",
+      "file": "A-15 quarter no dot no tuplet blue",
+      "colour_attr": "color=\"#1F6FEB\""
+     }
+    ]
+   }
+  }
+ ]
+}

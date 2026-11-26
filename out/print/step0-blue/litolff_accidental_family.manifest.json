@@ -1,0 +1,1237 @@
+{
+ "plate": "litolff",
+ "sheet": "/private/tmp/claude-501/step0-blue/sheets/litolff_accidental_family.png",
+ "rule": "accidental_family",
+ "population_distinct_heads": 133,
+ "shown": 24,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over distinct head subjects sorted by (page, subject)",
+ "question_for_sean": "Which accidental is printed directly in front of each boxed note: sharp, flat, natural, or none?",
+ "note": "manifest is for the manager only; never shown to Sean",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/16/1/2/4/4",
+   "page": 16,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "258",
+     "pitch": "C#5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/16/1/2",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1270.7,
+    2367.7,
+    1292.9,
+    2386.9
+   ],
+   "rect_tile_px": [
+    484,
+    178,
+    663,
+    343
+   ],
+   "tile_px": [
+    923,
+    593
+   ],
+   "scale": 4.707,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "stagger_between_cutoffs",
+    "margin": -0.04,
+    "features_read_margin": null,
+    "detector_class": "accidentalSharp",
+    "detector_type": "sharp",
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/11/1/6/3/1",
+   "page": 11,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P8",
+     "measure": "223",
+     "pitch": "Db5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/11/1/6",
+   "staff_space_px": 16.0,
+   "head_box_page_px": [
+    889.5,
+    2877.9,
+    912.2,
+    2899.2
+   ],
+   "rect_tile_px": [
+    479,
+    139,
+    659,
+    311
+   ],
+   "tile_px": [
+    917,
+    593
+   ],
+   "scale": 4.63,
+   "detail": {
+    "strokes_type": "flat",
+    "strokes_why": "one_stem_with_a_bowl",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/2/1/8/7/1",
+   "page": 2,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P9",
+     "measure": "41",
+     "pitch": "E4",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/2/1/8",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1575.2,
+    3311.3,
+    1597.6,
+    3332.2
+   ],
+   "rect_tile_px": [
+    481,
+    373,
+    661,
+    546
+   ],
+   "tile_px": [
+    922,
+    621
+   ],
+   "scale": 4.703,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "no_stem",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalNatural",
+    "detector_type": "natural",
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/6/0/6/6/1",
+   "page": 6,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P9",
+     "measure": "85",
+     "pitch": "A4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/6/0/6",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1464.5,
+    1343.6,
+    1488.4,
+    1362.0
+   ],
+   "rect_tile_px": [
+    479,
+    250,
+    664,
+    410
+   ],
+   "tile_px": [
+    919,
+    588
+   ],
+   "scale": 4.666,
+   "detail": {
+    "strokes_type": "natural",
+    "strokes_why": "right_stem_lower",
+    "margin": null,
+    "features_read_margin": 0.492,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/9/1/1/3/1",
+   "page": 9,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "164",
+     "pitch": "B4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/9/1/1",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1029.3,
+    2398.2,
+    1053.2,
+    2419.3
+   ],
+   "rect_tile_px": [
+    478,
+    216,
+    663,
+    388
+   ],
+   "tile_px": [
+    919,
+    588
+   ],
+   "scale": 4.666,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "no_stem",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalNatural",
+    "detector_type": "natural",
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/10/1/2/12/2",
+   "page": 10,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "199",
+     "pitch": "Bb4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/10/1/2",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    2387.7,
+    2399.8,
+    2408.4,
+    2419.5
+   ],
+   "rect_tile_px": [
+    488,
+    218,
+    661,
+    386
+   ],
+   "tile_px": [
+    921,
+    598
+   ],
+   "scale": 4.745,
+   "detail": {
+    "strokes_type": "flat",
+    "strokes_why": "one_stem_with_a_bowl",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/10/1/1/12/1",
+   "page": 10,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "199",
+     "pitch": "F#5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/10/1/1",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    2387.4,
+    2240.7,
+    2411.0,
+    2261.6
+   ],
+   "rect_tile_px": [
+    479,
+    74,
+    663,
+    245
+   ],
+   "tile_px": [
+    921,
+    593
+   ],
+   "scale": 4.673,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "no_stem",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalSharp",
+    "detector_type": "sharp",
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/6/1/1/12/0",
+   "page": 6,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "104",
+     "pitch": "Ab5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/6/1/1",
+   "staff_space_px": 15.5,
+   "head_box_page_px": [
+    2529.0,
+    2102.0,
+    2554.6,
+    2124.5
+   ],
+   "rect_tile_px": [
+    475,
+    71,
+    668,
+    250
+   ],
+   "tile_px": [
+    924,
+    699
+   ],
+   "scale": 4.692,
+   "detail": {
+    "strokes_type": "flat",
+    "strokes_why": "one_stem_with_a_bowl",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalFlat",
+    "detector_type": "flat",
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/10/1/1/12/0",
+   "page": 10,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "199",
+     "pitch": "Ab5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/10/1/1",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    2387.3,
+    2216.2,
+    2410.4,
+    2237.7
+   ],
+   "rect_tile_px": [
+    480,
+    72,
+    662,
+    246
+   ],
+   "tile_px": [
+    918,
+    707
+   ],
+   "scale": 4.684,
+   "detail": {
+    "strokes_type": "flat",
+    "strokes_why": "one_stem_with_a_bowl",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalFlat",
+    "detector_type": "flat",
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/16/1/7/4/4",
+   "page": 16,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P8",
+     "measure": "258",
+     "pitch": "B4",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/16/1/7",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1272.4,
+    3113.3,
+    1296.9,
+    3133.9
+   ],
+   "rect_tile_px": [
+    477,
+    211,
+    664,
+    381
+   ],
+   "tile_px": [
+    922,
+    586
+   ],
+   "scale": 4.654,
+   "detail": {
+    "strokes_type": "natural",
+    "strokes_why": "right_stem_lower",
+    "margin": null,
+    "features_read_margin": 0.554,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/6/1/11/4/1",
+   "page": 6,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P12",
+     "measure": "96",
+     "pitch": "A2",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/6/1/11",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1262.4,
+    3615.0,
+    1286.5,
+    3630.1
+   ],
+   "rect_tile_px": [
+    478,
+    360,
+    664,
+    504
+   ],
+   "tile_px": [
+    923,
+    587
+   ],
+   "scale": 4.662,
+   "detail": {
+    "strokes_type": "natural",
+    "strokes_why": "right_stem_lower",
+    "margin": null,
+    "features_read_margin": 0.559,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/4/1/7/5/3",
+   "page": 4,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P8",
+     "measure": "69",
+     "pitch": "Ab5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/1/7",
+   "staff_space_px": 16.0,
+   "head_box_page_px": [
+    1300.5,
+    3097.6,
+    1326.7,
+    3120.0
+   ],
+   "rect_tile_px": [
+    475,
+    71,
+    667,
+    245
+   ],
+   "tile_px": [
+    923,
+    678
+   ],
+   "scale": 4.549,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "no_stem",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalFlat",
+    "detector_type": "flat",
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/8/0/3/15/4",
+   "page": 8,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "120",
+     "pitch": "A4",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/3",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1916.1,
+    820.7,
+    1941.4,
+    843.8
+   ],
+   "rect_tile_px": [
+    473,
+    73,
+    664,
+    253
+   ],
+   "tile_px": [
+    917,
+    746
+   ],
+   "scale": 4.632,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "one_stem_no_bowl",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalNatural",
+    "detector_type": "natural",
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/6/1/7/2/1",
+   "page": 6,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P8",
+     "measure": "94",
+     "pitch": "F#5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/6/1/7",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    914.6,
+    3042.1,
+    936.8,
+    3062.4
+   ],
+   "rect_tile_px": [
+    484,
+    76,
+    662,
+    246
+   ],
+   "tile_px": [
+    923,
+    602
+   ],
+   "scale": 4.707,
+   "detail": {
+    "strokes_type": "sharp",
+    "strokes_why": "filled_sharp_corners",
+    "margin": null,
+    "features_read_margin": 0.317,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/6/1/1/4/1",
+   "page": 6,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "96",
+     "pitch": "F#5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/6/1/1",
+   "staff_space_px": 15.5,
+   "head_box_page_px": [
+    1252.2,
+    2123.8,
+    1274.1,
+    2144.6
+   ],
+   "rect_tile_px": [
+    480,
+    72,
+    659,
+    246
+   ],
+   "tile_px": [
+    918,
+    607
+   ],
+   "scale": 4.783,
+   "detail": {
+    "strokes_type": "sharp",
+    "strokes_why": "filled_sharp_corners",
+    "margin": null,
+    "features_read_margin": 0.363,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/8/1/3/16/6",
+   "page": 8,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "143",
+     "pitch": "Ab3",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/1/3",
+   "staff_space_px": 16.0,
+   "head_box_page_px": [
+    2231.1,
+    2376.1,
+    2252.4,
+    2396.6
+   ],
+   "rect_tile_px": [
+    485,
+    75,
+    659,
+    245
+   ],
+   "tile_px": [
+    919,
+    611
+   ],
+   "scale": 4.663,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "no_stem",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalFlat",
+    "detector_type": "flat",
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/11/0/2/12/5",
+   "page": 11,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "214",
+     "pitch": "E3",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/11/0/2",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1878.9,
+    743.2,
+    1901.0,
+    763.7
+   ],
+   "rect_tile_px": [
+    481,
+    176,
+    659,
+    347
+   ],
+   "tile_px": [
+    919,
+    594
+   ],
+   "scale": 4.711,
+   "detail": {
+    "strokes_type": "natural",
+    "strokes_why": "right_stem_lower",
+    "margin": null,
+    "features_read_margin": 0.564,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/6/0/2/2/7",
+   "page": 6,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "81",
+     "pitch": "C#5",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/6/0/2",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    838.2,
+    700.8,
+    861.5,
+    721.3
+   ],
+   "rect_tile_px": [
+    479,
+    220,
+    662,
+    389
+   ],
+   "tile_px": [
+    922,
+    590
+   ],
+   "scale": 4.681,
+   "detail": {
+    "strokes_type": "sharp",
+    "strokes_why": "stems_level",
+    "margin": null,
+    "features_read_margin": 0.2,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/8/1/3/16/1",
+   "page": 8,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "143",
+     "pitch": "Ab3",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/1/3",
+   "staff_space_px": 16.0,
+   "head_box_page_px": [
+    2256.2,
+    2376.1,
+    2279.2,
+    2396.6
+   ],
+   "rect_tile_px": [
+    482,
+    75,
+    662,
+    243
+   ],
+   "tile_px": [
+    920,
+    606
+   ],
+   "scale": 4.622,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "no_stem",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "accidentalFlat",
+    "detector_type": "flat",
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/16/1/7/8/3",
+   "page": 16,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P8",
+     "measure": "262",
+     "pitch": "B4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/16/1/7",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1865.2,
+    3113.4,
+    1888.2,
+    3133.8
+   ],
+   "rect_tile_px": [
+    480,
+    214,
+    661,
+    383
+   ],
+   "tile_px": [
+    919,
+    591
+   ],
+   "scale": 4.688,
+   "detail": {
+    "strokes_type": "natural",
+    "strokes_why": "right_stem_lower",
+    "margin": null,
+    "features_read_margin": 0.558,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/9/0/11/13/0",
+   "page": 9,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P12",
+     "measure": "159",
+     "pitch": "B2",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/9/0/11",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    2318.9,
+    1984.7,
+    2340.6,
+    2005.2
+   ],
+   "rect_tile_px": [
+    481,
+    297,
+    658,
+    468
+   ],
+   "tile_px": [
+    920,
+    595
+   ],
+   "scale": 4.718,
+   "detail": {
+    "strokes_type": "natural",
+    "strokes_why": "right_stem_lower",
+    "margin": null,
+    "features_read_margin": 0.568,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "natural"
+   }
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/11/1/3/10/4",
+   "page": 11,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "230",
+     "pitch": "Ab2",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/11/1/3",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1815.3,
+    2404.5,
+    1841.0,
+    2427.1
+   ],
+   "rect_tile_px": [
+    474,
+    290,
+    666,
+    467
+   ],
+   "tile_px": [
+    920,
+    583
+   ],
+   "scale": 4.625,
+   "detail": {
+    "strokes_type": "flat",
+    "strokes_why": "one_stem_with_a_bowl",
+    "margin": null,
+    "features_read_margin": null,
+    "detector_class": "page_ink",
+    "detector_type": null,
+    "candidates_written": [],
+    "accidental_verdict": "b"
+   }
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/8/0/3/13/8",
+   "page": 8,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "118",
+     "pitch": "F#4",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/3",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1732.1,
+    842.9,
+    1758.4,
+    867.9
+   ],
+   "rect_tile_px": [
+    471,
+    74,
+    665,
+    262
+   ],
+   "tile_px": [
+    917,
+    641
+   ],
+   "scale": 4.61,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "right_stem_much_higher",
+    "margin": -0.13,
+    "features_read_margin": null,
+    "detector_class": "accidentalSharp",
+    "detector_type": "sharp",
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/8/0/3/11/6",
+   "page": 8,
+   "rule": "accidental_family",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "116",
+     "pitch": "F#4",
+     "value": "half, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "accidental",
+       "rule": "accidental_family",
+       "stage": "ADJUDICATE"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/3",
+   "staff_space_px": 15.75,
+   "head_box_page_px": [
+    1526.2,
+    848.4,
+    1553.4,
+    869.2
+   ],
+   "rect_tile_px": [
+    470,
+    71,
+    667,
+    239
+   ],
+   "tile_px": [
+    918,
+    610
+   ],
+   "scale": 4.589,
+   "detail": {
+    "strokes_type": "unclear",
+    "strokes_why": "right_stem_much_higher",
+    "margin": -0.05,
+    "features_read_margin": null,
+    "detector_class": "accidentalSharp",
+    "detector_type": "sharp",
+    "candidates_written": [],
+    "accidental_verdict": "#"
+   }
+  }
+ ]
+}

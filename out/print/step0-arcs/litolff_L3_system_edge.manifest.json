@@ -1,0 +1,1112 @@
+{
+ "plate": "litolff",
+ "sheet": "L3_system_edge",
+ "note": "manager only; nearest_head_* = (distance in staff spaces from the arc end to the head box, glyph, written or not, fate); my_category is the lane agent's own look",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/9/0/8/0/7",
+   "page": 9,
+   "kind": "old detector box (tie)",
+   "reason_word": "enters_from_previous_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    11.39,
+    "glyph/9/0/8/0/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.28,
+    "glyph/9/0/8/0/11",
+    "written",
+    "written"
+   ],
+   "width_sp": 18.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): staff header (clef/key) region, no arc",
+   "crop_page_px": [
+    298,
+    1485,
+    739,
+    1616
+   ],
+   "scale": 2.041,
+   "staff": "staff/9/0/8",
+   "staff_space_px": 15.5,
+   "arc_ink_box_page_px": [
+    375.6,
+    1508.6,
+    661.5,
+    1522.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    267
+   ]
+  },
+  {
+   "tile": 2,
+   "subject": "obs:057644",
+   "page": 2,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/2/1/4/14/8",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    5.67,
+    "glyph/2/1/4/14/8",
+    "written",
+    "written"
+   ],
+   "width_sp": 6.5,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2415,
+    2658,
+    2675,
+    2800
+   ],
+   "scale": 3.462,
+   "staff": "staff/2/1/4",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2494.0,
+    2682.0,
+    2596.0,
+    2718.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    492
+   ]
+  },
+  {
+   "tile": 3,
+   "subject": "obs:663376",
+   "page": 16,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.23,
+    "glyph/16/0/3/0/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.33,
+    "glyph/16/0/3/0/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 2.3,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, enters this system from the previous one",
+   "crop_page_px": [
+    372,
+    772,
+    624,
+    914
+   ],
+   "scale": 3.571,
+   "staff": "staff/16/0/3",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    479.0,
+    795.5,
+    516.0,
+    807.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    507
+   ]
+  },
+  {
+   "tile": 4,
+   "subject": "obs:663379",
+   "page": 16,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.34,
+    "glyph/16/1/3/0/12",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/16/1/3/0/12",
+    "written",
+    "written"
+   ],
+   "width_sp": 3.6,
+   "continuation": "matching arc piece on the neighbouring system: read, also abstained system_edge",
+   "my_category": "REAL ARC, enters this system from the previous one",
+   "crop_page_px": [
+    392,
+    2428,
+    644,
+    2580
+   ],
+   "scale": 3.571,
+   "staff": "staff/16/1/3",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    490.0,
+    2452.0,
+    546.0,
+    2479.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    543
+   ]
+  },
+  {
+   "tile": 5,
+   "subject": "obs:057643",
+   "page": 2,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/2/1/1/14/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    5.35,
+    "glyph/2/1/1/14/2",
+    "written",
+    "written"
+   ],
+   "width_sp": 6.2,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2413,
+    2204,
+    2672,
+    2372
+   ],
+   "scale": 3.475,
+   "staff": "staff/2/1/1",
+   "staff_space_px": 16.0,
+   "arc_ink_box_page_px": [
+    2493.0,
+    2228.5,
+    2592.0,
+    2265.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    584
+   ]
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/2/0/9/0/3",
+   "page": 2,
+   "kind": "old detector box (tie)",
+   "reason_word": "enters_from_previous_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.3,
+    "glyph/2/0/9/0/0",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.58,
+    "glyph/2/0/9/0/0",
+    "written",
+    "written"
+   ],
+   "width_sp": 2.9,
+   "continuation": null,
+   "my_category": "REAL ARC, enters this system from the previous one (old box only: no page run traced)",
+   "crop_page_px": [
+    363,
+    1689,
+    619,
+    1830
+   ],
+   "scale": 3.516,
+   "staff": "staff/2/0/9",
+   "staff_space_px": 16.0,
+   "arc_ink_box_page_px": [
+    468.2,
+    1712.6,
+    514.2,
+    1725.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    496
+   ]
+  },
+  {
+   "tile": 7,
+   "subject": "obs:409402",
+   "page": 11,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    3.34,
+    "glyph/11/0/1/8/3",
+    "NOT written",
+    "not_a_notehead:on_a_dynamic_letter"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/11/0/1/9/4",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "width_sp": 7.7,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    1333,
+    528,
+    1612,
+    678
+   ],
+   "scale": 3.226,
+   "staff": "staff/11/0/1",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    1412.0,
+    552.0,
+    1533.0,
+    592.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    484
+   ]
+  },
+  {
+   "tile": 8,
+   "subject": "obs:211890",
+   "page": 6,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.88,
+    "glyph/6/0/5/12/12",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "nearest_head_to_right_end": [
+    6.29,
+    "glyph/6/0/5/12/12",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "width_sp": 8.1,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2398,
+    1067,
+    2684,
+    1272
+   ],
+   "scale": 3.147,
+   "staff": "staff/6/0/5",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2477.0,
+    1091.0,
+    2605.0,
+    1156.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    645
+   ]
+  },
+  {
+   "tile": 9,
+   "subject": "obs:211845",
+   "page": 6,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.36,
+    "glyph/6/1/8/0/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.29,
+    "glyph/6/1/8/0/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 3.9,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, enters this system from the previous one",
+   "crop_page_px": [
+    386,
+    3136,
+    630,
+    3268
+   ],
+   "scale": 3.689,
+   "staff": "staff/6/1/8",
+   "staff_space_px": 15.25,
+   "arc_ink_box_page_px": [
+    479.0,
+    3159.0,
+    538.0,
+    3178.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    487
+   ]
+  },
+  {
+   "tile": 10,
+   "subject": "obs:211844",
+   "page": 6,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": {
+    "right": {
+     "unbound": "nearer_note_on_another_staff",
+     "candidates": [
+      [
+       "glyph/6/1/6/0/1",
+       "glyph/6/1/6/0/1"
+      ],
+      "glyph/6/1/7/0/2"
+     ],
+     "margin_spaces": -0.077
+    }
+   },
+   "nearest_head_to_left_end": [
+    2.75,
+    "glyph/6/1/6/0/8",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    0.08,
+    "glyph/6/1/6/0/8",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "width_sp": 2.7,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    364,
+    2858,
+    616,
+    3029
+   ],
+   "scale": 3.571,
+   "staff": "staff/6/1/6",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    469.0,
+    2991.5,
+    511.0,
+    3005.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    611
+   ]
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/10/1/5/14/5",
+   "page": 10,
+   "kind": "old detector box (tie)",
+   "reason_word": "runs_off_the_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.02,
+    "glyph/10/1/5/14/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    3.38,
+    "glyph/10/1/5/14/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 1.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): barline/stem tip",
+   "crop_page_px": [
+    2494,
+    2770,
+    2746,
+    2897
+   ],
+   "scale": 3.571,
+   "staff": "staff/10/1/5",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2609.2,
+    2867.6,
+    2630.9,
+    2873.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    454
+   ]
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/16/0/8/0/6",
+   "page": 16,
+   "kind": "old detector box (tie)",
+   "reason_word": "enters_from_previous_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.8,
+    "glyph/16/0/8/0/9",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.74,
+    "glyph/16/0/8/0/8",
+    "NOT written",
+    "not_a_notehead:stacked_head_duplicate"
+   ],
+   "width_sp": 2.7,
+   "continuation": null,
+   "my_category": "REAL ARC, enters this system from the previous one (old box only: no page run traced)",
+   "crop_page_px": [
+    371,
+    1474,
+    623,
+    1605
+   ],
+   "scale": 3.571,
+   "staff": "staff/16/0/8",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    476.5,
+    1568.6,
+    518.5,
+    1581.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    468
+   ]
+  },
+  {
+   "tile": 13,
+   "subject": "obs:057585",
+   "page": 2,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.31,
+    "glyph/2/1/2/14/13",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    5.64,
+    "glyph/2/1/2/14/13",
+    "written",
+    "written"
+   ],
+   "width_sp": 5.3,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2424,
+    2380,
+    2680,
+    2508
+   ],
+   "scale": 3.516,
+   "staff": "staff/2/1/2",
+   "staff_space_px": 16.0,
+   "arc_ink_box_page_px": [
+    2510.0,
+    2428.0,
+    2595.0,
+    2461.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 14,
+   "subject": "obs:138544",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.06,
+    "glyph/4/1/10/14/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    6.08,
+    "glyph/4/1/10/14/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 6.4,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2446,
+    3486,
+    2709,
+    3625
+   ],
+   "scale": 3.422,
+   "staff": "staff/4/1/10",
+   "staff_space_px": 16.0,
+   "arc_ink_box_page_px": [
+    2526.0,
+    3510.0,
+    2629.0,
+    3537.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    476
+   ]
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/6/1/9/0/22",
+   "page": 6,
+   "kind": "old detector box (tie)",
+   "reason_word": "enters_from_previous_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.52,
+    "glyph/6/1/9/0/14",
+    "NOT written",
+    "not_a_notehead:claimed_by:clef"
+   ],
+   "nearest_head_to_right_end": [
+    2.89,
+    "glyph/6/1/9/0/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 19.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): staff header region, no arc",
+   "crop_page_px": [
+    274,
+    3262,
+    732,
+    3394
+   ],
+   "scale": 1.965,
+   "staff": "staff/6/1/9",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    353.1,
+    3285.6,
+    652.9,
+    3299.9
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    259
+   ]
+  },
+  {
+   "tile": 16,
+   "subject": "obs:663433",
+   "page": 16,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.53,
+    "glyph/16/0/8/16/5",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "nearest_head_to_right_end": [
+    6.25,
+    "glyph/16/0/8/16/5",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "width_sp": 5.9,
+   "continuation": "matching arc piece on the neighbouring system: read, also abstained system_edge",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2446,
+    1474,
+    2698,
+    1627
+   ],
+   "scale": 3.571,
+   "staff": "staff/16/0/8",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2526.0,
+    1579.5,
+    2619.0,
+    1603.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    546
+   ]
+  },
+  {
+   "tile": 17,
+   "subject": "obs:409437",
+   "page": 11,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": {
+    "left": {
+     "unbound": "nearer_note_on_another_staff",
+     "candidates": [
+      [
+       "glyph/11/0/1/16/2",
+       "glyph/11/0/1/16/5",
+       "glyph/11/0/1/16/2"
+      ],
+      "glyph/11/0/2/16/3"
+     ],
+     "margin_spaces": -3.275
+    }
+   },
+   "nearest_head_to_left_end": [
+    8.77,
+    "glyph/11/0/1/16/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    10.11,
+    "glyph/11/0/1/16/2",
+    "written",
+    "written"
+   ],
+   "width_sp": 12.5,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2271,
+    552,
+    2626,
+    782
+   ],
+   "scale": 2.535,
+   "staff": "staff/11/0/1",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2350.0,
+    674.5,
+    2547.0,
+    758.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    583
+   ]
+  },
+  {
+   "tile": 18,
+   "subject": "obs:336492",
+   "page": 9,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": {
+    "left": {
+     "unbound": "continues_in_another_curve",
+     "candidates": [
+      "glyph/9/0/4/4/7"
+     ],
+     "margin_spaces": null
+    }
+   },
+   "nearest_head_to_left_end": [
+    35.05,
+    "glyph/9/0/4/14/4",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "nearest_head_to_right_end": [
+    25.67,
+    "glyph/9/0/4/14/4",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "width_sp": 9.4,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    1939,
+    872,
+    2230,
+    1094
+   ],
+   "scale": 3.093,
+   "staff": "staff/9/0/4",
+   "staff_space_px": 15.0,
+   "arc_ink_box_page_px": [
+    2014.0,
+    894.5,
+    2155.0,
+    922.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    687
+   ]
+  },
+  {
+   "tile": 19,
+   "subject": "obs:138542",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": {
+    "left": {
+     "unbound": "continues_in_another_curve",
+     "candidates": [
+      "glyph/4/1/9/13/3"
+     ],
+     "margin_spaces": null
+    }
+   },
+   "nearest_head_to_left_end": [
+    8.04,
+    "glyph/4/1/9/14/10",
+    "NOT written",
+    "not_a_notehead:too_narrow"
+   ],
+   "nearest_head_to_right_end": [
+    8.88,
+    "glyph/4/1/9/14/10",
+    "NOT written",
+    "not_a_notehead:too_narrow"
+   ],
+   "width_sp": 7.2,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2421,
+    3296,
+    2693,
+    3490
+   ],
+   "scale": 3.309,
+   "staff": "staff/4/1/9",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2500.0,
+    3320.0,
+    2614.0,
+    3361.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    642
+   ]
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/9/1/9/0/10",
+   "page": 9,
+   "kind": "old detector box (tie)",
+   "reason_word": "enters_from_previous_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    11.57,
+    "glyph/9/1/9/0/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.56,
+    "glyph/9/1/9/1/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 20.2,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): staff header region, no arc",
+   "crop_page_px": [
+    284,
+    3499,
+    767,
+    3627
+   ],
+   "scale": 1.863,
+   "staff": "staff/9/1/9",
+   "staff_space_px": 16.0,
+   "arc_ink_box_page_px": [
+    364.0,
+    3539.8,
+    686.7,
+    3556.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    239
+   ]
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/6/0/6/0/10",
+   "page": 6,
+   "kind": "old detector box (tie)",
+   "reason_word": "enters_from_previous_system",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    8.86,
+    "glyph/6/0/6/1/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    8.14,
+    "glyph/6/0/6/1/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 0.8,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): notehead",
+   "crop_page_px": [
+    458,
+    1282,
+    710,
+    1463
+   ],
+   "scale": 3.571,
+   "staff": "staff/6/0/6",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    577.7,
+    1436.2,
+    590.0,
+    1438.9
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    646
+   ]
+  },
+  {
+   "tile": 22,
+   "subject": "obs:663435",
+   "page": 16,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.52,
+    "glyph/16/0/3/16/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    6.74,
+    "glyph/16/0/3/16/3",
+    "NOT written",
+    "not_a_notehead:head_cut_piece"
+   ],
+   "width_sp": 6.2,
+   "continuation": "matching arc piece on the neighbouring system: read, also abstained system_edge",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2444,
+    765,
+    2700,
+    914
+   ],
+   "scale": 3.516,
+   "staff": "staff/16/0/3",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2523.0,
+    788.5,
+    2621.0,
+    813.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    524
+   ]
+  },
+  {
+   "tile": 23,
+   "subject": "obs:057572",
+   "page": 2,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.38,
+    "glyph/2/1/3/14/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    5.78,
+    "glyph/2/1/3/14/6",
+    "written",
+    "written"
+   ],
+   "width_sp": 5.4,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2430,
+    2528,
+    2682,
+    2654
+   ],
+   "scale": 3.571,
+   "staff": "staff/2/1/3",
+   "staff_space_px": 15.75,
+   "arc_ink_box_page_px": [
+    2513.0,
+    2565.5,
+    2598.0,
+    2594.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 24,
+   "subject": "obs:336540",
+   "page": 9,
+   "kind": "page-wide run",
+   "reason_word": "system_edge",
+   "unbound": {
+    "left": {
+     "unbound": "continues_in_another_curve",
+     "candidates": [
+      "glyph/9/0/4/4/7"
+     ],
+     "margin_spaces": null
+    }
+   },
+   "nearest_head_to_left_end": [
+    24.12,
+    "glyph/9/0/4/14/4",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "nearest_head_to_right_end": [
+    15.12,
+    "glyph/9/0/4/14/4",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "width_sp": 9.0,
+   "continuation": "matching arc piece on the neighbouring system: none read (next/previous page or not traced)",
+   "my_category": "REAL ARC, runs off the system to the next one",
+   "crop_page_px": [
+    2103,
+    881,
+    2388,
+    1094
+   ],
+   "scale": 3.158,
+   "staff": "staff/9/0/4",
+   "staff_space_px": 15.0,
+   "arc_ink_box_page_px": [
+    2178.0,
+    903.5,
+    2313.0,
+    928.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    673
+   ]
+  }
+ ]
+}

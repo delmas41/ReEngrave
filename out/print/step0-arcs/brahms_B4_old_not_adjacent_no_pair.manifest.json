@@ -1,0 +1,1063 @@
+{
+ "plate": "brahms",
+ "sheet": "B4_old_not_adjacent_no_pair",
+ "note": "manager only; nearest_head_* = (distance in staff spaces from the arc end to the head box, glyph, written or not, fate); my_category is the lane agent's own look",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/12/0/0/7/7",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.03,
+    "glyph/12/0/0/7/11",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "nearest_head_to_right_end": [
+    7.07,
+    "glyph/12/0/0/7/11",
+    "NOT written",
+    "not_a_notehead:clipped_fragment"
+   ],
+   "width_sp": 9.4,
+   "continuation": null,
+   "my_category": "REAL ARC (old box only: no page run traced)",
+   "crop_page_px": [
+    2907,
+    488,
+    3388,
+    797
+   ],
+   "scale": 1.871,
+   "staff": "staff/12/0/0",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    3018.0,
+    728.8,
+    3277.5,
+    755.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    578
+   ]
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/19/0/12/7/16",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.03,
+    "glyph/19/0/12/7/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.1,
+    "glyph/19/0/12/8/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 15.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3887,
+    3292,
+    4530,
+    3512
+   ],
+   "scale": 1.4,
+   "staff": "staff/19/0/12",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3997.0,
+    3340.4,
+    4419.9,
+    3370.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    308
+   ]
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/4/1/5/6/14",
+   "page": 4,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/4/1/5/6/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.97,
+    "glyph/4/1/5/6/13",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "width_sp": 2.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    4178,
+    5170,
+    4618,
+    5390
+   ],
+   "scale": 2.045,
+   "staff": "staff/4/1/5",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    4364.9,
+    5247.6,
+    4430.4,
+    5258.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/19/0/1/5/19",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.63,
+    "glyph/19/0/1/5/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.32,
+    "glyph/19/0/1/5/4",
+    "NOT written",
+    "not_a_notehead:too_narrow"
+   ],
+   "width_sp": 8.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3160,
+    724,
+    3626,
+    944
+   ],
+   "scale": 1.931,
+   "staff": "staff/19/0/1",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3269.9,
+    789.2,
+    3515.8,
+    812.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    425
+   ]
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/12/1/11/2/22",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/12/1/11/2/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/12/1/11/2/11",
+    "written",
+    "written"
+   ],
+   "width_sp": 2.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    1845,
+    6431,
+    2285,
+    6651
+   ],
+   "scale": 2.045,
+   "staff": "staff/12/1/11",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2037.8,
+    6534.9,
+    2092.0,
+    6544.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/4/1/5/6/16",
+   "page": 4,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/4/1/5/6/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.92,
+    "glyph/4/1/5/6/13",
+    "NOT written",
+    "not_a_notehead:notehead_is_a_duplicate_box"
+   ],
+   "width_sp": 2.1,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    4179,
+    5170,
+    4619,
+    5390
+   ],
+   "scale": 2.045,
+   "staff": "staff/4/1/5",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    4370.1,
+    5250.0,
+    4428.7,
+    5260.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/19/0/1/5/22",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.61,
+    "glyph/19/0/1/5/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.11,
+    "glyph/19/0/1/5/4",
+    "NOT written",
+    "not_a_notehead:too_narrow"
+   ],
+   "width_sp": 6.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3201,
+    724,
+    3641,
+    944
+   ],
+   "scale": 2.045,
+   "staff": "staff/19/0/1",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3332.9,
+    790.8,
+    3510.0,
+    813.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/25/0/3/7/17",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.76,
+    "glyph/25/0/3/7/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.64,
+    "glyph/25/0/3/7/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 6.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    4106,
+    1322,
+    4550,
+    1544
+   ],
+   "scale": 2.027,
+   "staff": "staff/25/0/3",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    4244.4,
+    1409.2,
+    4412.0,
+    1439.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/14/1/4/5/13",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.82,
+    "glyph/14/1/4/5/14",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.3,
+    "glyph/14/1/4/5/2",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 16.9,
+   "continuation": null,
+   "my_category": "REAL ARC (old box only: no page run traced)",
+   "crop_page_px": [
+    3388,
+    5115,
+    4073,
+    5335
+   ],
+   "scale": 1.314,
+   "staff": "staff/14/1/4",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3498.0,
+    5198.3,
+    3962.7,
+    5228.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    289
+   ]
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/14/1/0/5/10",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.75,
+    "glyph/14/1/0/5/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.13,
+    "glyph/14/1/0/6/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.2,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3383,
+    4189,
+    4075,
+    4409
+   ],
+   "scale": 1.301,
+   "staff": "staff/14/1/0",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3493.0,
+    4245.9,
+    3964.7,
+    4277.3
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    286
+   ]
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/4/0/4/6/17",
+   "page": 4,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.91,
+    "glyph/4/0/4/6/3",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    0.44,
+    "glyph/4/0/4/6/6",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "width_sp": 4.1,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3184,
+    1438,
+    3624,
+    1744
+   ],
+   "scale": 2.045,
+   "staff": "staff/4/0/4",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3347.7,
+    1684.1,
+    3459.7,
+    1703.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    626
+   ]
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/25/1/10/6/22",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.05,
+    "glyph/25/1/10/6/0",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.89,
+    "glyph/25/1/10/6/10",
+    "written",
+    "written"
+   ],
+   "width_sp": 15.5,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3600,
+    6816,
+    4240,
+    7034
+   ],
+   "scale": 1.406,
+   "staff": "staff/25/1/10",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    3708.5,
+    6889.9,
+    4131.2,
+    6953.9
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    307
+   ]
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/0/0/12/5/22",
+   "page": 0,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.12,
+    "glyph/0/0/12/5/7",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.29,
+    "glyph/0/0/12/6/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 18.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3980,
+    6309,
+    4812,
+    6584
+   ],
+   "scale": 1.082,
+   "staff": "staff/0/0/12",
+   "staff_space_px": 32.0,
+   "arc_ink_box_page_px": [
+    4108.3,
+    6357.4,
+    4684.0,
+    6399.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    297
+   ]
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/14/0/11/2/12",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.59,
+    "glyph/14/0/11/2/8",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    2.87,
+    "glyph/14/0/11/2/8",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 1.3,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    1718,
+    3038,
+    2154,
+    3352
+   ],
+   "scale": 2.064,
+   "staff": "staff/14/0/11",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    1918.4,
+    3079.0,
+    1953.3,
+    3086.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    648
+   ]
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/12/1/11/5/5",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.04,
+    "glyph/12/1/11/5/0",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.34,
+    "glyph/12/1/11/6/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 16.0,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3060,
+    6417,
+    3720,
+    6651
+   ],
+   "scale": 1.364,
+   "staff": "staff/12/1/11",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    3170.0,
+    6458.5,
+    3610.0,
+    6492.3
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    319
+   ]
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/25/1/10/0/33",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.86,
+    "glyph/25/1/10/0/3",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/25/1/10/0/27",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 15.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    896,
+    6816,
+    1546,
+    7034
+   ],
+   "scale": 1.385,
+   "staff": "staff/25/1/10",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    1005.3,
+    6895.1,
+    1437.4,
+    6931.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    302
+   ]
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/25/0/12/5/16",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.95,
+    "glyph/25/0/12/5/2",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.2,
+    "glyph/25/0/12/5/2",
+    "written",
+    "written"
+   ],
+   "width_sp": 2.6,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3040,
+    3594,
+    3484,
+    3816
+   ],
+   "scale": 2.027,
+   "staff": "staff/25/0/12",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    3226.3,
+    3722.4,
+    3298.2,
+    3736.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/0/0/2/4/18",
+   "page": 0,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.0,
+    "glyph/0/0/2/4/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/0/0/2/4/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 1.5,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3746,
+    2291,
+    4258,
+    2547
+   ],
+   "scale": 1.758,
+   "staff": "staff/0/0/2",
+   "staff_space_px": 32.0,
+   "arc_ink_box_page_px": [
+    3978.0,
+    2482.0,
+    4025.0,
+    2490.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/25/0/3/8/17",
+   "page": 25,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.75,
+    "glyph/25/0/3/8/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.78,
+    "glyph/25/0/3/8/6",
+    "written",
+    "written"
+   ],
+   "width_sp": 9.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    4566,
+    1322,
+    5048,
+    1544
+   ],
+   "scale": 1.867,
+   "staff": "staff/25/0/3",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    4676.5,
+    1409.7,
+    4937.4,
+    1440.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    415
+   ]
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/0/0/3/1/17",
+   "page": 0,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    3.34,
+    "glyph/0/0/3/1/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.08,
+    "glyph/0/0/3/2/0",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.2,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    1988,
+    2676,
+    2799,
+    2934
+   ],
+   "scale": 1.11,
+   "staff": "staff/0/0/3",
+   "staff_space_px": 32.25,
+   "arc_ink_box_page_px": [
+    2116.8,
+    2735.7,
+    2670.2,
+    2836.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    286
+   ]
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/14/1/3/5/14",
+   "page": 14,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    0.18,
+    "glyph/14/1/3/4/11",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "nearest_head_to_right_end": [
+    2.12,
+    "glyph/14/1/3/6/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    3383,
+    4888,
+    4077,
+    5106
+   ],
+   "scale": 1.297,
+   "staff": "staff/14/1/3",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    3492.5,
+    4979.0,
+    3968.0,
+    5005.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    283
+   ]
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/5/1/9/3/16",
+   "page": 5,
+   "kind": "old detector box (tie)",
+   "reason_word": "not_adjacent",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.46,
+    "glyph/5/1/9/3/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.09,
+    "glyph/5/1/9/4/4",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    2163,
+    6018,
+    2867,
+    6236
+   ],
+   "scale": 1.278,
+   "staff": "staff/5/1/9",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    2271.5,
+    6109.0,
+    2758.0,
+    6186.6
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    279
+   ]
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/12/1/11/2/21",
+   "page": 12,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    2.18,
+    "glyph/12/1/11/2/8",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.07,
+    "glyph/12/1/11/3/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.7,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    1765,
+    6431,
+    2472,
+    6651
+   ],
+   "scale": 1.273,
+   "staff": "staff/12/1/11",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1875.0,
+    6478.3,
+    2361.8,
+    6527.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    280
+   ]
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/19/1/10/2/24",
+   "page": 19,
+   "kind": "old detector box (tie)",
+   "reason_word": "no_pair_at_one_position",
+   "unbound": null,
+   "nearest_head_to_left_end": [
+    1.85,
+    "glyph/19/1/10/2/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.7,
+    "glyph/19/1/10/3/0",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): box around notes/rests/accidentals, no arc ink in it",
+   "crop_page_px": [
+    1645,
+    6378,
+    2358,
+    6610
+   ],
+   "scale": 1.262,
+   "staff": "staff/19/1/10",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1755.0,
+    6419.1,
+    2247.8,
+    6453.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    293
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1262 @@
+{
+ "plate": "brahms",
+ "sheet": "B5_end_far_beyond_head",
+ "note": "manager only; nearest_head_* = (distance in staff spaces from the arc end to the head box, glyph, written or not, fate); my_category is the lane agent's own look",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "obs:884076",
+   "page": 14,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/14/1/9/4/7"
+     ],
+     "margin_spaces": -0.75
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.83,
+    "glyph/14/1/9/3/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/14/1/9/4/15",
+    "NOT written",
+    "not_a_notehead:is_an_arc_tail"
+   ],
+   "width_sp": 8.4,
+   "continuation": null,
+   "my_category": "REAL ARC, end note NOT written (upstream: not_a_notehead:is_an_arc_tail)",
+   "crop_page_px": [
+    2704,
+    6445,
+    3156,
+    6665
+   ],
+   "scale": 1.991,
+   "staff": "staff/14/1/9",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2813.6,
+    6507.2,
+    3045.6,
+    6557.9
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    438
+   ]
+  },
+  {
+   "tile": 2,
+   "subject": "obs:029121",
+   "page": 0,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/0/0/11/6/13"
+     ],
+     "margin_spaces": -0.675
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.18,
+    "glyph/0/0/11/6/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.02,
+    "glyph/0/0/11/6/13",
+    "written",
+    "written"
+   ],
+   "width_sp": 18.4,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    4589,
+    5934,
+    5441,
+    6254
+   ],
+   "scale": 1.056,
+   "staff": "staff/0/0/11",
+   "staff_space_px": 32.25,
+   "arc_ink_box_page_px": [
+    4718.0,
+    6087.0,
+    5312.0,
+    6206.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    338
+   ]
+  },
+  {
+   "tile": 3,
+   "subject": "obs:508804",
+   "page": 8,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/8/1/2/4/1"
+     ],
+     "margin_spaces": -0.21
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.7,
+    "glyph/8/1/2/4/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/8/1/2/4/8",
+    "written",
+    "written"
+   ],
+   "width_sp": 3.9,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): small flag/curl near a stem",
+   "crop_page_px": [
+    2430,
+    4540,
+    2878,
+    4764
+   ],
+   "scale": 2.009,
+   "staff": "staff/8/1/2",
+   "staff_space_px": 28.0,
+   "arc_ink_box_page_px": [
+    2599.8,
+    4601.3,
+    2709.1,
+    4641.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    450
+   ]
+  },
+  {
+   "tile": 4,
+   "subject": "obs:1214788",
+   "page": 19,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/0/1/4/8"
+     ],
+     "margin_spaces": -0.136
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.05,
+    "glyph/19/0/1/3/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.0,
+    "glyph/19/0/1/4/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 13.8,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2485,
+    691,
+    3085,
+    944
+   ],
+   "scale": 1.5,
+   "staff": "staff/19/0/1",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2595.3,
+    732.2,
+    2975.2,
+    852.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    380
+   ]
+  },
+  {
+   "tile": 5,
+   "subject": "obs:508789",
+   "page": 8,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/8/0/2/3/13"
+     ],
+     "margin_spaces": -0.069
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.89,
+    "glyph/8/0/2/2/8",
+    "NOT written",
+    "duration_narrowed"
+   ],
+   "nearest_head_to_right_end": [
+    1.45,
+    "glyph/8/0/2/3/13",
+    "written",
+    "written"
+   ],
+   "width_sp": 14.1,
+   "continuation": null,
+   "my_category": "REAL ARC, end note NOT written (upstream: duration_narrowed)",
+   "crop_page_px": [
+    1538,
+    1153,
+    2144,
+    1423
+   ],
+   "scale": 1.485,
+   "staff": "staff/8/0/2",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1647.7,
+    1300.8,
+    2034.4,
+    1381.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    401
+   ]
+  },
+  {
+   "tile": 6,
+   "subject": "obs:755617",
+   "page": 12,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/12/0/13/7/1"
+     ],
+     "margin_spaces": -0.277
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.49,
+    "glyph/12/0/13/6/0",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.72,
+    "glyph/12/0/13/7/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 14.7,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2703,
+    3410,
+    3327,
+    3650
+   ],
+   "scale": 1.442,
+   "staff": "staff/12/0/13",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2812.6,
+    3451.4,
+    3216.6,
+    3552.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    346
+   ]
+  },
+  {
+   "tile": 7,
+   "subject": "obs:029122",
+   "page": 0,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/0/0/1/6/3"
+     ],
+     "margin_spaces": -0.017
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.37,
+    "glyph/0/0/1/6/1",
+    "NOT written",
+    "not_a_notehead:tremolo_slash_crosses_stem"
+   ],
+   "nearest_head_to_right_end": [
+    0.35,
+    "glyph/0/0/1/6/2",
+    "written",
+    "written"
+   ],
+   "width_sp": 17.2,
+   "continuation": null,
+   "my_category": "REAL ARC, end note NOT written (upstream: not_a_notehead:tremolo_slash_crosses_stem)",
+   "crop_page_px": [
+    4602,
+    1796,
+    5408,
+    2161
+   ],
+   "scale": 1.117,
+   "staff": "staff/0/0/1",
+   "staff_space_px": 32.0,
+   "arc_ink_box_page_px": [
+    4730.0,
+    1844.0,
+    5280.0,
+    1945.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    408
+   ]
+  },
+  {
+   "tile": 8,
+   "subject": "obs:755602",
+   "page": 12,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/12/0/12/5/1"
+     ],
+     "margin_spaces": -0.076
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.43,
+    "glyph/12/0/12/4/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.66,
+    "glyph/12/0/12/5/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 16.7,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2073,
+    3164,
+    2758,
+    3406
+   ],
+   "scale": 1.314,
+   "staff": "staff/12/0/12",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    2184.1,
+    3205.4,
+    2646.8,
+    3344.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    318
+   ]
+  },
+  {
+   "tile": 9,
+   "subject": "obs:029111",
+   "page": 0,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/0/0/11/4/16"
+     ],
+     "margin_spaces": -0.158
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.63,
+    "glyph/0/0/11/4/16",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.63,
+    "glyph/0/0/11/5/7",
+    "written",
+    "written"
+   ],
+   "width_sp": 29.6,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    3529,
+    5782,
+    4743,
+    6192
+   ],
+   "scale": 0.741,
+   "staff": "staff/0/0/11",
+   "staff_space_px": 32.25,
+   "arc_ink_box_page_px": [
+    3658.0,
+    5830.0,
+    4614.0,
+    5983.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    304
+   ]
+  },
+  {
+   "tile": 10,
+   "subject": "obs:284634",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/4/1/9/8/4"
+     ],
+     "margin_spaces": -0.849
+    }
+   },
+   "nearest_head_to_left_end": [
+    2.29,
+    "glyph/4/1/9/8/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.45,
+    "glyph/4/1/9/8/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 8.5,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    5056,
+    5971,
+    5513,
+    6250
+   ],
+   "scale": 1.969,
+   "staff": "staff/4/1/9",
+   "staff_space_px": 27.75,
+   "arc_ink_box_page_px": [
+    5166.6,
+    6012.2,
+    5402.0,
+    6080.9
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    549
+   ]
+  },
+  {
+   "tile": 11,
+   "subject": "obs:1214773",
+   "page": 19,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/1/10/2/6"
+     ],
+     "margin_spaces": -0.394
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.35,
+    "glyph/19/1/10/2/6",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.07,
+    "glyph/19/1/10/3/11",
+    "written",
+    "written"
+   ],
+   "width_sp": 13.5,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    1985,
+    6355,
+    2576,
+    6610
+   ],
+   "scale": 1.523,
+   "staff": "staff/19/1/10",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2095.2,
+    6396.3,
+    2466.4,
+    6450.5
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    388
+   ]
+  },
+  {
+   "tile": 12,
+   "subject": "obs:1214808",
+   "page": 19,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/0/6/5/1"
+     ],
+     "margin_spaces": -0.026
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.75,
+    "glyph/19/0/6/4/0",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.44,
+    "glyph/19/0/6/5/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 10.4,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2884,
+    1836,
+    3391,
+    2115
+   ],
+   "scale": 1.775,
+   "staff": "staff/19/0/6",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2994.1,
+    1877.7,
+    3281.1,
+    1929.3
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    495
+   ]
+  },
+  {
+   "tile": 13,
+   "subject": "obs:755580",
+   "page": 12,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/12/0/13/3/1"
+     ],
+     "margin_spaces": -0.723
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.65,
+    "glyph/12/0/13/2/5",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    2.1,
+    "glyph/12/0/13/3/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 16.2,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    1494,
+    3398,
+    2159,
+    3650
+   ],
+   "scale": 1.353,
+   "staff": "staff/12/0/13",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1604.0,
+    3439.3,
+    2049.4,
+    3530.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    341
+   ]
+  },
+  {
+   "tile": 14,
+   "subject": "obs:029089",
+   "page": 0,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/0/0/3/3/8"
+     ],
+     "margin_spaces": -0.245
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.64,
+    "glyph/0/0/3/3/8",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.44,
+    "glyph/0/0/3/3/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 9.7,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    3045,
+    2658,
+    3617,
+    2934
+   ],
+   "scale": 1.573,
+   "staff": "staff/0/0/3",
+   "staff_space_px": 32.25,
+   "arc_ink_box_page_px": [
+    3174.0,
+    2706.0,
+    3488.0,
+    2747.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    434
+   ]
+  },
+  {
+   "tile": 15,
+   "subject": "obs:1214705",
+   "page": 19,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/0/9/5/4"
+     ],
+     "margin_spaces": -0.006
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.1,
+    "glyph/19/0/9/4/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.87,
+    "glyph/19/0/9/5/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 12.4,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2838,
+    2546,
+    3398,
+    2795
+   ],
+   "scale": 1.607,
+   "staff": "staff/19/0/9",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2947.7,
+    2587.6,
+    3288.0,
+    2670.1
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    400
+   ]
+  },
+  {
+   "tile": 16,
+   "subject": "obs:284579",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/4/0/12/3/9"
+     ],
+     "margin_spaces": -0.016
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.8,
+    "glyph/4/0/12/3/9",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.5,
+    "glyph/4/0/12/4/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 9.3,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2105,
+    3249,
+    2577,
+    3586
+   ],
+   "scale": 1.907,
+   "staff": "staff/4/0/12",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    2213.8,
+    3289.7,
+    2468.1,
+    3343.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    643
+   ]
+  },
+  {
+   "tile": 17,
+   "subject": "obs:284632",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/4/1/12/8/1"
+     ],
+     "margin_spaces": -0.947
+    }
+   },
+   "nearest_head_to_left_end": [
+    2.4,
+    "glyph/4/1/12/8/1",
+    "NOT written",
+    "duration_narrowed"
+   ],
+   "nearest_head_to_right_end": [
+    0.69,
+    "glyph/4/1/12/8/8",
+    "written",
+    "written"
+   ],
+   "width_sp": 8.5,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    5058,
+    6722,
+    5508,
+    6952
+   ],
+   "scale": 2.0,
+   "staff": "staff/4/1/12",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    5166.6,
+    6762.4,
+    5398.6,
+    6836.3
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    460
+   ]
+  },
+  {
+   "tile": 18,
+   "subject": "obs:284561",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/4/1/3/0/26"
+     ],
+     "margin_spaces": -1.01
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.44,
+    "glyph/4/1/3/0/29",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.27,
+    "glyph/4/1/3/1/3",
+    "written",
+    "written"
+   ],
+   "width_sp": 19.8,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    1046,
+    4670,
+    1804,
+    5016
+   ],
+   "scale": 1.187,
+   "staff": "staff/4/1/3",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    1155.0,
+    4711.1,
+    1694.7,
+    4822.8
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    411
+   ]
+  },
+  {
+   "tile": 19,
+   "subject": "obs:1214832",
+   "page": 19,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/0/0/7/3"
+     ],
+     "margin_spaces": -4.506
+    },
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/0/0/8/6"
+     ],
+     "margin_spaces": -2.062
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.37,
+    "glyph/19/0/0/7/8",
+    "NOT written",
+    "owned_by_another_staff"
+   ],
+   "nearest_head_to_right_end": [
+    3.57,
+    "glyph/19/0/0/8/6",
+    "written",
+    "written"
+   ],
+   "width_sp": 5.4,
+   "continuation": null,
+   "my_category": "NOT AN ARC (reader fault upstream): hairpin",
+   "crop_page_px": [
+    4175,
+    496,
+    4611,
+    724
+   ],
+   "scale": 2.064,
+   "staff": "staff/19/0/0",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    4319.2,
+    649.7,
+    4467.0,
+    683.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    471
+   ]
+  },
+  {
+   "tile": 20,
+   "subject": "obs:284564",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/4/1/12/0/4"
+     ],
+     "margin_spaces": -0.221
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.77,
+    "glyph/4/1/12/0/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.48,
+    "glyph/4/1/12/2/0",
+    "written",
+    "written"
+   ],
+   "width_sp": 27.6,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    1058,
+    6734,
+    2029,
+    6988
+   ],
+   "scale": 0.927,
+   "staff": "staff/4/1/12",
+   "staff_space_px": 27.25,
+   "arc_ink_box_page_px": [
+    1167.0,
+    6892.2,
+    1919.8,
+    6947.2
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    235
+   ]
+  },
+  {
+   "tile": 21,
+   "subject": "obs:508772",
+   "page": 8,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/8/0/8/2/6"
+     ],
+     "margin_spaces": -0.891
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.35,
+    "glyph/8/0/8/1/7",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.42,
+    "glyph/8/0/8/1/12",
+    "NOT written",
+    "not_a_notehead:claimed_by:barline"
+   ],
+   "width_sp": 10.2,
+   "continuation": null,
+   "my_category": "REAL ARC, end note NOT written (upstream: not_a_notehead:claimed_by:barline)",
+   "crop_page_px": [
+    1161,
+    2815,
+    1647,
+    3042
+   ],
+   "scale": 1.852,
+   "staff": "staff/8/0/8",
+   "staff_space_px": 26.75,
+   "arc_ink_box_page_px": [
+    1267.8,
+    2855.6,
+    1540.1,
+    2907.7
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    420
+   ]
+  },
+  {
+   "tile": 22,
+   "subject": "obs:1214759",
+   "page": 19,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "left": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/19/0/9/2/1"
+     ],
+     "margin_spaces": -1.832
+    }
+   },
+   "nearest_head_to_left_end": [
+    7.13,
+    "glyph/19/0/9/2/1",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    0.2,
+    "glyph/19/0/9/2/1",
+    "written",
+    "written"
+   ],
+   "width_sp": 7.9,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    1749,
+    2433,
+    2189,
+    2795
+   ],
+   "scale": 2.045,
+   "staff": "staff/19/0/9",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    1859.7,
+    2474.1,
+    2078.0,
+    2613.4
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    740
+   ]
+  },
+  {
+   "tile": 23,
+   "subject": "obs:029106",
+   "page": 0,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/0/0/11/5/11"
+     ],
+     "margin_spaces": -1.987
+    }
+   },
+   "nearest_head_to_left_end": [
+    0.77,
+    "glyph/0/0/11/4/7",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    3.17,
+    "glyph/0/0/11/5/12",
+    "written",
+    "written"
+   ],
+   "width_sp": 31.1,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    3463,
+    5934,
+    4725,
+    6257
+   ],
+   "scale": 0.713,
+   "staff": "staff/0/0/11",
+   "staff_space_px": 32.25,
+   "arc_ink_box_page_px": [
+    3592.0,
+    6089.0,
+    4596.0,
+    6209.0
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    230
+   ]
+  },
+  {
+   "tile": 24,
+   "subject": "obs:284589",
+   "page": 4,
+   "kind": "page-wide run",
+   "reason_word": "end_unbound",
+   "unbound": {
+    "right": {
+     "unbound": "end_far_beyond_head",
+     "candidates": [
+      "glyph/4/0/5/5/5"
+     ],
+     "margin_spaces": -0.134
+    }
+   },
+   "nearest_head_to_left_end": [
+    1.08,
+    "glyph/4/0/5/4/4",
+    "written",
+    "written"
+   ],
+   "nearest_head_to_right_end": [
+    1.53,
+    "glyph/4/0/5/5/5",
+    "written",
+    "written"
+   ],
+   "width_sp": 13.4,
+   "continuation": null,
+   "my_category": "REAL ARC, both end notes written; binder refused",
+   "crop_page_px": [
+    2458,
+    1578,
+    3047,
+    1853
+   ],
+   "scale": 1.528,
+   "staff": "staff/4/0/5",
+   "staff_space_px": 27.5,
+   "arc_ink_box_page_px": [
+    2567.8,
+    1619.1,
+    2937.3,
+    1662.9
+   ],
+   "rect_thickness_px_in_900_tile": 8,
+   "pad_staff_spaces": 0.5,
+   "tile_px": [
+    900,
+    420
+   ]
+  }
+ ]
+}

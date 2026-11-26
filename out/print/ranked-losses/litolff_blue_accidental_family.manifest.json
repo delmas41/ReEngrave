@@ -1,0 +1,504 @@
+{
+ "plate": "litolff",
+ "sheet": "/private/tmp/claude-501/ranked-losses/sheets/litolff_blue_accidental_family.png",
+ "row": "blue",
+ "cause": "note / accidental_family",
+ "n_cases_in_cause": 135,
+ "n_cases_with_a_box": 135,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over the cause cases sorted by (page, subject), one stream across the plate sheets in order",
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/10/1/2/12/2",
+   "page": 10,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2288,
+    2346,
+    2508,
+    2472
+   ],
+   "scale": 5.0,
+   "staff": "staff/10/1/2",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2387.7,
+    2399.8,
+    2408.4,
+    2419.5
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": {
+    "note": "B-14 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P3",
+    "measure": "199"
+   }
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/8/1/10/0/1",
+   "page": 8,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    422,
+    3488,
+    646,
+    3618
+   ],
+   "scale": 4.911,
+   "staff": "staff/8/1/10",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    523.0,
+    3582.3,
+    545.1,
+    3601.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    638
+   ],
+   "what_the_file_writes": {
+    "note": "F12 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P12",
+    "measure": "127"
+   }
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/16/1/8/10/3",
+   "page": 16,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2050,
+    3208,
+    2270,
+    3334
+   ],
+   "scale": 5.0,
+   "staff": "staff/16/1/8",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2148.9,
+    3261.9,
+    2171.3,
+    3281.6
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": {
+    "note": "B4 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P9",
+    "measure": "264"
+   }
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/6/1/3/12/1",
+   "page": 6,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2440,
+    2404,
+    2657,
+    2528
+   ],
+   "scale": 5.069,
+   "staff": "staff/6/1/3",
+   "staff_space_px": 15.5,
+   "mark_box_page_px": [
+    2536.3,
+    2424.9,
+    2560.0,
+    2445.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A-13 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P4",
+    "measure": "104"
+   }
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/8/0/3/5/3",
+   "page": 8,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    851,
+    824,
+    1071,
+    958
+   ],
+   "scale": 5.0,
+   "staff": "staff/8/0/3",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    946.9,
+    839.9,
+    975.1,
+    858.0
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    670
+   ],
+   "what_the_file_writes": {
+    "note": "G-14 half no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P4",
+    "measure": "110"
+   }
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/10/1/8/11/2",
+   "page": 10,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2203,
+    3223,
+    2427,
+    3351
+   ],
+   "scale": 4.911,
+   "staff": "staff/10/1/8",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    2303.8,
+    3293.4,
+    2327.0,
+    3306.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A4 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P9",
+    "measure": "198"
+   }
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/16/1/8/4/6",
+   "page": 16,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    1105,
+    3208,
+    1326,
+    3334
+   ],
+   "scale": 4.977,
+   "staff": "staff/16/1/8",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1204.4,
+    3260.5,
+    1226.8,
+    3281.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    627
+   ],
+   "what_the_file_writes": {
+    "note": "B4 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P9",
+    "measure": "258"
+   }
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/10/1/9/9/2",
+   "page": 10,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    1852,
+    3376,
+    2072,
+    3502
+   ],
+   "scale": 5.0,
+   "staff": "staff/10/1/9",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1952.2,
+    3392.7,
+    1972.3,
+    3410.8
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    630
+   ],
+   "what_the_file_writes": {
+    "note": "A4 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P10",
+    "measure": "196"
+   }
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/8/1/6/3/1",
+   "page": 8,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    746,
+    2874,
+    970,
+    3002
+   ],
+   "scale": 4.911,
+   "staff": "staff/8/1/6",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    844.5,
+    2932.7,
+    872.0,
+    2954.3
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "A4 half no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P8",
+    "measure": "130"
+   }
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/2/1/3/14/6",
+   "page": 2,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    2381,
+    2528,
+    2602,
+    2654
+   ],
+   "scale": 4.977,
+   "staff": "staff/2/1/3",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    2475.8,
+    2579.5,
+    2507.0,
+    2626.7
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    627
+   ],
+   "what_the_file_writes": {
+    "note": "C3 half no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P4",
+    "measure": "48"
+   }
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/11/1/6/3/1",
+   "page": 11,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    789,
+    2840,
+    1013,
+    2968
+   ],
+   "scale": 4.911,
+   "staff": "staff/11/1/6",
+   "staff_space_px": 16.0,
+   "mark_box_page_px": [
+    889.5,
+    2877.9,
+    912.2,
+    2899.2
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    629
+   ],
+   "what_the_file_writes": {
+    "note": "D-15 quarter no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P8",
+    "measure": "223"
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/6/1/2/3/3",
+   "page": 6,
+   "reason_word": "accidental_family",
+   "sub_reason": null,
+   "crop_page_px": [
+    1009,
+    2246,
+    1230,
+    2372
+   ],
+   "scale": 4.977,
+   "staff": "staff/6/1/2",
+   "staff_space_px": 15.75,
+   "mark_box_page_px": [
+    1108.2,
+    2314.2,
+    1130.4,
+    2335.8
+   ],
+   "rect_thickness_px": 7,
+   "rect_pad_staff_spaces": 0.5,
+   "tile_px": [
+    1100,
+    627
+   ],
+   "what_the_file_writes": {
+    "note": "G14 eighth no dot no tuplet blue",
+    "colour_attr": "color=\"#1F6FEB\"",
+    "guessed": [
+     {
+      "quantity": "accidental",
+      "rule": "accidental_family",
+      "stage": "ADJUDICATE"
+     }
+    ],
+    "part": "P3",
+    "measure": "95"
+   }
+  }
+ ]
+}
