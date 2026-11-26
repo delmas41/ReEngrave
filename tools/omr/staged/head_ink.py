@@ -29,6 +29,17 @@ the next line). In a window around the box:
   5. fill: 2.148's slit (`gather.head_interior_white`, unchanged, cut 0.18 / 0.06) on the TRIMMED box of the cleaned raster, and 2.23's
      centre/ring window (`notehead_ink_under`) beside it, and 2.164's oval width -- all three filed, the slit decides the producer's value.
 
+ROADMAP 2.355, flag `OMR_HEAD_OWN_INK` (default OFF): the head's own ink is read from the head, not from a stem stub or a fragment beside
+it. A black head is black whatever touches its edge; a half note is hollow even where a line runs along its rim; the stem, the ledger line
+and the staff line are not the head. Three changes to this one reader, each from a cause traced on 625 heads Sean vouched for:
+  - the stem (`_stem_columns`, the stroke map's own words: `V_MIN_SPACES` tall, thin for `STEM_PART_MIN_SPACES`) is found at the head's x;
+    a slit between its cuts is read again with the paper that ends on the stem left out, and reads black only on a solid middle
+    (`SOLID_CENTRE`); the width cap reads the head without a stem at its edge (the floor still reads the whole width);
+  - the head is the ink under the box's core that crosses its middle third: a stroke in the box that does not touch it leaves (`_own_ink`);
+  - a run a head's floor wide is carried across a rim taken out with a staff line (`bridge_rim_on_line`, `RIM_GAP_SPACES`).
+"Readers split" is renamed for what it is under the flag: `slit_between_cuts` (one measure between two cut-offs), `slit_unread`.
+NOT AVAILABLE AT GATHER: the page stem reader (`page_stems.gather_page_stems`) files after this reader, so the stem is measured here.
+
 PURE: numpy + cv2; the slit and window functions are passed in by the caller (they live in `gather.py`).
 """
 import os
@@ -297,17 +308,30 @@ SOLID_CENTRE = 1.0
 RIM_GAP_SPACES = 0.3
 
 
+def _rim_column(ink: Any, bare: Any) -> bool:
+    """PURE. One gap column is a rim lying along a line: it holds ink and line ink was taken out of it, and its ink lies on ONE side of every
+    line taken out -- the head's wall below (or above) the line its rim lay on. Ink on both sides of a line is a stroke crossing it, never
+    a rim."""
+    import numpy as np
+    ys, ls = np.nonzero(ink)[0], np.nonzero(bare)[0]
+    if not len(ys) or not len(ls):
+        return False
+    # a line taken out between this column's ink is a stroke crossing the line, not a rim lying along it
+    return not ((ls > ys.min()) & (ls < ys.max())).any()
+
+
 def bridge_rim_on_line(runs: Sequence[Tuple[int, int]], ink: Any, bare: Any, max_gap_px: float) -> Tuple[List[Tuple[int, int]], int]:
     """PURE. A half note is hollow even where a line runs along its rim: where a staff or ledger line was taken out along the rim, the columns
     there are no longer head-tall and the head falls apart into two runs. Two runs join across a gap no wider than `max_gap_px` when EVERY
-    gap column still holds ink (`ink`, the head's wall or rim below the line) AND line ink was taken out of it (`bare`) -- never across
-    paper (an accidental and its head stand apart on paper once the line is out). Returns (runs, how many gaps were joined)."""
+    gap column is a rim column (`_rim_column`: it still holds ink, the head's wall, line ink was taken out of it, and no line taken out
+    lies between its ink) -- never across paper (an accidental and its head stand apart on paper once the line is out), never across a
+    stroke crossing a line. Returns (runs, how many gaps were joined)."""
     out: List[Tuple[int, int]] = [tuple(runs[0])]
     n = 0
     for r0, r1 in runs[1:]:
         p0, p1 = out[-1]
         gap = range(p1, r0)
-        if 0 < r0 - p1 <= max_gap_px and all(ink[:, c].any() and bare[:, c].any() for c in gap):
+        if 0 < r0 - p1 <= max_gap_px and all(_rim_column(ink[:, c], bare[:, c]) for c in gap):
             out[-1] = (p0, r1)
             n += 1
         else:
@@ -359,7 +383,7 @@ def _bare_line_pixels(ink: Any, line_rows: Any) -> Any:
 
 
 def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
-              foreign_boxes: Sequence[Sequence[float]] = ()) -> Optional[Dict[str, Any]]:
+              foreign_boxes: Sequence[Sequence[float]] = (), _bridge: bool = False) -> Optional[Dict[str, Any]]:
     """The head under the page box `box` = (x0, y0, x1, y1) on `page_binary` (0 = ink, staff lines in). Returns `clean` (bool crop, the
     head's neighbourhood with bare line pixels out), `origin` (crop x0, y0 on the page), `trimmed` [x0, y0, x1, y1] (page px),
     `extent_sp`, `stack_clipped`, `not_one_head` (None or why), `size_margin_sp`, `foreign_share`, `line_px_out`,
@@ -445,7 +469,7 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         out.update(clean=clean, trimmed=None, extent_sp=None, not_one_head="no_head_ink", size_margin_sp=None, foreign_share=0.0)
         return out
     _o, ex0, ex1 = max(over)
-    if own_ink() and len(runs) > 1 and (ex1 - ex0) >= MIN_SPACES * sp:
+    if _bridge and own_ink() and len(runs) > 1 and (ex1 - ex0) >= MIN_SPACES * sp:
         # ROADMAP 2.355: a half note is hollow even where a line runs along its rim. Only a run already a head's floor wide is carried on
         # across a rim taken out with the line -- never a tie's end or a stub of a few columns grown into a head (Sean's ties, 2.164 tiles)
         joined, n_j = bridge_rim_on_line(runs, clean[rb0:rb1], bare[rb0:rb1], RIM_GAP_SPACES * sp)
@@ -562,6 +586,12 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
     out.update(clean=clean, trimmed=[x0 + ex0, y0 + ey0, x0 + ex1, y0 + ey1], extent_sp=[round(w_sp, 3), round(h_sp, 3)],
                not_one_head=noh, foreign_share=fs,
                size_margin_sp=round(min(MAX_WIDTH_SPACES - hw_sp, max_h - h_sp, w_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
+    if own_ink() and not _bridge and noh == "too_small":
+        # ROADMAP 2.355: only a head left a fragment is carried across a rim taken out with its line -- the rescue never re-reads a head that
+        # already reads as one (on the frozen sample the bridge run everywhere turned clef pieces, barlines and three black heads hollow)
+        t2 = trim_head(page_binary, box, space_px, foreign_boxes, _bridge=True)
+        if t2 is not None and (t2.get("own_ink") or {}).get("rim_bridged") and t2.get("not_one_head") is None:
+            return t2
     return out
 
 
