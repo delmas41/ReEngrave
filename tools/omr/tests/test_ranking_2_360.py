@@ -128,6 +128,36 @@ def test_the_two_halves_of_an_arc_across_a_system_break_are_counted_once():
     assert CM.system_break_halves(BREAK_RECORD, [16])["pairs"] == 1
 
 
+def test_the_rank_table_prints_old_figures_and_named_apart_lines_and_ranks_neither(tmp_path, capsys):
+    import importlib.util
+    import json
+    import pathlib
+    rank_dir = pathlib.Path(__file__).resolve().parents[3] / "benchmarks" / "acceptance" / "overnight" / "ranking"
+    spec = importlib.util.spec_from_file_location("rank_table", rank_dir / "rank_table.py")
+    rt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rt)
+    heads, written = _heads(), [H_WRITTEN_DOTTED[0]]
+    old_rank = {"rows": {"dropped_unknown_duration": {"counted_total": 1}}, "totals_over_loaded_pages": {
+        "arcs_not_written": LIT_NIGHT["arcs_not_written"], "dot_role_not_placed": {"abstained_dot_role_ambiguous": 0},
+        "notes_census": CM.note_census(heads, written), "arcs_count": CM.arcs_count({k: v for k, v in LIT_NIGHT.items() if k != CM.ON_RUNS_KEY})}}
+    new_rank = json.loads(json.dumps(old_rank, default=str))
+    new_rank["totals_over_loaded_pages"]["notes_census"] = CM.note_census(heads, written, dot_boxes=[DOT_19], rest_boxes=[REST_8TH])
+    new_rank["totals_over_loaded_pages"]["arcs_count"] = CM.arcs_count(dict(LIT_NIGHT, **{CM.HALVES_KEY: {"pairs": 1, "halves": 3}}))
+    (tmp_path / "x.old.rank.json").write_text(json.dumps(old_rank, default=str))
+    (tmp_path / "x.new.rank.json").write_text(json.dumps(new_rank, default=str))
+    k = rt.kinds(str(tmp_path / "x.new.rank.json"))
+    assert k["printed notes not written (candidate lost)"] == 2 and k[rt.APART_TOO_NARROW] == 1
+    assert k[rt.APART_PAIRING] == 82 and k[rt.APART_HALVES] == 1
+    import sys
+    sys.argv = ["rank_table.py", str(tmp_path), "x", "old", "new", "1"]
+    rt.main()
+    out = capsys.readouterr().out.splitlines()
+    ranked = out[2:out.index(next(l for l in out if l.startswith("-- named apart")))]
+    assert not any("old figure" in l for l in ranked)                      # the two old-figure rows are not ranked ...
+    assert any("old figure" in l for l in out[out.index(next(l for l in out if l.startswith("-- old figures"))):])   # ... but are printed, never dropped
+    assert any(rt.APART_PAIRING in l for l in out)
+
+
 def test_without_the_page_pass_no_halves_are_merged():
     a = CM.arcs_count({"arcs_not_written": {"tie_end_not_in_file": 2}, "written": {}, CM.HALVES_KEY: {"pairs": 1, "halves": 2}})
     assert a["not_written_total"] == 2
