@@ -1,0 +1,114 @@
+{
+ "set": "extra notes: Litolff rests listed weak",
+ "date": "2026-11-26",
+ "question": "18 Litolff marks the file writes as a rest though the page check listed each box as weak. For each number: is it a rest? If yes which kind; if no, what is it.",
+ "answered_by": "Sean",
+ "verbatim": "1 is an 8th rest, 2 is a sharp, 3 is an 8th rest, 4 is a whole note rest, 5 are 2 half note note heads, 6 is a whole note rest, 7 again is a large box around a stem on a half note, 8 is a whole note rest, 9 is a stem on a half note, 10 is a stem on eighth notes, 11 is an eighth note rest, 12 is a whole note rest, 13 is an eighth note, not a rest though, 14 is an eighth note rest, 15 is the stem on a quarter note, 16 is a sharp, 17 is an eighth note rest, 17 is an eighth note rest, 18 is a quarter note rest.",
+ "answers": {
+  "1": "eighth rest",
+  "2": "a sharp",
+  "3": "eighth rest",
+  "4": "whole rest",
+  "5": "two half-note noteheads",
+  "6": "whole rest",
+  "7": "a (large box around a) stem on a half note",
+  "8": "whole rest",
+  "9": "a stem on a half note",
+  "10": "a stem on eighth notes",
+  "11": "eighth rest",
+  "12": "whole rest",
+  "13": "an eighth note, not a rest",
+  "14": "eighth rest",
+  "15": "the stem on a quarter note",
+  "16": "a sharp",
+  "17": "eighth rest",
+  "18": "quarter rest"
+ },
+ "compared_with_the_file": {
+  "real rests, kind written right": [
+   1,
+   3,
+   4,
+   6,
+   8,
+   11,
+   12,
+   14,
+   17,
+   18
+  ],
+  "not rests": {
+   "2": "a sharp, written as a 16th rest",
+   "5": "two half-note heads, written as an eighth rest",
+   "7": "a half note's stem, written as a quarter rest",
+   "9": "a half note's stem, written as a quarter rest",
+   "10": "a stem on eighth notes, written as a quarter rest (blue)",
+   "13": "an eighth note, written as a quarter rest (blue)",
+   "15": "a quarter note's stem, written as a quarter rest",
+   "16": "a sharp, written as an eighth rest (blue)"
+  },
+  "by_census_reason": {
+   "weak: touches_a_head": {
+    "rests": [
+     1,
+     3,
+     11,
+     17
+    ],
+    "not_rests": [
+     2,
+     7,
+     10,
+     15,
+     16
+    ]
+   },
+   "weak: hangs_from_a_stem_with_a_head": {
+    "rests": [
+     4
+    ],
+    "not_rests": []
+   },
+   "?": {
+    "rests": [
+     14
+    ],
+    "not_rests": [
+     5,
+     13
+    ]
+   },
+   "weak: names_no_stroke": {
+    "rests": [
+     6
+    ],
+    "not_rests": []
+   },
+   "weak: touches_two_staff_lines": {
+    "rests": [
+     8
+    ],
+    "not_rests": []
+   },
+   "weak: bare_vertical_stroke": {
+    "rests": [],
+    "not_rests": [
+     9
+    ]
+   },
+   "weak: ink_on_both_sides_of_its_line": {
+    "rests": [
+     12
+    ],
+    "not_rests": []
+   },
+   "weak: stroke_into_a_head": {
+    "rests": [
+     18
+    ],
+    "not_rests": []
+   }
+  },
+  "ours": "10 of 18 are real rests and written as the right kind; 8 are not rests. Of the 6 written QUARTER rests 5 are not rests (4 stems, 1 eighth note)."
+ }
+}
