@@ -2579,6 +2579,37 @@ def _head_reads_disagree(ev: Evidence, hi: Optional[Dict[str, Any]], head_first:
             "own_ink": "hollow", "own_slit": hi.get("slit"), "own_extent_sp": hi.get("extent_sp"), "head_ink_row": hi.get("row")}
 
 
+#: ROADMAP 2.351 (`OMR_HEAD_FILL_OWN_INK`, default OFF). STAGED ADJUDICATE. THE RULE, as a musician says it: the box says where to
+#: look; the head's own ink says filled or hollow. 2.23's centre window is a fraction of the DETECTOR BOX, and 2.83 sized that box by
+#: its HEIGHT only, so a box wider than one head (a stem-end rescue box from a barline's ink to the head, a box over a head and its
+#: slur, a box on a slur with no head under it) puts the window on paper beside the head and reads "hollow". Where the box is wider
+#: than one head (`HEAD_BOX_MAX_WIDTH_SPACES`, 2.88's own width), the window speaks only if the head's OWN trimmed ink (`Q.HEAD_INK`)
+#: reads hollow too. NEVER a hollow read off paper beside the head; NEVER a head its own ink reads hollow turned black (that head
+#: keeps the window's reading, whatever the box); a box one head wide is not touched (a staff line or stem through a narrow
+#: half's slit can make its own ink read filled -- Litolff p4 `glyph/4/1/9/14/10`, our look -- and the window then still decides).
+#: CAUSE, CANNOT-TELL: a wide box whose own ink is not one head is left as the detector read it, never written a half.
+#: MEASURED (20261123-night, both plates, whole movement; benchmarks are the lane report): 13 halves 2.70 decided on a box wider
+#: than 1.9 sp (1.97-5.19); 12 own ink filled or not one head -- every one a black head or no head at all on the print (our look,
+#: not Sean's) -- 1 own ink hollow, a real half (`glyph/7/0/8/10/5`, 2.16 sp), kept. THIN MARGIN, stated: Sean's judged halves'
+#: boxes reach 1.94 sp (2.220 tiles); one, `glyph/6/1/5/11/1` (1.91 sp), has own ink not one head -- the rule would refuse a 2.70
+#: half there; 2.70 does not reach it today (the detector's class writes it). The cut is the 2.88 measurement, not a convention.
+HEAD_FILL_OWN_INK_ENV = "OMR_HEAD_FILL_OWN_INK"
+
+
+def head_fill_own_ink_enabled() -> bool:
+    """ROADMAP 2.351, `OMR_HEAD_FILL_OWN_INK`, default OFF (allow-list 1/true/yes/on)."""
+    return os.environ.get(HEAD_FILL_OWN_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _window_off_the_head(ev: Evidence, head_box, space) -> bool:
+    """2.351: True where the box is wider than one head and the head's own ink (`Q.HEAD_INK`) does not read hollow -- the 2.23 window
+    then says nothing about this head. False on a box one head wide, an unknown box or space (unchanged), or own ink hollow."""
+    if head_box is None or not space or space <= 0 or head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES:
+        return False
+    hi = _head_ink(ev)
+    return not (hi is not None and hi.get("value") == "hollow")
+
+
 HOLLOW_HEAD_WINS_ENV = "OMR_HOLLOW_HEAD_WINS"
 HEAD_READS_DISAGREE_RULE = "head_reads_disagree"
 
@@ -4215,6 +4246,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                   and _ink_reads_decisively_hollow(fill_row.detail or {}))
     if head_first is not None and head_first.get("settled") == "black":
         ink_hollow = False   # 2.148: the first step read the head solid; the late window does not overrule it
+    if ink_hollow and head_fill_own_ink_enabled() and _window_off_the_head(ev, head_box, space):
+        ink_hollow = False   # ROADMAP 2.351: the box is wider than one head; the head's own ink does not read hollow
 
     # ⚠️⚠️ ROADMAP 2.70 (Sean, DECISIONS 2026-10-09): *"A hollow note with
     # nothing on the stem is always a half note."* CONVENTION CONFIRMED. The
