@@ -1,0 +1,9 @@
+{
+  "set": "2.361 four marks",
+  "date": "2026-11-26",
+  "question": "Brahms, four marks, the detector's rest box at exact size. Is tile 2 a quarter rest, and does an engraver ever let a rest touch a note when two voices share a staff?",
+  "answered_by": "Sean",
+  "verbatim": "The 4 marks : 1. Quarter rest 2. Quarter rest - the bottom runs into a note on another voice 3. Quarter rest 4. Stem of an 8th note",
+  "answers": {"1": "quarter rest", "2": "quarter rest; the bottom runs into a note on another voice (Brahms glyph/8/0/3/5/3)", "3": "quarter rest", "4": "the stem of an eighth note"},
+  "ours": "A real rest can be printed running into the other voice's note, so 'a rest stands alone' is not always true of the ink. He did not say how common it is."
+}
