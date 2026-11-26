@@ -453,7 +453,12 @@ def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
             take = min(int(anw[name]), n)
             anw[name] = int(anw[name]) - take
             adjusted[name] = take
-    old_by = {k: int(v) for k, v in anw.items() if int(v)}
+    # ROADMAP 2.360: a refusal of the OLD tie pairing (`adjudicate_tie_pair`, `tie_pair_*`) is not a tie lost from the file: since 2.305 r9 that path writes nothing
+    # (`export._retire_old_tie_pairs`), a printed tie is written -- or counted as a page run -- by the page pass. Named apart, printed, never dropped.
+    # A record gathered WITHOUT the page pass has no other tie path: its `tie_pair_*` refusals stay refusals (the old pairing writes its ties).
+    _apart = (lambda k: k.startswith("tie_pair_")) if page_on else (lambda k: False)
+    pairing_by = {k: int(v) for k, v in anw.items() if int(v) and _apart(k)}
+    old_by = {k: int(v) for k, v in anw.items() if int(v) and not _apart(k)}
     page = None
     if page_on:
         page = {
@@ -470,6 +475,9 @@ def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
         "page_pass_on": page_on,
         "not_written_total": old_total + page_unwritten,
         "old_box_refusals": old_total, "old_box_refusals_by_reason": old_by,
+        # ROADMAP 2.360: the old pairing's refusals no page run witnesses, apart from the lost arcs (mostly detector boxes on ink that is no arc: 9 real of 96 sampled
+        # on 2026-11-26; a SAMPLE, not a split by a record fact)
+        "old_tie_pairing_refusals": sum(pairing_by.values()), "old_tie_pairing_by_reason": pairing_by,
         "page_runs_not_written": page_unwritten if page else None,
         "page_runs": page,
         "apart": {"replaced_by_page_arc_boxes": replaced, "old_box_path_retired_boxes": retired, "not_an_arc_boxes": sum(not_an_arc.values()),
@@ -479,6 +487,8 @@ def arcs_count(report: Dict[str, Any]) -> Dict[str, Any]:
                   "old_tie_boxes_on_counted_page_runs": on_runs_taken["run_counted"] if on_runs_taken is not None else None},
         "adjusted_for_double_count": adjusted,
         "with_unwitnessed": (old_total + page_unwritten + page["unwitnessed"]) if page else old_total,
+        # the upper bound that holds every named-apart candidate: lost arcs + unwitnessed page runs + the old pairing's refusals
+        "with_unwitnessed_and_old_pairing": ((old_total + page_unwritten + page["unwitnessed"]) if page else old_total) + sum(pairing_by.values()),
         # the old ranking row, for comparison: every reason but `not_an_arc:*`, boxes and all
         "old_figure_boxes": sum(int(v) for k, v in (report.get("arcs_not_written") or {}).items() if not k.startswith("not_an_arc:")),
     }
@@ -497,6 +507,8 @@ def format_arcs(a: Dict[str, Any]) -> List[str]:
     lines.append("  named apart: boxes replaced by a written page arc %d; old box path retired %d (boxes, bookkeeping); boxes that are no arc %d; "
                  "unwitnessed page runs %s (mostly fakes)" % (ap["replaced_by_page_arc_boxes"], ap["old_box_path_retired_boxes"],
                                                               ap["not_an_arc_boxes"], ap["unwitnessed_page_runs"]))
+    lines.append("  named apart (2.360): old tie-pairing refusals no page run witnesses %d (that path writes nothing since 2.305; mostly boxes on ink that is no arc)" % (
+        a.get("old_tie_pairing_refusals", 0)))
     if ap.get("old_tie_boxes_on_written_page_runs") is not None:
         lines.append("  named apart (2.338): old tie boxes on a page run -- its arc written %d, the run already counted %d (one arc, never two)" % (
             ap["old_tie_boxes_on_written_page_runs"], ap["old_tie_boxes_on_counted_page_runs"]))

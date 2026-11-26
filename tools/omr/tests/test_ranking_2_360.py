@@ -73,3 +73,37 @@ def test_attached_dot_boxes_are_the_dots_a_written_duration_used():
     # the note of dot 19 not in the file: that dot is not "of a written note"
     got2 = CM.attached_dot_boxes(rec, BOXES, ["glyph/0/0/6/1/2"])
     assert [b for _p, b in got2] == [BOXES["glyph/0/0/6/1/9"]["box"]]
+
+
+# ---- (a) the old tie pairing's refusals: the REAL arc report of the 20261123-night Litolff record (8 counted pages)
+LIT_NIGHT = {
+    "arcs_not_written": {"old_box_path_retired": 601, "replaced_by_page_arc": 789, "not_an_arc:ink_is_a_staff_line": 306, "kind_arc_ends_unread": 9,
+                         "not_an_arc:claimed_by:key_signature": 5, "kind_stack_slur_over_two_same_pitch_notes": 1, "tie_pitch_contradiction": 10,
+                         "tie_ends_in_two_voices": 1, "slur_bound_end_not_in_file": 19, "tie_pair_no_start_head": 41, "tie_pair_no_stop_head": 30,
+                         "tie_pair_enters_from_previous_system": 26, "tie_pair_no_pair_at_one_position": 22, "tie_pair_no_head_near_the_arc": 40,
+                         "tie_pair_runs_off_the_system": 11, "tie_pair_not_adjacent": 37, "tie_pair_spans_a_whole_bar": 3, "tie_end_not_in_file": 7,
+                         "arc_ends_in_one_chord": 2},
+    "written": {"page_arc_runs": 664, "page_arc_runs_not_witnessed": 134, "page_arc_runs_abstained": 250, "page_arc_runs_kind_unread_nothing_written": 11,
+                "page_arc_slurs_in_file": 55, "page_arc_slurs_not_in_file": 4, "page_arc_ties_in_file": 187, "page_arc_ties_not_in_file": 7},
+    CM.ON_RUNS_KEY: {"written": {"tie_pair_no_head_near_the_arc": 10, "tie_pair_not_adjacent": 13, "tie_pair_no_start_head": 4, "tie_pair_no_pair_at_one_position": 5},
+                     "run_counted": {"tie_pair_no_stop_head": 16, "tie_pair_enters_from_previous_system": 12, "tie_pair_no_head_near_the_arc": 15,
+                                     "tie_pair_no_pair_at_one_position": 7, "tie_pair_runs_off_the_system": 7, "tie_pair_not_adjacent": 16, "tie_pair_no_start_head": 23}},
+}
+
+
+def test_old_tie_pairing_refusals_are_named_apart_and_every_real_loss_still_counts():
+    a = CM.arcs_count(LIT_NIGHT)
+    # OLD (2.316): 120 old-box refusals + 261 page runs not written = 381 (the committed ranking's Litolff TAG figure)
+    assert a["old_box_refusals"] + a["old_tie_pairing_refusals"] == 120
+    assert a["old_tie_pairing_refusals"] == 82
+    # NEW: the 82 are named apart; what the file really lost stays: the page runs read and not written (261) and the 38 refusals of the arc rules
+    assert a["old_box_refusals"] == 38
+    assert a["page_runs_not_written"] == 261
+    assert a["not_written_total"] == 299
+    assert a["with_unwitnessed_and_old_pairing"] == 299 + 134 + 82       # nothing dropped: the upper bound still holds every named-apart candidate
+    assert "tie_pitch_contradiction" in a["old_box_refusals_by_reason"]       # a real refusal of a decided tie still counts
+
+
+def test_without_the_page_pass_the_old_pairing_is_the_only_tie_path_and_its_refusals_still_count():
+    a = CM.arcs_count({"arcs_not_written": {"tie_pair_no_start_head": 3}, "written": {}})
+    assert a["not_written_total"] == 3 and a["old_tie_pairing_refusals"] == 0
