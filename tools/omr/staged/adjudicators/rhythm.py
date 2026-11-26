@@ -2682,12 +2682,13 @@ def _with_head_ink_guess(ruling: Ruling) -> Ruling:
 #: ADJUDICATE step only says so: a note read plain beside such a mark is held between its two values (NARROWED {plain, dotted});
 #: the bar alone never chooses -- INFER `missed_dot_fills_bar` writes the dot, GUESSED (blue), only where the rest of the bar is
 #: read and is short by exactly the dots of the marked notes (two witnesses: the ink, the bar). NEVER: a dot from the mark alone, a
-#: mark joined to other ink (Sean 2026-11-26 on the 24-candidate sheet: "In none of those cases are the ink of the dot connected to
-#: the note, but the ledger lines are all connected to the ink of the note that they are a part of"), a mark a detector box or a
-#: claim already reads, a mark above/below the head (a staccato), a mark two heads could own. A real dot that touches its head
-#: through a printing flaw is joined ink: the rule abstains on it and the bar stays red.
-#: CONVENTION ASSUMED: the separation by ink is Sean's observation on 24 Brahms cases, not yet a confirmed general convention.
-#: WHAT WOULD FALSIFY IT: a mark this admits that Sean reads as not a dot. NOT CONFIRMED beyond Brahms (Litolff: 1 admitted mark).
+#: mark joined to other ink, a mark a detector box or a claim already reads, a mark above/below the head (a staccato), a mark two
+#: heads could own. THE SEPARATION IS A CONVENTION (docs/page-facts.md "A dot does not touch its note", Sean 2026-11-26: "I can't
+#: think of a time where it would. It would become very hard to distinguish from the note if it touched it."): a dot is ink of its
+#: own; ink that is one piece with the head or its ledger line is part of the note, never its dot. Tested on the page's own ink
+#: components (`Q.PAGE_STROKE` detail `component`: the page raster, staff lines erased), never on stroke-map pieces (the map files
+#: joined ledger ink as separate blobs). A real dot fused to its head by a print flaw (a rarity) is refused `dot_touches_its_note`:
+#: it stays unread and its bar red, never guessed. The look window and size are where-to-look numbers, measured below.
 MISSED_DOT_ENV = "OMR_MISSED_DOT_TWO_WITNESSES"
 MISSED_DOT_REASON = "dot_ink_no_box"
 #: Where to look (the head's BOX is only where to look; the mark's own ink decides). Measured on the 2,156 boxed dots bound to
@@ -2780,7 +2781,7 @@ def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[s
         if not (lo <= w <= hi and lo <= h <= hi):
             why = "not_dot_sized"
         elif page["comp"].get(d.get("component")) != 1:
-            why = "joined_to_other_ink"
+            why = "dot_touches_its_note"     # page-facts "A dot does not touch its note": joined ink is the note's, never its dot
         elif int(d.get("ordinal", -1)) in page["claimed"]:
             why = "claimed"
         else:
