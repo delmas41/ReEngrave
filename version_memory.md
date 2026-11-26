@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-26 -- 2.306 r24 (lane, not landed): round 8 -- a head on its chord partner's stem; a stem ends at a note; a note's ink holds its stroke over a box at the tip; the stroke it touches (STAGED GATHER; inside `OMR_PAGE_STEMS`, no new flag)
+
+`lane-2.306-r24`: `page_stems._chord_stem`, `_heads_a_stroke_can_end_at`, `_free_from_tip_boxes`, how `the_stroke_it_touches`; `rhythm.py` hook-on-arc reason as a literal (the 241st check finding); real-window controls `test_page_stems_2_306_r24.py`. Old join's written heads 21 -> 11 Litolff, 2 -> 2 Brahms. Full frozen sample both arms: judged right->wrong 0, unwritten->wrong 0, red 126 -> 96 / 108 -> 80. FINDINGS r22/r23 "chord dots" lines corrected (2.350 withdrawn). Flags stay OFF.
+
 ## 2026-11-25 -- 2.306 r23 (lane, not landed): the retire step -- a head takes the stroke it touches when the other is another head's stem; the stroke ending at another head is that head's; copies stop asking the old join (STAGED GATHER + ADJUDICATE; inside `OMR_PAGE_STEMS`, no new flag)
 
 `lane-2.306-r23`: `page_stems._untouched_is_anothers_stem`, `_is_the_stem_of_the_head_it_ends_at` (reading word `other_stroke_is_anothers_stem`), copy abstention `ABSTAIN.ON_ANOTHER_STAFF` -> `stem_value` reason `page_stem_on_another_staff`; real-window controls `test_page_stems_2_306_r23.py` (dump + cut tools `benchmarks/page-ledger-2026-11/2306/r23_*.py`). Old join's written heads 43 -> 21 Litolff, 16 -> 2 Brahms, copies -> 0 (file proven unchanged by them). Full frozen sample both arms: judged right->wrong 0, unwritten->wrong 0, 0 new claim contradictions, red 125 -> 95 / 111 -> 82. Fast tier 11,430 / 0. Flags stay OFF.
