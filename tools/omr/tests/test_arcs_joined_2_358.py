@@ -69,6 +69,36 @@ class TestAnArcMayEndAtAHeadReadFromItsInk:
             assert not OW._head_read(_Ev(_V(Outcome.DECIDED, value=True, reason="stacked_head_duplicate")), "glyph/4/0/2/4/5")
 
 
+#: the binder's own inputs at four of those ends, copied from a replay of the 20261123-night rows (`data/arcs_joined_2_358.json`): the staff's heads within
+#: 12 spaces (each with ADJUDICATE's `usable` as main has it), the unread ink, the run's ends and trace, and main's result
+import json as _json
+import pathlib as _pl
+
+_FX = {f["tile"]: f for f in _json.loads((_pl.Path(__file__).parent / "data" / "arcs_joined_2_358.json").read_text())}
+
+
+def _bind(f, ink_head_read):
+    """the binder as `ownership._page_binding` feeds it: a head the flag reads is usable and no longer "unread" ink"""
+    us = {h["key"]: (h["usable"] or (ink_head_read and h["key"] == f["ink_head"])) for h in f["heads"] if not h.get("tip")}
+    unread = [u for u in f["unread"] if not (ink_head_read and str(u.get("ordinal", "")) == "narrowed:" + f["ink_head"])]
+    others = f["others"] or {"left": [], "right": []}
+    return PB.closest_binder({k: [tuple(p) for p in v] for k, v in others.items()})(
+        [dict(h) for h in f["heads"]], f["sp"], lambda k: us.get(k, True), f["end_pitch"], None, f["d"], unread)
+
+
+class TestTheEndBindsToTheInkHead:
+    def test_main_refuses_each_as_unread_ink(self):
+        for t in (3, 10, 11, 18):
+            assert _bind(_FX[t], False)[_FX[t]["side"]].get("unbound") == "unread_ink_at_end", t
+
+    def test_yes_tiles_3_10_11_the_end_rests_on_the_ink_head(self):
+        for t in (3, 10, 11):
+            assert _bind(_FX[t], True)[_FX[t]["side"]].get("head") == _FX[t]["ink_head"], t
+
+    def test_never_tile_18_other_unread_ink_still_stands_at_the_end(self):          # a second, unboxed blob at the end: cannot tell stays
+        assert _bind(_FX[18], True)[_FX[18]["side"]].get("unbound") == "unread_ink_at_end"
+
+
 # ── (iii) ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 def _piece(run, shape, y):
     return {"curve": "page_arc/" + run, "shape": shape, "y_end_spaces": y}
