@@ -2090,11 +2090,100 @@ def _lone_event_guesses(log: Log, cell: Subject, props: List[Proposal], kept: Li
     return out
 
 
+#: ROADMAP 2.359 (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default OFF): the reason a note held {plain, dotted} by an unread round mark
+#: in its dot place (ADJUDICATE `rhythm.MISSED_DOT_REASON`) is guessed dotted from the bar.
+MISSED_DOT_FILLS_REASON = "missed_dot_fills_bar"
+#: what already wrote a value GUESSED; a bar holding one is no witness for another note (the bar inherits every guess in it)
+_GUESSED_LENGTH_DECIDERS = ("infer:", "reconcile_duration")
+
+
+def missed_dot_decline(log: Log, cell: Subject) -> Tuple[Optional[str], List[Verdict]]:
+    """ROADMAP 2.359: `(None, marked)` where this staff's bar may be guessed to dot every note an unread round mark holds between
+    plain and dotted (`marked`, each NARROWED `dot_ink_no_box`), else `(why, [])`. The rule, as a musician says it: the bar -- every
+    other note and rest in it read -- is short by exactly the dots of the marked notes. Two witnesses from two sources: the ink (its
+    own round mark) and the bar. NEVER: a bar holding anything unread, narrowed for another reason, or already guessed for its length
+    (the bar is then no witness); a marked note in a chord or a tuplet; a bar that is not one voice; a meter that does not reach the
+    print; a bar that adds up only with SOME of the marked notes dotted (every mark must be a dot, or none is written: rule 8)."""
+    from . import one_note as _one
+    from .adjudicators.rhythm import MISSED_DOT_REASON, missed_dot_enabled
+    from .consequences import _bar_beats_at, _bar_has_tuplet, _is_rest, _left_the_bar, _standing
+    if not missed_dot_enabled():
+        return "flag_off", []
+    standing = [v for v in _standing(log, cell, Q.DURATION) if _left_the_bar(log, v.subject) is None]
+    marked = [v for v in standing if v.outcome is Outcome.NARROWED and v.reason == MISSED_DOT_REASON]
+    if not marked:
+        return "no_marked_note", []
+    for v in standing:
+        if v in marked:
+            continue
+        if v.outcome is not Outcome.DECIDED:
+            return "something_else_in_the_bar_unread", []
+        if any((v.decider or "").startswith(p) for p in _GUESSED_LENGTH_DECIDERS):
+            return "a_length_in_the_bar_is_already_guessed", []
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    if meter is None or meter.outcome is not Outcome.DECIDED:
+        return "meter_not_decided", []
+    if _printed_meter_roots(log, meter, cell) is None:
+        return "meter_not_from_the_print", []
+    expected = _bar_beats_at(meter, cell)
+    if expected is None:
+        return "no_meter_in_force", []
+    if bar_has_tuplet(log, cell) or _bar_has_tuplet(log, cell, standing):
+        return "tuplet_in_bar", []
+    if not _one.one_voice(log, cell):
+        return "not_one_voice", []
+    grouping = log.verdict(Q.EVENT, cell)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        return "no_event_grouping", []
+    glyphs = {v.subject.glyph for v in standing}
+    for ev in (grouping.value or {}).get("events", ()):
+        members = set(ev.get("glyphs", ())) & glyphs
+        if len(members) > 1 and any(m.subject.glyph in members for m in marked):
+            return "marked_note_in_a_chord", []
+    from .bar_length import bar_length
+    plain = bar_length(log, cell, standing, first_candidate=True)      # every marked note at its plain (first) candidate
+    if plain.unknown:
+        return "bar_length_unknown", []
+    add = 0.0
+    for m in marked:
+        vals = [c.value for c in (m.candidates or ()) if isinstance(c.value, dict)]
+        if len(vals) != 2 or int(vals[0].get("dots") or 0) != 0 or int(vals[1].get("dots") or 0) != 1:
+            return "marked_note_not_plain_or_dotted", []
+        add += float(vals[1]["beats"]) - float(vals[0]["beats"])
+    if _frac(plain.value) == _frac(expected):
+        return "bar_adds_up_plain", []
+    if _frac(plain.value + add) != _frac(expected):
+        return "bar_not_short_by_exactly_the_dots", []
+    return None, marked
+
+
+def _missed_dot_guesses(log: Log, cell: Subject) -> List[Proposal]:
+    """ROADMAP 2.359: each marked note of a bar `missed_dot_decline` admits, dotted -- GUESSED (blue; the harness carries both
+    candidates forward)."""
+    why, marked = missed_dot_decline(log, cell)
+    if why is not None:
+        return []
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    voices = log.verdict(Q.VOICES, cell)
+    from .consequences import _bar_beats_at
+    expected = _bar_beats_at(meter, cell)
+    out = []
+    for m in marked:
+        dotted = [c.value for c in m.candidates if isinstance(c.value, dict) and int(c.value.get("dots") or 0) == 1][0]
+        out.append(Proposal(
+            subject=m.subject, value=dotted, reason=MISSED_DOT_FILLS_REASON,
+            basis=tuple(dict.fromkeys((m.id, meter.id) + ((voices.id,) if voices is not None else ()))), witnesses=(),
+            detail={"expected_beats": float(expected), "marked_notes_in_bar": len(marked),
+                    "mark_row": ((m.detail or {}).get("missed_dot") or {}).get("mark_row"), "reads_meter": True}))
+    return out
+
+
 @rule(
     inference=Inference.COLLAPSE_NARROWED_BY_BAR,
     target=Q.DURATION,
     reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST,
+           Q.VOICES),       # ROADMAP 2.359 (OFF): the missed-dot bar is one voice
     scope=Kind.CELL,
     sideways=False,
     switch=NARROWED_BAR_SWITCH,
@@ -2139,6 +2228,12 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
         # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default ON, Sean 2026-10-17): and a bar holding ONE event under a known meter may
         # still be guessed to the one candidate that fills it (Sean 2026-10-17).
         props = kept + _lone_event_guesses(log, cell, props, kept)
+    # ROADMAP 2.359 (`OMR_MISSED_DOT_TWO_WITNESSES`, default OFF): a note an unread round mark holds {plain, dotted}, dotted where the
+    # read bar is short by exactly the marks' dots; its own label, and it takes the note from any other guess of this rule.
+    dots = _missed_dot_guesses(log, cell)
+    if dots:
+        mine = {p.subject for p in dots}
+        props = [p for p in props if p.subject not in mine] + dots
     return props
 
 
