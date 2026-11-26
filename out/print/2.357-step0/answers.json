@@ -1,0 +1,40 @@
+{
+ "set": "2.357-step0 unboxed dots",
+ "date": "2026-11-26",
+ "question": "24 unread marks that stand where a note's dot would be. For each number: is it a dot that lengthens the note to its left? Yes or no.",
+ "answered_by": "Sean",
+ "verbatim": "One, no. Two, no. Three, no. Four, yes. Five, no. Six, yes. Seven, no. Eight, no. 9 yes, 10 yes, 11 yes, 12 yes, 13 yes, 14 yes, 15 yes, 16 no, 17 yes, 18 yes, 19 yes, 20 no, 21 no, 22 no, 23 no, 24 no. 24 is part of a bass clef. The others that are all no's are parts of a ledger line.",
+ "yes": [
+  4,
+  6,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  17,
+  18,
+  19
+ ],
+ "no": [
+  1,
+  2,
+  3,
+  5,
+  7,
+  8,
+  16,
+  20,
+  21,
+  22,
+  23,
+  24
+ ],
+ "what_the_nos_are": {
+  "24": "part of a bass clef",
+  "1,2,3,5,7,8,16,20,21,22,23": "parts of a ledger line"
+ },
+ "ours": "12 real dots, 12 not: 11 ledger-line pieces and 1 bass-clef piece."
+}
