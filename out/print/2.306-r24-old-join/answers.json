@@ -1,0 +1,12 @@
+{
+  "set": "2.306-r24-old-join",
+  "date": "2026-11-25",
+  "question": "36 heads the old join still decides with the page stem reader on (thick orange box = the head). On which of these, if any, can you yourself not tell which stem the boxed head belongs to?",
+  "answered_by": "Sean",
+  "verbatim": "I don't understand the question.  Aside from tile 5 that is boxing an ff the rest are all easily seen as noteheads with stems...",
+  "answers": [
+    {"tile": 5, "doc": "litolff", "page": 4, "subject": "glyph/4/1/7/4/18", "answer": "the box is on an ff (a dynamic), not a notehead"},
+    {"tiles": "1-4, 6-36", "answer": "all easily seen as noteheads with stems"}
+  ],
+  "ours": "None of the 35 is a case a musician cannot read: the page reader has no excuse to decline any of them, and none is a missing convention. Tile 5: the old join writes a G4 eighth, plain, on ink that is a dynamic -- a false note written unmarked. Sean did not say which stem each head is on; that is still read from the print, not from this answer."
+}
