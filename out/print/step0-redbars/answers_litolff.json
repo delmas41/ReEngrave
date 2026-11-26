@@ -1,0 +1,78 @@
+{
+ "set": "step0-redbars litolff",
+ "date": "2026-11-26",
+ "question": "24 Litolff bars in 2/4 that the file marks red although every note in them was read with confidence. For each number, what is in the boxed bar, left to right (lengths only)?",
+ "answered_by": "Sean",
+ "answers": {
+  "1": "two half notes in a chord, with ties coming from before it",
+  "2": "half note with a tremolo slash",
+  "3": "whole rest (counts for the bar: correct)",
+  "4": "two voices -- top: four eighth notes, a natural in front of the third; bottom: eighth note, eighth rest, quarter rest",
+  "5": "two voices -- a quarter note with a natural in front of it [as said]; a whole rest underneath",
+  "6": "four eighth notes; the first by itself with a flag, the last three beamed; a natural in front of the second",
+  "7": "half note",
+  "8": "half note",
+  "9": "two quarter notes in a chord a third apart, then a quarter rest",
+  "10": "four eighth notes, all beamed",
+  "11": "eighth rest, then three eighth notes (the rest runs into the beam)",
+  "12": "two voices -- half note above, whole rest below",
+  "13": "four eighth notes, beamed; first two slurred, last two staccato",
+  "14": "four eighth notes, all staccato; a flat in front of the last",
+  "15": "half note, with an arc coming from before it",
+  "16": "two quarter notes; a sharp in front of the first; an arc leaving the second",
+  "17": "eighth rest, then three eighth notes (what looks like a dot is an ink flaw)",
+  "18": "two half-note heads in a chord with a (thick) tremolo slash",
+  "19": "two quarter notes on one stem (a chord), then a quarter rest",
+  "20": "two half notes on one stem, with arcs to and from them",
+  "21": "half notes on a stem (a chord)",
+  "22": "two quarter notes on one stem (a chord), then a quarter rest",
+  "23": "eighth rest, then three eighth notes, each a two-note chord",
+  "24": "two quarter notes"
+ },
+ "note": "answers are a faithful condensation of his dictation; 'Tau' = 'Tile', '4/8 notes' = four eighth notes, '2/4' = two quarter notes",
+ "compared_with_the_file": {
+  "a half note (or a chord of halves) written as a quarter": [
+   1,
+   7,
+   18,
+   21
+  ],
+  "a half note not written, a quarter REST written in its place": [
+   8,
+   15
+  ],
+  "a whole rest not written, a quarter NOTE written in its place": [
+   3
+  ],
+  "a half note with a tremolo slash written as a DOTTED half": [
+   2
+  ],
+  "a printed rest missing": {
+   "11": "eighth rest of 'rest + three eighths'",
+   "17": "same",
+   "9": "quarter rest after the chord"
+  },
+  "a printed note missing": {
+   "6": "one of four eighths (the first, flagged, by our guess)",
+   "13": "one of four eighths",
+   "24": "one of two quarters",
+   "19": "the two-note chord (only its quarter rest is written)"
+  },
+  "an extra note written": [
+   10,
+   14,
+   16,
+   20
+  ],
+  "an extra dot written": {
+   "22": "both chord quarters written dotted",
+   "23": "the eighth rest written dotted"
+  },
+  "two voices added end to end": {
+   "4": "counted 3.5",
+   "12": "counted 6 (whole rest taken at 4 quarters beside a half)",
+   "5": "only the quarter is written; the whole rest of the other voice is not"
+  },
+  "ours": "Sorting is OURS, from Sean's readings against the manifest's file contents. 8 of the 24 bars turn on a hollow (half/whole) mark read as a quarter or lost; the trace agent's own categories disagree with Sean's reading on several bars (e.g. 6, 8, 15)."
+ }
+}
