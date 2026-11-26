@@ -2587,7 +2587,12 @@ def _head_reads_disagree(ev: Evidence, hi: Optional[Dict[str, Any]], head_first:
 #: reads hollow too. NEVER a hollow read off paper beside the head; NEVER a head its own ink reads hollow turned black (that head
 #: keeps the window's reading, whatever the box); a box one head wide is not touched (a staff line or stem through a narrow
 #: half's slit can make its own ink read filled -- Litolff p4 `glyph/4/1/9/14/10`, our look -- and the window then still decides).
-#: CAUSE, CANNOT-TELL: a wide box whose own ink is not one head is left as the detector read it, never written a half.
+#: ROUND 2 (2026-11-26), CANNOT-TELL: where the own ink is UNREAD (not one head, no head ink, a slit between the cuts, no row) the window's
+#: hollow may not DECIDE a half -- and the note is NOT turned black either (round 1 did: Sean's judged half Litolff `glyph/9/0/4/2/8`, a
+#: 1.91 sp box whose own ink the old reader refused one pixel over its width cap, went from a blue half to a plain quarter). It keeps what
+#: read it before: the narrowing black / half / whole, which the stem mates or the bar then settle, labelled. Only an own ink READ black
+#: (`filled`) takes the hollow away. Not fixed here: a `filled` reading on a fragment that is no head (Litolff `glyph/8/1/3/18/14`, Brahms
+#: `glyph/8/0/2/7/11`) is 2.355's non-head residue; heads Sean vouched for are as small as 0.64 sp, so no size cut separates them.
 #: MEASURED (20261123-night, both plates, whole movement; benchmarks are the lane report): 13 halves 2.70 decided on a box wider
 #: than 1.9 sp (1.97-5.19); 12 own ink filled or not one head -- every one a black head or no head at all on the print (our look,
 #: not Sean's) -- 1 own ink hollow, a real half (`glyph/7/0/8/10/5`, 2.16 sp), kept. THIN MARGIN, stated: Sean's judged halves'
