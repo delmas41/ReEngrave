@@ -1,0 +1,55 @@
+{
+ "set": "step0-blue litolff_accidental_family",
+ "date": "2026-11-26",
+ "question": "For each number, what is printed directly in front of the boxed note: sharp, flat, natural, or none?",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1 is the third of 3 8 notes, the beam, but in front of the first of them is a sharp. But there's not anything right in front of the note. Tile 2 has a flat. Tile 3, similarly, is the third of 4 eighth notes. In front of the first of those, applying to all of them, is a natural sign. 4 natural. 5 natural, 6 natural, 7 sharp, 8 natural, 9 natural, 10 natural, 11 natural, 12 flat, 13 natural, 14 sharp, 15 sharp, 16 nothing, 17 natural, 18 sharp, 19 nothing, 20 natural, 21 natural, 22 flat, 23 sharp, 24 sharp.",
+ "answers": {
+  "1": "none directly in front (third of 3 beamed eighths; a sharp stands in front of the first of them)",
+  "2": "flat",
+  "3": "none directly in front (third of 4 eighths; a natural in front of the first applies to all of them)",
+  "4": "natural",
+  "5": "natural",
+  "6": "natural",
+  "7": "sharp",
+  "8": "natural",
+  "9": "natural",
+  "10": "natural",
+  "11": "natural",
+  "12": "flat",
+  "13": "natural",
+  "14": "sharp",
+  "15": "sharp",
+  "16": "none",
+  "17": "natural",
+  "18": "sharp",
+  "19": "none",
+  "20": "natural",
+  "21": "natural",
+  "22": "flat",
+  "23": "sharp",
+  "24": "sharp"
+ },
+ "applies_from_earlier_in_the_bar": {
+  "1": "sharp",
+  "3": "natural"
+ },
+ "compared_with_the_file": {
+  "pitch_right": 21,
+  "pitch_wrong": 3,
+  "wrong": {
+   "6": "Sean natural; file Bb4 (strokes read flat, no detector box)",
+   "8": "Sean natural; file Ab5 (strokes flat AND detector flat)",
+   "9": "Sean natural; file Ab5 (strokes flat AND detector flat)"
+  },
+  "sign_read_where_none_is_printed": {
+   "16": "file Ab3 with a flat read in front; Sean: nothing. Pitch unaffected (A-flat is in the key).",
+   "19": "same, Ab3"
+  },
+  "carried_in_the_bar_and_right": {
+   "1": "C#5",
+   "3": "E4 (natural)"
+  },
+  "ours": "Comparison is OURS: the file's pitch read against Sean's sign in a three-flat key. All three errors are a natural read as a flat; in two of them both readings of the same ink (strokes and detector) agreed and were wrong together."
+ }
+}
