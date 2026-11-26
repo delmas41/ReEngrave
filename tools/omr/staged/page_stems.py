@@ -459,6 +459,9 @@ def _heads_a_stroke_can_end_at(h: Dict[str, Any], c: Dict[str, Any], heads: Sequ
 
 
 R24_NOTE_BEFORE_TIP_BOX = True
+R24_ONLY_THE_TOUCHED = True
+#: the reading word of a head whose one touched stroke is its stem (the other untouched, held by no head)
+TOUCHED_HOW = "the_stroke_it_touches"
 #: the reading word of a box with no head ink at a stem's far end whose stroke a note's ink touches (it takes no stem)
 TIP_BOX_HOW = "box_at_a_notes_stem_tip"
 
@@ -609,6 +612,24 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 s = stems.setdefault(o, dict(ord=o, heads=[], directions={d}))
                 s["heads"].append(h["id"])
                 r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how=OTHER_STEM_HOW)
+                continue
+            if (R24_ONLY_THE_TOUCHED and float(by_dir[d].get("reach") or 0.0) >= UNISON_REACH_SP
+                    and float(by_dir[other].get("reach") or 0.0) < STEM_MIN_SP
+                    and not (int(by_dir[d]["stroke"]) in stems and stems[int(by_dir[d]["stroke"])]["heads"])
+                    and not (int(by_dir[other]["stroke"]) in stems and stems[int(by_dir[other]["stroke"])]["heads"])):
+                # ROADMAP 2.306 r24 (round 8; Litolff 4/1/8/4/16, 6/1/3/1/1, 9/0/1/0/8, 10/1/10/11/1 -- Sean 2026-11-25: "easily seen as
+                # noteheads with stems"; our look: one stem each, the one the head touches): a stem joins the head whose ink it touches (Sean
+                # 2026-11-18). The head touches one stroke, a stem's length, that no other head stands on; the other it does not touch, and
+                # no head stands on that either, and it is shorter than a stem (`STEM_MIN_SP`), so it cannot be a second voice's stem whose
+                # contact the map missed -- the touched one is its stem. Never where the untouched stroke is a stem's length (Litolff 8/1/2/1/1:
+                # a half note the old join wrote as two voices; the map may have missed the second stem's contact -- left as r23 left it). Never where
+                # another head stands on the touched stroke (Brahms 8/0/3/1/10 and 8/1/7/8/2: the stroke the map says the head touches is
+                # the upper voice's stem, the map missed the head's own -- left unresolved), never where both or neither touch.
+                c = by_dir[d]
+                o = int(c["stroke"])
+                s = stems.setdefault(o, dict(ord=o, heads=[], directions={d}))
+                s["heads"].append(h["id"])
+                r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how=TOUCHED_HOW)
                 continue
         shared = _chord_stem(h, by_dir, touch, stems, heads, hink, vbox) if chord_partner_on() else None
         if shared is not None:

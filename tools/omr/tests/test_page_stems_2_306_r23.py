@@ -66,7 +66,11 @@ def test_rule_off_the_head_is_left_unresolved_as_r22_left_it(name, monkeypatch):
     _rule_off(monkeypatch)
     w, r = _read(name)
     got = r[w["head"]]
-    assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
+    # r24: rule 1 (another head's stem) still never fires here; Litolff 10/1/10/11/1 is now read by r24's touched-stroke rule (its untouched
+    # stroke is shorter than a stem: `test_page_stems_2_306_r24.py`), the Brahms head stays unresolved
+    assert got["how"] != PS.OTHER_STEM_HOW, got
+    if "brahms" in name:
+        assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
 
 
 @pytest.mark.parametrize("name", ["never_unheld_litolff_10_1_10_11_1", "never_unheld_brahms_8_0_3_1_10"])
@@ -77,7 +81,11 @@ def test_never_when_the_untouched_stroke_holds_no_other_head(name):
     unresolved (the Brahms one shows why -- deciding the touched stroke there would have been wrong)."""
     w, r = _read(name)
     got = r[w["head"]]
-    assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
+    # r24: rule 1 (another head's stem) still never fires here; Litolff 10/1/10/11/1 is now read by r24's touched-stroke rule (its untouched
+    # stroke is shorter than a stem: `test_page_stems_2_306_r24.py`), the Brahms head stays unresolved
+    assert got["how"] != PS.OTHER_STEM_HOW, got
+    if "brahms" in name:
+        assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
 
 
 def test_never_when_the_other_head_on_the_stroke_is_this_note_seen_again():

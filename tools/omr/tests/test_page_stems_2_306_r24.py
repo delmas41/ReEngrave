@@ -11,6 +11,8 @@ r23_cut_window.py`); each is shown failing with its rule switched off (CLAUDE ru
 (2) A STEM ENDS AT A NOTE (`_heads_a_stroke_can_end_at`). A stroke a stem's length that stops at a box with no head ink (on the beam, at the
     tip) is not that box's outline.
 (3) A NOTE'S INK HOLDS ITS STROKE OVER A BOX AT THE TIP (`_free_from_tip_boxes`). Never for a head with no head ink of its own (tile 5, the ff).
+(4) THE STROKE IT TOUCHES (`TOUCHED_HOW`): a stem joins the head whose ink it touches (Sean 2026-11-18); where the other stroke touches nothing
+    of the head, holds no head and is shorter than a stem, the touched one is the stem. Never where the untouched stroke is a stem's length.
 """
 import json
 import os
@@ -101,3 +103,21 @@ def test_never(name):
     in one column; left unresolved."""
     w, got = _read(name)
     assert got["state"] not in ("one", "second") and got["how"] != PS.UNISON_HOW, got
+
+
+@pytest.mark.parametrize("name", ["touched_up_litolff_6_1_3_1_1", "touched_up_litolff_10_1_10_11_1"])
+def test_the_stroke_the_head_touches_when_the_other_is_too_short_to_be_a_stem(name, monkeypatch):
+    """Litolff 6/1/3/1/1 (tile 30, an A3 eighth, up stem to the beam; the untouched stroke at its left 2.3 spaces) and 10/1/10/11/1 (tile 33,
+    an Ab2 eighth on the bottom line, up stem to the beam; a 1.8-space piece below). Fails with the rule off (r23 left both `one_touches`)."""
+    w, got = _read(name)
+    assert got["state"] == "one" and got["how"] == PS.TOUCHED_HOW and got["direction"] == w["expect"], got
+    _off(monkeypatch, "R24_ONLY_THE_TOUCHED")
+    w, got = _read(name)
+    assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
+
+
+def test_never_when_the_untouched_stroke_is_a_stems_length():
+    """Litolff 8/1/2/1/1: a half note the old join wrote as two voices; the stroke it does not touch is a stem's length (3.4 spaces) -- it may
+    be the second voice's stem whose contact the map missed. Left unresolved."""
+    w, got = _read("never_untouched_is_a_stem_litolff_8_1_2_1_1")
+    assert got["state"] == "two_voices" and got.get("why") == "one_touches", got
