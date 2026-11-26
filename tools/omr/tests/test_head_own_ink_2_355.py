@@ -86,6 +86,13 @@ def test_non_heads_not_made_worse(m):
     assert not (off not in ONE and on in ONE), (m["sub"], off, on)
 
 
+@pytest.mark.parametrize("m", _group("ours"), ids=lambda m: m["plate"] + ":" + m["sub"])
+def test_a_hollow_head_is_never_made_black_by_moving_its_box(m):
+    """OUR LOOK, not Sean's (a dotted half, Brahms 25/0/8/0/10): where the flag moves the box (a rim carried across its line, a stroke
+    left out) the slit read only the rim and said black; a black head's middle is solid, this one's is not -- never read filled."""
+    assert _read(m, True) != "filled"
+
+
 def test_fixtures_match_their_recorded_readings():
     for m in META:
         assert _read(m, False) == m["off"], m["sub"]

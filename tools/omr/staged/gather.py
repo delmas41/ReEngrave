@@ -8890,7 +8890,7 @@ def gather_head_ink(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, T
             else:
                 reason = {"not_one_head": ABSTAIN.NOT_ONE_HEAD, "no_head_ink": ABSTAIN.NO_HEAD_INK,
                           "readers_split": ABSTAIN.READERS_SPLIT, "slit_between_cuts": ABSTAIN.SLIT_BETWEEN_CUTS,
-                          "slit_unread": ABSTAIN.SLIT_UNREAD}[got["why"]]
+                          "slit_unread": ABSTAIN.SLIT_UNREAD, "black_not_solid": ABSTAIN.BLACK_NOT_SOLID}[got["why"]]
                 log.abstain(g, Q.HEAD_INK, reader=READERS.CV_HEAD_INK, frame=frame, reason=reason, **detail)
         if progress:
             print(f"  gather head ink {sub.to_key()}: {len(heads)} heads")

@@ -3238,6 +3238,9 @@ class ABSTAIN(_Vocab):
     SLIT_BETWEEN_CUTS = "slit_between_cuts"
     #: ROADMAP 2.355: the slit could not be read on the trimmed head (no middle row holds ink).
     SLIT_UNREAD = "slit_unread"
+    #: ROADMAP 2.355: the flag moved the head's box (a stroke beside it left, or its rim was carried across a line) and the slit reads
+    #: black, but the head's middle holds paper -- a black head's middle is solid, so it is not read black.
+    BLACK_NOT_SOLID = "black_not_solid"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
 

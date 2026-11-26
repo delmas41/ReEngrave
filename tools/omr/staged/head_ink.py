@@ -642,6 +642,12 @@ def read_head_ink(page_binary: Any, box: Sequence[float], space_px: float, forei
         out["why"] = "not_one_head"
         return out
     out["value"], out["margin"], out["why"] = fill_from_slit(out["slit"])
+    own = t.get("own_ink") or {}
+    if out["value"] == "filled" and (own.get("rim_bridged") or own.get("apart_px")) and \
+            ((out.get("window") or {}).get("center") is None or out["window"]["center"] < SOLID_CENTRE):
+        # ROADMAP 2.355: where the flag moved the head's box (a stroke left it, or a rim was carried across its line), a black reading
+        # needs a solid middle -- never a hollow head made black by cutting its walls away (Brahms 25/0/8/0/10, a half read as its rim)
+        out["value"], out["margin"], out["why"] = None, None, "black_not_solid"
     if out["why"] == "readers_split" and own_ink():
         out["why"] = "slit_between_cuts" if out["slit"] is not None else "slit_unread"
     return out
