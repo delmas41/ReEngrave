@@ -1,0 +1,51 @@
+{
+ "set": "step0-blue brahms_accidental_family",
+ "date": "2026-11-26",
+ "question": "For each number, what is printed directly in front of the boxed note: sharp, flat, natural, or none?",
+ "answered_by": "Sean",
+ "verbatim": "Tau 1 has a sharp in front of the several eighth notes in front of it. Tau 2, sharp. Tau 3, sharp. Tau 4, natural. Tau 5, sharp. Tau 6, sharp. Tau 7, flat. Tau 8, sharp. Tau 9, sharp. Tau 10, sharp. Tau 11 is a note in a different staff, or yeah, different system, different staff, and it has an A2 in front of it, not an accidental. Tau 12 is a natural. Tau 13 is a flat. Tau 14 is a sharp. Tau 15 is a natural. Tau 16 is a flat. Tau 17 is a sharp. Tau 18 is a flat. Tau 19 is a flat. Tau 20 is a sharp. Tau 21 is a sharp. Tau 22 is a sharp. Tau 23 is a flat. Tau 24 looks like nothing. There's a weird ink blot there, but it's just a random dot of ink. Not anything actually.",
+ "answers": {
+  "1": "none directly in front (a sharp stands in front of the eighth notes ahead of it)",
+  "2": "sharp",
+  "3": "sharp",
+  "4": "natural",
+  "5": "sharp",
+  "6": "sharp",
+  "7": "flat",
+  "8": "sharp",
+  "9": "sharp",
+  "10": "sharp",
+  "11": "not this staff's note (a note in a different staff/system); 'a 2' is printed in front, not an accidental",
+  "12": "natural",
+  "13": "flat",
+  "14": "sharp",
+  "15": "natural",
+  "16": "flat",
+  "17": "sharp",
+  "18": "flat",
+  "19": "flat",
+  "20": "sharp",
+  "21": "sharp",
+  "22": "sharp",
+  "23": "flat",
+  "24": "none (a random dot of ink, not anything)"
+ },
+ "ours": "'Tau' = 'Tile' (dictation).",
+ "compared_with_the_file": {
+  "sign_right": 22,
+  "sign_wrong": 2,
+  "wrong": {
+   "11": "Sean: a note of a different staff with 'a 2' printed in front, no accidental; file writes A##4 (strokes unclear, detector alone said sharp)",
+   "24": "Sean: nothing, a random dot of ink; file writes B##3 (strokes unclear, detector alone said sharp)"
+  },
+  "carried_in_the_bar_and_right": {
+   "1": "A#4"
+  },
+  "by_kind": {
+   "sharp": "13 of 13 printed sharps right",
+   "flat": "6 of 6",
+   "natural": "3 of 3"
+  },
+  "ours": "Comparison is OURS. Both errors are 'strokes cannot tell, the detector alone says sharp' on ink that is not an accidental; the five other detector-alone cases (flats, a natural) were right. Both wrong notes come out as DOUBLE sharps (A##, B##): unchecked whether a printed sharp is being added on top of a key sharp."
+ }
+}
