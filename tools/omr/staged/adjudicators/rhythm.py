@@ -5505,6 +5505,8 @@ def _bar_lengths_for(ev: Evidence) -> dict:
     bars: dict = {}
     # ROADMAP 2.346: the refusals `_glyph_left_the_bar` reads, named here so the inventory's read check sees them from this witness.
     _refusals = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST)  # noqa: F841
+    # ROADMAP 2.356: the contest rows `_rest_contested_between_staves` reads, named here for the same check.
+    _contest = (Q.GLYPH_BAND_DISTANCE,)  # noqa: F841
     skip = bar_sum_skips_refused_enabled()
     for grouping in ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS):
         if grouping.outcome is not Outcome.DECIDED:
