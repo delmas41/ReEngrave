@@ -1,0 +1,11 @@
+{
+  "set": "2.351",
+  "date": "2026-11-25",
+  "question": "Litolff page 2. Thick orange box = the note. The file writes it as a half note today. Is it a black note or a hollow half note?",
+  "answered_by": "Sean",
+  "answers": [
+    {"tile": 1, "file": "tile1_litolff_p2.png", "doc": "litolff", "page": 2, "subject": "glyph/2/0/10/2/13",
+     "verbatim": "Litolff was a quarter", "answer": "a quarter (black head)"}
+  ],
+  "ours": "The file's half note is wrong: the first judged case for 2.351's wide-box rule (`OMR_HEAD_FILL_OWN_INK`). Subject taken from the lane's report for this tile; the manifest of the tile should be checked against it before it becomes a scored judged row."
+}

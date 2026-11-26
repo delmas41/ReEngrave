@@ -97,12 +97,18 @@ def test_never_a_rest_whose_note_is_not_just_right_of_it():
     # The gap test is what keeps it a rest: widen it and the rule takes the rest (the control can fail).
     name = "p9_9_1_0_0_quarter_rest"
     assert verdict(name, True)["standing"] == "READ"
-    saved = PCN.ACC_HEAD_GAP_MAX_SP
+    # ROADMAP 2.352 r2/r3: the sharp reader itself now leaves this rest's ink unclaimed (a sharp stands just before its note, by INK: `STACK_HEAD_GAP_MAX_SP`; the barline
+    # sliver holds no ink of its own, so there is no note to be beside), so the gap test below is the SECOND guard. It is shown with the first one given the old box-edge
+    # measure and widened (the control can still fail: with only PCN's gap widened the rest stays a rest, with both it is taken).
+    saved, saved_near, saved_ink = PCN.ACC_HEAD_GAP_MAX_SP, PAI.STACK_HEAD_GAP_MAX_SP, PAI.head_ink_left
     try:
+        PAI.head_ink_left = lambda strokes, masks, scale, head, exclude=(): head.box[0]
+        PAI.STACK_HEAD_GAP_MAX_SP = 9.0
+        assert verdict(name, True)["standing"] == "READ"
         PCN.ACC_HEAD_GAP_MAX_SP = 9.0
         assert verdict(name, True)["why"] == "a_sharp_before_its_note"
     finally:
-        PCN.ACC_HEAD_GAP_MAX_SP = saved
+        PCN.ACC_HEAD_GAP_MAX_SP, PAI.STACK_HEAD_GAP_MAX_SP, PAI.head_ink_left = saved, saved_near, saved_ink
 
 
 def test_never_a_flat():

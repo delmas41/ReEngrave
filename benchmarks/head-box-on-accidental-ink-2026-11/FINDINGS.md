@@ -68,4 +68,21 @@ The fault is upstream of this rule, in the 2.336 sharp reader that is ON in main
 
 ## Open
 
-ROADMAP 2.352 (the sharp reader's claim); this rule waits on it.
+ROADMAP 2.352 landed 2026-11-25 (below); 2.347 is to be re-measured now that the false claim is gone.
+
+## Landed 2026-11-25: rounds 2-4 (ROADMAP 2.352, no flag)
+
+Four grounds on which the sharp reader (STAGED GATHER `page_accidental_ink.sharp_stacks`) no longer claims a block of ink as a sharp:
+1. Always the same bar (Sean: "Always same bar"): a sharp never takes its note from across a barline (reason `note_across_barline`).
+2. The note is near, ink to ink: 2.5 sp (quarter rest 3.55 sp, true sharps <= 0.7 sp, unjudged <= 2.1 sp); no note beside is counted as `no_note_beside`.
+3. Not narrower than about two-thirds of a sharp (the sf fragment measured 0.51); counted `too_narrow`.
+4. A sharp is not two hollow heads: one window of paper, never three or more (Sean's tiles: Litolff p13 and p4 are "two half notes, a third apart").
+Round 4 added the tie rule: where the ink gap ties between the two boxes of one note, the sharp goes to the note on the staff its own ink is printed on, else main's choice stands and is counted (`fused_stack:head_tie_kept_main`).
+
+Both sides, from the ROADMAP row: 15 pages rebuilt from saved records: 12 judged sharps kept, 0 of 574 labelled/judged noteheads read as an accidental, 5 claims lost vs main (all five judged NOT sharps by Sean), none gained. Real page reads, main vs r4, Litolff p2/p4/p6/p12: the five judged non-sharps go, the p12 sharps stay, two sharps main lost to the same tie are gained (p2 G#4, p12 F#5; Sean: "There is a sharp in front of those notes").
+
+Sean's nine tile answers: `out/print/2.352-declined/answers.json` `out/print/2.352-r2/answers.json`, `out/print/2.352-r3/answers.json`, `out/print/2.352-r4/answers.json` (answers by reference; the count is not re-tallied here), plus the earlier glyph/10/1/9/0/5 answer.
+
+Lesson (list-order tie): round 3 lost two real sharps that only a real page read caught. The replay counted claims by ink box and could not see WHICH head got the sharp; a tie in the ink gap between the two boxes of one note was decided by list order. A replay that counts claims cannot test an assignment; read a real page.
+
+Frozen sample, main vs r4 (16 pages): Brahms file unchanged; Litolff changes only on p2/p4/p10, all judged by Sean (a sharp gained on p2, false sharps gone on p4 and p10, one eighth gained on p10); no note and no real sharp lost; red bars equal (Litolff 126, Brahms 108); judged right->wrong 0, unwritten->wrong 0, no judged tile changed. Open: one half note written where Sean sees two (head reader, 2.351); numbers measured on two plates; not measured on a whole movement.
