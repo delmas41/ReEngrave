@@ -1,0 +1,18 @@
+{
+  "set": "written-on-claimed-ink",
+  "date": "2026-11-25",
+  "question": "Eight places where the file writes a note today, numbered 1-8 (thick orange box = the ink the note is written from). Which of the eight boxes hold a notehead?",
+  "answered_by": "Sean",
+  "verbatim": "3,5,7,9 are noteheads",
+  "tiles": [
+    {"tile": 1, "subject": "brahms glyph/11/1/10/1/3", "claimed_by": "tremolo", "answer": "not named as a notehead"},
+    {"tile": 2, "subject": "brahms glyph/14/0/3/1/5", "claimed_by": "accidental_ink", "answer": "not named as a notehead"},
+    {"tile": 3, "subject": "brahms glyph/4/0/6/10/5", "claimed_by": "whole_rest", "answer": "a notehead"},
+    {"tile": 4, "subject": "litolff glyph/12/0/2/1/7", "claimed_by": "accidental_ink", "answer": "not named as a notehead"},
+    {"tile": 5, "subject": "litolff glyph/14/0/3/12/1", "claimed_by": "clef", "answer": "a notehead"},
+    {"tile": 6, "subject": "litolff glyph/15/1/3/18/13", "claimed_by": "clef", "answer": "not named as a notehead"},
+    {"tile": 7, "subject": "litolff glyph/2/1/7/12/2", "claimed_by": "barline", "answer": "a notehead"},
+    {"tile": 8, "subject": "litolff glyph/4/0/3/0/10", "claimed_by": "word", "answer": "UNCLEAR: Sean wrote 9; there is no tile 9"}
+  ],
+  "ours": "Tiles 1, 2, 4, 6 are taken as NOT noteheads only by omission (he listed the noteheads); that is our reading. '9' most likely means tile 8 -- asked, not confirmed. Tiles 3, 5, 7: real heads that a whole-rest, a clef and a barline claim wrongly hold."
+}
