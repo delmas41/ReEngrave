@@ -1,0 +1,218 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 4,
+  "start": "glyph/4/1/13/8/1",
+  "stop": "glyph/4/1/13/8/5",
+  "kind": "slur",
+  "run": "obs:100034"
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 5,
+  "start": "glyph/5/0/1/5/28",
+  "stop": "glyph/5/0/1/5/57",
+  "kind": "tie",
+  "run": "obs:177739"
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 12,
+  "start": "glyph/12/0/12/4/6",
+  "stop": "glyph/12/0/12/5/1",
+  "kind": "slur",
+  "run": "obs:285662"
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 14,
+  "start": "glyph/14/1/4/6/12",
+  "stop": "glyph/14/1/4/7/7",
+  "kind": "tie",
+  "run": "obs:342108"
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/0/2/6/7",
+  "stop": "glyph/4/0/2/7/14",
+  "kind": "tie",
+  "run": "obs:108617"
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/1/9/8/4",
+  "stop": "glyph/4/1/9/8/2",
+  "kind": "slur",
+  "run": "obs:108629"
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/0/2/3/11",
+  "stop": "glyph/4/0/2/4/4",
+  "kind": "slur",
+  "run": "obs:108546"
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/0/4/5/11",
+  "stop": "glyph/4/0/4/6/6",
+  "kind": "tie",
+  "run": "obs:108551"
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/0/6/5/1",
+  "stop": "glyph/6/0/6/7/1",
+  "kind": "slur",
+  "run": "obs:151385"
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/0/4/3/8",
+  "stop": "glyph/6/0/4/4/7",
+  "kind": "tie",
+  "run": "obs:151373"
+ },
+ {
+  "tile": 11,
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/1/2/0/7",
+  "stop": "glyph/6/1/2/1/10",
+  "kind": "tie",
+  "run": "obs:151361"
+ },
+ {
+  "tile": 12,
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/0/4/2/6",
+  "stop": "glyph/6/0/4/3/8",
+  "kind": "tie",
+  "run": "obs:151372"
+ },
+ {
+  "tile": 13,
+  "plate": "litolff",
+  "page": 8,
+  "start": "glyph/8/1/1/3/1",
+  "stop": "glyph/8/1/1/4/4",
+  "kind": "tie",
+  "run": "obs:197751"
+ },
+ {
+  "tile": 14,
+  "plate": "litolff",
+  "page": 8,
+  "start": "glyph/8/1/2/3/2",
+  "stop": "glyph/8/1/2/4/1",
+  "kind": "tie",
+  "run": "obs:197757"
+ },
+ {
+  "tile": 15,
+  "plate": "litolff",
+  "page": 9,
+  "start": "glyph/9/0/4/4/7",
+  "stop": "glyph/9/0/4/5/4",
+  "kind": "tie",
+  "run": "obs:231365"
+ },
+ {
+  "tile": 16,
+  "plate": "litolff",
+  "page": 9,
+  "start": "glyph/9/1/1/0/8",
+  "stop": "glyph/9/1/1/3/2",
+  "kind": "slur",
+  "run": "obs:231358"
+ },
+ {
+  "tile": 17,
+  "plate": "litolff",
+  "page": 9,
+  "start": "glyph/9/0/3/9/16",
+  "stop": "glyph/9/0/3/10/4",
+  "kind": "slur",
+  "run": "obs:231380"
+ },
+ {
+  "tile": 18,
+  "plate": "litolff",
+  "page": 10,
+  "start": "glyph/10/1/2/0/11",
+  "stop": "glyph/10/1/2/1/3",
+  "kind": "tie",
+  "run": "obs:277409"
+ },
+ {
+  "tile": 19,
+  "plate": "litolff",
+  "page": 10,
+  "start": "glyph/10/1/5/10/13",
+  "stop": "glyph/10/1/5/11/5",
+  "kind": "slur",
+  "run": "obs:277510"
+ },
+ {
+  "tile": 20,
+  "plate": "litolff",
+  "page": 10,
+  "start": "glyph/10/1/3/0/10",
+  "stop": "glyph/10/1/3/1/8",
+  "kind": "slur",
+  "run": "obs:277436"
+ },
+ {
+  "tile": 21,
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/1/10/7",
+  "stop": "glyph/11/0/1/11/3",
+  "kind": "slur",
+  "run": "obs:304214"
+ },
+ {
+  "tile": 22,
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/2/8/8",
+  "stop": "glyph/11/0/2/9/4",
+  "kind": "slur",
+  "run": "obs:304202"
+ },
+ {
+  "tile": 23,
+  "plate": "litolff",
+  "page": 16,
+  "start": "glyph/16/0/2/9/3",
+  "stop": "glyph/16/0/2/10/2",
+  "kind": "slur",
+  "run": "obs:349796"
+ },
+ {
+  "tile": 24,
+  "plate": "litolff",
+  "page": 16,
+  "start": "glyph/16/0/1/9/3",
+  "stop": "glyph/16/0/1/10/2",
+  "kind": "tie",
+  "run": "obs:349800"
+ }
+]
