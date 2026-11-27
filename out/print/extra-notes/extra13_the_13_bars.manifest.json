@@ -1,0 +1,776 @@
+{
+ "sheet": "extra13_the_13_bars.png",
+ "instruction": "For each number: what is the ink in the orange box? (a note, a rest, a stem, a flag, a beam, a tie, a barline, a flat, a letter, something else...)",
+ "tiles": [
+  {
+   "n": 1,
+   "subject": "glyph/8/0/8/7/0",
+   "plate": "litolff",
+   "page": 8,
+   "system": 0,
+   "staff": 8,
+   "cell": 7,
+   "file_writes": {
+    "element": "note",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "F3",
+    "colour": "plain black",
+    "part": "P11",
+    "measure": "112"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.36",
+    "cell_strokes_owned": [
+     1
+    ],
+    "page_mark": "head:page_head_alone ink_px=253",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [1723]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    1123,
+    1628,
+    1147,
+    1642
+   ],
+   "your_look": "whole rest (black block under the second line) read by the detector as a black notehead",
+   "red_bar_tile": "3",
+   "tile": {
+    "crop": [
+     1032,
+     1583,
+     1237,
+     1709
+    ],
+    "scale": 4.39,
+    "rect": [
+     366,
+     163,
+     537,
+     293
+    ]
+   },
+   "bar": "litolff red-bar tile 3"
+  },
+  {
+   "n": 2,
+   "subject": "glyph/11/0/6/14/1",
+   "plate": "litolff",
+   "page": 11,
+   "system": 0,
+   "staff": 6,
+   "cell": 14,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P9",
+    "measure": "216"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.62",
+    "cell_strokes_owned": [
+     3
+    ],
+    "page_mark": "rest:alone ink_px=319",
+    "rest_ink_contact": {
+     "thin_run_sp": 2.86,
+     "blob_sp": 0.51,
+     "box_height_sp": 3.93,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: bare_vertical_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    2121,
+    1306,
+    2128,
+    1368
+   ],
+   "your_look": "the stem of the half note; its hollow head is not boxed",
+   "red_bar_tile": "8",
+   "tile": {
+    "crop": [
+     2022,
+     1272,
+     2226,
+     1398
+    ],
+    "scale": 4.412,
+    "rect": [
+     401,
+     116,
+     503,
+     459
+    ]
+   },
+   "bar": "litolff red-bar tile 8"
+  },
+  {
+   "n": 3,
+   "subject": "glyph/9/0/7/14/9",
+   "plate": "litolff",
+   "page": 9,
+   "system": 0,
+   "staff": 7,
+   "cell": 14,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "F4",
+    "colour": "plain black",
+    "part": "P8",
+    "measure": "160"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.27",
+    "cell_strokes_owned": [],
+    "page_mark": "head:page_head_alone ink_px=364",
+    "head_ink": "abstained: no_head_ink (no_head_ink)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    2518,
+    1448,
+    2539,
+    1466
+   ],
+   "your_look": "the thick beam joining the four eighths",
+   "red_bar_tile": "10",
+   "tile": {
+    "crop": [
+     2427,
+     1366,
+     2629,
+     1490
+    ],
+    "scale": 4.455,
+    "rect": [
+     373,
+     333,
+     534,
+     482
+    ]
+   },
+   "bar": "litolff red-bar tile 10"
+  },
+  {
+   "n": 4,
+   "subject": "glyph/4/1/8/5/19",
+   "plate": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "cell": 5,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "E-14",
+    "colour": "plain black",
+    "part": "P9",
+    "measure": "69"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.39",
+    "cell_strokes_owned": [],
+    "page_mark": "head:page_head_alone ink_px=221",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_where_a_whole_rest_can_hang",
+     "duration narrowed adjudicate_duration/beams_ambiguous",
+     "duration decided reconcile_chord_duration/chord_mate_shares_the_stem"
+    ]
+   },
+   "box_page_px": [
+    1287,
+    3321,
+    1310,
+    3333
+   ],
+   "your_look": "the thick beam joining the five/four eighths",
+   "red_bar_tile": "14",
+   "tile": {
+    "crop": [
+     1194,
+     3228,
+     1402,
+     3356
+    ],
+    "scale": 4.327,
+    "rect": [
+     369,
+     367,
+     537,
+     490
+    ]
+   },
+   "bar": "litolff red-bar tile 14"
+  },
+  {
+   "n": 5,
+   "subject": "glyph/11/1/7/7/1",
+   "plate": "litolff",
+   "page": 11,
+   "system": 1,
+   "staff": 7,
+   "cell": 7,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P9",
+    "measure": "227"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.26",
+    "cell_strokes_owned": [
+     8
+    ],
+    "page_mark": "rest:alone ink_px=387",
+    "rest_ink_contact": {
+     "thin_run_sp": 2.6,
+     "blob_sp": 0.7,
+     "box_height_sp": 4.12,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1422,
+    3012,
+    1432,
+    3076
+   ],
+   "your_look": "the stem of the half note; its hollow head is not boxed",
+   "red_bar_tile": "15",
+   "tile": {
+    "crop": [
+     1324,
+     2997,
+     1529,
+     3123
+    ],
+    "scale": 4.39,
+    "rect": [
+     396,
+     29,
+     507,
+     383
+    ]
+   },
+   "bar": "litolff red-bar tile 15"
+  },
+  {
+   "n": 6,
+   "subject": "glyph/6/0/6/12/5",
+   "plate": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 6,
+   "cell": 12,
+   "file_writes": {
+    "element": "note",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "F5",
+    "colour": "plain black",
+    "part": "P9",
+    "measure": "91"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.41",
+    "cell_strokes_owned": [
+     1,
+     2,
+     3
+    ],
+    "page_mark": "head:page_head_alone ink_px=626",
+    "head_ink": "abstained: not_one_head (too_tall)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [3607]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    2455,
+    1286,
+    2478,
+    1327
+   ],
+   "your_look": "a dynamic letter p (blotchy) over the staff top",
+   "red_bar_tile": "16",
+   "tile": {
+    "crop": [
+     2363,
+     1273,
+     2568,
+     1407
+    ],
+    "scale": 4.39,
+    "rect": [
+     369,
+     23,
+     537,
+     274
+    ]
+   },
+   "bar": "litolff red-bar tile 16"
+  },
+  {
+   "n": 7,
+   "subject": "glyph/6/0/5/12/7",
+   "plate": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 5,
+   "cell": 12,
+   "file_writes": {
+    "element": "note",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "F4",
+    "colour": "plain black",
+    "part": "P8",
+    "measure": "91"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.40",
+    "cell_strokes_owned": [],
+    "page_mark": "head:page_head_alone ink_px=210",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    2565,
+    1216,
+    2584,
+    1229
+   ],
+   "your_look": "a tie (arc) end",
+   "red_bar_tile": "20",
+   "tile": {
+    "crop": [
+     2472,
+     1145,
+     2677,
+     1271
+    ],
+    "scale": 4.39,
+    "rect": [
+     376,
+     277,
+     527,
+     401
+    ]
+   },
+   "bar": "litolff red-bar tile 20"
+  },
+  {
+   "n": 8,
+   "subject": "glyph/8/1/5/9/3",
+   "plate": "brahms",
+   "page": 8,
+   "system": 1,
+   "staff": 5,
+   "cell": 9,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P7",
+    "measure": "68"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.40",
+    "cell_strokes_owned": [],
+    "page_mark": "rest:alone ink_px=246",
+    "rest_ink_contact": {
+     "thin_run_sp": 2.2,
+     "blob_sp": 0.0,
+     "box_height_sp": 1.45,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: names_no_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    4429,
+    5465,
+    4438,
+    5505
+   ],
+   "your_look": "the barline at the right edge of the bar",
+   "red_bar_tile": "3",
+   "tile": {
+    "crop": [
+     4254,
+     5334,
+     4612,
+     5554
+    ],
+    "scale": 2.514,
+    "rect": [
+     406,
+     295,
+     497,
+     464
+    ]
+   },
+   "bar": "brahms red-bar tile 3"
+  },
+  {
+   "n": 9,
+   "subject": "glyph/4/1/13/0/25",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 13,
+   "cell": 0,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P14",
+    "measure": "19"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.25",
+    "cell_strokes_owned": [
+     25,
+     26
+    ],
+    "page_mark": "rest:alone ink_px=723",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.753,
+     "blob_sp": 1.195,
+     "box_height_sp": 3.195,
+     "head": 16
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: hangs_from_a_stem_with_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    990,
+    6984,
+    1015,
+    7072
+   ],
+   "your_look": "the flag (and top of stem) of the eighth note",
+   "red_bar_tile": "5",
+   "tile": {
+    "crop": [
+     822,
+     6959,
+     1183,
+     7181
+    ],
+    "scale": 2.493,
+    "rect": [
+     385,
+     27,
+     517,
+     317
+    ]
+   },
+   "bar": "brahms red-bar tile 5"
+  },
+  {
+   "n": 10,
+   "subject": "glyph/12/1/10/5/10",
+   "plate": "brahms",
+   "page": 12,
+   "system": 1,
+   "staff": 10,
+   "cell": 5,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "D5",
+    "colour": "plain black",
+    "part": "P11",
+    "measure": "90"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfOnLine, confidence 0.30",
+    "cell_strokes_owned": [
+     12,
+     13,
+     14
+    ],
+    "page_mark": "head:page_head_alone ink_px=736",
+    "head_ink": "hollow",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [3429, 3442]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    3372,
+    6279,
+    3403,
+    6315
+   ],
+   "your_look": "a flat sign before the second dotted quarter",
+   "red_bar_tile": "6",
+   "tile": {
+    "crop": [
+     3210,
+     6216,
+     3564,
+     6434
+    ],
+    "scale": 2.542,
+    "rect": [
+     376,
+     125,
+     525,
+     287
+    ]
+   },
+   "bar": "brahms red-bar tile 6"
+  },
+  {
+   "n": 11,
+   "subject": "glyph/14/0/13/4/7",
+   "plate": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 13,
+   "cell": 4,
+   "file_writes": {
+    "element": "note",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "C3",
+    "colour": "plain black",
+    "part": "P14",
+    "measure": "99"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.31",
+    "cell_strokes_owned": [
+     16
+    ],
+    "page_mark": "head:page_head_alone ink_px=477",
+    "head_ink": "filled",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [3071, 3072]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    3074,
+    3715,
+    3104,
+    3738
+   ],
+   "your_look": "the lower hook of the quarter rest (upper part boxed as the rest)",
+   "red_bar_tile": "8",
+   "tile": {
+    "crop": [
+     2910,
+     3602,
+     3267,
+     3822
+    ],
+    "scale": 2.521,
+    "rect": [
+     378,
+     250,
+     524,
+     378
+    ]
+   },
+   "bar": "brahms red-bar tile 8"
+  },
+  {
+   "n": 12,
+   "subject": "glyph/5/1/2/7/15",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 2,
+   "cell": 7,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "43"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.29",
+    "cell_strokes_owned": [
+     18
+    ],
+    "page_mark": "rest:alone ink_px=881",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.98,
+     "blob_sp": 1.16,
+     "box_height_sp": 3.65,
+     "head": 4
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    4367,
+    4504,
+    4378,
+    4604
+   ],
+   "your_look": "the stem of the eighth note",
+   "red_bar_tile": "13",
+   "tile": {
+    "crop": [
+     4193,
+     4439,
+     4551,
+     4659
+    ],
+    "scale": 2.514,
+    "rect": [
+     402,
+     129,
+     500,
+     450
+    ]
+   },
+   "bar": "brahms red-bar tile 13"
+  },
+  {
+   "n": 13,
+   "subject": "glyph/5/0/7/1/16",
+   "plate": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 7,
+   "cell": 1,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P8",
+    "measure": "29"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.27",
+    "cell_strokes_owned": [
+     8,
+     9
+    ],
+    "page_mark": "rest:alone ink_px=593",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.729,
+     "blob_sp": 1.229,
+     "box_height_sp": 2.417,
+     "head": 5
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: hangs_from_a_stem_with_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1529,
+    2036,
+    1551,
+    2103
+   ],
+   "your_look": "the flag of the eighth-note chord",
+   "red_bar_tile": "19",
+   "tile": {
+    "crop": [
+     1361,
+     2007,
+     1718,
+     2227
+    ],
+    "scale": 2.521,
+    "rect": [
+     388,
+     39,
+     514,
+     276
+    ]
+   },
+   "bar": "brahms red-bar tile 19"
+  }
+ ]
+}

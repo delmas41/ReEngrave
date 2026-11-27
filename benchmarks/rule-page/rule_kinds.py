@@ -223,6 +223,8 @@ RULES = [
       "the flag hook at the stem tip is read from stem-tip ink on the erased raster, with cut-offs tuned there (STEM_TIP_HOOKS_CLOSE heals 'thin stripes')", S_ERASE, "retires with 2.206 (measure after the fix)"),
     R(BEAMS, "duration", "head_fill_from_ink", "B", "filled or hollow decided from ink",
       "the head's fill is measured on the erased raster (`ink_net`); a head in a space loses its top 0.17-0.2 sp (Brahms 908 -> 13 boxes losing ink after the fix); 94 / 227 narrowed", S_ERASE, "retires with 2.206 (measure after the fix)"),
+    R(BEAMS, "duration", "dot_ink_no_box", "A", "an unread round mark just right of a note may be its dot",
+      "a note read plain beside a small round mark in its own dot place, ink of its own that nothing has read, is held {plain, dotted}; a mark joined to other ink is part of the note, a mark over or under another notehead is a staccato (2.359)", "Sean 2026-11-26 (page-facts: a dot does not touch its note; the staccato tile)", "kept"),
     R(BEAMS, "duration", "whole_class_filled_or_stemmed,whole_class_on_a_stem,whole_class_filled_on_a_stem", "A", "a whole note has no stem and is hollow", "a whole-class head that is filled or stemmed contradicts its class", "Sean 2026-10-09 (2.78: a whole note never has a stem)", "kept"),
     R(BEAMS, "duration", "open_head_flag_contradiction", "A", "a hollow head carries no flag", "an open head with a flag read on its stem is a contradiction: narrow", "page-facts s1", "kept"),
     R(BEAMS, "duration", "second_hollow_confirmed,second_hollow_unclear,second_only_hollow,second_hollow_refuted_by_ink,second_hollow_contradicted_by_marks,second_only_no_independent_evidence", "U", "second detector for hollow heads",

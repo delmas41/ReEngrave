@@ -1,0 +1,284 @@
+{
+ "set": "check-hollow: Litolff heads where the file and the rebuilt reader disagree",
+ "date": "2026-11-26",
+ "question": "For each number: half note, or black (quarter or shorter)? If the box is not on a notehead, say what it is.",
+ "answered_by": "Sean",
+ "verbatim": "Tau 1 is an eighth note. Tau 2 is a half note, but it belongs to the measure above. Tau 3 is an eighth note. Tau 4 is an eighth note. Tau 5 is a tremolo /. Tau 6 is a half note. Tau 7 is an eighth note. Tau 8 is an eighth note. Tau 9 is a half note. Tau 10 is an eighth note. Tau 11, eighth note. Tau 12 is a tremolo /. Tau 13 is a quarter note. Tau 14 is a quarter note. Tau 15 is a half note. Tau 16 is part of an eighth note rest. Tau 17 is a half note. Tau 18 is a box around 1.5 eighth notes. In other words, one full eighth note head and half of another eighth note head. 19 is around a tremolo /. 20 is around an eighth note. 21 is an eighth note. 22 is an eighth note. 23 is a quarter note, and 24 is a half note.",
+ "answers": {
+  "1": "eighth note",
+  "2": "half note (belongs to the staff above)",
+  "3": "eighth note",
+  "4": "eighth note",
+  "5": "a tremolo slash",
+  "6": "half note",
+  "7": "eighth note",
+  "8": "eighth note",
+  "9": "half note",
+  "10": "eighth note",
+  "11": "eighth note",
+  "12": "a tremolo slash",
+  "13": "quarter note",
+  "14": "quarter note",
+  "15": "half note",
+  "16": "part of an eighth rest",
+  "17": "half note",
+  "18": "a box around one and a half eighth-note heads",
+  "19": "a tremolo slash",
+  "20": "eighth note",
+  "21": "eighth note",
+  "22": "eighth note",
+  "23": "quarter note",
+  "24": "half note"
+ },
+ "compared": [
+  {
+   "tile": 1,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 2,
+   "sean": "half note (belongs to the staf",
+   "kind": "hollow",
+   "file": "file:half",
+   "file_is": "right",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 3,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 4,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:too_wide",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 5,
+   "sean": "a tremolo slash",
+   "kind": "not a head",
+   "file": "file:half",
+   "file_is": "n/a",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "n/a"
+  },
+  {
+   "tile": 6,
+   "sean": "half note",
+   "kind": "hollow",
+   "file": "file:half",
+   "file_is": "right",
+   "old_reader": "old:readers_split",
+   "new_reader": "new:filled",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 7,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:too_wide",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 8,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 9,
+   "sean": "half note",
+   "kind": "hollow",
+   "file": "file:quarter",
+   "file_is": "WRONG",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "right"
+  },
+  {
+   "tile": 10,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:too_wide",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 11,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 12,
+   "sean": "a tremolo slash",
+   "kind": "not a head",
+   "file": "file:half",
+   "file_is": "n/a",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "n/a"
+  },
+  {
+   "tile": 13,
+   "sean": "quarter note",
+   "kind": "black",
+   "file": "file:half",
+   "file_is": "WRONG",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "right"
+  },
+  {
+   "tile": 14,
+   "sean": "quarter note",
+   "kind": "black",
+   "file": "file:half",
+   "file_is": "WRONG",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "right"
+  },
+  {
+   "tile": 15,
+   "sean": "half note",
+   "kind": "hollow",
+   "file": "file:quarter",
+   "file_is": "WRONG",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "right"
+  },
+  {
+   "tile": 16,
+   "sean": "part of an eighth rest",
+   "kind": "not a head",
+   "file": "file:eighth",
+   "file_is": "n/a",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "n/a"
+  },
+  {
+   "tile": 17,
+   "sean": "half note",
+   "kind": "hollow",
+   "file": "file:quarter",
+   "file_is": "WRONG",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "right"
+  },
+  {
+   "tile": 18,
+   "sean": "a box around one and a half ei",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 19,
+   "sean": "a tremolo slash",
+   "kind": "not a head",
+   "file": "file:half",
+   "file_is": "n/a",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "n/a"
+  },
+  {
+   "tile": 20,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:half",
+   "file_is": "WRONG",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "right"
+  },
+  {
+   "tile": 21,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:too_wide",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 22,
+   "sean": "eighth note",
+   "kind": "black",
+   "file": "file:eighth",
+   "file_is": "right",
+   "old_reader": "old:too_wide",
+   "new_reader": "new:hollow",
+   "new_is": "WRONG"
+  },
+  {
+   "tile": 23,
+   "sean": "quarter note",
+   "kind": "black",
+   "file": "file:half",
+   "file_is": "WRONG",
+   "old_reader": "old:filled",
+   "new_reader": "new:filled",
+   "new_is": "right"
+  },
+  {
+   "tile": 24,
+   "sean": "half note",
+   "kind": "hollow",
+   "file": "file:quarter",
+   "file_is": "WRONG",
+   "old_reader": "old:hollow",
+   "new_reader": "new:hollow",
+   "new_is": "right"
+  }
+ ],
+ "tally": {
+  "file:right": 12,
+  "new:WRONG": 12,
+  "file:n/a": 4,
+  "new:n/a": 4,
+  "file:WRONG": 8,
+  "new:right": 8
+ },
+ "ours": "'Tau' = 'Tile'; '/' = slash. Tile 2: he said 'the measure above' -- read as the staff above."
+}

@@ -1,0 +1,29 @@
+{
+ "set": "extra notes: the 13 marks",
+ "date": "2026-11-26",
+ "question": "13 marks the file writes as a note or rest that Sean did not read in those bars. For each number: what is the ink in the orange box?",
+ "answered_by": "Sean",
+ "verbatim": "tile 1 is a whole note rest, tile 2 is a stem on a half note, tile 3 is a mark where a stem of an eighth note touches the beam. It's a little bit thicker right there based on the ink, but it's just where a stem meets a beam. Tile 4 is where a stem of an eighth note meets a beam. Tile 5 is the stem of a half note. Tile 6, it is a pretty large box though, similar to tile 2. I don't know if it is actually just the stem or if it's including more. Tile 6 is a sharp. Tile 7 is a small portion of an arc. Tile 8 is a part of a bar line. Tile 9 is a stem and a flag of an eighth note. Tile 10 is half of a flat sign. It cuts off the top of its stem. Tile 11 is half of a quarter rest, the bottom half. 12 again is most of a stem and part of a flag on an eighth note. And 13 is the flag on an eighth note.",
+ "answers": {
+  "1": "a whole note rest",
+  "2": "the stem of a half note",
+  "3": "where the stem of an eighth note meets the beam (a little thicker there from the ink)",
+  "4": "where the stem of an eighth note meets a beam",
+  "5": "the stem of a half note",
+  "6": "a sharp",
+  "7": "a small portion of an arc",
+  "8": "part of a bar line",
+  "9": "the stem and flag of an eighth note",
+  "10": "half of a flat sign (the box cuts off the top of its stem)",
+  "11": "the bottom half of a quarter rest",
+  "12": "most of a stem and part of a flag on an eighth note",
+  "13": "the flag on an eighth note"
+ },
+ "ours": "His remark 'a pretty large box, similar to tile 2 -- I don't know if it is just the stem or including more' reads as about tile 5 (said between tiles 5 and 6); recorded with tile 5.",
+ "compared_with_the_trace": {
+  "agree": "12 of 13 (tiles 3 and 4: the trace said 'the beam'; Sean says where a stem meets the beam)",
+  "differ": {
+   "6": "the trace's look said a dynamic letter p; Sean: a sharp. The file writes a plain F5 quarter there (Litolff glyph/6/0/6/12/5); the page head reader filed a READ head claim on that ink."
+  }
+ }
+}

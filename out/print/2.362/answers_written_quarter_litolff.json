@@ -1,0 +1,9 @@
+{
+  "set": "2.362 written quarter rests, Litolff, 24 at random (seed 20261126), exact detector boxes",
+  "date": "2026-11-26",
+  "question": "For each number: quarter rest, yes or no? If no, what is it.",
+  "answered_by": "Sean",
+  "verbatim": "All quarter note rests",
+  "answers": "all 24 are quarter rests",
+  "ours": "A random draw from the 433 written quarter rests on the Litolff sample pages: 24 of 24 real. The stems-read-as-rests found earlier came from the 'weak' list, not from a fair sample; they are rare among written quarter rests on Litolff."
+}

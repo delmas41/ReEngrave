@@ -1,0 +1,8 @@
+{
+ "what": "ROADMAP 2.357 step 0: 24 random (seed 2357) of 35 Brahms sample-page heads written WITHOUT a dot that have an unboxed round ink blob (page stroke map 'blob', no detector box) just right of them. Thick orange box on the blob. Manager-only; nothing here is Sean's.",
+ "agent_look_not_judged": {
+  "a real augmentation dot beside a real note": [4, 6, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19],
+  "not a dot (a piece of a stacked chord's head/ledger ink, a flag scrap, a clef piece, or empty)": [1, 2, 3, 5, 7, 8, 16, 20, 21, 22, 23, 24]
+ },
+ "note": "tiles 2 and 3 are the same blob beside two heads of one chord"
+}

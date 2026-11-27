@@ -1,0 +1,1492 @@
+{
+ "sheet": "brahms_R_rests_listed_weak.png",
+ "instruction": "For each number: what is the ink in the orange box? (a rest, a stem, a flag, a barline, part of a note, something else...)",
+ "seed": 20261126,
+ "rule": null,
+ "size": [
+  2950,
+  3333
+ ],
+ "tiles": [
+  {
+   "n": 1,
+   "subject": "glyph/4/1/6/5/2",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 6,
+   "cell": 5,
+   "file_writes": {
+    "element": "rest",
+    "type": "whole",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P7",
+    "measure": "24"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restWhole, confidence 0.59",
+    "cell_strokes_owned": [],
+    "page_mark": "whole_rest:alone ink_px=180",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.07,
+     "blob_sp": 0.66,
+     "box_height_sp": 0.41,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: names_no_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    3608,
+    5515,
+    3625,
+    5526
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3437,
+     5426,
+     3795,
+     5646
+    ],
+    "scale": 2.514,
+    "rect": [
+     395,
+     189,
+     508,
+     287
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "subject": "glyph/4/1/5/5/7",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 5,
+   "cell": 5,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "24"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.45",
+    "cell_strokes_owned": [
+     23,
+     24
+    ],
+    "page_mark": "rest:alone ink_px=498",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.01,
+     "blob_sp": 0.4,
+     "box_height_sp": 1.66,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    3799,
+    5260,
+    3820,
+    5306
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3630,
+     5170,
+     3987,
+     5390
+    ],
+    "scale": 2.521,
+    "rect": [
+     390,
+     193,
+     513,
+     377
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "subject": "glyph/12/0/12/13/8",
+   "plate": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 12,
+   "cell": 13,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P13",
+    "measure": "84"
+   },
+   "record_account": {
+    "box_made_by": "yolo_detector_view: class rest8th, confidence 0.73",
+    "cell_strokes_owned": [
+     7,
+     8,
+     9,
+     10,
+     11
+    ],
+    "page_mark": "rest:alone ink_px=757",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.05,
+     "blob_sp": 0.43,
+     "box_height_sp": 1.95,
+     "head": 2
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: hangs_from_a_stem_with_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    5287,
+    3267,
+    5319,
+    3321
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     5122,
+     3184,
+     5483,
+     3406
+    ],
+    "scale": 2.493,
+    "rect": [
+     377,
+     172,
+     527,
+     376
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "subject": "glyph/5/1/2/7/15",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 2,
+   "cell": 7,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "43"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.29",
+    "cell_strokes_owned": [
+     18
+    ],
+    "page_mark": "rest:alone ink_px=881",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.98,
+     "blob_sp": 1.16,
+     "box_height_sp": 3.65,
+     "head": 4
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    4367,
+    4504,
+    4378,
+    4604
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4193,
+     4439,
+     4551,
+     4659
+    ],
+    "scale": 2.514,
+    "rect": [
+     402,
+     129,
+     500,
+     450
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "subject": "glyph/5/1/5/2/4",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 5,
+   "cell": 2,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "38"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.78",
+    "cell_strokes_owned": [
+     13,
+     14,
+     15,
+     16
+    ],
+    "page_mark": "rest:alone ink_px=1023",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.03,
+     "blob_sp": 0.95,
+     "box_height_sp": 1.94,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: stroke_into_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1978,
+    5146,
+    2011,
+    5199
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1817,
+     5059,
+     2171,
+     5277
+    ],
+    "scale": 2.542,
+    "rect": [
+     374,
+     187,
+     528,
+     391
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "subject": "glyph/14/0/2/3/6",
+   "plate": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "file_writes": {
+    "element": "rest",
+    "type": null,
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "98"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restWhole, confidence 0.25",
+    "cell_strokes_owned": [],
+    "page_mark": "whole_rest:alone ink_px=305",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.07,
+     "blob_sp": 0.66,
+     "box_height_sp": 0.56,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: names_no_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class",
+     "duration decided size_measure_rest/whole_rest_means_the_bar"
+    ]
+   },
+   "box_page_px": [
+    2511,
+    1036,
+    2533,
+    1051
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2345,
+     951,
+     2699,
+     1169
+    ],
+    "scale": 2.542,
+    "rect": [
+     388,
+     181,
+     512,
+     289
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "subject": "glyph/8/1/10/1/3",
+   "plate": "brahms",
+   "page": 8,
+   "system": 1,
+   "staff": 10,
+   "cell": 1,
+   "file_writes": {
+    "element": "rest",
+    "type": null,
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P14",
+    "measure": "60"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restWhole, confidence 0.52",
+    "cell_strokes_owned": [],
+    "page_mark": "whole_rest:alone ink_px=277",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.04,
+     "blob_sp": 0.72,
+     "box_height_sp": 0.28,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: names_no_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class",
+     "duration decided size_measure_rest/whole_rest_means_the_bar"
+    ]
+   },
+   "box_page_px": [
+    1434,
+    6968,
+    1471,
+    6976
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1272,
+     6867,
+     1633,
+     7089
+    ],
+    "scale": 2.493,
+    "rect": [
+     370,
+     217,
+     531,
+     306
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "subject": "glyph/25/0/3/5/17",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 3,
+   "cell": 5,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P4",
+    "measure": "139"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.47",
+    "cell_strokes_owned": [
+     12,
+     13,
+     14,
+     15
+    ],
+    "page_mark": "rest:alone ink_px=947",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.01,
+     "blob_sp": 0.69,
+     "box_height_sp": 1.9,
+     "head": 5
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    3345,
+    1410,
+    3376,
+    1463
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3180,
+     1321,
+     3540,
+     1543
+    ],
+    "scale": 2.5,
+    "rect": [
+     377,
+     189,
+     525,
+     390
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "subject": "glyph/25/0/4/1/5",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 4,
+   "cell": 1,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P5",
+    "measure": "135"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.67",
+    "cell_strokes_owned": [
+     14,
+     15,
+     16,
+     17
+    ],
+    "page_mark": "rest:alone ink_px=663",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.97,
+     "blob_sp": 0.5,
+     "box_height_sp": 1.81,
+     "head": 12
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1567,
+    1652,
+    1591,
+    1702
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1398,
+     1567,
+     1759,
+     1789
+    ],
+    "scale": 2.493,
+    "rect": [
+     388,
+     177,
+     515,
+     371
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "subject": "glyph/5/1/3/2/5",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cell": 2,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P4",
+    "measure": "38"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.47",
+    "cell_strokes_owned": [
+     4,
+     6,
+     8
+    ],
+    "page_mark": "rest:alone ink_px=757",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.48,
+     "blob_sp": 0.51,
+     "box_height_sp": 1.75,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1842,
+    4738,
+    1870,
+    4785
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1679,
+     4673,
+     2033,
+     4891
+    ],
+    "scale": 2.542,
+    "rect": [
+     379,
+     130,
+     521,
+     321
+    ]
+   }
+  },
+  {
+   "n": 11,
+   "subject": "glyph/19/0/5/9/8",
+   "plate": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 5,
+   "cell": 9,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "123"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.58",
+    "cell_strokes_owned": [
+     3,
+     4,
+     5,
+     7,
+     9,
+     10
+    ],
+    "page_mark": "rest:alone ink_px=1304",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.5,
+     "blob_sp": 0.32,
+     "box_height_sp": 2.69,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    4774,
+    1739,
+    4807,
+    1814
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4610,
+     1675,
+     4971,
+     1897
+    ],
+    "scale": 2.493,
+    "rect": [
+     375,
+     126,
+     527,
+     381
+    ]
+   }
+  },
+  {
+   "n": 12,
+   "subject": "glyph/8/0/4/9/0",
+   "plate": "brahms",
+   "page": 8,
+   "system": 0,
+   "staff": 4,
+   "cell": 9,
+   "file_writes": {
+    "element": "rest",
+    "type": null,
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "55"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restWhole, confidence 0.35",
+    "cell_strokes_owned": [],
+    "page_mark": "whole_rest:alone ink_px=261",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.07,
+     "blob_sp": 0.64,
+     "box_height_sp": 0.4,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: names_no_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class",
+     "duration decided size_measure_rest/whole_rest_means_the_bar"
+    ]
+   },
+   "box_page_px": [
+    4335,
+    1842,
+    4359,
+    1853
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4164,
+     1756,
+     4528,
+     1980
+    ],
+    "scale": 2.473,
+    "rect": [
+     387,
+     177,
+     517,
+     274
+    ]
+   }
+  },
+  {
+   "n": 13,
+   "subject": "glyph/8/0/2/9/2",
+   "plate": "brahms",
+   "page": 8,
+   "system": 0,
+   "staff": 2,
+   "cell": 9,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "55"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.67",
+    "cell_strokes_owned": [
+     23,
+     25,
+     26,
+     27,
+     28,
+     29
+    ],
+    "page_mark": "rest:alone ink_px=925",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.95,
+     "blob_sp": 0.61,
+     "box_height_sp": 1.87,
+     "head": 6
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    4482,
+    1292,
+    4515,
+    1343
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4320,
+     1153,
+     4677,
+     1373
+    ],
+    "scale": 2.521,
+    "rect": [
+     375,
+     315,
+     527,
+     514
+    ]
+   }
+  },
+  {
+   "n": 14,
+   "subject": "glyph/8/0/9/4/13",
+   "plate": "brahms",
+   "page": 8,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P13",
+    "measure": "50"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.26",
+    "cell_strokes_owned": [
+     10
+    ],
+    "page_mark": "rest:alone ink_px=1171",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.93,
+     "blob_sp": 1.26,
+     "box_height_sp": 3.97,
+     "head": 4
+    },
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    2518,
+    3176,
+    2533,
+    3286
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2345,
+     3117,
+     2705,
+     3339
+    ],
+    "scale": 2.5,
+    "rect": [
+     399,
+     113,
+     503,
+     458
+    ]
+   }
+  },
+  {
+   "n": 15,
+   "subject": "glyph/14/0/5/6/4",
+   "plate": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 5,
+   "cell": 6,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "101"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.44",
+    "cell_strokes_owned": [
+     23,
+     24,
+     25
+    ],
+    "page_mark": "rest:alone ink_px=751",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.95,
+     "blob_sp": 0.46,
+     "box_height_sp": 1.65,
+     "head": 3
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    4113,
+    1730,
+    4140,
+    1777
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3942,
+     1640,
+     4309,
+     1866
+    ],
+    "scale": 2.452,
+    "rect": [
+     384,
+     186,
+     519,
+     370
+    ]
+   }
+  },
+  {
+   "n": 16,
+   "subject": "glyph/25/1/7/4/2",
+   "plate": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 7,
+   "cell": 4,
+   "file_writes": {
+    "element": "rest",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P10",
+    "measure": "148"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restQuarter, confidence 0.74",
+    "cell_strokes_owned": [
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "page_mark": "rest:alone ink_px=1081",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.47,
+     "blob_sp": 0.26,
+     "box_height_sp": 2.66,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    2863,
+    6122,
+    2895,
+    6196
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2698,
+     6055,
+     3059,
+     6277
+    ],
+    "scale": 2.493,
+    "rect": [
+     376,
+     132,
+     525,
+     385
+    ]
+   }
+  },
+  {
+   "n": 17,
+   "subject": "glyph/25/0/9/6/17",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 9,
+   "cell": 6,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P10",
+    "measure": "140"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.25",
+    "cell_strokes_owned": [
+     8
+    ],
+    "page_mark": "rest:alone ink_px=386",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.99,
+     "blob_sp": 0.44,
+     "box_height_sp": 1.75,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: hangs_from_a_stem_with_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    3896,
+    2855,
+    3914,
+    2903
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3727,
+     2767,
+     4081,
+     2985
+    ],
+    "scale": 2.542,
+    "rect": [
+     395,
+     190,
+     509,
+     380
+    ]
+   }
+  },
+  {
+   "n": 18,
+   "subject": "glyph/19/1/6/8/5",
+   "plate": "brahms",
+   "page": 19,
+   "system": 1,
+   "staff": 6,
+   "cell": 8,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P7",
+    "measure": "133"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.68",
+    "cell_strokes_owned": [
+     19,
+     20,
+     21
+    ],
+    "page_mark": "rest:alone ink_px=735",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.011,
+     "blob_sp": 0.468,
+     "box_height_sp": 1.809,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    5128,
+    5579,
+    5158,
+    5629
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4964,
+     5489,
+     5321,
+     5709
+    ],
+    "scale": 2.521,
+    "rect": [
+     379,
+     192,
+     524,
+     386
+    ]
+   }
+  },
+  {
+   "n": 19,
+   "subject": "glyph/5/0/7/5/0",
+   "plate": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 7,
+   "cell": 5,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P8",
+    "measure": "33"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.85",
+    "cell_strokes_owned": [
+     10,
+     11,
+     12
+    ],
+    "page_mark": "rest:alone ink_px=904",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.016,
+     "blob_sp": 0.692,
+     "box_height_sp": 1.805,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    3890,
+    2096,
+    3924,
+    2146
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3728,
+     2007,
+     4085,
+     2227
+    ],
+    "scale": 2.521,
+    "rect": [
+     373,
+     190,
+     529,
+     384
+    ]
+   }
+  },
+  {
+   "n": 20,
+   "subject": "glyph/14/0/6/1/5",
+   "plate": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 6,
+   "cell": 1,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P7",
+    "measure": "96"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.36",
+    "cell_strokes_owned": [
+     15
+    ],
+    "page_mark": "rest:alone ink_px=315",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.36,
+     "blob_sp": 0.58,
+     "box_height_sp": 0.63,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: hangs_from_a_stem_with_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1790,
+    1992,
+    1811,
+    2010
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1621,
+     1905,
+     1979,
+     2125
+    ],
+    "scale": 2.514,
+    "rect": [
+     390,
+     185,
+     511,
+     298
+    ]
+   }
+  },
+  {
+   "n": 21,
+   "subject": "glyph/8/1/3/5/5",
+   "plate": "brahms",
+   "page": 8,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P4",
+    "measure": "64"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.74",
+    "cell_strokes_owned": [
+     11,
+     12,
+     13
+    ],
+    "page_mark": "rest:alone ink_px=875",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.02,
+     "blob_sp": 0.8,
+     "box_height_sp": 1.88,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    3025,
+    4882,
+    3057,
+    4931
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2869,
+     4795,
+     3213,
+     5007
+    ],
+    "scale": 2.616,
+    "rect": [
+     374,
+     192,
+     527,
+     392
+    ]
+   }
+  },
+  {
+   "n": 22,
+   "subject": "glyph/5/1/0/2/3",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 0,
+   "cell": 2,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P1",
+    "measure": "38"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.52",
+    "cell_strokes_owned": [
+     9,
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "page_mark": "rest:alone ink_px=890",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.09,
+     "blob_sp": 0.47,
+     "box_height_sp": 1.91,
+     "head": 7
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: touches_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    1980,
+    4085,
+    2011,
+    4138
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1816,
+     3996,
+     2174,
+     4216
+    ],
+    "scale": 2.514,
+    "rect": [
+     378,
+     189,
+     525,
+     391
+    ]
+   }
+  },
+  {
+   "n": 23,
+   "subject": "glyph/25/1/6/9/1",
+   "plate": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 6,
+   "cell": 9,
+   "file_writes": {
+    "element": "rest",
+    "type": null,
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "plain black",
+    "part": "P7",
+    "measure": "153"
+   },
+   "record_account": {
+    "box_made_by": "detector: class restWhole, confidence 0.54",
+    "cell_strokes_owned": [],
+    "page_mark": "whole_rest:alone ink_px=215",
+    "rest_ink_contact": {
+     "thin_run_sp": 0.04,
+     "blob_sp": 0.68,
+     "box_height_sp": 0.34,
+     "head": null
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: names_no_stroke",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class",
+     "duration decided size_measure_rest/whole_rest_means_the_bar"
+    ]
+   },
+   "box_page_px": [
+    5268,
+    5862,
+    5290,
+    5872
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     5098,
+     5777,
+     5458,
+     5999
+    ],
+    "scale": 2.5,
+    "rect": [
+     389,
+     179,
+     514,
+     272
+    ]
+   }
+  },
+  {
+   "n": 24,
+   "subject": "glyph/5/1/12/3/5",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 12,
+   "cell": 3,
+   "file_writes": {
+    "element": "rest",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": null,
+    "colour": "blue",
+    "part": "P13",
+    "measure": "39"
+   },
+   "record_account": {
+    "box_made_by": "detector: class rest8th, confidence 0.52",
+    "cell_strokes_owned": [
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25
+    ],
+    "page_mark": "rest:alone ink_px=1330",
+    "rest_ink_contact": {
+     "thin_run_sp": 1.06,
+     "blob_sp": 0.47,
+     "box_height_sp": 2.03,
+     "head": 0
+    },
+    "page_head_claim": "no head claim filed",
+    "page_rest_census": "weak: hangs_from_a_stem_with_a_head",
+    "verdicts": [
+     "rest_is_not_a_rest decided adjudicate_rest_is_not_a_rest/rest",
+     "duration decided adjudicate_duration/rest_class"
+    ]
+   },
+   "box_page_px": [
+    2623,
+    6839,
+    2697,
+    6895
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2481,
+     6754,
+     2838,
+     6974
+    ],
+    "scale": 2.521,
+    "rect": [
+     324,
+     180,
+     578,
+     390
+    ]
+   }
+  }
+ ]
+}

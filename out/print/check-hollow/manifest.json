@@ -1,0 +1,1120 @@
+[
+ {
+  "n": 1,
+  "sub": "glyph/10/1/9/11/3",
+  "page": 10,
+  "staff": 9,
+  "sp": 15.75,
+  "head_box": [
+   2191,
+   3434,
+   2218,
+   3458
+  ],
+  "crop": [
+   2108,
+   3376,
+   2297,
+   3502
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.2,
+  "new_slit": 0.2,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P10",
+    "measure": "198",
+    "pitch": "C4"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 2,
+  "sub": "glyph/16/0/5/9/3",
+  "page": 16,
+  "staff": 6,
+  "sp": 15.75,
+  "head_box": [
+   1674,
+   1191,
+   1689,
+   1204
+  ],
+  "crop": [
+   1593,
+   1167,
+   1782,
+   1332
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P6",
+    "measure": "246",
+    "pitch": "G3"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 3,
+  "sub": "glyph/8/1/0/17/6",
+  "page": 8,
+  "staff": 0,
+  "sp": 15.75,
+  "head_box": [
+   2317,
+   1925,
+   2344,
+   1949
+  ],
+  "crop": [
+   2233,
+   1901,
+   2422,
+   2029
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.2667,
+  "new_slit": 0.2667,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P1",
+    "measure": "144",
+    "pitch": "F5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 4,
+  "sub": "glyph/10/1/10/9/5",
+  "page": 10,
+  "staff": 10,
+  "sp": 16.0,
+  "head_box": [
+   1907,
+   3537,
+   1940,
+   3557
+  ],
+  "crop": [
+   1823,
+   3513,
+   2015,
+   3651
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "too_wide",
+  "new": "hollow",
+  "old_slit": 0.25,
+  "new_slit": 0.25,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P11",
+    "measure": "196",
+    "pitch": "C4"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "hooks_counted",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 5,
+  "sub": "glyph/16/0/8/2/4",
+  "page": 16,
+  "staff": 8,
+  "sp": 15.75,
+  "head_box": [
+   749,
+   1507,
+   775,
+   1527
+  ],
+  "crop": [
+   663,
+   1473,
+   852,
+   1599
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P9",
+    "measure": "239",
+    "pitch": "E-15"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half",
+    "shared_stem": "obs:650710"
+   },
+   "stem_value_follows",
+   "share_stem_value"
+  ]
+ },
+ {
+  "n": 6,
+  "sub": "glyph/2/1/4/14/6",
+  "page": 2,
+  "staff": 4,
+  "sp": 15.75,
+  "head_box": [
+   2461,
+   2718,
+   2475,
+   2737
+  ],
+  "crop": [
+   2374,
+   2674,
+   2563,
+   2800
+  ],
+  "tag": "file_half__new_filled",
+  "old": "readers_split",
+  "new": "filled",
+  "old_slit": 0.1667,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "blue",
+    "part": "P5",
+    "measure": "48",
+    "pitch": "D5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half",
+    "shared_stem": "obs:049338"
+   },
+   "stem_value_follows",
+   "share_stem_value"
+  ]
+ },
+ {
+  "n": 7,
+  "sub": "glyph/6/0/2/8/4",
+  "page": 6,
+  "staff": 2,
+  "sp": 15.75,
+  "head_box": [
+   1892,
+   702,
+   1924,
+   722
+  ],
+  "crop": [
+   1817,
+   646,
+   2006,
+   772
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "too_wide",
+  "new": "hollow",
+  "old_slit": 0.4167,
+  "new_slit": 0.4167,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P3",
+    "measure": "87",
+    "pitch": "B-14"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 8,
+  "sub": "glyph/6/1/2/1/8",
+  "page": 6,
+  "staff": 2,
+  "sp": 15.75,
+  "head_box": [
+   682,
+   2306,
+   709,
+   2330
+  ],
+  "crop": [
+   599,
+   2246,
+   788,
+   2372
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.3333,
+  "new_slit": 0.3333,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P3",
+    "measure": "93",
+    "pitch": "A4"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 9,
+  "sub": "glyph/4/1/5/4/3",
+  "page": 4,
+  "staff": 5,
+  "sp": 16.0,
+  "head_box": [
+   1057,
+   2836,
+   1083,
+   2860
+  ],
+  "crop": [
+   971,
+   2812,
+   1163,
+   2942
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.4667,
+  "new_slit": 0.4667,
+  "file_writes": [
+   {
+    "type": "quarter",
+    "dots": 0,
+    "colour": "blue",
+    "part": "P6",
+    "measure": "68",
+    "pitch": "F5"
+   },
+   {
+    "type": "quarter",
+    "dots": 0,
+    "colour": "blue",
+    "part": "P6",
+    "measure": "68",
+    "pitch": "F5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 10,
+  "sub": "glyph/16/0/8/15/3",
+  "page": 16,
+  "staff": 8,
+  "sp": 15.75,
+  "head_box": [
+   2378,
+   1540,
+   2406,
+   1562
+  ],
+  "crop": [
+   2301,
+   1473,
+   2490,
+   1599
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "too_wide",
+  "new": "hollow",
+  "old_slit": 0.4615,
+  "new_slit": 0.4615,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P9",
+    "measure": "252",
+    "pitch": "G4"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 11,
+  "sub": "glyph/8/1/4/16/3",
+  "page": 8,
+  "staff": 4,
+  "sp": 15.75,
+  "head_box": [
+   2199,
+   2558,
+   2226,
+   2581
+  ],
+  "crop": [
+   2120,
+   2534,
+   2309,
+   2663
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.2143,
+  "new_slit": 0.2143,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P5",
+    "measure": "143",
+    "pitch": "F5"
+   },
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P5",
+    "measure": "143",
+    "pitch": "F5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 12,
+  "sub": "glyph/10/1/6/11/3",
+  "page": 10,
+  "staff": 6,
+  "sp": 15.75,
+  "head_box": [
+   2208,
+   2924,
+   2228,
+   2934
+  ],
+  "crop": [
+   2117,
+   2900,
+   2306,
+   3029
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P7",
+    "measure": "198",
+    "pitch": "B3"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half",
+    "shared_stem": "obs:371626"
+   },
+   "stem_value_follows",
+   "share_stem_value"
+  ]
+ },
+ {
+  "n": 13,
+  "sub": "glyph/2/0/10/2/13",
+  "page": 2,
+  "staff": 10,
+  "sp": 15.75,
+  "head_box": [
+   797,
+   1911,
+   821,
+   1933
+  ],
+  "crop": [
+   704,
+   1848,
+   893,
+   1974
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P11",
+    "measure": "19",
+    "pitch": "C3"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half"
+   },
+   "hollow_head_bare_stem",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 14,
+  "sub": "glyph/4/0/6/0/1",
+  "page": 4,
+  "staff": 6,
+  "sp": 15.75,
+  "head_box": [
+   554,
+   1326,
+   576,
+   1347
+  ],
+  "crop": [
+   470,
+   1291,
+   659,
+   1417
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P8",
+    "measure": "49",
+    "pitch": "F5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half",
+    "shared_stem": "obs:125721"
+   },
+   "stem_value_follows",
+   "share_stem_value"
+  ]
+ },
+ {
+  "n": 15,
+  "sub": "glyph/4/0/1/5/5",
+  "page": 4,
+  "staff": 1,
+  "sp": 15.75,
+  "head_box": [
+   1174,
+   545,
+   1199,
+   568
+  ],
+  "crop": [
+   1089,
+   521,
+   1278,
+   662
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.5,
+  "new_slit": 0.5,
+  "file_writes": [
+   {
+    "type": "quarter",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P2",
+    "measure": "54",
+    "pitch": "A5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 16,
+  "sub": "glyph/6/0/7/9/3",
+  "page": 6,
+  "staff": 7,
+  "sp": 15.75,
+  "head_box": [
+   1961,
+   1462,
+   1984,
+   1472
+  ],
+  "crop": [
+   1879,
+   1414,
+   2068,
+   1540
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.3333,
+  "new_slit": 0.3333,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "blue",
+    "part": "P10",
+    "measure": "88",
+    "pitch": "D4"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1,
+    "reconciled": true
+   },
+   "bar_corrects_one_note",
+   "reconcile_duration"
+  ]
+ },
+ {
+  "n": 17,
+  "sub": "glyph/8/1/7/2/0",
+  "page": 8,
+  "staff": 7,
+  "sp": 16.0,
+  "head_box": [
+   779,
+   3115,
+   804,
+   3137
+  ],
+  "crop": [
+   695,
+   3018,
+   887,
+   3161
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.4615,
+  "new_slit": 0.4615,
+  "file_writes": [
+   {
+    "type": "quarter",
+    "dots": 0,
+    "colour": "blue",
+    "part": "P9",
+    "measure": "129",
+    "pitch": "D4"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 18,
+  "sub": "glyph/2/1/10/0/14",
+  "page": 2,
+  "staff": 10,
+  "sp": 16.25,
+  "head_box": [
+   590,
+   3560,
+   618,
+   3582
+  ],
+  "crop": [
+   510,
+   3502,
+   705,
+   3632
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.6154,
+  "new_slit": 0.6154,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P11",
+    "measure": "34",
+    "pitch": "C3"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 19,
+  "sub": "glyph/6/1/6/10/6",
+  "page": 6,
+  "staff": 6,
+  "sp": 15.75,
+  "head_box": [
+   2290,
+   2879,
+   2316,
+   2901
+  ],
+  "crop": [
+   2211,
+   2855,
+   2400,
+   2984
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P7",
+    "measure": "102",
+    "pitch": "B3"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half",
+    "shared_stem": "obs:203364"
+   },
+   "stem_value_follows",
+   "share_stem_value"
+  ]
+ },
+ {
+  "n": 20,
+  "sub": "glyph/4/1/8/4/16",
+  "page": 4,
+  "staff": 8,
+  "sp": 16.0,
+  "head_box": [
+   1103,
+   3292,
+   1124,
+   3309
+  ],
+  "crop": [
+   1013,
+   3228,
+   1205,
+   3356
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P9",
+    "measure": "68",
+    "pitch": "A-14"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 21,
+  "sub": "glyph/9/0/3/1/17",
+  "page": 9,
+  "staff": 3,
+  "sp": 15.75,
+  "head_box": [
+   722,
+   832,
+   752,
+   856
+  ],
+  "crop": [
+   645,
+   806,
+   834,
+   932
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "too_wide",
+  "new": "hollow",
+  "old_slit": 0.3333,
+  "new_slit": 0.3333,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P4",
+    "measure": "147",
+    "pitch": "G3"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 22,
+  "sub": "glyph/4/1/2/5/14",
+  "page": 4,
+  "staff": 2,
+  "sp": 15.75,
+  "head_box": [
+   1258,
+   2462,
+   1286,
+   2487
+  ],
+  "crop": [
+   1175,
+   2419,
+   1364,
+   2545
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "too_wide",
+  "new": "hollow",
+  "old_slit": 0.3333,
+  "new_slit": 0.3333,
+  "file_writes": [
+   {
+    "type": "eighth",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P3",
+    "measure": "69",
+    "pitch": "C5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 0.5,
+    "written": 0.5,
+    "dots": 0,
+    "beam_levels": 1
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ },
+ {
+  "n": 23,
+  "sub": "glyph/2/0/1/4/6",
+  "page": 2,
+  "staff": 1,
+  "sp": 15.75,
+  "head_box": [
+   999,
+   575,
+   1020,
+   596
+  ],
+  "crop": [
+   914,
+   517,
+   1103,
+   643
+  ],
+  "tag": "file_half__new_filled",
+  "old": "filled",
+  "new": "filled",
+  "old_slit": 0.0,
+  "new_slit": 0.0,
+  "file_writes": [
+   {
+    "type": "half",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P2",
+    "measure": "21",
+    "pitch": "B-14"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0,
+    "head_fill": "half",
+    "shared_stem": "obs:047052"
+   },
+   "stem_value_follows",
+   "share_stem_value"
+  ]
+ },
+ {
+  "n": 24,
+  "sub": "glyph/8/0/1/2/1",
+  "page": 8,
+  "staff": 1,
+  "sp": 15.75,
+  "head_box": [
+   695,
+   554,
+   721,
+   578
+  ],
+  "crop": [
+   610,
+   530,
+   799,
+   671
+  ],
+  "tag": "file_black__new_hollow",
+  "old": "hollow",
+  "new": "hollow",
+  "old_slit": 0.6,
+  "new_slit": 0.6,
+  "file_writes": [
+   {
+    "type": "quarter",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P2",
+    "measure": "107",
+    "pitch": "A5"
+   },
+   {
+    "type": "quarter",
+    "dots": 0,
+    "colour": "plain",
+    "part": "P2",
+    "measure": "107",
+    "pitch": "A5"
+   }
+  ],
+  "dur": [
+   "decided",
+   {
+    "beats": 1.0,
+    "written": 1.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "head_and_marks",
+   "adjudicate_duration"
+  ]
+ }
+]

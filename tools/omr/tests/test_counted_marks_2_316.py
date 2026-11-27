@@ -151,12 +151,15 @@ class TestArcsAreCountedNotBoxes(unittest.TestCase):
         self.assertEqual(a["apart"]["replaced_by_page_arc_boxes"], 1575)
         self.assertEqual(a["apart"]["old_box_path_retired_boxes"], 1194)
         # NEW: refusals that are still refusals (a bound curve not in the file is one page arc, counted below not twice) ...
-        self.assertEqual(a["old_box_refusals"], 477)
+        # ROADMAP 2.360: 477 were refusals before; 379 of them are the OLD tie pairing's (`tie_pair_*`), which writes nothing with the page pass on -- named apart
+        self.assertEqual(a["old_box_refusals"], 98)
+        self.assertEqual(a["old_tie_pairing_refusals"], 379)
         # ... plus the page runs read and not written: 515 abstained + 18 slurs + 19 ties planned and not in the file
         self.assertEqual(a["page_runs_not_written"], 552)
-        self.assertEqual(a["not_written_total"], 1029)
+        self.assertEqual(a["not_written_total"], 650)              # 2.316 said 1029 (= 477 + 552)
         self.assertEqual(a["apart"]["unwitnessed_page_runs"], 249)
-        self.assertEqual(a["with_unwitnessed"], 1278)
+        self.assertEqual(a["with_unwitnessed"], 899)
+        self.assertEqual(a["with_unwitnessed_and_old_pairing"], 1278)   # nothing dropped: the upper bound is the old with_unwitnessed
 
     def test_the_replaced_box_does_not_move_the_count_and_a_new_unwritten_run_does(self):
         base = CM.arcs_count(LIT_1117_ARCS)["not_written_total"]

@@ -2674,6 +2674,207 @@ def _with_head_ink_guess(ruling: Ruling) -> Ruling:
     return dataclasses.replace(ruling, detail={**d, HEAD_INK_GUESS_KEY: g})
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.359 -- a dot the detector never boxed (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default ON)
+# ─────────────────────────────────────────────────────────────────────────────
+#: The rule, as a musician says it: where a small round mark stands just right of a note, in that note's own space, as ink of its
+#: own (not joined to the head, a ledger line, a stem or anything else) and nothing else has read it, the note may be dotted. This
+#: ADJUDICATE step only says so: a note read plain beside such a mark is held between its two values (NARROWED {plain, dotted});
+#: the bar alone never chooses -- INFER `missed_dot_fills_bar` writes the dot, GUESSED (blue), only where the rest of the bar is
+#: read and is short by exactly the dots of the marked notes (two witnesses: the ink, the bar). NEVER: a dot from the mark alone, a
+#: mark joined to other ink, a mark a detector box or a claim already reads, a mark over or under another notehead (a staccato), a mark two
+#: heads could own. THE SEPARATION IS A CONVENTION (docs/page-facts.md "A dot does not touch its note", Sean 2026-11-26: "I can't
+#: think of a time where it would. It would become very hard to distinguish from the note if it touched it."): a dot is ink of its
+#: own; ink that is one piece with the head or its ledger line is part of the note, never its dot. Tested on the page's own ink
+#: components (`Q.PAGE_STROKE` detail `component`: the page raster, staff lines erased), never on stroke-map pieces (the map files
+#: joined ledger ink as separate blobs). A real dot fused to its head by a print flaw (a rarity) is refused `dot_touches_its_note`:
+#: it stays unread and its bar red, never guessed. The look window and size are where-to-look numbers, measured below.
+#: ROUND 2 (Sean, 2026-11-26, on the Litolff p4 mark glyph/4/0/6/14/1: "Those dots are Stacatto markings and belong to the note
+#: underneath it"). WHAT THE MARK IS: a staccato dot stands directly above or below the notehead it belongs to, and belongs to that
+#: note; a lengthening dot stands just right of its notehead, in that note's own space, as ink of its own. NEVER: a mark that stands
+#: over or under ANOTHER notehead taken as the dot of the note on its left (refused `over_another_head`: it stays unread, its bar red,
+#: never guessed). Whether the mark touches a staff line says nothing and is not asked (Sean: "I don't think this is reliable").
+MISSED_DOT_ENV = "OMR_MISSED_DOT_TWO_WITNESSES"
+MISSED_DOT_REASON = "dot_ink_no_box"
+#: Where to look (the head's BOX is only where to look; the mark's own ink decides). Measured on the 2,156 boxed dots bound to
+#: their head on the 8 Brahms sample pages (20261123-night): gap from the head box p1 0.14 / p99 0.73 sp; Sean's 22 unboxed dots
+#: 0.24..0.49. The mark's size: bound dots width p1 0.36 / p99 0.64, height 0.29 / 0.70; Sean's unboxed dots up to 0.76 / 0.80.
+MISSED_DOT_GAP_SPACES = (0.1, 0.8)
+MISSED_DOT_SIZE_SPACES = (0.3, 0.85)
+#: Its own space, in staff steps from the head's own position, on the staff's lines at the mark's own x (the stroke map's local
+#: steps): a note in a space keeps its dot level (bound dots p1 -0.66 / p99 +0.35; Sean's -0.21..+0.51); a note on a line has it
+#: in the space above (bound p2 -1.43, median -1.02; Sean's -1.50..-0.86). A mark on the line beside a line note (a ledger stub)
+#: or a step off a space note is outside both.
+MISSED_DOT_SPACE_STEPS = 0.6
+#: Over or under another notehead (a where-to-look number, measured on marks): the mark's centre is inside that head's column and the
+#: mark lies wholly above or below the head's box, no further than this from it. The Litolff staccato lies 0.30 sp from its head;
+#: the nearest real lengthening dot (the 2,156 boxed dots bound to a head on the 8 Brahms sample pages, 7 stand in another read
+#: head's column at all, every one below it) lies 0.95 sp from it. A box the page claims as not a notehead is not a head.
+MISSED_DOT_OVER_HEAD_SPACES = 0.6
+MISSED_DOT_LINE_STEPS = (-1.6, -0.4)
+_MISSED_DOT_MEMO: Dict[str, Any] = {"log": None, "pages": {}}
+
+
+def missed_dot_enabled() -> bool:
+    """ROADMAP 2.359, default ON (unset = ON; an explicit 0/false/no/off disables)."""
+    return os.environ.get(MISSED_DOT_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _missed_dot_page(log, page: int) -> Dict[str, Any]:
+    """The page's unread round marks, once per page: `Q.PAGE_STROKE` blobs (GATHER, saved in the record), each with how many
+    strokes share its ink component, the strokes a `Q.CLAIMED_AREA` names, every detector box and every notehead box with its
+    staff position. Read off the log directly and memoised; the one row a ruling rests on enters its `considered`."""
+    if _MISSED_DOT_MEMO["log"] is not log:
+        _MISSED_DOT_MEMO["log"], _MISSED_DOT_MEMO["pages"] = log, {}
+    memo = _MISSED_DOT_MEMO["pages"]
+    if page in memo:
+        return memo[page]
+    psub = Subject(Kind.PAGE, page=page)
+    strokes, comp = [], Counter()
+    for r in log.rows(Q.PAGE_STROKE, psub):
+        d = dict(r.detail or {})
+        comp[d.get("component")] += 1
+        if r.value == "blob":
+            strokes.append((r.id, d))
+    claimed = set()
+    for r in log.rows(Q.CLAIMED_AREA, psub, scope=Scope.SELF_AND_DESCENDANTS):
+        for o in (r.detail or {}).get("page_strokes") or ():
+            claimed.add(int(o[0] if isinstance(o, (list, tuple)) else o))
+    boxes, heads = [], []
+    for r in log.rows(Q.GLYPH_BOX, psub, scope=Scope.SELF_AND_DESCENDANTS):
+        b = (r.detail or {}).get("bbox_page_px")
+        cls = r.value[0] if isinstance(r.value, (list, tuple)) and r.value else r.value
+        if not b or len(b) != 4 or str(cls) == "staff":
+            continue
+        boxes.append(tuple(float(v) for v in b))
+        if (r.detail or {}).get("category") == "notehead":
+            pos = log.rows(Q.NOTEHEAD_STAFF_POSITION, r.subject)
+            if pos:
+                heads.append((r.subject.to_key(), tuple(float(v) for v in b), float(pos[-1].value), [r.subject.system, r.subject.staff]))
+    memo[page] = {"strokes": strokes, "comp": comp, "claimed": claimed, "boxes": boxes, "heads": heads}
+    return memo[page]
+
+
+def _in_dot_place(head_box, head_step: float, staff, d: Dict[str, Any]) -> bool:
+    """Is this mark in the dot place of a head at `head_box` / `head_step` on `staff` (module comment above)?"""
+    b = d.get("bbox_page_px")
+    sp = float(d.get("staff_space_local_px") or 0.0)
+    steps = d.get("end_steps_from_top")
+    if not b or sp <= 0 or not steps or list(d.get("staff") or ()) != list(staff):
+        return False
+    gap = (b[0] - head_box[2]) / sp
+    if not (MISSED_DOT_GAP_SPACES[0] <= gap <= MISSED_DOT_GAP_SPACES[1]):
+        return False
+    dstep = sum(float(s) for s in steps) / len(steps) - head_step
+    if abs(head_step - 2 * round(head_step / 2.0)) < 0.5:          # a note on a line: the space above
+        return MISSED_DOT_LINE_STEPS[0] <= dstep <= MISSED_DOT_LINE_STEPS[1]
+    return abs(dstep) <= MISSED_DOT_SPACE_STEPS
+
+
+def _stands_over_another_head(log, page, me: str, hb, staff, b, sp: float) -> bool:
+    """Does this mark stand directly above or below some OTHER read notehead on its staff (ROUND 2, module comment above)? Its centre
+    is inside that head's column and it lies wholly above or below the head's box within `MISSED_DOT_OVER_HEAD_SPACES`."""
+    from ..head_extent import refused_as_head
+    cx = (b[0] + b[2]) / 2.0
+    for key, ob, _ostep, ostaff in page["heads"]:
+        if key == me or list(ostaff) != list(staff) or _box_overlap_share(ob, hb) > 0.5:
+            continue
+        if not (ob[0] <= cx <= ob[2]):
+            continue
+        gap = max(ob[1] - b[3], b[1] - ob[3])      # > 0 only where the mark is wholly above or below the box
+        if not (0.0 < gap <= MISSED_DOT_OVER_HEAD_SPACES * sp):
+            continue
+        if refused_as_head(log, Subject.from_key(key)):
+            continue
+        return True
+    return False
+
+
+def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
+    """`(row id, facts)` of the one unread round mark standing in this head's dot place as ink of its own, else `(None, why)`."""
+    me = glyph.to_key()
+    page = _missed_dot_page(log, glyph.page)
+    mine = [h for h in page["heads"] if h[0] == me]
+    if not mine:
+        return None, {"why": "no_head_position"}
+    _, hb, hstep, staff = mine[0]
+    found, near = [], []
+    for rid, d in page["strokes"]:
+        if not _in_dot_place(hb, hstep, staff, d):
+            continue
+        b = d["bbox_page_px"]
+        sp = float(d["staff_space_local_px"])
+        w, h = (b[2] - b[0]) / sp, (b[3] - b[1]) / sp
+        lo, hi = MISSED_DOT_SIZE_SPACES
+        why = None
+        if not (lo <= w <= hi and lo <= h <= hi):
+            why = "not_dot_sized"
+        elif page["comp"].get(d.get("component")) != 1:
+            why = "dot_touches_its_note"     # page-facts "A dot does not touch its note": joined ink is the note's, never its dot
+        elif int(d.get("ordinal", -1)) in page["claimed"]:
+            why = "claimed"
+        else:
+            cx, cy = (b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0
+            if any(bb[0] - 1 <= cx <= bb[2] + 1 and bb[1] - 1 <= cy <= bb[3] + 1 for bb in page["boxes"]):
+                why = "read_by_a_box"
+            else:
+                for key, ob, ostep, ostaff in page["heads"]:
+                    if key == me or _box_overlap_share(ob, hb) > 0.5:
+                        continue        # this head, or a twin box over its ink
+                    if _in_dot_place(ob, ostep, ostaff, d):
+                        why = "another_head_could_own_it"
+                        break
+                if why is None and _stands_over_another_head(log, page, me, hb, staff, b, sp):
+                    why = "over_another_head"      # a staccato of that note, never the dot of the note on its left
+        if why:
+            near.append(why)
+        else:
+            found.append((rid, {"blob": [round(float(v), 1) for v in b], "w_spaces": round(w, 2), "h_spaces": round(h, 2),
+                                "gap_spaces": round((b[0] - hb[2]) / sp, 2)}))
+    if len(found) != 1:
+        return None, {"why": "two_marks" if found else (near[0] if near else "no_mark"), "near": near}
+    return found[0]
+
+
+def _box_overlap_share(a, b) -> float:
+    w = min(a[2], b[2]) - max(a[0], b[0])
+    h = min(a[3], b[3]) - max(a[1], b[1])
+    if w <= 0 or h <= 0:
+        return 0.0
+    small = min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
+    return (w * h) / small if small > 0 else 0.0
+
+
+def _with_missed_dot(ev: Evidence, ruling: Ruling) -> Ruling:
+    """2.359: a head DECIDED plain, with no dot and no tuplet, beside an unread round mark of its own ink in its dot place, is held
+    between its two values: NARROWED {plain, dotted}, plain first. Every other ruling unchanged (flag OFF: all unchanged)."""
+    v = ruling.value
+    if not missed_dot_enabled() or not isinstance(v, dict) or ruling.candidates or v.get("is_rest"):
+        return ruling
+    if int(v.get("dots") or 0) or v.get("written") is None or v.get("beats") is None \
+            or abs(float(v["beats"]) - float(v["written"])) > 1e-9:
+        return ruling
+    rid, facts = missed_dot_mark(ev.log, ev.subject)
+    if rid is None:
+        return ruling
+    ev.considered_from_another_frame([rid])
+    plain = dict(v)
+    dotted = {**v, "beats": float(v["beats"]) * 1.5, "written": float(v["written"]) * 1.5, "dots": 1}
+    return Ruling.narrow([Candidate(value=plain, support=1.0), Candidate(value=dotted, support=0.5)], MISSED_DOT_REASON,
+                         used=tuple(ruling.used) + (rid,),
+                         **{**dict(ruling.detail or {}), "missed_dot": {**facts, "mark_row": rid, "read_plain_as": ruling.reason}})
+
+
+def _missed_dot_marks(fn):
+    """2.359: `adjudicate_duration`'s ruling, then `_with_missed_dot` (flag OFF: the ruling unchanged). `functools.wraps`."""
+    import functools
+
+    @functools.wraps(fn)
+    def wrapped(ev: Evidence) -> Ruling:
+        return _with_missed_dot(ev, fn(ev))
+    return wrapped
+
+
 def _head_ink_marks(fn):
     """2.220 m2: `adjudicate_duration`'s ruling, then `_with_head_ink_guess` (flag OFF: the ruling unchanged). `functools.wraps`, so the
     wiring / inventory checks read the decision's own source."""
@@ -3547,7 +3748,9 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            # ROADMAP 2.318 / 2.319: the stroke map, the one beam count's only source.
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
-           Q.HEAD_INK),
+           Q.HEAD_INK,
+           # ROADMAP 2.359 (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default ON): the unread round mark in the dot place, off the page stroke map.
+           Q.PAGE_STROKE, Q.CLAIMED_AREA),
     reasons=("no_stem_joined", "whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
@@ -3559,7 +3762,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs", "rest_hangs_from_own_line",
              "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead", "wide_box_unread",
-             "stem_readers_disagree"),
+             "stem_readers_disagree",
+             "dot_ink_no_box"),       # ROADMAP 2.359 (OFF): == MISSED_DOT_REASON
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -3573,6 +3777,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     # bug. The bound lives on the rule.
     revises=Q.DURATION,
 )
+@_missed_dot_marks
 @_head_ink_marks
 def adjudicate_duration(ev: Evidence) -> Ruling:
     """The written value, composed from the marks around one notehead.
@@ -5532,12 +5737,15 @@ def _bar_lengths_for(ev: Evidence) -> dict:
     """{cell_index: [length per staff]} for every bar of this system that can
     speak about its own LENGTH. See `_corroborate` for why a whole rest is
     never read here."""
-    whole_rests = {r.subject for r in
-                   ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
-                   if r.value == "restWhole"}
+    rest_rows = ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
+    whole_rests = {r.subject for r in rest_rows if r.value == "restWhole"}
+    rests = {r.subject for r in rest_rows}
     bars: dict = {}
     # ROADMAP 2.346: the refusals `_glyph_left_the_bar` reads, named here so the inventory's read check sees them from this witness.
     _refusals = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST)  # noqa: F841
+    # ROADMAP 2.356: the contest rows `_rest_contested_between_staves` reads, named here for the same check.
+    _contest = (Q.GLYPH_BAND_DISTANCE,)  # noqa: F841
+    skip = bar_sum_skips_refused_enabled()
     for grouping in ev.verdicts(Q.EVENT, scope=Scope.SELF_AND_DESCENDANTS):
         if grouping.outcome is not Outcome.DECIDED:
             continue
@@ -5559,6 +5767,18 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         if any(_sub(gi) in whole_rests
                for e in events for gi in (e.get("glyphs") or [])):
             continue
+        # ⚠️⚠️ ROADMAP 2.356: THE SAME RULE FOR A REST CONTESTED BETWEEN TWO STAVES. Whether such a rest is in this bar is not
+        # known until the meter is: `consequences.reinstate_rest_between_staves` (EVALUATE, cause the METER) may overturn its
+        # `rest_outside_its_staff` refusal, using the meter's bar length. Reading that refusal here (2.346) put it in the
+        # meter's basis, so the rule stood on its own conclusion (meter -> rest -> meter, `UphillConsequence`, Brahms
+        # glyph/21/0/4/1/2). A bar holding a rest the meter may reinstate cannot corroborate that meter: it is left out
+        # WHOLE, before any refusal or duration in it is asked, and it is found from GATHER rows only (`Q.REST` and
+        # `Q.GLYPH_BAND_DISTANCE` naming another staff -- the rule's own contest test), never from the refusal itself.
+        # Never: a rest with no rival staff, or a contested NOTEHEAD (no meter-caused rule rewrites its refusal), takes a
+        # bar out. Flag off the bar is summed as before (the refusals are not read, so there is no loop to break).
+        if skip and any(_rest_contested_between_staves(ev, _sub(gi), rests)
+                        for e in events for gi in (e.get("glyphs") or [])):
+            continue
         # ⚠️ ROADMAP 2.162 / 2.165: THE ONE BAR-LENGTH HELPER (`staged.bar_length`). Flag off it is the old sum (a narrowing
         # at its first candidate); under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` a staff bar holding a NARROWED note is a RANGE,
         # recorded as a (lo, hi) tuple, which `_resolve_lengths` lets CONFIRM a meter inside it and never refute one.
@@ -5567,7 +5787,6 @@ def _bar_lengths_for(ev: Evidence) -> dict:
         # (2.143 is parked OFF), so clef/key ink at a system start (`claimed_by:leading_column`) was summed here as a note: EVALUATE and
         # INFER already leave it out (`consequences._left_the_bar`), this witness did not. Only a DECIDED refusal removes a glyph; an
         # abstained or narrowed verdict leaves it in, so the bar stays a range / unknown exactly as before.
-        skip = bar_sum_skips_refused_enabled()
         got = _BL.length_of_events(
             ([ev.verdict(Q.DURATION, subject=_sub(gi)) for gi in (event.get("glyphs") or [])
               if not (skip and _glyph_left_the_bar(ev, cell, gi, reinstated_stays=True))] for event in events),
@@ -7552,7 +7771,9 @@ def _bar_corroboration_margin(ev: Evidence, candidate: dict) -> Optional[float]:
                    Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
                    # ROADMAP 2.346: the bar sum leaves out a glyph with a DECIDED refusal (`_glyph_left_the_bar`).
-                   Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
+                   Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST,
+                   # ROADMAP 2.356: a rest contested with another staff takes its bar out of the sum (`_rest_contested_between_staves`).
+                   Q.GLYPH_BAND_DISTANCE),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
            Q.METER_OCR, Q.METER_OCR_AT_BAR,
@@ -7560,7 +7781,7 @@ def _bar_corroboration_margin(ev: Evidence, candidate: dict) -> Optional[float]:
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
            Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS,
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST),
+           Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_AN_EIGHTH_REST, Q.GLYPH_BAND_DISTANCE),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              # ⚠️ ROADMAP 2.22b: the carry held where the bars were silent.
@@ -9003,6 +9224,18 @@ def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int, reinstated_stays: b
         if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
             return True
     return False
+
+
+def _rest_contested_between_staves(ev: Evidence, sub: Subject, rests) -> bool:
+    """ROADMAP 2.356: a rest box (`Q.REST`, in `rests`) that GATHER also measured against ANOTHER staff (a `Q.GLYPH_BAND_DISTANCE`
+    row naming a staff other than its own) -- exactly the contest `consequences.reinstate_rest_between_staves` asks for before it
+    may overturn the rest's `rest_outside_its_staff` refusal with the meter. Read off GATHER rows only: the refusal is never asked,
+    so asking this puts nothing a meter-caused rule rewrites into the asker's basis."""
+    if sub not in rests:
+        return False
+    own = sub.at(Kind.STAFF).to_key()
+    return any(r.detail and r.detail.get("candidate") is not None and str(r.detail.get("candidate")) != own
+               for r in ev.rows(Q.GLYPH_BAND_DISTANCE, subject=sub))
 
 
 def _rest_own_voice_split(ev: Evidence, events):

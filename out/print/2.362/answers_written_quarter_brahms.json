@@ -1,0 +1,9 @@
+{
+  "set": "2.362 written quarter rests, Brahms, 24 at random (seed 20261126), exact detector boxes",
+  "date": "2026-11-26",
+  "question": "For each number: quarter rest, yes or no? If no, what is it.",
+  "answered_by": "Sean",
+  "verbatim": "All quarter note rests agan",
+  "answers": "all 24 are quarter rests",
+  "ours": "A random draw from the 353 written quarter rests on the Brahms sample pages: 24 of 24 real. Both plates together: 48 of 48."
+}
