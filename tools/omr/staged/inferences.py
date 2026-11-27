@@ -2090,7 +2090,7 @@ def _lone_event_guesses(log: Log, cell: Subject, props: List[Proposal], kept: Li
     return out
 
 
-#: ROADMAP 2.359 (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default OFF): the reason a note held {plain, dotted} by an unread round mark
+#: ROADMAP 2.359 (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default ON): the reason a note held {plain, dotted} by an unread round mark
 #: in its dot place (ADJUDICATE `rhythm.MISSED_DOT_REASON`) is guessed dotted from the bar.
 MISSED_DOT_FILLS_REASON = "missed_dot_fills_bar"
 #: what already wrote a value GUESSED; a bar holding one is no witness for another note (the bar inherits every guess in it)
@@ -2255,7 +2255,7 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
         # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default ON, Sean 2026-10-17): and a bar holding ONE event under a known meter may
         # still be guessed to the one candidate that fills it (Sean 2026-10-17).
         props = kept + _lone_event_guesses(log, cell, props, kept)
-    # ROADMAP 2.359 (`OMR_MISSED_DOT_TWO_WITNESSES`, default OFF): a note an unread round mark holds {plain, dotted}, dotted where the
+    # ROADMAP 2.359 (`OMR_MISSED_DOT_TWO_WITNESSES`, default ON): a note an unread round mark holds {plain, dotted}, dotted where the
     # read bar is short by exactly the marks' dots; its own label, and it takes the note from any other guess of this rule.
     dots = _missed_dot_guesses(log, cell)
     if dots:

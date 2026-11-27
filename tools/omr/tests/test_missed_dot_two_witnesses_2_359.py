@@ -1,4 +1,4 @@
-"""ROADMAP 2.359 -- a dot the detector missed is written blue where the page and the bar agree (flag `OMR_MISSED_DOT_TWO_WITNESSES`, OFF).
+"""ROADMAP 2.359 -- a dot the detector missed is written blue where the page and the bar agree (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default ON).
 
 STAGED ADJUDICATE (`rhythm._with_missed_dot`: a note read plain beside an unread round mark of its own ink in its dot place is held
 NARROWED {plain, dotted}) + INFER (`inferences.missed_dot_decline`: the bar, every other note read, short by exactly the marks' dots,

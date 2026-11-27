@@ -134,6 +134,13 @@ KNOWN_GAPS: Dict[str, str] = {
         "from the beam box (`rhythm._beamed_groups`); the staged decision "
         "groups by 'exactly as many heads as the digit claims' in the cell "
         "instead, so the beam is declared and unused.",
+    "duration declares 'page_stroke'":
+        "ROADMAP 2.359 (OMR_MISSED_DOT_TWO_WITNESSES): declared so the dot-place ruling's basis records the page's stroke map; the "
+        "body reads the page rows off the log directly (`rhythm._missed_dot_page`), not through `ev`, so the declaration is not "
+        "an `ev` read.",
+    "duration declares 'claimed_area'":
+        "ROADMAP 2.359 (OMR_MISSED_DOT_TWO_WITNESSES): same as 'page_stroke' above -- the claim rows are read off the log "
+        "directly (`rhythm._missed_dot_page`).",
     # ⚠️ `duration declares 'stem'` LEFT THIS LIST 2026-09-09. It was inert
     # for as long as it stood, and it was not harmless: `adjudicate_duration`
     # associated a beam with a note by the NOTEHEAD'S CENTRE, which sits half

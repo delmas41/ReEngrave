@@ -2675,7 +2675,7 @@ def _with_head_ink_guess(ruling: Ruling) -> Ruling:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.359 -- a dot the detector never boxed (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default OFF)
+# ROADMAP 2.359 -- a dot the detector never boxed (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default ON)
 # ─────────────────────────────────────────────────────────────────────────────
 #: The rule, as a musician says it: where a small round mark stands just right of a note, in that note's own space, as ink of its
 #: own (not joined to the head, a ledger line, a stem or anything else) and nothing else has read it, the note may be dotted. This
@@ -2716,8 +2716,8 @@ _MISSED_DOT_MEMO: Dict[str, Any] = {"log": None, "pages": {}}
 
 
 def missed_dot_enabled() -> bool:
-    """ROADMAP 2.359, default OFF: only an explicit on-word enables it."""
-    return os.environ.get(MISSED_DOT_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.359, default ON (unset = ON; an explicit 0/false/no/off disables)."""
+    return os.environ.get(MISSED_DOT_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _missed_dot_page(log, page: int) -> Dict[str, Any]:
@@ -3749,7 +3749,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
            Q.HEAD_INK,
-           # ROADMAP 2.359 (flag `OMR_MISSED_DOT_TWO_WITNESSES`, OFF): the unread round mark in the dot place, off the page stroke map.
+           # ROADMAP 2.359 (flag `OMR_MISSED_DOT_TWO_WITNESSES`, default ON): the unread round mark in the dot place, off the page stroke map.
            Q.PAGE_STROKE, Q.CLAIMED_AREA),
     reasons=("no_stem_joined", "whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",

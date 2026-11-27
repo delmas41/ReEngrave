@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-26 -- 2.359 LANDED ON (`OMR_MISSED_DOT_TWO_WITNESSES`, default ON): a dot the detector missed is written blue where the page and the bar agree (`tools/omr/staged/adjudicators/rhythm.py` `_with_missed_dot`, `tools/omr/staged/inferences.py` `_missed_dot_guesses`)
+STAGED ADJUDICATE + INFER. A note read plain beside an unread round mark in its own dot place is narrowed {plain, dotted}; INFER writes it dotted, GUESSED (blue), only where every other note in the bar is read and the bar is short by exactly those dots. Never a mark joined to other ink, never a staccato over/under another head, no staff-line-contact test. Frozen sample off vs on: Brahms +14 dotted notes, red bars 110 -> 97; Litolff byte-identical; judged right->wrong 0. Cost: two Brahms notes written plain are now unwritten and red. Not measured on a whole movement. Round 1 crashed once on a meter -> note -> meter loop; fixed by resting on the printed time-signature readings.
+
 ## 2026-11-26 -- 2.360 LANDED (no flag): the ranking counts only real losses (`tools/omr/staged/counted_marks.py`, `export_saved`)
 Counting only, STAGED EXPORT readout. Old tie-pairing refusals, the second half of an arc across a system break, boxes on a written note's dot and boxes on a written rest are named apart instead of counted as lost ties/notes; too-narrow boxes with nothing identifiable stay counted. 20261123-night, 8 pages per plate: ties+slurs not written Litolff 47.6 -> 36.8, Brahms 60.1 -> 32.8; notes not written Litolff 31.0 -> 30.8, Brahms 45.6 -> 31.8. Committed 20261123-night ranking files keep the old counting.
 
