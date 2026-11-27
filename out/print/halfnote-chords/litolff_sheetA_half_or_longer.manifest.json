@@ -1,0 +1,2299 @@
+{
+ "sheet": "litolff_sheetA_half_or_longer",
+ "instruction": "For each number: how many noteheads are on that stem, and what is their value (half, quarter, eighth...)?",
+ "seed": 20261126,
+ "population": {
+  "n_events": 3276,
+  "n_p1_all": 718,
+  "n_p1": 660,
+  "n_p2_all": 929,
+  "n_p2": 875,
+  "excluded_judged_p1": 58,
+  "excluded_judged_p2": 54
+ },
+ "tiles": [
+  {
+   "number": 1,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/1/3",
+   "parts_written_in": [
+    "P4"
+   ],
+   "measure": "192",
+   "subjects": [
+    "glyph/10/1/3/5/6",
+    "glyph/10/1/3/5/7"
+   ],
+   "union_box_page_px": [
+    1222.24,
+    2526.86,
+    1249.33,
+    2573.8
+   ],
+   "union_size_sp": [
+    1.72,
+    2.98
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/10/1/3/5/6",
+     "box_page_px": [
+      1223.5,
+      2548.28,
+      1248.86,
+      2573.8
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.355,
+     "size_sp": [
+      1.61,
+      1.62
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/10/1/3/5/7",
+     "box_page_px": [
+      1222.24,
+      2526.86,
+      1249.33,
+      2549.22
+     ],
+     "class_": "noteheadBlackOnLine",
+     "reader": "detector",
+     "score": 0.302,
+     "size_sp": [
+      1.72,
+      1.42
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "Bb2",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "Eb3",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1141,
+     2456,
+     1330,
+     2645
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2513,
+     2576
+    ]
+   }
+  },
+  {
+   "number": 2,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/1/0",
+   "parts_written_in": [
+    "P1"
+   ],
+   "measure": "187",
+   "subjects": [
+    "glyph/10/1/0/0/10"
+   ],
+   "union_box_page_px": [
+    525.12,
+    2045.62,
+    554.57,
+    2061.89
+   ],
+   "union_size_sp": [
+    1.9,
+    1.05
+   ],
+   "staff_space_px": 15.5,
+   "heads": [
+    {
+     "glyph": "glyph/10/1/0/0/10",
+     "box_page_px": [
+      525.12,
+      2045.62,
+      554.57,
+      2061.89
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.353,
+     "size_sp": [
+      1.9,
+      1.05
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "F6",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "blue",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     447,
+     1976,
+     633,
+     2208
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2107,
+     2169
+    ]
+   }
+  },
+  {
+   "number": 3,
+   "plate": "litolff",
+   "page": 2,
+   "staff": "staff/2/1/0",
+   "parts_written_in": [
+    "P1"
+   ],
+   "measure": "48",
+   "subjects": [
+    "glyph/2/1/0/14/5"
+   ],
+   "union_box_page_px": [
+    2480.88,
+    2064.02,
+    2505.29,
+    2085.12
+   ],
+   "union_size_sp": [
+    1.55,
+    1.34
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/2/1/0/14/5",
+     "box_page_px": [
+      2480.88,
+      2064.02,
+      2505.29,
+      2085.12
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.348,
+     "size_sp": [
+      1.55,
+      1.34
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "F6",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     2399,
+     1993,
+     2588,
+     2246
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2144,
+     2207
+    ]
+   }
+  },
+  {
+   "number": 4,
+   "plate": "litolff",
+   "page": 16,
+   "staff": "staff/16/0/8",
+   "parts_written_in": [
+    "P9"
+   ],
+   "measure": "243",
+   "subjects": [
+    "glyph/16/0/8/6/0"
+   ],
+   "union_box_page_px": [
+    1241.26,
+    1538.86,
+    1267.24,
+    1563.59
+   ],
+   "union_size_sp": [
+    1.65,
+    1.57
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/16/0/8/6/0",
+     "box_page_px": [
+      1241.26,
+      1538.86,
+      1267.24,
+      1563.59
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.532,
+     "size_sp": [
+      1.65,
+      1.57
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "G4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1160,
+     1466,
+     1349,
+     1625
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1505,
+     1568
+    ]
+   }
+  },
+  {
+   "number": 5,
+   "plate": "litolff",
+   "page": 4,
+   "staff": "staff/4/0/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "57",
+   "subjects": [
+    "glyph/4/0/2/8/7",
+    "glyph/4/0/2/8/2"
+   ],
+   "union_box_page_px": [
+    1622.22,
+    691.77,
+    1649.53,
+    743.29
+   ],
+   "union_size_sp": [
+    1.68,
+    3.17
+   ],
+   "staff_space_px": 16.25,
+   "heads": [
+    {
+     "glyph": "glyph/4/0/2/8/7",
+     "box_page_px": [
+      1624.17,
+      719.73,
+      1649.53,
+      743.29
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.301,
+     "size_sp": [
+      1.56,
+      1.45
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/4/0/2/8/2",
+     "box_page_px": [
+      1622.22,
+      691.77,
+      1649.36,
+      715.99
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.674,
+     "size_sp": [
+      1.67,
+      1.49
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "C5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "F5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1538,
+     639,
+     1733,
+     816
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     709,
+     774
+    ]
+   }
+  },
+  {
+   "number": 6,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/1/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "132",
+   "subjects": [
+    "glyph/8/1/2/5/2",
+    "glyph/8/1/2/5/0"
+   ],
+   "union_box_page_px": [
+    990.4,
+    2230.68,
+    1018.4,
+    2274.2
+   ],
+   "union_size_sp": [
+    1.75,
+    2.72
+   ],
+   "staff_space_px": 16.0,
+   "heads": [
+    {
+     "glyph": "glyph/8/1/2/5/2",
+     "box_page_px": [
+      992.32,
+      2256.44,
+      1017.28,
+      2274.2
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.353,
+     "size_sp": [
+      1.56,
+      1.11
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/8/1/2/5/0",
+     "box_page_px": [
+      990.4,
+      2230.68,
+      1018.4,
+      2253.08
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.526,
+     "size_sp": [
+      1.75,
+      1.4
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "Bb4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "E5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     908,
+     2159,
+     1100,
+     2346
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2235,
+     2299
+    ]
+   }
+  },
+  {
+   "number": 7,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/1/7",
+   "parts_written_in": [
+    "P9"
+   ],
+   "measure": "130",
+   "subjects": [
+    "glyph/8/1/7/3/2"
+   ],
+   "union_box_page_px": [
+    846.24,
+    3133.2,
+    874.24,
+    3157.04
+   ],
+   "union_size_sp": [
+    1.75,
+    1.49
+   ],
+   "staff_space_px": 16.0,
+   "heads": [
+    {
+     "glyph": "glyph/8/1/7/3/2",
+     "box_page_px": [
+      846.24,
+      3133.2,
+      874.24,
+      3157.04
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.442,
+     "size_sp": [
+      1.75,
+      1.49
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "A3",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     764,
+     3010,
+     956,
+     3199
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     3050,
+     3114
+    ]
+   }
+  },
+  {
+   "number": 8,
+   "plate": "litolff",
+   "page": 16,
+   "staff": "staff/16/1/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "255",
+   "subjects": [
+    "glyph/16/1/2/1/5"
+   ],
+   "union_box_page_px": [
+    707.43,
+    2358.57,
+    732.0,
+    2377.62
+   ],
+   "union_size_sp": [
+    1.56,
+    1.21
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/16/1/2/1/5",
+     "box_page_px": [
+      707.43,
+      2358.57,
+      732.0,
+      2377.62
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.267,
+     "size_sp": [
+      1.56,
+      1.21
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "D5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     625,
+     2291,
+     814,
+     2456
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2354,
+     2417
+    ]
+   }
+  },
+  {
+   "number": 9,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/0/5",
+   "parts_written_in": [
+    "P8"
+   ],
+   "measure": "115",
+   "subjects": [
+    "glyph/8/0/5/10/4"
+   ],
+   "union_box_page_px": [
+    1421.69,
+    1255.13,
+    1445.47,
+    1277.97
+   ],
+   "union_size_sp": [
+    1.51,
+    1.45
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/8/0/5/10/4",
+     "box_page_px": [
+      1421.69,
+      1255.13,
+      1445.47,
+      1277.97
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.352,
+     "size_sp": [
+      1.51,
+      1.45
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "C#4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1339,
+     1144,
+     1528,
+     1324
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1183,
+     1246
+    ]
+   }
+  },
+  {
+   "number": 10,
+   "plate": "litolff",
+   "page": 16,
+   "staff": "staff/16/0/9",
+   "parts_written_in": [
+    "P10"
+   ],
+   "measure": "241",
+   "subjects": [
+    "glyph/16/0/9/4/1"
+   ],
+   "union_box_page_px": [
+    1012.95,
+    1676.94,
+    1038.93,
+    1699.94
+   ],
+   "union_size_sp": [
+    1.65,
+    1.46
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/16/0/9/4/1",
+     "box_page_px": [
+      1012.95,
+      1676.94,
+      1038.93,
+      1699.94
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "yolo_rescue_stem_head",
+     "score": 0.077,
+     "size_sp": [
+      1.65,
+      1.46
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "G3",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "blue",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: yolo_rescue_stem_head)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     931,
+     1594,
+     1120,
+     1765
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1633,
+     1696
+    ]
+   }
+  },
+  {
+   "number": 11,
+   "plate": "litolff",
+   "page": 16,
+   "staff": "staff/16/0/8",
+   "parts_written_in": [
+    "P9"
+   ],
+   "measure": "249",
+   "subjects": [
+    "glyph/16/0/8/12/5"
+   ],
+   "union_box_page_px": [
+    2008.43,
+    1557.61,
+    2032.69,
+    1580.29
+   ],
+   "union_size_sp": [
+    1.54,
+    1.44
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/16/0/8/12/5",
+     "box_page_px": [
+      2008.43,
+      1557.61,
+      2032.69,
+      1580.29
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.503,
+     "size_sp": [
+      1.54,
+      1.44
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "Eb4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1926,
+     1466,
+     2115,
+     1625
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1505,
+     1568
+    ]
+   }
+  },
+  {
+   "number": 12,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/1/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "138",
+   "subjects": [
+    "glyph/8/1/2/11/3",
+    "glyph/8/1/2/11/0"
+   ],
+   "union_box_page_px": [
+    1477.88,
+    2230.36,
+    1505.72,
+    2279.64
+   ],
+   "union_size_sp": [
+    1.74,
+    3.08
+   ],
+   "staff_space_px": 16.0,
+   "heads": [
+    {
+     "glyph": "glyph/8/1/2/11/3",
+     "box_page_px": [
+      1482.52,
+      2262.84,
+      1505.72,
+      2279.64
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.377,
+     "size_sp": [
+      1.45,
+      1.05
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/8/1/2/11/0",
+     "box_page_px": [
+      1477.88,
+      2230.36,
+      1504.44,
+      2252.6
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.692,
+     "size_sp": [
+      1.66,
+      1.39
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "Bb4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "E5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1396,
+     2158,
+     1588,
+     2352
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2235,
+     2299
+    ]
+   }
+  },
+  {
+   "number": 13,
+   "plate": "litolff",
+   "page": 4,
+   "staff": "staff/4/1/0",
+   "parts_written_in": [
+    "P1"
+   ],
+   "measure": "69",
+   "subjects": [
+    "glyph/4/1/0/5/9",
+    "glyph/4/1/0/5/1"
+   ],
+   "union_box_page_px": [
+    1206.96,
+    2104.47,
+    1240.67,
+    2160.23
+   ],
+   "union_size_sp": [
+    2.14,
+    3.54
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/4/1/0/5/9",
+     "box_page_px": [
+      1207.43,
+      2140.07,
+      1240.67,
+      2160.23
+     ],
+     "class_": "noteheadBlackInSpace",
+     "reader": "detector",
+     "score": 0.266,
+     "size_sp": [
+      2.11,
+      1.28
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/4/1/0/5/1",
+     "box_page_px": [
+      1206.96,
+      2104.47,
+      1232.95,
+      2125.74
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.656,
+     "size_sp": [
+      1.65,
+      1.35
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "C6",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "blue",
+     "voice": "1"
+    },
+    {
+     "pitch": "G6",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "blue",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1129,
+     2034,
+     1318,
+     2280
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2178,
+     2241
+    ]
+   }
+  },
+  {
+   "number": 14,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/1/1",
+   "parts_written_in": [
+    "P2"
+   ],
+   "measure": "167",
+   "subjects": [
+    "glyph/9/1/1/6/13"
+   ],
+   "union_box_page_px": [
+    1587.95,
+    2381.48,
+    1613.09,
+    2403.07
+   ],
+   "union_size_sp": [
+    1.6,
+    1.37
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/9/1/1/6/13",
+     "box_page_px": [
+      1587.95,
+      2381.48,
+      1613.09,
+      2403.07
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.564,
+     "size_sp": [
+      1.6,
+      1.37
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "D5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1506,
+     2311,
+     1695,
+     2478
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2376,
+     2439
+    ]
+   }
+  },
+  {
+   "number": 15,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/1/9",
+   "parts_written_in": [
+    "P11"
+   ],
+   "measure": "135",
+   "subjects": [
+    "glyph/8/1/9/8/0"
+   ],
+   "union_box_page_px": [
+    1240.4,
+    3394.0,
+    1265.84,
+    3419.92
+   ],
+   "union_size_sp": [
+    1.59,
+    1.62
+   ],
+   "staff_space_px": 16.0,
+   "heads": [
+    {
+     "glyph": "glyph/8/1/9/8/0",
+     "box_page_px": [
+      1240.4,
+      3394.0,
+      1265.84,
+      3419.92
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.43,
+     "size_sp": [
+      1.59,
+      1.62
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "Bb2",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "blue",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1157,
+     3322,
+     1349,
+     3492
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     3362,
+     3426
+    ]
+   }
+  },
+  {
+   "number": 16,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/0/7",
+   "parts_written_in": [
+    "P10"
+   ],
+   "measure": "117",
+   "subjects": [
+    "glyph/8/0/7/12/4"
+   ],
+   "union_box_page_px": [
+    1620.29,
+    1533.35,
+    1646.59,
+    1555.71
+   ],
+   "union_size_sp": [
+    1.67,
+    1.42
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/8/0/7/12/4",
+     "box_page_px": [
+      1620.29,
+      1533.35,
+      1646.59,
+      1555.71
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.35,
+     "size_sp": [
+      1.67,
+      1.42
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "F3",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1539,
+     1443,
+     1728,
+     1607
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1482,
+     1545
+    ]
+   }
+  },
+  {
+   "number": 17,
+   "plate": "litolff",
+   "page": 11,
+   "staff": "staff/11/1/3",
+   "parts_written_in": [
+    "P4"
+   ],
+   "measure": "222",
+   "subjects": [
+    "glyph/11/1/3/2/3",
+    "glyph/11/1/3/2/0"
+   ],
+   "union_box_page_px": [
+    780.04,
+    2341.85,
+    805.4,
+    2383.27
+   ],
+   "union_size_sp": [
+    1.61,
+    2.63
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/11/1/3/2/3",
+     "box_page_px": [
+      781.77,
+      2361.53,
+      805.4,
+      2383.27
+     ],
+     "class_": "noteheadBlackOnLine",
+     "reader": "detector",
+     "score": 0.363,
+     "size_sp": [
+      1.5,
+      1.38
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/11/1/3/2/0",
+     "box_page_px": [
+      780.04,
+      2341.85,
+      805.24,
+      2362.48
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.58,
+     "size_sp": [
+      1.6,
+      1.31
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "G3",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "C4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     698,
+     2273,
+     887,
+     2467
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2365,
+     2428
+    ]
+   }
+  },
+  {
+   "number": 18,
+   "plate": "litolff",
+   "page": 6,
+   "staff": "staff/6/0/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "90",
+   "subjects": [
+    "glyph/6/0/2/11/3"
+   ],
+   "union_box_page_px": [
+    2295.95,
+    686.98,
+    2323.36,
+    709.82
+   ],
+   "union_size_sp": [
+    1.74,
+    1.45
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/6/0/2/11/3",
+     "box_page_px": [
+      2295.95,
+      686.98,
+      2323.36,
+      709.82
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "yolo_rescue_lowconf",
+     "score": 0.117,
+     "size_sp": [
+      1.74,
+      1.45
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "C5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: yolo_rescue_lowconf)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     2215,
+     616,
+     2404,
+     781
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     678,
+     741
+    ]
+   }
+  },
+  {
+   "number": 19,
+   "plate": "litolff",
+   "page": 11,
+   "staff": "staff/11/0/7",
+   "parts_written_in": [
+    "P10"
+   ],
+   "measure": "207",
+   "subjects": [
+    "glyph/11/0/7/5/3"
+   ],
+   "union_box_page_px": [
+    1057.62,
+    1451.23,
+    1084.59,
+    1466.73
+   ],
+   "union_size_sp": [
+    1.74,
+    1.0
+   ],
+   "staff_space_px": 15.5,
+   "heads": [
+    {
+     "glyph": "glyph/11/0/7/5/3",
+     "box_page_px": [
+      1057.62,
+      1451.23,
+      1084.59,
+      1466.73
+     ],
+     "class_": "noteheadBlackOnLine",
+     "reader": "yolo_rescue_lowconf",
+     "score": 0.22,
+     "size_sp": [
+      1.74,
+      1.0
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "D4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: yolo_rescue_lowconf)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     978,
+     1381,
+     1164,
+     1542
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1441,
+     1503
+    ]
+   }
+  },
+  {
+   "number": 20,
+   "plate": "litolff",
+   "page": 16,
+   "staff": "staff/16/0/1",
+   "parts_written_in": [
+    "P2",
+    "P2"
+   ],
+   "measure": "242",
+   "subjects": [
+    "glyph/16/0/1/5/0"
+   ],
+   "union_box_page_px": [
+    1150.07,
+    517.2,
+    1175.74,
+    539.09
+   ],
+   "union_size_sp": [
+    1.63,
+    1.39
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/16/0/1/5/0",
+     "box_page_px": [
+      1150.07,
+      517.2,
+      1175.74,
+      539.09
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.559,
+     "size_sp": [
+      1.63,
+      1.39
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "G5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1068,
+     464,
+     1257,
+     634
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     532,
+     595
+    ]
+   }
+  },
+  {
+   "number": 21,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/1/1",
+   "parts_written_in": [
+    "P2"
+   ],
+   "measure": "166",
+   "subjects": [
+    "glyph/9/1/1/5/1"
+   ],
+   "union_box_page_px": [
+    1377.65,
+    2387.97,
+    1402.06,
+    2408.92
+   ],
+   "union_size_sp": [
+    1.55,
+    1.33
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/9/1/1/5/1",
+     "box_page_px": [
+      1377.65,
+      2387.97,
+      1402.06,
+      2408.92
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.347,
+     "size_sp": [
+      1.55,
+      1.33
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "C5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1295,
+     2317,
+     1484,
+     2480
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     2376,
+     2439
+    ]
+   }
+  },
+  {
+   "number": 22,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/0/8",
+   "parts_written_in": [
+    "P9"
+   ],
+   "measure": "153",
+   "subjects": [
+    "glyph/9/0/8/7/4"
+   ],
+   "union_box_page_px": [
+    1402.33,
+    1573.22,
+    1427.13,
+    1596.93
+   ],
+   "union_size_sp": [
+    1.6,
+    1.53
+   ],
+   "staff_space_px": 15.5,
+   "heads": [
+    {
+     "glyph": "glyph/9/0/8/7/4",
+     "box_page_px": [
+      1402.33,
+      1573.22,
+      1427.13,
+      1596.93
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.355,
+     "size_sp": [
+      1.6,
+      1.53
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "Eb4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 1 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1322,
+     1484,
+     1508,
+     1650
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     1523,
+     1585
+    ]
+   }
+  },
+  {
+   "number": 23,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/0/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "148",
+   "subjects": [
+    "glyph/9/0/2/2/3",
+    "glyph/9/0/2/2/2"
+   ],
+   "union_box_page_px": [
+    849.3,
+    684.5,
+    875.76,
+    759.95
+   ],
+   "union_size_sp": [
+    1.68,
+    4.79
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/9/0/2/2/3",
+     "box_page_px": [
+      849.62,
+      738.05,
+      875.76,
+      759.95
+     ],
+     "class_": "noteheadBlackInSpace",
+     "reader": "detector",
+     "score": 0.448,
+     "size_sp": [
+      1.66,
+      1.39
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/9/0/2/2/2",
+     "box_page_px": [
+      849.3,
+      684.5,
+      874.82,
+      707.5
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.586,
+     "size_sp": [
+      1.62,
+      1.46
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "F4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "F5",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     768,
+     625,
+     957,
+     830
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     696,
+     759
+    ]
+   }
+  },
+  {
+   "number": 24,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/0/2",
+   "parts_written_in": [
+    "P3"
+   ],
+   "measure": "155",
+   "subjects": [
+    "glyph/9/0/2/9/5",
+    "glyph/9/0/2/9/8"
+   ],
+   "union_box_page_px": [
+    1698.42,
+    725.77,
+    1726.14,
+    763.25
+   ],
+   "union_size_sp": [
+    1.76,
+    2.38
+   ],
+   "staff_space_px": 15.75,
+   "heads": [
+    {
+     "glyph": "glyph/9/0/2/9/5",
+     "box_page_px": [
+      1698.42,
+      741.36,
+      1726.14,
+      763.25
+     ],
+     "class_": "noteheadHalfInSpace",
+     "reader": "detector",
+     "score": 0.367,
+     "size_sp": [
+      1.76,
+      1.39
+     ],
+     "fate": "written"
+    },
+    {
+     "glyph": "glyph/9/0/2/9/8",
+     "box_page_px": [
+      1698.42,
+      725.77,
+      1720.94,
+      745.46
+     ],
+     "class_": "noteheadHalfOnLine",
+     "reader": "detector",
+     "score": 0.329,
+     "size_sp": [
+      1.43,
+      1.25
+     ],
+     "fate": "written"
+    }
+   ],
+   "file_writes": [
+    {
+     "pitch": "F4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    },
+    {
+     "pitch": "A4",
+     "type": "half",
+     "dots": 0,
+     "tuplet": false,
+     "color": "plain",
+     "voice": "1"
+    }
+   ],
+   "box_is": "the rectangle's inner edge is the union of the reader's own glyph_box rows for the 2 head(s) the file's notes at this event come from (readers: detector)",
+   "tile": {
+    "rects": null,
+    "crop_page_px": [
+     1618,
+     655,
+     1807,
+     830
+    ],
+    "painted_white_rows": [],
+    "staff_lines_page_y": [
+     696,
+     759
+    ]
+   }
+  }
+ ],
+ "sheet_png": "/private/tmp/claude-501/halfnote-chords/sheets/litolff_sheetA_half_or_longer.png",
+ "tile_px": [
+  725
+ ],
+ "tile_origin_in_sheet": [
+  [
+   25,
+   85
+  ],
+  [
+   775,
+   85
+  ],
+  [
+   1525,
+   85
+  ],
+  [
+   2275,
+   85
+  ],
+  [
+   25,
+   1141
+  ],
+  [
+   775,
+   1141
+  ],
+  [
+   1525,
+   1141
+  ],
+  [
+   2275,
+   1141
+  ],
+  [
+   25,
+   1940
+  ],
+  [
+   775,
+   1940
+  ],
+  [
+   1525,
+   1940
+  ],
+  [
+   2275,
+   1940
+  ],
+  [
+   25,
+   2757
+  ],
+  [
+   775,
+   2757
+  ],
+  [
+   1525,
+   2757
+  ],
+  [
+   2275,
+   2757
+  ],
+  [
+   25,
+   3785
+  ],
+  [
+   775,
+   3785
+  ],
+  [
+   1525,
+   3785
+  ],
+  [
+   2275,
+   3785
+  ],
+  [
+   25,
+   4614
+  ],
+  [
+   775,
+   4614
+  ],
+  [
+   1525,
+   4614
+  ],
+  [
+   2275,
+   4614
+  ]
+ ],
+ "tile_meta": [
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    725
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.8978,
+   "tile_px": [
+    725,
+    905
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    971
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    610
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.7179,
+   "tile_px": [
+    725,
+    658
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.776,
+   "tile_px": [
+    725,
+    706
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.776,
+   "tile_px": [
+    725,
+    714
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    633
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    690
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    656
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    610
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.776,
+   "tile_px": [
+    725,
+    732
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    943
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    640
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.776,
+   "tile_px": [
+    725,
+    642
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    629
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    744
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    633
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.8978,
+   "tile_px": [
+    725,
+    628
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    652
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    625
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.8978,
+   "tile_px": [
+    725,
+    647
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    786
+   ],
+   "mid_width": 900
+  },
+  {
+   "scale_final": 3.836,
+   "tile_px": [
+    725,
+    671
+   ],
+   "mid_width": 900
+  }
+ ],
+ "orange_extent_in_tile_px": [
+  [
+   305,
+   265,
+   422,
+   458
+  ],
+  [
+   297,
+   264,
+   425,
+   341
+  ],
+  [
+   307,
+   265,
+   414,
+   359
+  ],
+  [
+   305,
+   272,
+   417,
+   380
+  ],
+  [
+   306,
+   189,
+   421,
+   394
+  ],
+  [
+   304,
+   264,
+   423,
+   441
+  ],
+  [
+   304,
+   458,
+   422,
+   561
+  ],
+  [
+   309,
+   252,
+   416,
+   338
+  ],
+  [
+   310,
+   419,
+   414,
+   520
+  ],
+  [
+   307,
+   311,
+   420,
+   412
+  ],
+  [
+   309,
+   344,
+   415,
+   444
+  ],
+  [
+   302,
+   266,
+   420,
+   465
+  ],
+  [
+   292,
+   263,
+   434,
+   490
+  ],
+  [
+   307,
+   263,
+   417,
+   359
+  ],
+  [
+   308,
+   265,
+   417,
+   376
+  ],
+  [
+   305,
+   340,
+   419,
+   438
+  ],
+  [
+   308,
+   257,
+   418,
+   429
+  ],
+  [
+   304,
+   265,
+   422,
+   366
+  ],
+  [
+   303,
+   267,
+   421,
+   340
+  ],
+  [
+   308,
+   197,
+   419,
+   294
+  ],
+  [
+   310,
+   265,
+   417,
+   359
+  ],
+  [
+   306,
+   341,
+   416,
+   446
+  ],
+  [
+   305,
+   221,
+   419,
+   524
+  ],
+  [
+   301,
+   264,
+   421,
+   421
+  ]
+ ]
+}

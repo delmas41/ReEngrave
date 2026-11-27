@@ -1,0 +1,202 @@
+{
+ "set": "Brahms doubtful notes (low-confidence detector box, written as a note), re-cut with exact detector boxes",
+ "date": "2026-11-26",
+ "question": "For each number: is the mark in the orange box a notehead? If yes, half note or black; if no, what is it.",
+ "answered_by": "Sean",
+ "verbatim": "Tau 1 is an orange box in between two half notes, actually dotted half notes. Tau 2 is an eighth note. Tau 3 is part of a tremolo slash. Tau 4 is a dotted half. Tau 5 is an eighth note. Tau 6 is a dotted half. Tau 7 is an eighth. Tau 8 is a flat sign. Tau 9 is a dotted half. Tau 10 is a dotted half, Tau 11 is an eighth, Tau 12 is the M in MF, Tau 13 is an eighth, Tau 14 is a dotted half, Tau 15 is a dotted half, Tau 16 is an eighth, Tau 17 is most of a bass clef, Tau 18 is a dotted half, Tau 19 is a dotted half, Tau 20 is an eighth. Tau 21 is a dotted half, Tau 22 is a dotted half, Tau 23 is an eighth, and Tau 24 is a dotted half.",
+ "answers": {
+  "1": {
+   "is_a_note": false,
+   "what": "box between two dotted half notes (on neither head)",
+   "subject": "glyph/25/1/2/9/14",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": false
+  },
+  "2": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/25/0/9/4/12",
+   "file_value": "eighth",
+   "file_colour": "blue",
+   "agrees": true
+  },
+  "3": {
+   "is_a_note": false,
+   "what": "part of a tremolo slash",
+   "subject": "glyph/12/0/10/2/3",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": false
+  },
+  "4": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/4/0/2/10/11",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "5": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/4/1/3/5/12",
+   "file_value": "eighth",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "6": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/12/0/2/3/10",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "7": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/19/1/1/8/17",
+   "file_value": "eighth",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "8": {
+   "is_a_note": false,
+   "what": "a flat sign",
+   "subject": "glyph/19/1/8/1/12",
+   "file_value": "half",
+   "file_colour": "blue",
+   "agrees": false
+  },
+  "9": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/4/0/6/10/5",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "10": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/14/1/4/7/8",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "11": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/5/1/11/5/9",
+   "file_value": "eighth",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "12": {
+   "is_a_note": false,
+   "what": "the m of mf",
+   "subject": "glyph/5/0/5/0/15",
+   "file_value": "quarter",
+   "file_colour": "plain black",
+   "agrees": false
+  },
+  "13": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/5/1/3/7/11",
+   "file_value": "eighth",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "14": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/12/0/2/7/7",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "15": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/25/0/7/1/10",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "16": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/25/0/1/1/43",
+   "file_value": "eighth",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "17": {
+   "is_a_note": false,
+   "what": "most of a bass clef",
+   "subject": "glyph/19/0/12/3/9",
+   "file_value": "half",
+   "file_colour": "plain black",
+   "agrees": false
+  },
+  "18": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/25/1/5/9/5",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "19": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/12/0/3/2/7",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "20": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/4/0/11/6/12",
+   "file_value": "eighth",
+   "file_colour": "blue",
+   "agrees": true
+  },
+  "21": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/25/0/5/0/9",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "22": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/25/1/5/9/6",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  },
+  "23": {
+   "is_a_note": true,
+   "value": "eighth",
+   "subject": "glyph/25/0/11/3/14",
+   "file_value": "eighth",
+   "file_colour": "blue",
+   "agrees": true
+  },
+  "24": {
+   "is_a_note": true,
+   "value": "half.",
+   "subject": "glyph/25/1/5/6/15",
+   "file_value": "half.",
+   "file_colour": "plain black",
+   "agrees": true
+  }
+ },
+ "ours": "19 of 24 are real notes and all 19 are written with the value Sean read; 5 boxes are not on a notehead and are written as notes."
+}
