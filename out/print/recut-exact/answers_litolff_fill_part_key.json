@@ -1,0 +1,201 @@
+{
+ "set": "Litolff notes written blue for a key signature filled from the document (fill_part_key), 24 at random from 190",
+ "date": "2026-11-26",
+ "question": "For each number: the boxed note's letter name, and flat, sharp or natural in that key signature?",
+ "answered_by": "Sean",
+ "verbatim": "One, the note is in the second to top space. It looks like an eighth note. And it's on a tenor clef. The flats look like they're in strange spaces to me, though. Tile 2, also on the tenor clef, it's an eighth note on the top line of the staff. Tile 3, second from the bottom line of the staff is an eighth note. Tile 4 is the bottom space of the staff. So that would be an A flat. Tile 5. Is an eighth note on the third line above the staff. So it would be an E flat. Tile 6 is an alto clef, second line from the bottom. So that would be an A flat. Tile 7 is a B flat, second line from the bottom. Tile 8 is also in bass clef, so that would be an E flat. Tile 9 is in bass clef, so that's an A flat. Tile 10 is an eighth note in treble clef, so that'd be an E flat. Tile 11 is an eighth note on bass clef, so that's an A flat. Tile 12, again, eighth note, A flat. Tile 13, bass clef, it's an E, a quarter note, an E flat. Tile 14, this is a alto clef. So it looks like an eighth note that's an E flat. It's the space below the staff. 15 is a tenor clef. It's a half note on the second line from the bottom. I believe that's an F. 16. Is bass clef, that's a B flat, it's an eighth note. Tile 17 is a quarter note in treble clef, that's an E flat. Tile 18 is a half note in tenor clef. Looks like an E flat. Tile 19 is an alto clef. Second line from the top looks like an E flat. 20 is tenor clef. Eighth note, E flat. 21, bass clef, bottom space, A flat. 2 is an eighth note, bottom to the line. A flat. 23 is a tenor clef. Second bottom from the line again, that note. 24 is all natural down a tenor clef. So that would be an E natural.",
+ "answers": {
+  "1": {
+   "his_words": "tenor clef, second-to-top space (no name given)",
+   "name": null,
+   "file_pitch": "Eb3",
+   "staff": "staff/8/1/3",
+   "subject": "glyph/8/1/3/14/5",
+   "agrees": null
+  },
+  "2": {
+   "his_words": "tenor clef, top line (no name given)",
+   "name": null,
+   "file_pitch": "Ab3",
+   "staff": "staff/8/1/3",
+   "subject": "glyph/8/1/3/12/7",
+   "agrees": null
+  },
+  "3": {
+   "his_words": "second line from the bottom (no name given)",
+   "name": null,
+   "file_pitch": "Ab3",
+   "staff": "staff/2/0/9",
+   "subject": "glyph/2/0/9/10/0",
+   "agrees": null
+  },
+  "4": {
+   "his_words": "A flat",
+   "name": "Ab",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/9",
+   "subject": "glyph/8/1/9/16/2",
+   "agrees": true
+  },
+  "5": {
+   "his_words": "E flat",
+   "name": "Eb",
+   "file_pitch": "Eb6",
+   "staff": "staff/10/1/7",
+   "subject": "glyph/10/1/7/0/2",
+   "agrees": true
+  },
+  "6": {
+   "his_words": "alto clef, A flat",
+   "name": "Ab",
+   "file_pitch": "Ab3",
+   "staff": "staff/2/0/9",
+   "subject": "glyph/2/0/9/5/2",
+   "agrees": true
+  },
+  "7": {
+   "his_words": "B flat",
+   "name": "Bb",
+   "file_pitch": "Bb2",
+   "staff": "staff/4/1/10",
+   "subject": "glyph/4/1/10/3/0",
+   "agrees": true
+  },
+  "8": {
+   "his_words": "bass clef, E flat",
+   "name": "Eb",
+   "file_pitch": "Eb3",
+   "staff": "staff/6/1/10",
+   "subject": "glyph/6/1/10/2/6",
+   "agrees": true
+  },
+  "9": {
+   "his_words": "bass clef, A flat",
+   "name": "Ab",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/9",
+   "subject": "glyph/8/1/9/17/4",
+   "agrees": true
+  },
+  "10": {
+   "his_words": "treble clef, E flat",
+   "name": "Eb",
+   "file_pitch": "Eb5",
+   "staff": "staff/4/1/1",
+   "subject": "glyph/4/1/1/14/8",
+   "agrees": true
+  },
+  "11": {
+   "his_words": "bass clef, A flat",
+   "name": "Ab",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/9",
+   "subject": "glyph/8/1/9/16/4",
+   "agrees": true
+  },
+  "12": {
+   "his_words": "A flat",
+   "name": "Ab",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/9",
+   "subject": "glyph/8/1/9/16/3",
+   "agrees": true
+  },
+  "13": {
+   "his_words": "bass clef, E flat",
+   "name": "Eb",
+   "file_pitch": "Eb3",
+   "staff": "staff/4/1/10",
+   "subject": "glyph/4/1/10/6/1",
+   "agrees": true
+  },
+  "14": {
+   "his_words": "alto clef, E flat, space below the staff",
+   "name": "Eb",
+   "file_pitch": "Eb3",
+   "staff": "staff/2/1/9",
+   "subject": "glyph/2/1/9/10/7",
+   "agrees": true
+  },
+  "15": {
+   "his_words": "tenor clef, second line from the bottom, 'I believe that's an F'",
+   "name": "F",
+   "file_pitch": "Bb2",
+   "staff": "staff/6/1/3",
+   "subject": "glyph/6/1/3/7/6",
+   "agrees": false
+  },
+  "16": {
+   "his_words": "bass clef, B flat",
+   "name": "Bb",
+   "file_pitch": "Bb2",
+   "staff": "staff/6/1/10",
+   "subject": "glyph/6/1/10/7/2",
+   "agrees": true
+  },
+  "17": {
+   "his_words": "treble clef, E flat",
+   "name": "Eb",
+   "file_pitch": "Eb5",
+   "staff": "staff/4/1/1",
+   "subject": "glyph/4/1/1/8/1",
+   "agrees": true
+  },
+  "18": {
+   "his_words": "tenor clef, 'looks like an E flat'",
+   "name": "Eb",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/3",
+   "subject": "glyph/8/1/3/4/2",
+   "agrees": false
+  },
+  "19": {
+   "his_words": "alto clef, E flat",
+   "name": "Eb",
+   "file_pitch": "Eb4",
+   "staff": "staff/2/1/9",
+   "subject": "glyph/2/1/9/3/2",
+   "agrees": true
+  },
+  "20": {
+   "his_words": "tenor clef, E flat",
+   "name": "Eb",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/3",
+   "subject": "glyph/8/1/3/18/9",
+   "agrees": false
+  },
+  "21": {
+   "his_words": "bass clef, A flat",
+   "name": "Ab",
+   "file_pitch": "Ab2",
+   "staff": "staff/8/1/9",
+   "subject": "glyph/8/1/9/18/5",
+   "agrees": true
+  },
+  "22": {
+   "his_words": "A flat (heard as '2')",
+   "name": "Ab",
+   "file_pitch": "Ab3",
+   "staff": "staff/8/1/8",
+   "subject": "glyph/8/1/8/15/2",
+   "agrees": true
+  },
+  "23": {
+   "his_words": "tenor clef, second line from the bottom again (as 15: F)",
+   "name": "F",
+   "file_pitch": "Bb2",
+   "staff": "staff/6/1/3",
+   "subject": "glyph/6/1/3/6/4",
+   "agrees": false
+  },
+  "24": {
+   "his_words": "tenor clef, E natural",
+   "name": "E",
+   "file_pitch": "Ab2",
+   "staff": "staff/6/1/3",
+   "subject": "glyph/6/1/3/2/4",
+   "agrees": false
+  }
+ }
+}
