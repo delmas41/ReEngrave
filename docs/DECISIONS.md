@@ -8,6 +8,7 @@ here is ever edited in place — a reversal is a new line.
 Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
+- 2026-11-26 WRITTEN QUARTER RESTS, Litolff, 24 at random from 433 (question: quarter rest, yes or no?) -- Sean: "All quarter note rests". `out/print/2.362/answers_written_quarter_litolff.json`. OURS: a fair sample is 24 of 24 real; the stems read as quarter rests are rare on Litolff (they came from the "weak" list).
 - 2026-11-26 NEWLY WRITTEN TIES AND SLURS (2.358), 24 random, exact arc-reader boxes (question: tie or slur?) -- Sean: slur on 1, 3, 6, 9, 16, 17, 21, 22; tie on the other sixteen. `out/print/recut-exact/answers_new_arcs.json`. OURS: all 24 are arcs; the kind the file writes agrees on 20; on 4 (tiles 7, 19, 20, 23) Sean says tie and the file writes a slur. He was asked only tie or slur, not which two notes each joins.
 - 2026-11-26 2.359 MISSED DOT, TWO WITNESSES LANDED ON — Sean: "Land it".
 - 2026-11-26 TOUCHING A STAFF LINE IS NOT A TEST -- Sean, of the proposed never "a mark that is one piece with a staff line on the page, before the lines are removed, is not counted as standing alone": "I don't think this is reliable". OURS: no rule may refuse or abstain on a mark because its ink touches a staff line (a dot printed in a space can touch a line on these scans); ROADMAP 2.359 round 2 keeps only the position part (a staccato dot stands over or under its notehead; a lengthening dot stands just right of its notehead in that note's own space).
