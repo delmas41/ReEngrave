@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 218 flag predicates; 27 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 219 flag predicates; 27 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -505,7 +505,7 @@ The five lines of a part, and the staves played together as one system.
 - **claims**: `staff_line` (claim order 1 of 13 (staff_line)) OWNS its ink (a later box on it is refused)
 - **hands on** (facts): `gap_bridging` (FILED-BUT-NEVER-READ), `staff_extent`, `staff_lines`, `staff_ordinal`, `staff_skew`, `staff_spacing`, `system_membership` (FILED-BUT-NEVER-READ), `system_staff_count`
 - **decided by** (ADJUDICATE): `adjudicate_staff_ordinal` -> `staff_ordinal`; `adjudicate_system_membership` -> `system_membership`; `adjudicate_system_staff_count` -> `system_staff_count`
-- **read by ADJUDICATE** (28): `adjudicators/family_precision.py:_ledger_geometry`, `adjudicators/family_precision.py:_rest_line_shape`, `adjudicators/family_precision.py:_staff_page_geometry`, `adjudicators/identity.py:adjudicate_part_partition`, `adjudicators/identity.py:adjudicate_slot_index`, `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/notehead_precision.py:_is_a_meter_digit`, `adjudicators/notehead_precision.py:_meter_digit_cross_staff_count` +20 more
+- **read by ADJUDICATE** (29): `adjudicators/family_precision.py:_ledger_geometry`, `adjudicators/family_precision.py:_rest_line_shape`, `adjudicators/family_precision.py:_staff_page_geometry`, `adjudicators/identity.py:adjudicate_part_partition`, `adjudicators/identity.py:adjudicate_slot_index`, `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/notehead_precision.py:_is_a_meter_digit`, `adjudicators/notehead_precision.py:_meter_digit_cross_staff_count` +21 more
 - **read by EVALUATE** (1): `consequences.py:_bar_heads_are_clean`
 - **read by EXPORT** (3): `export.py:_beyond_owner_view.lines`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:build`
 - **open gaps** (2):
@@ -1763,7 +1763,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `staff_lines` filed by: GATHER `gather.py:gather_geometry`
 - `staff_lines` declared in `wants` (not a read): `adjudicate_articulation_is_not_an_articulation`, `adjudicate_duration`, `adjudicate_glyph_owner`, `adjudicate_ledger_is_not_a_ledger`, `adjudicate_movement_start`, `adjudicate_notehead_is_a_whole_rest`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_ottava_owner`, `adjudicate_page_arc_binding`, `adjudicate_rest_is_not_a_rest`, `adjudicate_unread_mark`, `adjudicate_voices`, `adjudicate_wedge_anchor`
-- `staff_lines` read by ADJUDICATE: `adjudicators/family_precision.py:_ledger_geometry`, `adjudicators/family_precision.py:_rest_line_shape`, `adjudicators/family_precision.py:_staff_page_geometry`, `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/notehead_precision.py:_staff_geometry`, `adjudicators/ownership.py:_hairpin_separates`, `adjudicators/ownership.py:_unread_head_ink`, `adjudicators/ownership.py:_wedge_page_binding.lines`, `adjudicators/ownership.py:adjudicate_ottava_owner`, `adjudicators/ownership.py:staff_geometry`, `adjudicators/rhythm.py:_rest_hangs_from_own_line`, `adjudicators/rhythm.py:_rest_slot`, `adjudicators/rhythm.py:adjudicate_notehead_is_a_whole_rest`, `adjudicators/unread_mark.py:_staff_lines_page`
+- `staff_lines` read by ADJUDICATE: `adjudicators/family_precision.py:_ledger_geometry`, `adjudicators/family_precision.py:_rest_line_shape`, `adjudicators/family_precision.py:_staff_page_geometry`, `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/notehead_precision.py:_staff_geometry`, `adjudicators/ownership.py:_hairpin_separates`, `adjudicators/ownership.py:_unread_head_ink`, `adjudicators/ownership.py:_wedge_page_binding.lines`, `adjudicators/ownership.py:adjudicate_ottava_owner`, `adjudicators/ownership.py:adjudicate_page_arc_binding`, `adjudicators/ownership.py:staff_geometry`, `adjudicators/rhythm.py:_rest_hangs_from_own_line`, `adjudicators/rhythm.py:_rest_slot`, `adjudicators/rhythm.py:adjudicate_notehead_is_a_whole_rest`, `adjudicators/unread_mark.py:_staff_lines_page`
 - `staff_lines` read by EVALUATE: `consequences.py:_bar_heads_are_clean`
 - `staff_lines` read by EXPORT: `export.py:_beyond_owner_view.lines`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:build`
 - `staff_lines` belongs to: `--mark staff`

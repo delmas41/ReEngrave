@@ -131,7 +131,7 @@ class TestTwoPiecesAcrossABreakAreOneArc:
     def test_never_a_piece_without_its_curve_or_height(self):          # a detector-curve edge (2.271) carries neither: never joined by this rule
         assert PB.pair_by_height([{"curve": "x"}], [{"curve": "y"}]) == []
 
-    def test_the_flags_are_off_by_default(self):
+    def test_the_flags_are_on_by_default(self):
         env = {k: v for k, v in os.environ.items() if k not in (PB.ENV_JOIN_BY_HEIGHT, PB.ENV_END_AT_INK_HEAD)}
         with mock.patch.dict(os.environ, env, clear=True):
-            assert not PB.join_by_height_enabled() and not PB.end_at_ink_head_enabled()
+            assert PB.join_by_height_enabled() and PB.end_at_ink_head_enabled()

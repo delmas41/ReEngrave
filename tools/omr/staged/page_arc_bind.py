@@ -95,8 +95,8 @@ STEM_END_INK_ONLY = "stem_end_ink_only"
 
 
 def end_at_ink_head_enabled() -> bool:
-    """`OMR_ARC_END_AT_INK_HEAD` (ROADMAP 2.358 (i)), default OFF."""
-    return _on(ENV_END_AT_INK_HEAD)
+    """`OMR_ARC_END_AT_INK_HEAD` (ROADMAP 2.358 (i)), default ON (landed 2026-11-26)."""
+    return _flag_on(ENV_END_AT_INK_HEAD)
 
 
 # ── ROADMAP 2.358 (iii): THE TWO PIECES OF AN ARC ACROSS A SYSTEM BREAK, BY STAFF AND HEIGHT ─────────────────────────────────────────────────
@@ -118,8 +118,8 @@ JOIN_HEIGHT_SPACES = 2.0
 
 
 def join_by_height_enabled() -> bool:
-    """`OMR_ARC_JOIN_BY_HEIGHT` (ROADMAP 2.358 (iii)), default OFF."""
-    return _on(ENV_JOIN_BY_HEIGHT)
+    """`OMR_ARC_JOIN_BY_HEIGHT` (ROADMAP 2.358 (iii)), default ON (landed 2026-11-26)."""
+    return _flag_on(ENV_JOIN_BY_HEIGHT)
 
 
 def pair_by_height(rights: Sequence[Dict[str, Any]], lefts: Sequence[Dict[str, Any]]) -> List[Tuple[int, int]]:
