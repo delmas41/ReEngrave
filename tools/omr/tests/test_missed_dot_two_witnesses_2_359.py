@@ -244,5 +244,72 @@ class TestTheBarWitness(unittest.TestCase):
                 self.assertEqual(inferences._missed_dot_guesses(log, _cell(case)), [])
 
 
+LIT = json.loads(gzip.open(pathlib.Path(__file__).parent / "fixtures" / "missed_dot_2_359_litolff.json.gz", "rt").read())
+
+
+def _litolff_log():
+    log = Log()
+    for o in LIT["observations"]:
+        log.observe(Subject.from_key(o["subject"]), o["quantity"], o["value"], reader=o["reader"], frame=o["frame"],
+                    score=o.get("score"), **(o.get("detail") or {}))
+    log.freeze()
+    for v in LIT["verdicts"]:
+        if v.get("supersedes"):
+            continue
+        cands = tuple(Candidate(c.get("value"), support=c.get("support") or 0.0) for c in (v.get("candidates") or ()))
+        log.record(Verdict(id=log._next_id("vrd"), subject=Subject.from_key(v["subject"]), quantity=v["quantity"],
+                           outcome=Outcome(v["outcome"]), value=v.get("value"), decider=v.get("decider") or "t",
+                           reason=v.get("reason") or "t", candidates=cands, detail=v.get("detail") or {}))
+    return log
+
+
+class TestAStaccatoOverAnotherNoteIsNotADot(unittest.TestCase):
+    """ROUND 2. A staccato dot stands directly above or below the notehead it belongs to, and belongs to that note; a lengthening dot
+    stands just right of its notehead, in that note's own space, as ink of its own. NEVER: a mark that stands over or under ANOTHER
+    notehead taken as the dot of the note on its left. REAL CASE (Sean, 2026-11-26, Litolff p4, `out/print/2.359/answers.json`): the
+    mark by glyph/4/0/6/14/1 -- "IT is actually a Stacatto mark" -- stands over the next notehead (glyph/4/0/6/14/4) in the same
+    beam group; round 1 took it for the dot of 14/1 and an eighth note read correctly became unwritten."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.log = _litolff_log()
+
+    def test_the_named_staccato_is_refused_as_a_dot(self):
+        rid, facts = rhythm.missed_dot_mark(self.log, Subject.from_key(LIT["cases"]["staccato_p4"]))
+        self.assertIsNone(rid, facts)
+        self.assertEqual(facts["why"], "over_another_head")
+
+    def test_the_control_fails_on_round_ones_rule(self):
+        # CLAUDE.md rule 7: the same real rows, the over/under test switched off (round 1's rule), take the staccato for a dot
+        with mock.patch.object(rhythm, "MISSED_DOT_OVER_HEAD_SPACES", 0.0):
+            rid, facts = rhythm.missed_dot_mark(self.log, Subject.from_key(LIT["cases"]["staccato_p4"]))
+        self.assertIsNotNone(rid, facts)
+
+    def test_the_second_staccato_on_the_page_is_refused_too(self):
+        rid, facts = rhythm.missed_dot_mark(self.log, Subject.from_key(LIT["cases"]["staccato_p4_b"]))
+        self.assertIsNone(rid, facts)
+
+    def test_the_note_stays_as_read_with_the_flag_on(self):
+        adjudicate._ensure_decisions()
+        ev = adjudicate.Evidence(self.log, Subject.from_key(LIT["cases"]["staccato_p4"]), adjudicate.REGISTRY[Q.DURATION])
+        plain = Ruling(value={"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 1}, reason="head_and_marks")
+        with _on():
+            self.assertIs(rhythm._with_missed_dot(ev, plain), plain)
+
+    def test_a_head_the_page_refuses_is_not_a_notehead_to_stand_over(self):
+        # Sean's dot tile 19 stands in the column of glyph/12/0/9/6/4 -- a box the page claims as not a notehead (and 1.9 spaces off):
+        # a real lengthening dot, never refused by it
+        log = _log()
+        rid, facts = _mark(log, "sheet19_two_heads")
+        self.assertIsNotNone(rid, facts)
+
+    def test_no_dot_sean_judged_stands_over_or_under_a_read_notehead(self):
+        # his 10 undotted notes: each real dot is still found on the real rows
+        log = _log()
+        for case in [c for c in CASES if c.startswith("sean_")]:
+            rid, facts = _mark(log, case)
+            self.assertIsNotNone(rid, (case, facts))
+
+
 if __name__ == "__main__":
     unittest.main()

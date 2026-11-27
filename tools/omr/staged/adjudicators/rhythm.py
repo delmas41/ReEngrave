@@ -2682,13 +2682,18 @@ def _with_head_ink_guess(ruling: Ruling) -> Ruling:
 #: ADJUDICATE step only says so: a note read plain beside such a mark is held between its two values (NARROWED {plain, dotted});
 #: the bar alone never chooses -- INFER `missed_dot_fills_bar` writes the dot, GUESSED (blue), only where the rest of the bar is
 #: read and is short by exactly the dots of the marked notes (two witnesses: the ink, the bar). NEVER: a dot from the mark alone, a
-#: mark joined to other ink, a mark a detector box or a claim already reads, a mark above/below the head (a staccato), a mark two
+#: mark joined to other ink, a mark a detector box or a claim already reads, a mark over or under another notehead (a staccato), a mark two
 #: heads could own. THE SEPARATION IS A CONVENTION (docs/page-facts.md "A dot does not touch its note", Sean 2026-11-26: "I can't
 #: think of a time where it would. It would become very hard to distinguish from the note if it touched it."): a dot is ink of its
 #: own; ink that is one piece with the head or its ledger line is part of the note, never its dot. Tested on the page's own ink
 #: components (`Q.PAGE_STROKE` detail `component`: the page raster, staff lines erased), never on stroke-map pieces (the map files
 #: joined ledger ink as separate blobs). A real dot fused to its head by a print flaw (a rarity) is refused `dot_touches_its_note`:
 #: it stays unread and its bar red, never guessed. The look window and size are where-to-look numbers, measured below.
+#: ROUND 2 (Sean, 2026-11-26, on the Litolff p4 mark glyph/4/0/6/14/1: "Those dots are Stacatto markings and belong to the note
+#: underneath it"). WHAT THE MARK IS: a staccato dot stands directly above or below the notehead it belongs to, and belongs to that
+#: note; a lengthening dot stands just right of its notehead, in that note's own space, as ink of its own. NEVER: a mark that stands
+#: over or under ANOTHER notehead taken as the dot of the note on its left (refused `over_another_head`: it stays unread, its bar red,
+#: never guessed). Whether the mark touches a staff line says nothing and is not asked (Sean: "I don't think this is reliable").
 MISSED_DOT_ENV = "OMR_MISSED_DOT_TWO_WITNESSES"
 MISSED_DOT_REASON = "dot_ink_no_box"
 #: Where to look (the head's BOX is only where to look; the mark's own ink decides). Measured on the 2,156 boxed dots bound to
@@ -2701,6 +2706,11 @@ MISSED_DOT_SIZE_SPACES = (0.3, 0.85)
 #: in the space above (bound p2 -1.43, median -1.02; Sean's -1.50..-0.86). A mark on the line beside a line note (a ledger stub)
 #: or a step off a space note is outside both.
 MISSED_DOT_SPACE_STEPS = 0.6
+#: Over or under another notehead (a where-to-look number, measured on marks): the mark's centre is inside that head's column and the
+#: mark lies wholly above or below the head's box, no further than this from it. The Litolff staccato lies 0.30 sp from its head;
+#: the nearest real lengthening dot (the 2,156 boxed dots bound to a head on the 8 Brahms sample pages, 7 stand in another read
+#: head's column at all, every one below it) lies 0.95 sp from it. A box the page claims as not a notehead is not a head.
+MISSED_DOT_OVER_HEAD_SPACES = 0.6
 MISSED_DOT_LINE_STEPS = (-1.6, -0.4)
 _MISSED_DOT_MEMO: Dict[str, Any] = {"log": None, "pages": {}}
 
@@ -2761,6 +2771,25 @@ def _in_dot_place(head_box, head_step: float, staff, d: Dict[str, Any]) -> bool:
     return abs(dstep) <= MISSED_DOT_SPACE_STEPS
 
 
+def _stands_over_another_head(log, page, me: str, hb, staff, b, sp: float) -> bool:
+    """Does this mark stand directly above or below some OTHER read notehead on its staff (ROUND 2, module comment above)? Its centre
+    is inside that head's column and it lies wholly above or below the head's box within `MISSED_DOT_OVER_HEAD_SPACES`."""
+    from ..head_extent import refused_as_head
+    cx = (b[0] + b[2]) / 2.0
+    for key, ob, _ostep, ostaff in page["heads"]:
+        if key == me or list(ostaff) != list(staff) or _box_overlap_share(ob, hb) > 0.5:
+            continue
+        if not (ob[0] <= cx <= ob[2]):
+            continue
+        gap = max(ob[1] - b[3], b[1] - ob[3])      # > 0 only where the mark is wholly above or below the box
+        if not (0.0 < gap <= MISSED_DOT_OVER_HEAD_SPACES * sp):
+            continue
+        if refused_as_head(log, Subject.from_key(key)):
+            continue
+        return True
+    return False
+
+
 def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[str, Any]]]:
     """`(row id, facts)` of the one unread round mark standing in this head's dot place as ink of its own, else `(None, why)`."""
     me = glyph.to_key()
@@ -2795,6 +2824,8 @@ def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[s
                     if _in_dot_place(ob, ostep, ostaff, d):
                         why = "another_head_could_own_it"
                         break
+                if why is None and _stands_over_another_head(log, page, me, hb, staff, b, sp):
+                    why = "over_another_head"      # a staccato of that note, never the dot of the note on its left
         if why:
             near.append(why)
         else:
