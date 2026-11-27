@@ -1,0 +1,514 @@
+{
+ "set": "Brahms chords, 24 at random from events the file writes as a chord or from a box over 1.8 spaces",
+ "date": "2026-11-26",
+ "question": "For each number: how many noteheads are on that stem, and what is their value?",
+ "answered_by": "Sean",
+ "verbatim": "Quarter two, tile two, quarter two, tile three, quarter two, tile four, dotted half two, tile five, dotted quarter two, tile 6, 8, 2, tile 7, quarter two, tile 8, dotted quarter two, tile 9, 8th 2, tile 10, 8th 2, tile 11, dotted quarter two, tile 12, quarter 2, tile 13, dotted quarter 2, tile 14, 8th 2, tile 15, 8th 2, tile 16, dotted half 2, tile 17, 8th 2, tile 18, quarter 2, tile 19, quarter 2, tile 20, dotted quarter 2, tile 21, quarter 2, tile 22, quarter 2, tile 23, 8th 2, tile 24, dotted quarter 2.",
+ "reading_note": "OURS: the opening 'Quarter two' is tile 1; 'tile 6, 8, 2' is an eighth, two heads.",
+ "answers": {
+  "1": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/19/1/2/1/2",
+    "glyph/19/1/2/1/3"
+   ],
+   "file_writes": [
+    [
+     "C5",
+     "quarter",
+     "plain"
+    ],
+    [
+     "Eb5",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "2": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/19/0/5/6/1",
+    "glyph/19/0/5/6/0"
+   ],
+   "file_writes": [
+    [
+     "G4",
+     "quarter",
+     "plain"
+    ],
+    [
+     "D5",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "3": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/0/0/3/1/2",
+    "glyph/0/0/3/1/3"
+   ],
+   "file_writes": [
+    [
+     "F3",
+     "quarter",
+     "plain"
+    ],
+    [
+     "Ab3",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "4": {
+   "heads": 2,
+   "value": "half.",
+   "subjects": [
+    "glyph/4/0/11/10/8",
+    "glyph/4/0/11/10/3"
+   ],
+   "file_writes": [
+    [
+     "G3",
+     "half.",
+     "plain"
+    ],
+    [
+     "F4",
+     "half.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "5": {
+   "heads": 2,
+   "value": "quarter.",
+   "subjects": [
+    "glyph/12/1/0/2/13",
+    "glyph/12/1/0/2/3"
+   ],
+   "file_writes": [
+    [
+     "Bb5",
+     "quarter.",
+     "blue"
+    ],
+    [
+     "Db6",
+     "quarter.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "6": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/12/1/6/7/6",
+    "glyph/12/1/6/7/5"
+   ],
+   "file_writes": [
+    [
+     "G3",
+     "quarter",
+     "plain"
+    ],
+    [
+     "G5",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": false
+  },
+  "7": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/5/1/11/9/4",
+    "glyph/5/1/11/9/1"
+   ],
+   "file_writes": [
+    [
+     "Eb4",
+     "quarter",
+     "plain"
+    ],
+    [
+     "Bb4",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "8": {
+   "heads": 2,
+   "value": "quarter.",
+   "subjects": [
+    "glyph/12/1/1/1/2",
+    "glyph/12/1/1/1/0"
+   ],
+   "file_writes": [
+    [
+     "Db5",
+     "quarter.",
+     "plain"
+    ],
+    [
+     "Bb5",
+     "quarter.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "9": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/4/1/0/0/5",
+    "glyph/4/1/0/0/4"
+   ],
+   "file_writes": [
+    [
+     "C6",
+     "eighth",
+     "plain"
+    ],
+    [
+     "Eb6",
+     "eighth",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "10": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/19/0/0/6/11",
+    "glyph/19/0/0/6/2"
+   ],
+   "file_writes": [
+    [
+     "C6",
+     "eighth",
+     "plain"
+    ],
+    [
+     "Eb6",
+     "eighth",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "11": {
+   "heads": 2,
+   "value": "quarter.",
+   "subjects": [
+    "glyph/14/0/2/0/16",
+    "glyph/14/0/2/0/3"
+   ],
+   "file_writes": [
+    [
+     "Bb4",
+     "quarter.",
+     "blue"
+    ],
+    [
+     "G5",
+     "quarter.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "12": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/5/1/9/5/2",
+    "glyph/5/1/9/5/1"
+   ],
+   "file_writes": [
+    [
+     "Bb4",
+     "quarter",
+     "plain"
+    ],
+    [
+     "F5",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "13": {
+   "heads": 2,
+   "value": "quarter.",
+   "subjects": [
+    "glyph/25/0/6/5/2",
+    "glyph/25/0/6/5/1"
+   ],
+   "file_writes": [
+    [
+     "Bb4",
+     "quarter.",
+     "plain"
+    ],
+    [
+     "D5",
+     "quarter.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "14": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/4/1/11/5/8",
+    "glyph/4/1/11/5/2"
+   ],
+   "file_writes": [
+    [
+     "D4",
+     "eighth",
+     "plain"
+    ],
+    [
+     "B4",
+     "eighth",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "15": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/25/0/3/0/13",
+    "glyph/25/0/3/0/2"
+   ],
+   "file_writes": [
+    [
+     "F3",
+     "eighth",
+     "plain"
+    ],
+    [
+     "F#4",
+     "eighth",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "16": {
+   "heads": 2,
+   "value": "half.",
+   "subjects": [
+    "glyph/25/1/3/6/3",
+    "glyph/25/1/3/6/4"
+   ],
+   "file_writes": [
+    [
+     "C4",
+     "half.",
+     "plain"
+    ],
+    [
+     "Ab4",
+     "half.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "17": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/19/0/0/5/6",
+    "glyph/19/0/0/5/2"
+   ],
+   "file_writes": [
+    [
+     "F5",
+     "eighth",
+     "plain"
+    ],
+    [
+     "Bb5",
+     "eighth",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "18": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/14/1/5/6/3",
+    "glyph/14/1/5/6/2"
+   ],
+   "file_writes": [
+    [
+     "A4",
+     "quarter",
+     "plain"
+    ],
+    [
+     "C#5",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "19": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/14/1/0/2/10",
+    "glyph/14/1/0/2/1"
+   ],
+   "file_writes": [
+    [
+     "G5",
+     "quarter",
+     "plain"
+    ],
+    [
+     "B5",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "20": {
+   "heads": 2,
+   "value": "quarter.",
+   "subjects": [
+    "glyph/14/1/0/5/4",
+    "glyph/14/1/0/5/2"
+   ],
+   "file_writes": [
+    [
+     "D5",
+     "quarter.",
+     "plain"
+    ],
+    [
+     "F5",
+     "quarter.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "21": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/5/1/0/4/5",
+    "glyph/5/1/0/4/4"
+   ],
+   "file_writes": [
+    [
+     "G5",
+     "quarter",
+     "plain"
+    ],
+    [
+     "G6",
+     "quarter",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "22": {
+   "heads": 2,
+   "value": "quarter",
+   "subjects": [
+    "glyph/19/1/6/0/2",
+    "glyph/19/1/6/0/23"
+   ],
+   "file_writes": [
+    [
+     "E4",
+     "quarter",
+     "plain"
+    ],
+    [
+     "E5",
+     "quarter",
+     "blue"
+    ]
+   ],
+   "agrees": true
+  },
+  "23": {
+   "heads": 2,
+   "value": "eighth",
+   "subjects": [
+    "glyph/4/0/10/9/5",
+    "glyph/4/0/10/9/9"
+   ],
+   "file_writes": [
+    [
+     "D4",
+     "eighth",
+     "plain"
+    ],
+    [
+     "B4",
+     "eighth",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  },
+  "24": {
+   "heads": 2,
+   "value": "quarter.",
+   "subjects": [
+    "glyph/25/1/5/7/1",
+    "glyph/25/1/5/7/9"
+   ],
+   "file_writes": [
+    [
+     "C4",
+     "quarter.",
+     "plain"
+    ],
+    [
+     "C5",
+     "quarter.",
+     "plain"
+    ]
+   ],
+   "agrees": true
+  }
+ }
+}

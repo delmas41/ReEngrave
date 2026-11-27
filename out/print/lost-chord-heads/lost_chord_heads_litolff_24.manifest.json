@@ -1,0 +1,1925 @@
+{
+ "seed": 20261127,
+ "population": 51,
+ "pool_after_excluding_three": 48,
+ "tiles": [
+  {
+   "tile": 1,
+   "page": 11,
+   "system": 1,
+   "staff": "staff/11/1/1",
+   "cell": "cell/11/1/1/1",
+   "measure": "221",
+   "part": "P2",
+   "refused_box_page_px": [
+    684.92,
+    2048.68,
+    700.12,
+    2070.76
+   ],
+   "refused_size_sp": [
+    0.95,
+    1.38
+   ],
+   "dy_from_written_head_sp": 1.31,
+   "score": 0.053881797939538956,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_oval",
+   "abstention_id": "abs:387761",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/11/1/1/1/1",
+    "box_page_px": [
+     675.16,
+     2032.52,
+     698.04,
+     2045.16
+    ],
+    "cls": "noteheadBlackOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "E5",
+    "color": "blue",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 16.0,
+   "scale_px_per_page_px": 2.5,
+   "tile_px": [
+    480,
+    360
+   ],
+   "expected_inner_rect_tile_px": [
+    220,
+    129,
+    257,
+    183
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    213,
+    122,
+    264,
+    190
+   ],
+   "orange_inner_px_read_back": [
+    "220",
+    "129",
+    "257",
+    "183"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    25,
+    85
+   ]
+  },
+  {
+   "tile": 2,
+   "page": 2,
+   "system": 1,
+   "staff": "staff/2/1/1",
+   "cell": "cell/2/1/1/14",
+   "measure": "48",
+   "part": "P2",
+   "refused_box_page_px": [
+    2456.68,
+    2272.16,
+    2482.44,
+    2287.52
+   ],
+   "refused_size_sp": [
+    1.61,
+    0.96
+   ],
+   "dy_from_written_head_sp": 0.57,
+   "score": 0.12007410824298859,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_one_head:too_wide",
+   "abstention_id": "abs:022029",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/2/1/1/14/3",
+    "box_page_px": [
+     2459.24,
+     2262.88,
+     2479.4,
+     2278.4
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "G5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 16.0,
+   "scale_px_per_page_px": 2.5,
+   "tile_px": [
+    480,
+    360
+   ],
+   "expected_inner_rect_tile_px": [
+    207,
+    90,
+    270,
+    128
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    200,
+    83,
+    277,
+    135
+   ],
+   "orange_inner_px_read_back": [
+    "207",
+    "90",
+    "270",
+    "128"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    530,
+    85
+   ]
+  },
+  {
+   "tile": 3,
+   "page": 2,
+   "system": 1,
+   "staff": "staff/2/1/1",
+   "cell": "cell/2/1/1/2",
+   "measure": "36",
+   "part": "P2",
+   "refused_box_page_px": [
+    772.56,
+    2273.76,
+    800.72,
+    2296.32
+   ],
+   "refused_size_sp": [
+    1.76,
+    1.41
+   ],
+   "dy_from_written_head_sp": 1.14,
+   "score": 0.1488858014345169,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_one_head:too_tall",
+   "abstention_id": "abs:022011",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/2/1/1/2",
+     "box": [
+      774.64,
+      2276.32,
+      800.88,
+      2296.64
+     ],
+     "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+     "score": 0.06375352293252945
+    },
+    {
+     "cell": "cell/2/1/1/2",
+     "box": [
+      762.16,
+      2276.96,
+      800.88,
+      2296.8
+     ],
+     "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+     "score": 0.05470845103263855
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/2/1/1/2/2",
+    "box_page_px": [
+     773.04,
+     2257.6,
+     798.64,
+     2276.0
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "G5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 16.0,
+   "scale_px_per_page_px": 2.5,
+   "tile_px": [
+    480,
+    360
+   ],
+   "expected_inner_rect_tile_px": [
+    204,
+    94,
+    273,
+    150
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    197,
+    87,
+    280,
+    157
+   ],
+   "orange_inner_px_read_back": [
+    "204",
+    "94",
+    "273",
+    "150"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1035,
+    85
+   ]
+  },
+  {
+   "tile": 4,
+   "page": 8,
+   "system": 1,
+   "staff": "staff/8/1/0",
+   "cell": "cell/8/1/0/4",
+   "measure": "131",
+   "part": "P1",
+   "refused_box_page_px": [
+    908.75,
+    1906.84,
+    934.74,
+    1929.83
+   ],
+   "refused_size_sp": [
+    1.65,
+    1.46
+   ],
+   "dy_from_written_head_sp": 1.86,
+   "score": 0.17193005979061127,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+   "abstention_id": "abs:267067",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/8/1/0/4/0",
+    "box_page_px": [
+     909.54,
+     1878.8,
+     935.68,
+     1899.28
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "D6",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    371
+   ],
+   "expected_inner_rect_tile_px": [
+    208,
+    40,
+    273,
+    98
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    201,
+    33,
+    280,
+    105
+   ],
+   "orange_inner_px_read_back": [
+    "208",
+    "40",
+    "273",
+    "98"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1540,
+    85
+   ]
+  },
+  {
+   "tile": 5,
+   "page": 9,
+   "system": 0,
+   "staff": "staff/9/0/7",
+   "cell": "cell/9/0/6/2",
+   "measure": "148",
+   "part": "P8",
+   "refused_box_page_px": [
+    848.51,
+    1361.24,
+    885.37,
+    1371.0
+   ],
+   "refused_size_sp": [
+    2.38,
+    0.63
+   ],
+   "dy_from_written_head_sp": -2.26,
+   "score": 0.1684887409210205,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:308895",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/9/0/7/2/3",
+    "box_page_px": [
+     850.12,
+     1390.18,
+     876.16,
+     1412.19
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "Eb5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.5,
+   "scale_px_per_page_px": 2.5806,
+   "tile_px": [
+    480,
+    392
+   ],
+   "expected_inner_rect_tile_px": [
+    192,
+    39,
+    286,
+    63
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    185,
+    32,
+    293,
+    70
+   ],
+   "orange_inner_px_read_back": [
+    "192",
+    "39",
+    "286",
+    "63"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    25,
+    541
+   ]
+  },
+  {
+   "tile": 6,
+   "page": 10,
+   "system": 1,
+   "staff": "staff/10/1/3",
+   "cell": "cell/10/1/3/1",
+   "measure": "188",
+   "part": "P4",
+   "refused_box_page_px": [
+    657.02,
+    2525.76,
+    682.07,
+    2545.92
+   ],
+   "refused_size_sp": [
+    1.59,
+    1.28
+   ],
+   "dy_from_written_head_sp": -1.0,
+   "score": 0.1622500717639923,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_one_head:too_wide",
+   "abstention_id": "abs:344089",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/10/1/3/1/8",
+    "box_page_px": [
+     656.71,
+     2541.51,
+     682.38,
+     2561.67
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C3",
+    "color": "blue",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    208,
+    131,
+    271,
+    182
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    201,
+    124,
+    278,
+    189
+   ],
+   "orange_inner_px_read_back": [
+    "208",
+    "131",
+    "271",
+    "182"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    530,
+    541
+   ]
+  },
+  {
+   "tile": 7,
+   "page": 10,
+   "system": 1,
+   "staff": "staff/10/1/1",
+   "cell": "cell/10/1/1/8",
+   "measure": "195",
+   "part": "P2",
+   "refused_box_page_px": [
+    1749.46,
+    2233.88,
+    1767.89,
+    2259.55
+   ],
+   "refused_size_sp": [
+    1.17,
+    1.63
+   ],
+   "dy_from_written_head_sp": 0.93,
+   "score": 0.12768512964248657,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:344062",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/10/1/1/8",
+     "box": [
+      1750.09,
+      2240.49,
+      1768.36,
+      2258.92
+     ],
+     "detail_reason": "dyad:no_stem_through_a_boxed_head",
+     "score": 0.05664374679327011
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/10/1/1/8/8",
+    "box_page_px": [
+     1741.9,
+     2229.16,
+     1764.42,
+     2234.98
+    ],
+    "cls": "noteheadBlackInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "A5",
+    "color": "blue",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    217,
+    61,
+    263,
+    125
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    210,
+    54,
+    270,
+    132
+   ],
+   "orange_inner_px_read_back": [
+    "217",
+    "61",
+    "263",
+    "125"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1035,
+    541
+   ]
+  },
+  {
+   "tile": 8,
+   "page": 6,
+   "system": 1,
+   "staff": "staff/6/1/6",
+   "cell": "cell/6/1/6/11",
+   "measure": "103",
+   "part": "P7",
+   "refused_box_page_px": [
+    2416.35,
+    2908.59,
+    2483.44,
+    2922.92
+   ],
+   "refused_size_sp": [
+    4.26,
+    0.91
+   ],
+   "dy_from_written_head_sp": -1.27,
+   "score": 0.13935823738574982,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:no_head_ink",
+   "abstention_id": "abs:177035",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/6/1/6/11/3",
+    "box_page_px": [
+     2448.95,
+     2924.02,
+     2473.84,
+     2947.49
+    ],
+    "cls": "noteheadBlackInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C3",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    156,
+    146,
+    325,
+    182
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    149,
+    139,
+    332,
+    189
+   ],
+   "orange_inner_px_read_back": [
+    "156",
+    "146",
+    "325",
+    "182"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1540,
+    541
+   ]
+  },
+  {
+   "tile": 9,
+   "page": 8,
+   "system": 1,
+   "staff": "staff/8/1/6",
+   "cell": "cell/8/1/7/10",
+   "measure": "137",
+   "part": "P8",
+   "refused_box_page_px": [
+    1407.56,
+    2986.0,
+    1431.08,
+    2990.48
+   ],
+   "refused_size_sp": [
+    1.47,
+    0.28
+   ],
+   "dy_from_written_head_sp": 0.52,
+   "score": 0.1521771252155304,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:267121",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/8/1/6/10/0",
+    "box_page_px": [
+     1407.08,
+     2969.36,
+     1434.28,
+     2990.48
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "D4",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 16.0,
+   "scale_px_per_page_px": 2.5,
+   "tile_px": [
+    480,
+    360
+   ],
+   "expected_inner_rect_tile_px": [
+    211,
+    300,
+    269,
+    310
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    204,
+    293,
+    276,
+    317
+   ],
+   "orange_inner_px_read_back": [
+    "211",
+    "300",
+    "269",
+    "310"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    25,
+    1018
+   ]
+  },
+  {
+   "tile": 10,
+   "page": 8,
+   "system": 0,
+   "staff": "staff/8/0/2",
+   "cell": "cell/8/0/2/17",
+   "measure": "122",
+   "part": "P3",
+   "refused_box_page_px": [
+    2104.0,
+    711.38,
+    2129.04,
+    732.8
+   ],
+   "refused_size_sp": [
+    1.59,
+    1.36
+   ],
+   "dy_from_written_head_sp": -1.15,
+   "score": 0.17343078553676605,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:267048",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/8/0/2/17/3",
+    "box_page_px": [
+     2104.47,
+     729.49,
+     2128.88,
+     750.91
+    ],
+    "cls": "noteheadBlackInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C5",
+    "color": "blue",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    208,
+    90,
+    271,
+    143
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    201,
+    83,
+    278,
+    150
+   ],
+   "orange_inner_px_read_back": [
+    "208",
+    "90",
+    "271",
+    "143"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    530,
+    1018
+   ]
+  },
+  {
+   "tile": 11,
+   "page": 16,
+   "system": 0,
+   "staff": "staff/16/0/8",
+   "cell": "cell/16/0/9/7",
+   "measure": "244",
+   "part": "P9",
+   "refused_box_page_px": [
+    1393.82,
+    1570.0,
+    1424.06,
+    1579.77
+   ],
+   "refused_size_sp": [
+    1.92,
+    0.62
+   ],
+   "dy_from_written_head_sp": 0.64,
+   "score": 0.06475421786308289,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:625660",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/16/0/8/7/6",
+    "box_page_px": [
+     1389.26,
+     1554.14,
+     1414.61,
+     1575.4
+    ],
+    "cls": "noteheadBlackOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "Eb4",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    203,
+    264,
+    279,
+    288
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    196,
+    257,
+    286,
+    295
+   ],
+   "orange_inner_px_read_back": [
+    "203",
+    "264",
+    "279",
+    "288"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1035,
+    1018
+   ]
+  },
+  {
+   "tile": 12,
+   "page": 10,
+   "system": 1,
+   "staff": "staff/10/1/9",
+   "cell": "cell/10/1/10/2",
+   "measure": "189",
+   "part": "P10",
+   "refused_box_page_px": [
+    791.96,
+    3491.0,
+    826.52,
+    3506.52
+   ],
+   "refused_size_sp": [
+    2.19,
+    0.99
+   ],
+   "dy_from_written_head_sp": 1.17,
+   "score": 0.1987946778535843,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:another_mark_holds_it",
+   "abstention_id": "abs:344156",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/10/1/9/2/2",
+    "box_page_px": [
+     789.21,
+     3470.68,
+     817.72,
+     3490.06
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "Eb3",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    389
+   ],
+   "expected_inner_rect_tile_px": [
+    195,
+    310,
+    282,
+    349
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    188,
+    303,
+    289,
+    356
+   ],
+   "orange_inner_px_read_back": [
+    "195",
+    "310",
+    "282",
+    "349"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1540,
+    1018
+   ]
+  },
+  {
+   "tile": 13,
+   "page": 8,
+   "system": 0,
+   "staff": "staff/8/0/7",
+   "cell": "cell/8/0/8/12",
+   "measure": "117",
+   "part": "P10",
+   "refused_box_page_px": [
+    1620.13,
+    1552.0,
+    1642.65,
+    1556.72
+   ],
+   "refused_size_sp": [
+    1.43,
+    0.3
+   ],
+   "dy_from_written_head_sp": 0.62,
+   "score": 0.19604794681072235,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:267064",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/8/0/7/12/4",
+    "box_page_px": [
+     1620.29,
+     1533.35,
+     1646.59,
+     1555.71
+    ],
+    "cls": "noteheadHalfOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "F3",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    211,
+    277,
+    267,
+    288
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    204,
+    270,
+    274,
+    295
+   ],
+   "orange_inner_px_read_back": [
+    "211",
+    "277",
+    "267",
+    "288"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    25,
+    1492
+   ]
+  },
+  {
+   "tile": 14,
+   "page": 6,
+   "system": 1,
+   "staff": "staff/6/1/6",
+   "cell": "cell/6/1/6/10",
+   "measure": "102",
+   "part": "P7",
+   "refused_box_page_px": [
+    2291.44,
+    2955.52,
+    2304.99,
+    2965.76
+   ],
+   "refused_size_sp": [
+    0.86,
+    0.65
+   ],
+   "dy_from_written_head_sp": 1.68,
+   "score": 0.05156947672367096,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:another_mark_holds_it",
+   "abstention_id": "abs:177034",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/6/1/6/10/7",
+    "box_page_px": [
+     2276.64,
+     2922.92,
+     2303.09,
+     2945.6
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C3",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    222,
+    265,
+    255,
+    290
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    215,
+    258,
+    262,
+    297
+   ],
+   "orange_inner_px_read_back": [
+    "222",
+    "265",
+    "255",
+    "290"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    530,
+    1492
+   ]
+  },
+  {
+   "tile": 15,
+   "page": 4,
+   "system": 0,
+   "staff": "staff/4/0/10",
+   "cell": "cell/4/0/9/11",
+   "measure": "60",
+   "part": "P12",
+   "refused_box_page_px": [
+    2088.12,
+    1870.44,
+    2110.96,
+    1878.0
+   ],
+   "refused_size_sp": [
+    1.45,
+    0.48
+   ],
+   "dy_from_written_head_sp": 0.7,
+   "score": 0.10172267258167267,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:096498",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/4/0/10/11",
+     "box": [
+      2096.47,
+      1831.0,
+      2111.91,
+      1834.94
+     ],
+     "detail_reason": "dyad:no_stem_through_a_boxed_head",
+     "score": 0.08582069724798203
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/4/0/10/11/3",
+    "box_page_px": [
+     2090.8,
+     1851.95,
+     2118.99,
+     1874.47
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "D4",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    211,
+    39,
+    268,
+    57
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    204,
+    32,
+    275,
+    64
+   ],
+   "orange_inner_px_read_back": [
+    "211",
+    "39",
+    "268",
+    "57"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1035,
+    1492
+   ]
+  },
+  {
+   "tile": 16,
+   "page": 8,
+   "system": 0,
+   "staff": "staff/8/0/3",
+   "cell": "cell/8/0/3/15",
+   "measure": "120",
+   "part": "P4",
+   "refused_box_page_px": [
+    1918.89,
+    839.43,
+    1941.25,
+    865.58
+   ],
+   "refused_size_sp": [
+    1.42,
+    1.66
+   ],
+   "dy_from_written_head_sp": 1.28,
+   "score": 0.20630225539207458,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_one_head:too_tall",
+   "abstention_id": "abs:267049",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/8/0/3/15/4",
+    "box_page_px": [
+     1916.05,
+     820.69,
+     1941.41,
+     843.84
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "A4",
+    "color": "blue",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    361
+   ],
+   "expected_inner_rect_tile_px": [
+    211,
+    39,
+    266,
+    105
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    204,
+    32,
+    273,
+    112
+   ],
+   "orange_inner_px_read_back": [
+    "211",
+    "39",
+    "266",
+    "105"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1540,
+    1492
+   ]
+  },
+  {
+   "tile": 17,
+   "page": 2,
+   "system": 1,
+   "staff": "staff/2/1/9",
+   "cell": "cell/2/1/10/12",
+   "measure": "46",
+   "part": "P10",
+   "refused_box_page_px": [
+    2213.03,
+    3472.76,
+    2239.84,
+    3499.9
+   ],
+   "refused_size_sp": [
+    1.68,
+    1.7
+   ],
+   "dy_from_written_head_sp": -1.01,
+   "score": 0.056996580213308334,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+   "abstention_id": "abs:022095",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/2/1/9/12",
+     "box": [
+      2211.56,
+      3473.96,
+      2241.32,
+      3497.8
+     ],
+     "detail_reason": "dyad_ink:a_seen_head",
+     "score": 0.11778544634580612
+    },
+    {
+     "cell": "cell/2/1/10/12",
+     "box": [
+      2212.05,
+      3472.6,
+      2240.97,
+      3498.93
+     ],
+     "detail_reason": "dyad_ink:not_one_head:too_tall",
+     "score": 0.05816299840807915
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/2/1/9/12/0",
+    "box_page_px": [
+     2212.36,
+     3489.32,
+     2240.68,
+     3515.72
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C3",
+    "color": "blue",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 16.0,
+   "scale_px_per_page_px": 2.5,
+   "tile_px": [
+    480,
+    388
+   ],
+   "expected_inner_rect_tile_px": [
+    208,
+    280,
+    274,
+    347
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    201,
+    273,
+    281,
+    354
+   ],
+   "orange_inner_px_read_back": [
+    "208",
+    "280",
+    "274",
+    "347"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    25,
+    1938
+   ]
+  },
+  {
+   "tile": 18,
+   "page": 8,
+   "system": 0,
+   "staff": "staff/8/0/0",
+   "cell": "cell/8/0/0/19",
+   "measure": "124",
+   "part": "P1",
+   "refused_box_page_px": [
+    2329.44,
+    380.19,
+    2360.47,
+    387.43
+   ],
+   "refused_size_sp": [
+    1.97,
+    0.46
+   ],
+   "dy_from_written_head_sp": 0.75,
+   "score": 0.13807420432567596,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "beside_a_seen_head",
+   "abstention_id": "abs:266974",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/8/0/0/19/2",
+    "box_page_px": [
+     2331.96,
+     360.81,
+     2357.63,
+     383.18
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "D6",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    409
+   ],
+   "expected_inner_rect_tile_px": [
+    202,
+    41,
+    280,
+    59
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    195,
+    34,
+    287,
+    66
+   ],
+   "orange_inner_px_read_back": [
+    "202",
+    "41",
+    "280",
+    "59"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    530,
+    1938
+   ]
+  },
+  {
+   "tile": 19,
+   "page": 8,
+   "system": 0,
+   "staff": "staff/8/0/2",
+   "cell": "cell/8/0/2/15",
+   "measure": "120",
+   "part": "P3",
+   "refused_box_page_px": [
+    1916.84,
+    730.91,
+    1941.41,
+    755.48
+   ],
+   "refused_size_sp": [
+    1.56,
+    1.56
+   ],
+   "dy_from_written_head_sp": 1.57,
+   "score": 0.12044764310121536,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_one_head:too_tall",
+   "abstention_id": "abs:267047",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/8/0/2/15",
+     "box": [
+      1918.41,
+      736.26,
+      1941.72,
+      758.31
+     ],
+     "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+     "score": 0.06947605311870575
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/8/0/2/15/7",
+    "box_page_px": [
+     1916.21,
+     710.59,
+     1938.89,
+     726.34
+    ],
+    "cls": "noteheadBlackOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "E5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    208,
+    139,
+    269,
+    201
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    201,
+    132,
+    276,
+    208
+   ],
+   "orange_inner_px_read_back": [
+    "208",
+    "139",
+    "269",
+    "201"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1035,
+    1938
+   ]
+  },
+  {
+   "tile": 20,
+   "page": 11,
+   "system": 0,
+   "staff": "staff/11/0/3",
+   "cell": "cell/11/0/3/3",
+   "measure": "205",
+   "part": "P5",
+   "refused_box_page_px": [
+    875.86,
+    975.11,
+    896.65,
+    993.69
+   ],
+   "refused_size_sp": [
+    1.32,
+    1.18
+   ],
+   "dy_from_written_head_sp": 2.02,
+   "score": 0.14072316884994507,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:another_mark_holds_it",
+   "abstention_id": "abs:387738",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/11/0/3/3",
+     "box": [
+      876.02,
+      985.66,
+      889.09,
+      994.0
+     ],
+     "detail_reason": "dyad:another_mark_holds_it",
+     "score": 0.05797641724348068
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/11/0/3/3/3",
+    "box_page_px": [
+     864.68,
+     941.72,
+     889.09,
+     963.45
+    ],
+    "cls": "noteheadBlackOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "E4",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    399
+   ],
+   "expected_inner_rect_tile_px": [
+    213,
+    313,
+    265,
+    359
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    206,
+    306,
+    272,
+    366
+   ],
+   "orange_inner_px_read_back": [
+    "213",
+    "313",
+    "265",
+    "359"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1540,
+    1938
+   ]
+  },
+  {
+   "tile": 21,
+   "page": 6,
+   "system": 0,
+   "staff": "staff/6/0/2",
+   "cell": "cell/6/0/2/9",
+   "measure": "88",
+   "part": "P3",
+   "refused_box_page_px": [
+    1949.92,
+    704.3,
+    1978.74,
+    724.78
+   ],
+   "refused_size_sp": [
+    1.83,
+    1.3
+   ],
+   "dy_from_written_head_sp": 1.05,
+   "score": 0.19187968969345093,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad_ink:not_one_head:too_wide",
+   "abstention_id": "abs:176920",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/6/0/2/9",
+     "box": [
+      1948.98,
+      708.71,
+      1978.43,
+      729.98
+     ],
+     "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+     "score": 0.11927322298288345
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/6/0/2/9/5",
+    "box_page_px": [
+     1949.61,
+     689.34,
+     1978.43,
+     706.82
+    ],
+    "cls": "noteheadBlackOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    203,
+    166,
+    275,
+    217
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    196,
+    159,
+    282,
+    224
+   ],
+   "orange_inner_px_read_back": [
+    "203",
+    "166",
+    "275",
+    "217"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    25,
+    2432
+   ]
+  },
+  {
+   "tile": 22,
+   "page": 6,
+   "system": 0,
+   "staff": "staff/6/0/5",
+   "cell": "cell/6/0/4/5",
+   "measure": "84",
+   "part": "P8",
+   "refused_box_page_px": [
+    1302.36,
+    1155.52,
+    1321.56,
+    1160.0
+   ],
+   "refused_size_sp": [
+    1.22,
+    0.28
+   ],
+   "dy_from_written_head_sp": -0.54,
+   "score": 0.05668780580163002,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:176941",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/6/0/5/5/2",
+    "box_page_px": [
+     1297.27,
+     1155.61,
+     1323.41,
+     1177.03
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "G5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    217,
+    44,
+    265,
+    55
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    210,
+    37,
+    272,
+    62
+   ],
+   "orange_inner_px_read_back": [
+    "217",
+    "44",
+    "265",
+    "55"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    530,
+    2432
+   ]
+  },
+  {
+   "tile": 23,
+   "page": 4,
+   "system": 1,
+   "staff": "staff/4/1/5",
+   "cell": "cell/4/1/5/5",
+   "measure": "69",
+   "part": "P6",
+   "refused_box_page_px": [
+    1209.44,
+    2800.4,
+    1224.48,
+    2817.84
+   ],
+   "refused_size_sp": [
+    0.94,
+    1.09
+   ],
+   "dy_from_written_head_sp": -2.44,
+   "score": 0.21481189131736755,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "abstention_id": "abs:096568",
+   "other_refused_candidates_at_this_event": [],
+   "written_head": {
+    "glyph": "glyph/4/1/5/5/4",
+    "box_page_px": [
+     1212.0,
+     2835.6,
+     1236.16,
+     2860.88
+    ],
+    "cls": "noteheadHalfInSpace"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "F5",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 16.0,
+   "scale_px_per_page_px": 2.5,
+   "tile_px": [
+    480,
+    415
+   ],
+   "expected_inner_rect_tile_px": [
+    221,
+    41,
+    258,
+    84
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    214,
+    34,
+    265,
+    91
+   ],
+   "orange_inner_px_read_back": [
+    "221",
+    "41",
+    "258",
+    "84"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1035,
+    2432
+   ]
+  },
+  {
+   "tile": 24,
+   "page": 11,
+   "system": 0,
+   "staff": "staff/11/0/2",
+   "cell": "cell/11/0/2/11",
+   "measure": "213",
+   "part": "P4",
+   "refused_box_page_px": [
+    1770.88,
+    726.69,
+    1786.79,
+    741.97
+   ],
+   "refused_size_sp": [
+    1.01,
+    0.97
+   ],
+   "dy_from_written_head_sp": -0.79,
+   "score": 0.15146110951900482,
+   "reader": "yolo_rescue_stem_head",
+   "reason": "ambiguous",
+   "detail_reason": "beside_a_seen_head",
+   "abstention_id": "abs:387656",
+   "other_refused_candidates_at_this_event": [
+    {
+     "cell": "cell/11/0/2/11",
+     "box": [
+      1770.88,
+      726.69,
+      1786.79,
+      741.97
+     ],
+     "detail_reason": "dyad:another_mark_holds_it",
+     "score": 0.15146110951900482
+    }
+   ],
+   "written_head": {
+    "glyph": "glyph/11/0/2/11/4",
+    "box_page_px": [
+     1769.46,
+     738.5,
+     1789.31,
+     755.04
+    ],
+    "cls": "noteheadBlackOnLine"
+   },
+   "file_writes": {
+    "value": "half",
+    "dots": 0,
+    "pitch": "C4",
+    "color": "plain",
+    "voice": "1",
+    "tuplet": false
+   },
+   "staff_space_px": 15.75,
+   "scale_px_per_page_px": 2.5397,
+   "tile_px": [
+    480,
+    358
+   ],
+   "expected_inner_rect_tile_px": [
+    221,
+    91,
+    260,
+    128
+   ],
+   "line_px": 7,
+   "clipped_by_tile_edge": false,
+   "orange_outer_px": [
+    214,
+    84,
+    267,
+    135
+   ],
+   "orange_inner_px_read_back": [
+    "221",
+    "91",
+    "260",
+    "128"
+   ],
+   "exact": true,
+   "tile_origin_in_sheet": [
+    1540,
+    2432
+   ]
+  }
+ ]
+}
