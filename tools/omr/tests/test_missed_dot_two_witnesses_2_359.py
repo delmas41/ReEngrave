@@ -27,7 +27,7 @@ from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import inferences
 from tools.omr.staged.adjudicate import Candidate, Ruling
 from tools.omr.staged.adjudicators import rhythm
-from tools.omr.staged.record import Log, Outcome, Q, Subject, Verdict
+from tools.omr.staged.record import Kind, Log, Outcome, Q, Subject, Verdict
 
 FIX = pathlib.Path(__file__).parent / "fixtures" / "missed_dot_2_359_brahms.json.gz"
 ENV = rhythm.MISSED_DOT_ENV
@@ -37,16 +37,20 @@ SEAN_DOTTED = ("sean_t1", "sean_t2a", "sean_t2b", "sean_t4", "sean_t10", "sean_t
 NOT_DOTS = [k for k in CASES if k.startswith("sheet") and ("ledger" in k or "clef" in k)]
 
 
-def _log(narrow=()):
-    """The real rows; the heads in `narrow` carry the ADJUDICATE narrowing the flag files (plain first, dotted second)."""
+def _log(narrow=(), meter_on_the_bars=False):
+    """The real rows; the heads in `narrow` carry the ADJUDICATE narrowing the flag files (plain first, dotted second).
+    `meter_on_the_bars`: the meter verdicts are filed LAST, resting on every duration -- as the real carried 6/8 does (its carry is
+    weighed by the bars), which is what made the first replay raise `UphillConsequence`."""
     log = Log()
     for o in DATA["observations"]:
         log.observe(Subject.from_key(o["subject"]), o["quantity"], o["value"], reader=o["reader"], frame=o["frame"],
                     score=o.get("score"), **(o.get("detail") or {}))
     log.freeze()
-    for v in DATA["verdicts"]:
-        if v.get("supersedes"):
-            continue
+    rows = [v for v in DATA["verdicts"] if not v.get("supersedes")]
+    if meter_on_the_bars:
+        rows = [v for v in rows if v["quantity"] != "meter"] + [v for v in rows if v["quantity"] == "meter"]
+    durations = []
+    for v in rows:
         sub = Subject.from_key(v["subject"])
         outcome, value, reason, cands = Outcome(v["outcome"]), v.get("value"), v.get("reason") or "t", ()
         if v["quantity"] == "duration" and v["subject"] in narrow and outcome is Outcome.DECIDED:
@@ -56,8 +60,12 @@ def _log(narrow=()):
             cands = (Candidate(plain, support=1.0), Candidate(dotted, support=0.5))
         elif v.get("candidates"):
             cands = tuple(Candidate(c.get("value"), support=c.get("support") or 0.0) for c in v["candidates"])
-        log.record(Verdict(id=log._next_id("vrd"), subject=sub, quantity=v["quantity"], outcome=outcome, value=value,
-                           decider=v.get("decider") or "t", reason=reason, candidates=cands, detail=v.get("detail") or {}))
+        basis = tuple(durations) if (meter_on_the_bars and v["quantity"] == "meter") else ()
+        rec = log.record(Verdict(id=log._next_id("vrd"), subject=sub, quantity=v["quantity"], outcome=outcome, value=value,
+                                 decider=v.get("decider") or "t", reason=reason, candidates=cands, detail=v.get("detail") or {},
+                                 considered=basis, basis=basis))
+        if v["quantity"] == "duration":
+            durations.append(rec.id)
     return log
 
 
@@ -204,6 +212,30 @@ class TestTheBarWitness(unittest.TestCase):
         with _on(), _printed():
             why, _ = inferences.missed_dot_decline(log, _cell("sheet06_unread_bar"))
         self.assertEqual(why, "something_else_in_the_bar_unread")
+
+    def test_the_guess_never_rests_on_the_meter_that_rests_on_the_bars(self):
+        # the first replay of this lane raised UphillConsequence on Brahms: the guess named the meter verdict in its basis, and the
+        # carried 6/8 is weighed by the bars (its closure holds this very narrowing). The basis is the printed readings instead.
+        from tools.omr.staged.record import UphillConsequence
+        narrow = {CASES[c] for c in SEAN_DOTTED}
+        log = _log(narrow, meter_on_the_bars=True)
+        cell = _cell("sean_t4")
+        meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+        with _on(), _printed():
+            props = inferences._missed_dot_guesses(log, cell)
+        self.assertEqual(len(props), 1)
+        p = props[0]
+        self.assertNotIn(meter.id, p.basis)
+        prior = log.verdict(Q.DURATION, p.subject)
+        self.assertIn(prior.id, log.closure(meter.id))           # the control: the meter does rest on the narrowing
+
+        def write(basis):
+            return log.record(Verdict(id=log._next_id("vrd"), subject=p.subject, quantity=Q.DURATION, outcome=Outcome.DECIDED,
+                                      value=p.value, decider="infer:t", reason=p.reason, basis=(prior.id,) + tuple(basis),
+                                      considered=(prior.id,) + tuple(basis), supersedes=prior.id))
+        with self.assertRaises(UphillConsequence):
+            write((meter.id,))                                  # the old basis: meter -> dot -> meter
+        write(tuple(b for b in p.basis if log.row(b) is not None))   # the new basis records
 
     def test_flag_off_proposes_nothing(self):
         log = _log({CASES[c] for c in SEAN_DOTTED})

@@ -2154,25 +2154,52 @@ def missed_dot_decline(log: Log, cell: Subject) -> Tuple[Optional[str], List[Ver
         return "bar_adds_up_plain", []
     if _frac(plain.value + add) != _frac(expected):
         return "bar_not_short_by_exactly_the_dots", []
+    why, _ = _missed_dot_basis(log, cell, marked, standing)
+    if why is not None:
+        return why, []
     return None, marked
+
+
+def _missed_dot_basis(log: Log, cell: Subject, marked: Sequence[Verdict], standing: Sequence[Verdict]
+                      ) -> Tuple[Optional[str], Tuple[str, ...]]:
+    """ROADMAP 2.359: what the guess rests on -- the PRINTED meter readings (never the meter verdict: the carry is weighed by
+    the bars, so its closure holds every duration of the system, this note's narrowing included -- meter -> dot -> meter, which
+    `Log.record` refuses: the first replay of this lane raised `UphillConsequence` on Brahms), the event grouping, the one-voice
+    verdict and the bar's other read notes; exactly `solve_bare_stem_bar`'s basis rule. `(why, ())` where any of them rests on a
+    marked note's narrowing (then the bar is no independent witness and the rule declines)."""
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    roots = _printed_meter_roots(log, meter, cell) if meter is not None else None
+    if not roots:
+        return "meter_not_from_the_print", ()
+    grouping = log.verdict(Q.EVENT, cell)
+    voices = log.verdict(Q.VOICES, cell)
+    mine = {m.id for m in marked}
+    basis = list(roots) + [grouping.id] + ([voices.id] if voices is not None else []) + [v.id for v in standing if v.id not in mine]
+    reach = set()
+    for rid in basis:
+        reach |= log.closure(rid)
+    if mine & reach:
+        return "a_witness_rests_on_the_marked_note", ()
+    return None, tuple(dict.fromkeys(basis))
 
 
 def _missed_dot_guesses(log: Log, cell: Subject) -> List[Proposal]:
     """ROADMAP 2.359: each marked note of a bar `missed_dot_decline` admits, dotted -- GUESSED (blue; the harness carries both
-    candidates forward)."""
+    candidates forward). The basis is `_missed_dot_basis` (no meter verdict: no cycle)."""
     why, marked = missed_dot_decline(log, cell)
     if why is not None:
         return []
+    from .consequences import _bar_beats_at, _left_the_bar, _standing
+    standing = [v for v in _standing(log, cell, Q.DURATION) if _left_the_bar(log, v.subject) is None]
+    _, basis = _missed_dot_basis(log, cell, marked, standing)
     meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
-    voices = log.verdict(Q.VOICES, cell)
-    from .consequences import _bar_beats_at
     expected = _bar_beats_at(meter, cell)
     out = []
     for m in marked:
         dotted = [c.value for c in m.candidates if isinstance(c.value, dict) and int(c.value.get("dots") or 0) == 1][0]
         out.append(Proposal(
             subject=m.subject, value=dotted, reason=MISSED_DOT_FILLS_REASON,
-            basis=tuple(dict.fromkeys((m.id, meter.id) + ((voices.id,) if voices is not None else ()))), witnesses=(),
+            basis=basis, witnesses=(),
             detail={"expected_beats": float(expected), "marked_notes_in_bar": len(marked),
                     "mark_row": ((m.detail or {}).get("missed_dot") or {}).get("mark_row"), "reads_meter": True}))
     return out
