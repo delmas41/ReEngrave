@@ -1234,5 +1234,44 @@
    1286,
    450
   ]
+ },
+ {
+  "file": "ours_black_p8_0_15.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": null,
+  "expect": "NO",
+  "box": null,
+  "his_words": "OUR look (not judged): a filled head; the box below it is paper",
+  "origin_page_px": [
+   1905,
+   1861
+  ]
+ },
+ {
+  "file": "ours_black_p8_10_16.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": null,
+  "expect": "NO",
+  "box": null,
+  "his_words": "OUR look (not judged): a filled head; the box below it is paper and lines",
+  "origin_page_px": [
+   2066,
+   3460
+  ]
+ },
+ {
+  "file": "ours_black_p10_8_10.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": null,
+  "expect": "NO",
+  "box": null,
+  "his_words": "OUR look (not judged): a filled head; the box below it is paper",
+  "origin_page_px": [
+   1961,
+   3183
+  ]
  }
 ]

@@ -6,6 +6,7 @@ stem call returns on that cell and every head box on the page near it. `manifest
 
   * YES / YES@box -- he read two heads on that stem (halfnote-chords sheets, the hole-rule sheets, his good refused-rescue boxes);
   * NO -- he read a single half, a unison, a bass clef, or "a box around a space in the staff";
+  * NO (OUR look, not judged) -- `ours_black_*`: three filled written heads where the first page run invented a head on paper;
   * NO@box -- the refused-rescue boxes he called a staff line, a ledger line, a dynamic, the top of an f, or a sliver of the written head.
 
 Every NO is refused; every YES this reader keeps is listed by name (21 of 41) and its kept ring overlaps his box where he drew one; the
@@ -72,7 +73,7 @@ NOS = sorted(n for n, m in BY_NAME.items() if m["expect"] in ("NO", "NO@box"))
 def test_the_judged_set_is_whole():
     yes = {n for n, m in BY_NAME.items() if m["expect"].startswith("YES")}
     assert yes == set(KEPT_REAL) | set(KNOWN_MISSES)
-    assert len(NOS) == 46
+    assert len(NOS) == 49          # 46 Sean judged + 3 filled written heads from the first page run (OUR look, not judged)
 
 
 @pytest.mark.parametrize("name", NOS)
@@ -112,6 +113,13 @@ def test_one_space_floor_can_fail(monkeypatch):
     # pieces of a single head's own hatched slit stand ~0.7 along and across from the piece the head is placed by
     names = ["braa03_single", "hs17_single_half_note", "lita15_single"]
     assert _fails_without(monkeypatch, "THIRD_SP", (0.3, 1.45), names) == names
+
+
+def test_written_hole_inside_its_box_can_fail(monkeypatch):
+    # the first page run (2026-11-27, Litolff p8/p10): a FILLED written head with paper just under its box read as a hollow head's slit
+    # and a second head invented on paper -- OUR look, not judged by Sean (the three `ours_black_*` crops)
+    names = ["ours_black_p8_0_15", "ours_black_p8_10_16", "ours_black_p10_8_10"]
+    assert _fails_without(monkeypatch, "OWN_CENTRE_SLACK_SP", 0.25, names) == names
 
 
 def test_one_space_ceiling_can_fail(monkeypatch):

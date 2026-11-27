@@ -30,8 +30,8 @@ clef alone; NEVER a second head on a single or unison stem.
     by two strokes (Sean's first-sheet tile 19, "a box around a space in the staff") -- a head's slit or oval never fills its box.
   * Not already a head: a hole another head box of the cell already stands on gets no second box (that head's fate is ADJUDICATE's).
 
-The box filed is the ring's own ink (`ring_box`), stopped half-way to the written head's hole on that side, so it never takes the
-written head's ink. Position, value and owner are not read here: the box is appended to `detections` and `gather_notehead_positions`
+The box filed is the ring's own ink (`ring_box`), its height read on the side AWAY from the written head and stood symmetric about
+its own hole (never past half-way to the written head's hole), so it never takes the written head's ink and its centre is its hole's. Position, value and owner are not read here: the box is appended to `detections` and `gather_notehead_positions`
 places it like any head (page-facts: a far head is placed by its ledger lines only); its value is shared from its stem downstream.
 
 CONVENTION ASSUMED: a hollow head's hole is at its centre; heads of one chord share a stem, a third apart (2.252). WHAT WOULD FALSIFY
@@ -63,8 +63,10 @@ HOLE_MIN_AREA_SP2 = 0.06
 STEM_COVER = 0.8
 #: the ring's ink is read outward from the hole at most this far (sp)
 RING_MAX_SP = 0.5
-#: the written head's own hole may stand this far past its box's top or bottom (sp; `head_hole_position.REACH_SPACES`)
+#: the hole reader's window round the written head's box (sp): its ring must be enclosed in it; the hole's CENTRE must be inside the box
 OWN_REACH_SP = 0.25
+#: ... and the written head's hole's centre this far past its box at most (sp): none -- a hole outside the head's box is not its hole
+OWN_CENTRE_SLACK_SP = 0.0
 #: heads of one stem stand in one column: the second hole's centre within this of the written hole's, across (sp). Both sides
 #: measured on judged marks: real second heads to 0.74, judged inventions from 1.10 (`tests/data/second_head_hole`)
 COLUMN_SP = 0.8
@@ -207,7 +209,10 @@ def second_heads(ink: Any, lines: Sequence[float], heads: Sequence[Sequence[floa
         x0, y0, x1, y1 = (float(v) for v in hb)
         ll = CP.local_lines(ink, lines, sp0, (x0 + x1) / 2.0)
         sp = (ll[-1] - ll[0]) / 4.0
-        inbox = K.head_holes(ink, (x0, y0 - OWN_REACH_SP * sp, x1, y1 + OWN_REACH_SP * sp), sp, ll[0], ll)
+        # the written head's hole stands INSIDE its box: a hole a little past the box is paper beside the head (a FILLED head's box with a
+        # staff space just under it read as a hollow head's slit on the first page run, Litolff p8 8/1/0/15/8, p10 10/1/8/10/0 -- OUR look)
+        inbox = [h for h in K.head_holes(ink, (x0, y0 - OWN_REACH_SP * sp, x1, y1 + OWN_REACH_SP * sp), sp, ll[0], ll)
+                 if y0 - OWN_CENTRE_SLACK_SP * sp <= h["cy"] <= y1 + OWN_CENTRE_SLACK_SP * sp]
         if not inbox:
             refused.append({"partner": hi, "why": "written_head_has_no_hole"})
             continue
@@ -272,10 +277,17 @@ def second_heads(ink: Any, lines: Sequence[float], heads: Sequence[Sequence[floa
                 refused.append(dict(rec, why="a_head_box_stands_on_it"))
                 continue
             box = ring_box(ink, hm, sp)
+            # the near side runs on into the written head's ink, so the head's height is read on its FAR side and the box stands
+            # symmetric about its own hole: the position reader then reads the hole's step (the first page run cut the near side at the
+            # midline and the box's centre stood up to a step off its hole, Litolff p10 10/1/2/4/6 -- OUR look)
             mid = (yc + hcy) / 2.0
             if dy < 0:
-                box[3] = min(box[3], int(np.ceil(mid)))
+                half = max(hcy - box[1], 1.0)
+                box[3] = int(round(min(hcy + half, max(mid, hcy + 1.0))))
+                box[1] = int(round(hcy - half))
             else:
-                box[1] = max(box[1], int(np.floor(mid)))
+                half = max(box[3] - hcy, 1.0)
+                box[1] = int(round(max(hcy - half, min(mid, hcy - 1.0))))
+                box[3] = int(round(hcy + half))
             kept.append(dict(rec, box=box, stem=si, side=side))
     return kept, refused
