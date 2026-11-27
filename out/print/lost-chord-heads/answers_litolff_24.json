@@ -1,0 +1,273 @@
+{
+ "set": "Litolff: boxes the second-head rescue (yolo_rescue_stem_head) drew beside a written single half note and refused 'ambiguous'; 24 at random from 48",
+ "date": "2026-11-26",
+ "question": "For each number: is the orange box on a notehead? Whole head or part; if not, what is it on?",
+ "answered_by": "Sean",
+ "verbatim": "The refused head sheep. One and a half note, but it's a little small. Two is a half note. It's a little bit low. Three note, and it's good. Four is a half note. It looks good. Tau 5 is part of a 6 is on a half note. Good. Tau 7 is on a half note. That looks good. Tau 8 is on a staff line. 9 and a half note, but it's too small. That looks good. Tau 11 is a half note. It's too small, just on an edge. Tau 12 is a half note. It looks good. 13 is a half note, too small, just the bottom end. 14 is just the top part of an F dynamic. 15 is a ledger line. 16 is a half note. It looks good. 17 is a half note. 18 is a ledger. 18 is a half note. It looks good. Big. Put it on the top. Otherwise, it looks good. 20. Dynamic. 21 is a half note. It looks good. 22 is part of a half note, which is the very top edge. It's too small. 23 is a half note. It's a little bit small. It looks like it belongs to the or around part of a half note. Pretty fine, so it's hard to read.",
+ "answers": {
+  "1": {
+   "on_a_half_note": true,
+   "his_words": "a little small",
+   "detail_reason": "dyad_ink:not_oval",
+   "dy_from_written_head_sp": 1.31,
+   "refused_size_sp": [
+    0.95,
+    1.38
+   ],
+   "abstention_id": "abs:387761"
+  },
+  "2": {
+   "on_a_half_note": true,
+   "his_words": "a little bit low",
+   "detail_reason": "dyad_ink:not_one_head:too_wide",
+   "dy_from_written_head_sp": 0.57,
+   "refused_size_sp": [
+    1.61,
+    0.96
+   ],
+   "abstention_id": "abs:022029"
+  },
+  "3": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad_ink:not_one_head:too_tall",
+   "dy_from_written_head_sp": 1.14,
+   "refused_size_sp": [
+    1.76,
+    1.41
+   ],
+   "abstention_id": "abs:022011"
+  },
+  "4": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+   "dy_from_written_head_sp": 1.86,
+   "refused_size_sp": [
+    1.65,
+    1.46
+   ],
+   "abstention_id": "abs:267067"
+  },
+  "5": {
+   "on_a_half_note": false,
+   "his_words": "'part of a ...' (word lost in dictation)",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": -2.26,
+   "refused_size_sp": [
+    2.38,
+    0.63
+   ],
+   "abstention_id": "abs:308895"
+  },
+  "6": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad_ink:not_one_head:too_wide",
+   "dy_from_written_head_sp": -1.0,
+   "refused_size_sp": [
+    1.59,
+    1.28
+   ],
+   "abstention_id": "abs:344089"
+  },
+  "7": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": 0.93,
+   "refused_size_sp": [
+    1.17,
+    1.63
+   ],
+   "abstention_id": "abs:344062"
+  },
+  "8": {
+   "on_a_half_note": false,
+   "his_words": "a staff line",
+   "detail_reason": "dyad_ink:no_head_ink",
+   "dy_from_written_head_sp": -1.27,
+   "refused_size_sp": [
+    4.26,
+    0.91
+   ],
+   "abstention_id": "abs:177035"
+  },
+  "9": {
+   "on_a_half_note": true,
+   "his_words": "too small",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": 0.52,
+   "refused_size_sp": [
+    1.47,
+    0.28
+   ],
+   "abstention_id": "abs:267121"
+  },
+  "10": {
+   "on_a_half_note": true,
+   "his_words": "good (number lost in dictation; OUR placing)",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": -1.15,
+   "refused_size_sp": [
+    1.59,
+    1.36
+   ],
+   "abstention_id": "abs:267048"
+  },
+  "11": {
+   "on_a_half_note": true,
+   "his_words": "too small, just on an edge",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": 0.64,
+   "refused_size_sp": [
+    1.92,
+    0.62
+   ],
+   "abstention_id": "abs:625660"
+  },
+  "12": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad:another_mark_holds_it",
+   "dy_from_written_head_sp": 1.17,
+   "refused_size_sp": [
+    2.19,
+    0.99
+   ],
+   "abstention_id": "abs:344156"
+  },
+  "13": {
+   "on_a_half_note": true,
+   "his_words": "too small, just the bottom end",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": 0.62,
+   "refused_size_sp": [
+    1.43,
+    0.3
+   ],
+   "abstention_id": "abs:267064"
+  },
+  "14": {
+   "on_a_half_note": false,
+   "his_words": "top part of an f dynamic",
+   "detail_reason": "dyad:another_mark_holds_it",
+   "dy_from_written_head_sp": 1.68,
+   "refused_size_sp": [
+    0.86,
+    0.65
+   ],
+   "abstention_id": "abs:177034"
+  },
+  "15": {
+   "on_a_half_note": false,
+   "his_words": "a ledger line",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": 0.7,
+   "refused_size_sp": [
+    1.45,
+    0.48
+   ],
+   "abstention_id": "abs:096498"
+  },
+  "16": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad_ink:not_one_head:too_tall",
+   "dy_from_written_head_sp": 1.28,
+   "refused_size_sp": [
+    1.42,
+    1.66
+   ],
+   "abstention_id": "abs:267049"
+  },
+  "17": {
+   "on_a_half_note": true,
+   "his_words": "",
+   "detail_reason": "dyad:same_ink_as_a_kept_candidate",
+   "dy_from_written_head_sp": -1.01,
+   "refused_size_sp": [
+    1.68,
+    1.7
+   ],
+   "abstention_id": "abs:022095"
+  },
+  "18": {
+   "on_a_half_note": false,
+   "his_words": "a ledger line",
+   "detail_reason": "beside_a_seen_head",
+   "dy_from_written_head_sp": 0.75,
+   "refused_size_sp": [
+    1.97,
+    0.46
+   ],
+   "abstention_id": "abs:266974"
+  },
+  "19": {
+   "on_a_half_note": true,
+   "his_words": "good, big, on the top (heard as a second '18'; OUR placing)",
+   "detail_reason": "dyad_ink:not_one_head:too_tall",
+   "dy_from_written_head_sp": 1.57,
+   "refused_size_sp": [
+    1.56,
+    1.56
+   ],
+   "abstention_id": "abs:267047"
+  },
+  "20": {
+   "on_a_half_note": false,
+   "his_words": "a dynamic",
+   "detail_reason": "dyad:another_mark_holds_it",
+   "dy_from_written_head_sp": 2.02,
+   "refused_size_sp": [
+    1.32,
+    1.18
+   ],
+   "abstention_id": "abs:387738"
+  },
+  "21": {
+   "on_a_half_note": true,
+   "his_words": "good",
+   "detail_reason": "dyad_ink:not_one_head:too_wide",
+   "dy_from_written_head_sp": 1.05,
+   "refused_size_sp": [
+    1.83,
+    1.3
+   ],
+   "abstention_id": "abs:176920"
+  },
+  "22": {
+   "on_a_half_note": true,
+   "his_words": "part of a half note, the very top edge, too small",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": -0.54,
+   "refused_size_sp": [
+    1.22,
+    0.28
+   ],
+   "abstention_id": "abs:176941"
+  },
+  "23": {
+   "on_a_half_note": true,
+   "his_words": "a little bit small",
+   "detail_reason": "dyad:no_stem_through_a_boxed_head",
+   "dy_from_written_head_sp": -2.44,
+   "refused_size_sp": [
+    0.94,
+    1.09
+   ],
+   "abstention_id": "abs:096568"
+  },
+  "24": {
+   "on_a_half_note": true,
+   "his_words": "around part of a half note, hard to read (number lost; OUR placing)",
+   "detail_reason": "beside_a_seen_head",
+   "dy_from_written_head_sp": -0.79,
+   "refused_size_sp": [
+    1.01,
+    0.97
+   ],
+   "abstention_id": "abs:387656"
+  }
+ }
+}
