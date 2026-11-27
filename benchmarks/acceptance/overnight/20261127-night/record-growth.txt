@@ -1,0 +1,40 @@
+== beethoven5-litolff
+file size MB: BASE 693  TAG 705   (x1.02)
+  observations  rows   596443 ->   596424   ~MB    259 ->    266
+  abstentions   rows    77974 ->    77974   ~MB     26 ->     26
+  verdicts      rows   207331 ->   207322   ~MB    432 ->    432
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  observations  stroke                             rows    87524 ->    87524   ~MB   55.4 ->   62.9
+  verdicts      duration                           rows    16696 ->    16698   ~MB   44.8 ->   45.0
+  verdicts      meter                              rows       31 ->       31   ~MB    1.6 ->    1.8
+  verdicts      page_arc_binding                   rows       16 ->       17   ~MB    3.4 ->    3.6
+  verdicts      arc_kind                           rows     3512 ->     3514   ~MB   53.9 ->   54.0
+  verdicts      voices                             rows     5343 ->     5343   ~MB    3.8 ->    3.8
+  verdicts      head_stem                          rows    12039 ->    12039   ~MB    7.8 ->    7.8
+  verdicts      stem_value                         rows    12039 ->    12039   ~MB    9.7 ->    9.7
+  verdicts      pitch                              rows    16344 ->    16344   ~MB    7.5 ->    7.5
+  verdicts      dot_role                           rows      619 ->      619   ~MB    1.4 ->    1.4
+  verdicts      endings                            rows       31 ->       31   ~MB    0.0 ->    0.0
+  observations  rest_ink_contact                   rows     2979 ->     2979   ~MB    1.1 ->    1.1
+  verdicts      key_signature                      rows      396 ->      396   ~MB    1.8 ->    1.8
+  verdicts      printed_bar_number                 rows       31 ->       31   ~MB    0.0 ->    0.0
+== brahms1-breitkopf
+file size MB: BASE 2228  TAG 2253   (x1.01)
+  observations  rows  1458438 ->  1458432   ~MB    646 ->    659
+  abstentions   rows   165688 ->   165688   ~MB     57 ->     57
+  verdicts      rows   479965 ->   480083   ~MB   1610 ->   1612
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  observations  stroke                             rows   202445 ->   202445   ~MB  128.0 ->  140.9
+  verdicts      page_arc_binding                   rows       27 ->       32   ~MB    9.3 ->    9.9
+  verdicts      meter                              rows       53 ->       53   ~MB    3.4 ->    4.0
+  verdicts      duration                           rows    35250 ->    35325   ~MB  198.6 ->  198.9
+  verdicts      voices                             rows     6699 ->     6699   ~MB    5.8 ->    6.0
+  verdicts      arc_kind                           rows    16697 ->    16739   ~MB  194.5 ->  194.7
+  verdicts      stem_value                         rows    24454 ->    24454   ~MB   20.3 ->   20.3
+  verdicts      tie_pair                           rows    16697 ->    16697   ~MB   11.5 ->   11.5
+  verdicts      head_stem                          rows    24454 ->    24454   ~MB   16.7 ->   16.7
+  observations  page_arc                           rows    12042 ->    12042   ~MB    6.5 ->    6.5
+  verdicts      part_name                          rows      684 ->      684   ~MB    0.3 ->    0.3
+  verdicts      group_symbol                       rows       53 ->       53   ~MB    0.1 ->    0.1
+  observations  printed_bar_number                 rows       34 ->       34   ~MB    0.0 ->    0.0
+  observations  notehead_class                     rows    24454 ->    24454   ~MB    5.2 ->    5.2

@@ -1,0 +1,24 @@
+brahms ranking, fix-actions per page over 8 loaded pages, biggest first by TAG (BASE=base TAG=tag)
+kind                                             BASE/pg    TAG/pg    delta   10-29 rank   (totals BASE -> TAG)
+ties and slurs not written (arcs)                   32.8      31.4     -1.4            -   262 -> 251
+printed notes not written (candidate lost)          31.8      30.1     -1.6            -   254 -> 241
+red bars                                            13.9      11.9     -2.0         20.5   111 -> 95
+dots abstained (dot_role_ambiguous, specks out; mostly non-dot ink, 2.234)      10.0      10.0     +0.0            -   80 -> 80
+unread empty bars                                    1.5       1.5     +0.0         14.5   12 -> 12
+blue notes (check load)                             41.8      42.2     +0.5        107.0   334 -> 338
+blue rests (check load)                             11.6      11.6     +0.0         13.2   93 -> 93
+-- named apart, not ranked (counted once elsewhere, or not a loss; nothing dropped) --
+old tie-pairing refusals no page run witnesses (not lost ties: that path writes nothing since 2.305; ~9 real arcs of 96 sampled)      25.5      25.4     -0.1            -   204 -> 203
+second halves of arcs across a system break (one arc, counted once above)       1.9       1.9     +0.0            -   15 -> 15
+boxes refused as too narrow (mostly not notes: 0 real of 24 sampled; STILL inside the notes row)       7.9       7.9     +0.0            -   63 -> 63
+-- old figures, kept for comparison with earlier nights (boxes; not fix-actions, not additive) --
+ties and slurs not written (boxes, old figure)     387.2     386.4     -0.9        160.0   3098 -> 3091
+pitched heads not written (boxes, old figure)       14.6      13.0     -1.6         46.3   117 -> 104
+BASE old figure 'pitched heads not written (boxes)' 117; the same heads inside the notes row above: value_undecided 98 + no_pitch 14 lost notes (clusters of boxes)
+BASE notes: written 4641 of 4895 printed; named apart (never lost notes): duplicates of a written note 998 boxes, non-note ink 1068 boxes, duplicate with no written twin 31 boxes; candidate lost by fate {'value_undecided': 98, 'no_pitch': 14, 'dropped_at_render': 18, 'owned_no_twin': 8, 'clipped': 12, 'too_narrow': 63, 'other': 41}
+BASE arcs: old-box refusals 24 + page runs read and not written 238; named apart: old tie-pairing refusals 204, system-break second halves 15, boxes replaced by a written page arc 1988, old box path retired 633 (bookkeeping boxes), boxes that are no arc 2544, unwitnessed page runs 95 (mostly fakes; counting them: 357)
+TAG old figure 'pitched heads not written (boxes)' 104; the same heads inside the notes row above: value_undecided 85 + no_pitch 14 lost notes (clusters of boxes)
+TAG notes: written 4654 of 4895 printed; named apart (never lost notes): duplicates of a written note 998 boxes, non-note ink 1068 boxes, duplicate with no written twin 31 boxes; candidate lost by fate {'value_undecided': 85, 'no_pitch': 14, 'dropped_at_render': 18, 'owned_no_twin': 8, 'clipped': 12, 'too_narrow': 63, 'other': 41}
+TAG arcs: old-box refusals 24 + page runs read and not written 227; named apart: old tie-pairing refusals 203, system-break second halves 15, boxes replaced by a written page arc 2003, old box path retired 619 (bookkeeping boxes), boxes that are no arc 2544, unwitnessed page runs 95 (mostly fakes; counting them: 346)
+BASE dots row: 109 abstained dot_role_ambiguous, 29 of them dot-class boxes under the stroke floor (specks) -> 80 counted
+TAG dots row: 109 abstained dot_role_ambiguous, 29 of them dot-class boxes under the stroke floor (specks) -> 80 counted

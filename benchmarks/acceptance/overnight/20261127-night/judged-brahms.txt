@@ -1,0 +1,14 @@
+judged tiles, brahms, today's scorer on BOTH records (index 2313 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            190         15          5          0         39        197
+  TAG             196         15          0          0         39        196
+  right/wrong/narrowed  BASE 190/15/5  ->  TAG 196/15/0
+  moves: right->wrong 0 (must be 0) | right->gone 0 | wrong->right 0 | unwritten->wrong 0 | unwritten->right 5 | still wrong (narrowed without his answer on both nights) 0 | tiles scored on both 407
+  status transitions that are not 'same' (BASE -> TAG: n):
+    narrowed   -> right      5
+    unscored   -> right      1
+  RIGHT -> WRONG (0)
+  RIGHT -> GONE (0)
+  WRONG -> RIGHT (0)
+  UNWRITTEN -> WRONG (0)
+  STILL WRONG (same on both nights) (0)

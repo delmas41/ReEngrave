@@ -1,0 +1,9 @@
+compare_20261029 20261127-night vs 20261123-night docs [beethoven5-litolff brahms1-breitkopf] tree a93464fb2134ffcabc84e9923e41f07d821792f0 start 2026-11-27T16:24:50Z
+comparing: beethoven5-litolff brahms1-breitkopf
+tree under test: tools/ identical to the TAG commit a93464fb2134ffcabc84e9923e41f07d821792f0
+compare 20261127-night vs 20261123-night, tree a93464fb2134ffcabc84e9923e41f07d821792f0 start 2026-11-27T16:24:50Z
+beethoven5-litolff: readout diff exit 1 = the records differ (expected)
+brahms1-breitkopf: readout diff exit 1 = the records differ (expected)
+done 2026-11-27T16:49:23Z
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a8223e16c7c13a596/benchmarks/acceptance/overnight/20261127-night/README.txt 183 lines; 0 candidate(s) under Surprising / worse
+done 2026-11-27T17:08:28Z

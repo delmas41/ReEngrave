@@ -1,0 +1,61 @@
+wall (summary.txt)   BASE ref origin/main commit 3881969e95b0d256c339eec46236a7e5ba215f3f through infer start 2026-11-24T05:45:15Z  | done 2026-11-24T11:38:23Z
+                     TAG  ref origin/main commit a93464fb2134ffcabc84e9923e41f07d821792f0 through infer start 2026-11-27T07:46:53Z  | done 2026-11-27T13:44:24Z
+
+== beethoven5-litolff
+  wall min  BASE 79  TAG 81   (exit codes 0 / 0)
+  ── EVALUATE: 22198 fired, 230432 skipped
+     -> ── EVALUATE: 22199 fired, 267937 skipped
+  DECIDED verdicts that moved (quantity: base -> tag): accidental_owner 713 -> 710; arc_kind 3481 -> 3474; duration 12501 -> 12506; head_stem 9060 -> 9061; tie_pair 1347 -> 1354; voices 5063 -> 5093
+  ABSTENTIONS 47725 -> 47682; 15 reasons moved, 102 unchanged
+    quantity                         reason                                     base      tag    delta
+    voices                           no_voice_convention_fits                    140      110      -30
+    accidental_owner                 no_candidate                                458      451       -7
+    arc_kind                         same_pitch_accidental_unread                  6       11       +5
+    duration                         beams_ambiguous                             338      334       -4
+    duration                         not_a_note_mark                             260      257       -3
+    tie_pair                         not_a_tie                                  1260     1258       -2
+    tie_pair                         no_start_head                                71       69       -2
+    duration                         dot_ink_no_box                                0        2       +2
+    arc_kind                         same_pitch_awaits_sounding                    0        2       +2
+    tie_pair                         not_adjacent                                 59       58       -1
+    tie_pair                         no_pair_at_one_position                      51       50       -1
+    tie_pair                         no_head_near_the_arc                         71       70       -1
+    stem_value                       no_stem                                    2253     2252       -1
+    stem_value                       lone_head                                  4053     4054       +1
+    head_stem                        no_stem                                    2253     2252       -1
+  LOG warnings/errors (lines matching warn|error|traceback|exception|failed|warning sign): BASE 3, TAG 3
+    TAG: ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['instrument_across_systems', 'key_signature_across_systems', 'measure_count_across_staves']
+    TAG: ⚠️ DISAGREEMENTS: 4 (each implicates its WHOLE group, not its dissenter)
+    TAG: ── INFER: 93 inferred, 63 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+
+== brahms1-breitkopf
+  wall min  BASE 273  TAG 276   (exit codes 0 / 0)
+  ── EVALUATE: 55757 fired, 620667 skipped
+     -> ── EVALUATE: 55858 fired, 711650 skipped
+  ── INFER: 90 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+     -> ── INFER: 111 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+  DECIDED verdicts that moved (quantity: base -> tag): accidental_owner 3719 -> 3718; arc_kind 16676 -> 16624; duration 27667 -> 27722; meter 51 -> 53; stem_value 7472 -> 7482; tie_pair 4472 -> 4489; voices 5980 -> 6222; wedge_anchor 487 -> 488
+  ABSTENTIONS 108407 -> 108129; 18 reasons moved, 92 unchanged
+    quantity                         reason                                     base      tag    delta
+    voices                           no_voice_convention_fits                    570      328     -242
+    duration                         beams_ambiguous                             328      239      -89
+    arc_kind                         same_pitch_awaits_sounding                    0       43      +43
+    duration                         dot_ink_no_box                                0       37      +37
+    tie_pair                         not_a_tie                                  3018     3007      -11
+    arc_kind                         same_pitch_accidental_unread                  9       17       +8
+    stem_value                       stem_levels_unread                           61       55       -6
+    tie_pair                         not_adjacent                                222      219       -3
+    tie_pair                         no_stop_head                                 91       88       -3
+    stem_value                       not_a_member                               1266     1263       -3
+    duration                         not_a_note_mark                            1146     1143       -3
+    accidental_owner                 no_candidate                                575      572       -3
+    meter                            carry_outweighed_by_the_bars                  2        0       -2
+    wedge_anchor                     tip_unbound                                  64       63       -1
+    tie_pair                         no_pair_at_one_position                     175      174       -1
+    tie_pair                         more_than_one_pair                            9       10       +1
+    stem_value                       lone_head                                  8164     8163       -1
+    arc_kind                         arc_ends_unread                              12       13       +1
+  LOG warnings/errors (lines matching warn|error|traceback|exception|failed|warning sign): BASE 3, TAG 3
+    TAG: ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'measure_count_a
+    TAG: ⚠️ DISAGREEMENTS: 19 (each implicates its WHOLE group, not its dissenter)
+    TAG: ── INFER: 111 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing

@@ -169,10 +169,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "trap that entry named is still waiting under it — the ordinal is on "
         "the STAVES and this decision runs at DOCUMENT, so the repair needs "
         "`Scope.SELF_AND_DESCENDANTS` and not a bare read."),
-    "SCOPE-LATENT adjudicate_duration declares Q.CLAIMED_AREA": (
-        "ROADMAP 2.359 (OMR_MISSED_DOT_TWO_WITNESSES): declared so the dot-place ruling's basis records the page's claims; the body "
-        "reads it off the log directly (`rhythm._missed_dot_page`, `Scope.SELF_AND_DESCENDANTS` from the page subject), never by the "
-        "glyph-scope `ev.rows`, because the claim rows are filed at page/staff/system."),
     "SCOPE-LATENT adjudicate_system_membership declares Q.GAP_BRIDGING": (
         "inert declaration — the connectivity veto already ran in GATHER and "
         "the decision records its RESULT rather than the bridging. The "
