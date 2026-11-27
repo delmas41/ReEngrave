@@ -1,0 +1,314 @@
+{
+ "set": "Brahms red bars written in one voice and over-full, record decided one voice",
+ "date": "2026-11-26",
+ "question": "For each number: is the bar in the orange box written for one voice or two?",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1 is two voices, tile 2 is one voice, tile 3 is one voice, tile 4 is one voice, tile 5, 6 is one voice, tile 7 is one voice, tile 8 is one voice, tile 9 is one voice, tile 10 is one voice. 13 two voices, tile 14 1, 16 1, tile 17 1, tile 18 1, tile 21, 21, 22, 1, tile 23, 1, tile 24, 1.",
+ "reading_note": "OURS: 17 tiles heard clearly. 5, 11, 12, 15, 19, 20, 21 were not heard (dictation dropped them) and are left unanswered (null), not assumed.",
+ "answers": {
+  "1": {
+   "voices": 2,
+   "place": [
+    14,
+    1,
+    9,
+    1
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "2": {
+   "voices": 1,
+   "place": [
+    14,
+    1,
+    2,
+    3
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "3": {
+   "voices": 1,
+   "place": [
+    4,
+    0,
+    11,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "4": {
+   "voices": 1,
+   "place": [
+    5,
+    0,
+    5,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "5": {
+   "voices": null,
+   "place": [
+    12,
+    0,
+    10,
+    4
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "6": {
+   "voices": 1,
+   "place": [
+    12,
+    1,
+    10,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "7": {
+   "voices": 1,
+   "place": [
+    8,
+    0,
+    9,
+    4
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "8": {
+   "voices": 1,
+   "place": [
+    25,
+    0,
+    3,
+    2
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "9": {
+   "voices": 1,
+   "place": [
+    5,
+    0,
+    7,
+    1
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "10": {
+   "voices": 1,
+   "place": [
+    14,
+    1,
+    0,
+    4
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "11": {
+   "voices": null,
+   "place": [
+    5,
+    1,
+    12,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "12": {
+   "voices": null,
+   "place": [
+    5,
+    0,
+    7,
+    7
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "13": {
+   "voices": 2,
+   "place": [
+    12,
+    0,
+    2,
+    9
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "14": {
+   "voices": 1,
+   "place": [
+    14,
+    0,
+    13,
+    4
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "15": {
+   "voices": null,
+   "place": [
+    4,
+    1,
+    12,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "16": {
+   "voices": 1,
+   "place": [
+    25,
+    0,
+    12,
+    6
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "17": {
+   "voices": 1,
+   "place": [
+    25,
+    0,
+    0,
+    3
+   ],
+   "record_voices": "one_voice",
+   "stems_read": []
+  },
+  "18": {
+   "voices": 1,
+   "place": [
+    19,
+    1,
+    2,
+    8
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "19": {
+   "voices": null,
+   "place": [
+    8,
+    0,
+    0,
+    12
+   ],
+   "record_voices": "one_voice",
+   "stems_read": []
+  },
+  "20": {
+   "voices": null,
+   "place": [
+    14,
+    0,
+    1,
+    6
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "21": {
+   "voices": null,
+   "place": [
+    25,
+    1,
+    0,
+    9
+   ],
+   "record_voices": "one_voice",
+   "stems_read": []
+  },
+  "22": {
+   "voices": 1,
+   "place": [
+    14,
+    0,
+    11,
+    1
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "23": {
+   "voices": 1,
+   "place": [
+    19,
+    0,
+    2,
+    7
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "24": {
+   "voices": 1,
+   "place": [
+    8,
+    1,
+    5,
+    9
+   ],
+   "record_voices": "one_voice",
+   "stems_read": []
+  }
+ }
+}
