@@ -1,0 +1,1667 @@
+{
+ "set": "claimed_ink_at_tip, 24 unjudged of 31 unjudged (group 40, judged 9 excluded)",
+ "seed": 20261130,
+ "sheet": "/private/tmp/claude-501/tip-ink/tip-ink-claimed-24.png",
+ "records": [
+  "beethoven5-litolff-mvt1-whole-20261127-night.record.json",
+  "brahms1-breitkopf-mvt1-whole-20261127-night.record.json"
+ ],
+ "tiles": [
+  {
+   "tile": 1,
+   "place": "p12 sys0 staff2 cell6",
+   "plate": "litolff",
+   "page": 12,
+   "glyph": "glyph/12/0/2/6/2",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "arc",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    1245.0,
+    787.9,
+    1357.1,
+    803.6
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    218,
+    269,
+    503,
+    309
+   ],
+   "box_size_tile_px": [
+    285,
+    40
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 3,
+     "row": "obs:424275",
+     "family": "arc",
+     "thickness_spaces": 0.469,
+     "length_spaces": 7.144
+    }
+   ],
+   "stem_tip_page_px": [
+    1269.6,
+    800.6
+   ],
+   "crop_page_px": [
+    1159,
+    682,
+    1380,
+    819
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/12/0/2",
+   "scale": 2.54,
+   "tile_px": [
+    561,
+    348
+   ],
+   "orange_pixels": 4044,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4044
+  },
+  {
+   "tile": 2,
+   "place": "p6 sys1 staff1 cell8",
+   "plate": "brahms",
+   "page": 6,
+   "glyph": "glyph/6/1/1/8/0",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    5302.2,
+    4476.8,
+    5347.5,
+    4520.3
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    240,
+    258,
+    303,
+    318
+   ],
+   "box_size_tile_px": [
+    63,
+    60
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 13,
+     "row": "obs:385041",
+     "family": "word",
+     "thickness_spaces": 0.455,
+     "length_spaces": 2.14
+    }
+   ],
+   "stem_tip_page_px": [
+    5330.5,
+    4476.8
+   ],
+   "crop_page_px": [
+    5128,
+    4290,
+    5534,
+    4549
+   ],
+   "staff_space_page_px": 29.0,
+   "staff": "staff/6/1/1",
+   "scale": 1.379,
+   "tile_px": [
+    560,
+    357
+   ],
+   "orange_pixels": 1620,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 1620
+  },
+  {
+   "tile": 3,
+   "place": "p5 sys0 staff4 cell2",
+   "plate": "litolff",
+   "page": 5,
+   "glyph": "glyph/5/0/4/2/6",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    900.7,
+    1309.0,
+    951.9,
+    1319.9
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    274,
+    307,
+    404,
+    335
+   ],
+   "box_size_tile_px": [
+    130,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 6,
+     "row": "obs:148605",
+     "family": "word",
+     "thickness_spaces": 0.625,
+     "length_spaces": 3.266
+    }
+   ],
+   "stem_tip_page_px": [
+    903.2,
+    1321.9
+   ],
+   "crop_page_px": [
+    793,
+    1188,
+    1013,
+    1338
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/5/0/4",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    381
+   ],
+   "orange_pixels": 2040,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 2040
+  },
+  {
+   "tile": 4,
+   "place": "p1 sys0 staff0 cell4",
+   "plate": "brahms",
+   "page": 1,
+   "glyph": "glyph/1/0/0/4/13",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "arc_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    3989.2,
+    429.5,
+    4217.5,
+    448.4
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    370,
+    40,
+    705,
+    68
+   ],
+   "box_size_tile_px": [
+    335,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 51,
+     "row": "obs:046945",
+     "family": "arc_trace",
+     "thickness_spaces": 0.562,
+     "length_spaces": 8.382
+    }
+   ],
+   "stem_tip_page_px": [
+    3990.9,
+    431.2
+   ],
+   "crop_page_px": [
+    3737,
+    402,
+    4245,
+    726
+   ],
+   "staff_space_page_px": 27.25,
+   "staff": "staff/1/0/0",
+   "scale": 1.468,
+   "tile_px": [
+    746,
+    476
+   ],
+   "orange_pixels": 4500,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4500
+  },
+  {
+   "tile": 5,
+   "place": "p2 sys0 staff0 cell1",
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/0/1/15",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "accidental",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    636.0,
+    443.0,
+    739.1,
+    454.1
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    108,
+    168,
+    365,
+    195
+   ],
+   "box_size_tile_px": [
+    257,
+    27
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 0,
+     "row": "obs:026840",
+     "family": "accidental",
+     "thickness_spaces": 0.687,
+     "length_spaces": 6.439
+    }
+   ],
+   "stem_tip_page_px": [
+    705.0,
+    455.0
+   ],
+   "crop_page_px": [
+    593,
+    376,
+    817,
+    508
+   ],
+   "staff_space_page_px": 16.0,
+   "staff": "staff/2/0/0",
+   "scale": 2.5,
+   "tile_px": [
+    560,
+    330
+   ],
+   "orange_pixels": 3552,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 3552
+  },
+  {
+   "tile": 6,
+   "place": "p2 sys0 staff0 cell1",
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/0/1/3",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "accidental",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    636.0,
+    443.0,
+    739.1,
+    454.1
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    40,
+    160,
+    298,
+    188
+   ],
+   "box_size_tile_px": [
+    258,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 0,
+     "row": "obs:026840",
+     "family": "accidental",
+     "thickness_spaces": 0.687,
+     "length_spaces": 6.439
+    }
+   ],
+   "stem_tip_page_px": [
+    734.4,
+    455.0
+   ],
+   "crop_page_px": [
+    620,
+    379,
+    849,
+    508
+   ],
+   "staff_space_page_px": 16.0,
+   "staff": "staff/2/0/0",
+   "scale": 2.5,
+   "tile_px": [
+    572,
+    322
+   ],
+   "orange_pixels": 3576,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 3576
+  },
+  {
+   "tile": 7,
+   "place": "p2 sys0 staff0 cell1",
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/0/1/1",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "accidental",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    636.0,
+    443.0,
+    739.1,
+    454.1
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    40,
+    160,
+    298,
+    188
+   ],
+   "box_size_tile_px": [
+    258,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 0,
+     "row": "obs:026840",
+     "family": "accidental",
+     "thickness_spaces": 0.687,
+     "length_spaces": 6.439
+    }
+   ],
+   "stem_tip_page_px": [
+    734.4,
+    455.0
+   ],
+   "crop_page_px": [
+    620,
+    379,
+    849,
+    508
+   ],
+   "staff_space_page_px": 16.0,
+   "staff": "staff/2/0/0",
+   "scale": 2.5,
+   "tile_px": [
+    572,
+    322
+   ],
+   "orange_pixels": 3576,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 3576
+  },
+  {
+   "tile": 8,
+   "place": "p1 sys0 staff0 cell4",
+   "plate": "brahms",
+   "page": 1,
+   "glyph": "glyph/1/0/0/4/9",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "arc_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    3989.2,
+    429.5,
+    4217.5,
+    448.4
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    60,
+    40,
+    396,
+    68
+   ],
+   "box_size_tile_px": [
+    336,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 51,
+     "row": "obs:046945",
+     "family": "arc_trace",
+     "thickness_spaces": 0.562,
+     "length_spaces": 8.382
+    }
+   ],
+   "stem_tip_page_px": [
+    4139.0,
+    431.2
+   ],
+   "crop_page_px": [
+    3948,
+    402,
+    4330,
+    726
+   ],
+   "staff_space_page_px": 27.25,
+   "staff": "staff/1/0/0",
+   "scale": 1.468,
+   "tile_px": [
+    561,
+    476
+   ],
+   "orange_pixels": 4512,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4512
+  },
+  {
+   "tile": 9,
+   "place": "p8 sys1 staff1 cell0",
+   "plate": "litolff",
+   "page": 8,
+   "glyph": "glyph/8/1/1/0/10",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    594.5,
+    2140.8,
+    601.4,
+    2156.5
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    276,
+    220,
+    293,
+    260
+   ],
+   "box_size_tile_px": [
+    17,
+    40
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 27,
+     "row": "obs:274635",
+     "family": "word",
+     "thickness_spaces": 0.431,
+     "length_spaces": 1.051
+    }
+   ],
+   "stem_tip_page_px": [
+    596.4,
+    2154.7
+   ],
+   "crop_page_px": [
+    486,
+    2054,
+    707,
+    2180
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/8/1/1",
+   "scale": 2.54,
+   "tile_px": [
+    561,
+    320
+   ],
+   "orange_pixels": 828,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 828
+  },
+  {
+   "tile": 10,
+   "place": "p12 sys0 staff2 cell6",
+   "plate": "litolff",
+   "page": 12,
+   "glyph": "glyph/12/0/2/6/0",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "arc",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    1245.0,
+    787.9,
+    1357.1,
+    803.6
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    218,
+    269,
+    503,
+    309
+   ],
+   "box_size_tile_px": [
+    285,
+    40
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 3,
+     "row": "obs:424275",
+     "family": "arc",
+     "thickness_spaces": 0.469,
+     "length_spaces": 7.144
+    }
+   ],
+   "stem_tip_page_px": [
+    1269.6,
+    800.6
+   ],
+   "crop_page_px": [
+    1159,
+    682,
+    1380,
+    819
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/12/0/2",
+   "scale": 2.54,
+   "tile_px": [
+    561,
+    348
+   ],
+   "orange_pixels": 4044,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4044
+  },
+  {
+   "tile": 11,
+   "place": "p6 sys0 staff1 cell10",
+   "plate": "litolff",
+   "page": 6,
+   "glyph": "glyph/6/0/1/10/5",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "accidental",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    2155.3,
+    470.9,
+    2261.2,
+    495.2
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    302,
+    40,
+    585,
+    105
+   ],
+   "box_size_tile_px": [
+    283,
+    65
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 7,
+     "row": "obs:181701",
+     "family": "accidental",
+     "thickness_spaces": 0.74,
+     "length_spaces": 7.203
+    }
+   ],
+   "stem_tip_page_px": [
+    2159.1,
+    485.9
+   ],
+   "crop_page_px": [
+    2042,
+    456,
+    2276,
+    620
+   ],
+   "staff_space_page_px": 15.0,
+   "staff": "staff/6/0/1",
+   "scale": 2.667,
+   "tile_px": [
+    624,
+    437
+   ],
+   "orange_pixels": 4320,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4320
+  },
+  {
+   "tile": 12,
+   "place": "p6 sys1 staff1 cell8",
+   "plate": "brahms",
+   "page": 6,
+   "glyph": "glyph/6/1/1/8/5",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    5302.2,
+    4476.8,
+    5347.5,
+    4520.3
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    240,
+    258,
+    303,
+    318
+   ],
+   "box_size_tile_px": [
+    63,
+    60
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 13,
+     "row": "obs:385041",
+     "family": "word",
+     "thickness_spaces": 0.455,
+     "length_spaces": 2.14
+    }
+   ],
+   "stem_tip_page_px": [
+    5330.5,
+    4476.8
+   ],
+   "crop_page_px": [
+    5128,
+    4290,
+    5534,
+    4549
+   ],
+   "staff_space_page_px": 29.0,
+   "staff": "staff/6/1/1",
+   "scale": 1.379,
+   "tile_px": [
+    560,
+    357
+   ],
+   "orange_pixels": 1620,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 1620
+  },
+  {
+   "tile": 13,
+   "place": "p14 sys1 staff8 cell10",
+   "plate": "litolff",
+   "page": 14,
+   "glyph": "glyph/14/1/8/10/3",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "dynamic",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    2005.2,
+    3358.0,
+    2025.9,
+    3365.9
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    254,
+    234,
+    307,
+    254
+   ],
+   "box_size_tile_px": [
+    53,
+    20
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 23,
+     "row": "obs:536809",
+     "family": "dynamic",
+     "thickness_spaces": 0.498,
+     "length_spaces": 1.343
+    }
+   ],
+   "stem_tip_page_px": [
+    2015.6,
+    3373.8
+   ],
+   "crop_page_px": [
+    1905,
+    3266,
+    2126,
+    3392
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/14/1/8",
+   "scale": 2.54,
+   "tile_px": [
+    561,
+    320
+   ],
+   "orange_pixels": 1020,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 1020
+  },
+  {
+   "tile": 14,
+   "place": "p1 sys0 staff0 cell4",
+   "plate": "brahms",
+   "page": 1,
+   "glyph": "glyph/1/0/0/4/11",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "arc_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    3989.2,
+    429.5,
+    4217.5,
+    448.4
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    40,
+    40,
+    375,
+    68
+   ],
+   "box_size_tile_px": [
+    335,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 51,
+     "row": "obs:046945",
+     "family": "arc_trace",
+     "thickness_spaces": 0.562,
+     "length_spaces": 8.382
+    }
+   ],
+   "stem_tip_page_px": [
+    4212.0,
+    432.9
+   ],
+   "crop_page_px": [
+    3962,
+    402,
+    4462,
+    726
+   ],
+   "staff_space_page_px": 27.25,
+   "staff": "staff/1/0/0",
+   "scale": 1.468,
+   "tile_px": [
+    734,
+    476
+   ],
+   "orange_pixels": 4500,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4500
+  },
+  {
+   "tile": 15,
+   "place": "p13 sys1 staff2 cell4",
+   "plate": "brahms",
+   "page": 13,
+   "glyph": "glyph/13/1/2/4/1",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "hairpin_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    2492.2,
+    4591.5,
+    2686.4,
+    4614.0
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    41,
+    273,
+    321,
+    306
+   ],
+   "box_size_tile_px": [
+    280,
+    33
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 8,
+     "row": "obs:778987",
+     "family": "hairpin_trace",
+     "thickness_spaces": 0.5,
+     "length_spaces": 7.014
+    }
+   ],
+   "stem_tip_page_px": [
+    2669.1,
+    4614.2
+   ],
+   "crop_page_px": [
+    2464,
+    4402,
+    2874,
+    4642
+   ],
+   "staff_space_page_px": 27.75,
+   "staff": "staff/13/1/2",
+   "scale": 1.441,
+   "tile_px": [
+    591,
+    346
+   ],
+   "orange_pixels": 3900,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 3900
+  },
+  {
+   "tile": 16,
+   "place": "p6 sys0 staff3 cell7",
+   "plate": "brahms",
+   "page": 6,
+   "glyph": "glyph/6/0/3/7/7",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "hairpin_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    4788.1,
+    1532.6,
+    4933.4,
+    1559.6
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    279,
+    308,
+    494,
+    348
+   ],
+   "box_size_tile_px": [
+    215,
+    40
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 27,
+     "row": "obs:381504",
+     "family": "hairpin_trace",
+     "thickness_spaces": 0.562,
+     "length_spaces": 5.381
+    }
+   ],
+   "stem_tip_page_px": [
+    4788.8,
+    1541.0
+   ],
+   "crop_page_px": [
+    4600,
+    1325,
+    4978,
+    1587
+   ],
+   "staff_space_page_px": 27.0,
+   "staff": "staff/6/0/3",
+   "scale": 1.481,
+   "tile_px": [
+    560,
+    388
+   ],
+   "orange_pixels": 3204,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 3204
+  },
+  {
+   "tile": 17,
+   "place": "p5 sys0 staff4 cell2",
+   "plate": "litolff",
+   "page": 5,
+   "glyph": "glyph/5/0/4/2/2",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    900.7,
+    1309.0,
+    951.9,
+    1319.9
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    159,
+    307,
+    289,
+    335
+   ],
+   "box_size_tile_px": [
+    130,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 6,
+     "row": "obs:148605",
+     "family": "word",
+     "thickness_spaces": 0.625,
+     "length_spaces": 3.266
+    }
+   ],
+   "stem_tip_page_px": [
+    948.0,
+    1318.8
+   ],
+   "crop_page_px": [
+    838,
+    1188,
+    1058,
+    1336
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/5/0/4",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    376
+   ],
+   "orange_pixels": 2040,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 2040
+  },
+  {
+   "tile": 18,
+   "place": "p12 sys0 staff2 cell6",
+   "plate": "litolff",
+   "page": 12,
+   "glyph": "glyph/12/0/2/6/4",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "arc",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    1245.0,
+    787.9,
+    1357.1,
+    803.6
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    117,
+    282,
+    402,
+    322
+   ],
+   "box_size_tile_px": [
+    285,
+    40
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 3,
+     "row": "obs:424275",
+     "family": "arc",
+     "thickness_spaces": 0.469,
+     "length_spaces": 7.144
+    }
+   ],
+   "stem_tip_page_px": [
+    1309.5,
+    796.5
+   ],
+   "crop_page_px": [
+    1199,
+    677,
+    1420,
+    819
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/12/0/2",
+   "scale": 2.54,
+   "tile_px": [
+    561,
+    361
+   ],
+   "orange_pixels": 4044,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4044
+  },
+  {
+   "tile": 19,
+   "place": "p13 sys1 staff10 cell0",
+   "plate": "litolff",
+   "page": 13,
+   "glyph": "glyph/13/1/10/0/3",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "hairpin_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    588.3,
+    3595.0,
+    651.3,
+    3604.8
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    130,
+    257,
+    290,
+    281
+   ],
+   "box_size_tile_px": [
+    160,
+    24
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 56,
+     "row": "obs:485964",
+     "family": "hairpin_trace",
+     "thickness_spaces": 0.625,
+     "length_spaces": 4.003
+    }
+   ],
+   "stem_tip_page_px": [
+    646.8,
+    3605.7
+   ],
+   "crop_page_px": [
+    537,
+    3494,
+    757,
+    3621
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/13/1/10",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    323
+   ],
+   "orange_pixels": 2352,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 2352
+  },
+  {
+   "tile": 20,
+   "place": "p5 sys0 staff4 cell2",
+   "plate": "litolff",
+   "page": 5,
+   "glyph": "glyph/5/0/4/2/3",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    900.7,
+    1309.0,
+    951.9,
+    1319.9
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    213,
+    307,
+    343,
+    335
+   ],
+   "box_size_tile_px": [
+    130,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 6,
+     "row": "obs:148605",
+     "family": "word",
+     "thickness_spaces": 0.625,
+     "length_spaces": 3.266
+    }
+   ],
+   "stem_tip_page_px": [
+    926.9,
+    1320.8
+   ],
+   "crop_page_px": [
+    817,
+    1188,
+    1037,
+    1337
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/5/0/4",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    378
+   ],
+   "orange_pixels": 2040,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 2040
+  },
+  {
+   "tile": 21,
+   "place": "p6 sys0 staff1 cell10",
+   "plate": "litolff",
+   "page": 6,
+   "glyph": "glyph/6/0/1/10/0",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "accidental",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    2155.3,
+    470.9,
+    2261.2,
+    495.2
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    41,
+    42,
+    323,
+    107
+   ],
+   "box_size_tile_px": [
+    282,
+    65
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 7,
+     "row": "obs:181701",
+     "family": "accidental",
+     "thickness_spaces": 0.74,
+     "length_spaces": 7.203
+    }
+   ],
+   "stem_tip_page_px": [
+    2257.6,
+    470.0
+   ],
+   "crop_page_px": [
+    2140,
+    455,
+    2375,
+    620
+   ],
+   "staff_space_page_px": 15.0,
+   "staff": "staff/6/0/1",
+   "scale": 2.667,
+   "tile_px": [
+    627,
+    440
+   ],
+   "orange_pixels": 4308,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 4308
+  },
+  {
+   "tile": 22,
+   "place": "p5 sys0 staff4 cell2",
+   "plate": "litolff",
+   "page": 5,
+   "glyph": "glyph/5/0/4/2/4",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    900.7,
+    1309.0,
+    951.9,
+    1319.9
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    159,
+    307,
+    289,
+    335
+   ],
+   "box_size_tile_px": [
+    130,
+    28
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 6,
+     "row": "obs:148605",
+     "family": "word",
+     "thickness_spaces": 0.625,
+     "length_spaces": 3.266
+    }
+   ],
+   "stem_tip_page_px": [
+    948.0,
+    1318.8
+   ],
+   "crop_page_px": [
+    838,
+    1188,
+    1058,
+    1336
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/5/0/4",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    376
+   ],
+   "orange_pixels": 2040,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 2040
+  },
+  {
+   "tile": 23,
+   "place": "p13 sys1 staff8 cell8",
+   "plate": "litolff",
+   "page": 13,
+   "glyph": "glyph/13/1/8/8/14",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "word",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    1574.9,
+    3339.0,
+    1582.8,
+    3348.8
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    277,
+    282,
+    297,
+    307
+   ],
+   "box_size_tile_px": [
+    20,
+    25
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 21,
+     "row": "obs:485518",
+     "family": "word",
+     "thickness_spaces": 0.499,
+     "length_spaces": 0.654
+    }
+   ],
+   "stem_tip_page_px": [
+    1576.0,
+    3349.9
+   ],
+   "crop_page_px": [
+    1466,
+    3228,
+    1686,
+    3376
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/13/1/8",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    376
+   ],
+   "orange_pixels": 684,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 684
+  },
+  {
+   "tile": 24,
+   "place": "p13 sys1 staff10 cell0",
+   "plate": "litolff",
+   "page": 13,
+   "glyph": "glyph/13/1/10/0/4",
+   "cause": "claimed_ink_at_tip",
+   "claimant_kind": "hairpin_trace",
+   "candidates": [
+    [
+     1.0,
+     0,
+     2.0
+    ],
+    [
+     0.5,
+     1,
+     1.0
+    ]
+   ],
+   "tip_ink_box_page_px": [
+    588.3,
+    3595.0,
+    651.3,
+    3604.8
+   ],
+   "tip_ink_box_is": "bounding box of the claimed stroke(s) the stem's ink touches at its tip (record Q.STROKE bbox_page_px); the record does not store an extent of its own",
+   "tip_ink_box_tile_px": [
+    275,
+    257,
+    435,
+    281
+   ],
+   "box_size_tile_px": [
+    160,
+    24
+   ],
+   "line_px": 6,
+   "claimed_strokes": [
+    {
+     "ordinal": 56,
+     "row": "obs:485964",
+     "family": "hairpin_trace",
+     "thickness_spaces": 0.625,
+     "length_spaces": 4.003
+    }
+   ],
+   "stem_tip_page_px": [
+    589.8,
+    3608.5
+   ],
+   "crop_page_px": [
+    480,
+    3494,
+    700,
+    3624
+   ],
+   "staff_space_page_px": 15.75,
+   "staff": "staff/13/1/10",
+   "scale": 2.54,
+   "tile_px": [
+    559,
+    330
+   ],
+   "orange_pixels": 2352,
+   "orange_matches_expected": true,
+   "cut_off_by_crop": [],
+   "orange_pixels_on_sheet": 2352
+  }
+ ]
+}

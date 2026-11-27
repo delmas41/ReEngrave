@@ -1,0 +1,202 @@
+{
+ "set": "notes narrowed quarter|eighth, beam count cause claimed_ink_at_tip; 24 at random from the 31 unjudged (20261127-night)",
+ "date": "2026-11-27",
+ "question": "Is the ink in the orange box a beam? If not, what is it?",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1 is not a beam, it's a staff line. Tile 2 is a D from diminished. Tile 3 is a beam. Tile 4 is a beam. Tile 5 is a beam. Tile 6 is a beam. Tile 7 is a beam. Tile 8 is a beam. Tile 9 is the corner of a beam, but too small to really be helpful. Tile 10 is a staff line. Tile 11 is a beam. Tile 12 again is a D from diminished. Tile 13 is an F from SF. Tile 14 is a beam. Tile 15 is a hairpin. Tile 16 is a hairpin. Tile 17 is a beam. Tile 18 is a staff line. Tile 19 is a beam. Tile 20 is a beam. Tile 21 is a beam. Tile 22 is a beam. Tile 23 is just the very small corner of a beam. It's a very small box. And tile 24 is a beam.",
+ "box_is": "bounding box of the whole claimed stroke the stem's ink touches at its tip",
+ "answers": {
+  "1": {
+   "sean": "a staff line",
+   "is": "not a beam",
+   "plate": "litolff",
+   "claimant_kind": "arc",
+   "glyph": "glyph/12/0/2/6/2",
+   "place": "p12 sys0 staff2 cell6"
+  },
+  "2": {
+   "sean": "the d of dim.",
+   "is": "not a beam",
+   "plate": "brahms",
+   "claimant_kind": "word",
+   "glyph": "glyph/6/1/1/8/0",
+   "place": "p6 sys1 staff1 cell8"
+  },
+  "3": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "word",
+   "glyph": "glyph/5/0/4/2/6",
+   "place": "p5 sys0 staff4 cell2"
+  },
+  "4": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "brahms",
+   "claimant_kind": "arc_trace",
+   "glyph": "glyph/1/0/0/4/13",
+   "place": "p1 sys0 staff0 cell4"
+  },
+  "5": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "accidental",
+   "glyph": "glyph/2/0/0/1/15",
+   "place": "p2 sys0 staff0 cell1"
+  },
+  "6": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "accidental",
+   "glyph": "glyph/2/0/0/1/3",
+   "place": "p2 sys0 staff0 cell1"
+  },
+  "7": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "accidental",
+   "glyph": "glyph/2/0/0/1/1",
+   "place": "p2 sys0 staff0 cell1"
+  },
+  "8": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "brahms",
+   "claimant_kind": "arc_trace",
+   "glyph": "glyph/1/0/0/4/9",
+   "place": "p1 sys0 staff0 cell4"
+  },
+  "9": {
+   "sean": "corner of a beam (too small)",
+   "is": "beam corner",
+   "plate": "litolff",
+   "claimant_kind": "word",
+   "glyph": "glyph/8/1/1/0/10",
+   "place": "p8 sys1 staff1 cell0"
+  },
+  "10": {
+   "sean": "a staff line",
+   "is": "not a beam",
+   "plate": "litolff",
+   "claimant_kind": "arc",
+   "glyph": "glyph/12/0/2/6/0",
+   "place": "p12 sys0 staff2 cell6"
+  },
+  "11": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "accidental",
+   "glyph": "glyph/6/0/1/10/5",
+   "place": "p6 sys0 staff1 cell10"
+  },
+  "12": {
+   "sean": "the d of dim.",
+   "is": "not a beam",
+   "plate": "brahms",
+   "claimant_kind": "word",
+   "glyph": "glyph/6/1/1/8/5",
+   "place": "p6 sys1 staff1 cell8"
+  },
+  "13": {
+   "sean": "the f of sf",
+   "is": "not a beam",
+   "plate": "litolff",
+   "claimant_kind": "dynamic",
+   "glyph": "glyph/14/1/8/10/3",
+   "place": "p14 sys1 staff8 cell10"
+  },
+  "14": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "brahms",
+   "claimant_kind": "arc_trace",
+   "glyph": "glyph/1/0/0/4/11",
+   "place": "p1 sys0 staff0 cell4"
+  },
+  "15": {
+   "sean": "a hairpin",
+   "is": "not a beam",
+   "plate": "brahms",
+   "claimant_kind": "hairpin_trace",
+   "glyph": "glyph/13/1/2/4/1",
+   "place": "p13 sys1 staff2 cell4"
+  },
+  "16": {
+   "sean": "a hairpin",
+   "is": "not a beam",
+   "plate": "brahms",
+   "claimant_kind": "hairpin_trace",
+   "glyph": "glyph/6/0/3/7/7",
+   "place": "p6 sys0 staff3 cell7"
+  },
+  "17": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "word",
+   "glyph": "glyph/5/0/4/2/2",
+   "place": "p5 sys0 staff4 cell2"
+  },
+  "18": {
+   "sean": "a staff line",
+   "is": "not a beam",
+   "plate": "litolff",
+   "claimant_kind": "arc",
+   "glyph": "glyph/12/0/2/6/4",
+   "place": "p12 sys0 staff2 cell6"
+  },
+  "19": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "hairpin_trace",
+   "glyph": "glyph/13/1/10/0/3",
+   "place": "p13 sys1 staff10 cell0"
+  },
+  "20": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "word",
+   "glyph": "glyph/5/0/4/2/3",
+   "place": "p5 sys0 staff4 cell2"
+  },
+  "21": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "accidental",
+   "glyph": "glyph/6/0/1/10/0",
+   "place": "p6 sys0 staff1 cell10"
+  },
+  "22": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "word",
+   "glyph": "glyph/5/0/4/2/4",
+   "place": "p5 sys0 staff4 cell2"
+  },
+  "23": {
+   "sean": "very small corner of a beam",
+   "is": "beam corner",
+   "plate": "litolff",
+   "claimant_kind": "word",
+   "glyph": "glyph/13/1/8/8/14",
+   "place": "p13 sys1 staff8 cell8"
+  },
+  "24": {
+   "sean": "a beam",
+   "is": "beam",
+   "plate": "litolff",
+   "claimant_kind": "hairpin_trace",
+   "glyph": "glyph/13/1/10/0/4",
+   "place": "p13 sys1 staff10 cell0"
+  }
+ }
+}
