@@ -1,0 +1,1802 @@
+[
+ {
+  "tile": {
+   "crop_page_px": [
+    4980,
+    6946,
+    5585,
+    7195
+   ],
+   "scale_final": 1.1983,
+   "tile_px": [
+    725,
+    298
+   ]
+  },
+  "plate": "brahms",
+  "page": 4,
+  "start": "glyph/4/1/13/8/1",
+  "stop": "glyph/4/1/13/8/5",
+  "kind": "slur",
+  "run": "obs:100034",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:284633",
+  "lane_row": "obs:100034",
+  "ordinal": 94,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   5154.5,
+   6994.5,
+   5402.0,
+   7058.0
+  ],
+  "box_size_spaces_w_h": [
+   9.0,
+   2.31
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   7015,
+   7126
+  ],
+  "staff_space_px": 27.5,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    209,
+    58,
+    505,
+    133
+   ],
+   "outer_inclusive": [
+    202,
+    51,
+    512,
+    140
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    202,
+    51,
+    512,
+    140
+   ]
+  },
+  "box_in_tile_px_exact": [
+   209.11,
+   58.12,
+   505.7,
+   134.21
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    3600,
+    682,
+    4258,
+    928
+   ],
+   "scale_final": 1.1018,
+   "tile_px": [
+    725,
+    271
+   ]
+  },
+  "plate": "brahms",
+  "page": 5,
+  "start": "glyph/5/0/1/5/28",
+  "stop": "glyph/5/0/1/5/57",
+  "kind": "tie",
+  "run": "obs:177739",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:362338",
+  "lane_row": "obs:177739",
+  "ordinal": 3,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   3763.9,
+   825.2,
+   4053.4,
+   881.4
+  ],
+  "box_size_spaces_w_h": [
+   10.62,
+   2.06
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   750,
+   860
+  ],
+  "staff_space_px": 27.25,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    181,
+    158,
+    499,
+    219
+   ],
+   "outer_inclusive": [
+    174,
+    151,
+    506,
+    226
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    174,
+    151,
+    506,
+    226
+   ]
+  },
+  "box_in_tile_px_exact": [
+   180.59,
+   157.78,
+   499.57,
+   219.7
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1991,
+    3171,
+    2812,
+    3420
+   ],
+   "scale_final": 0.8831,
+   "tile_px": [
+    725,
+    220
+   ]
+  },
+  "plate": "brahms",
+  "page": 12,
+  "start": "glyph/12/0/12/4/6",
+  "stop": "glyph/12/0/12/5/1",
+  "kind": "slur",
+  "run": "obs:285662",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:755602",
+  "lane_row": "obs:285662",
+  "ordinal": 78,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   2184.1,
+   3205.4,
+   2646.8,
+   3344.4
+  ],
+  "box_size_spaces_w_h": [
+   16.75,
+   5.03
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   3240,
+   3351
+  ],
+  "staff_space_px": 27.625,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    171,
+    30,
+    578,
+    152
+   ],
+   "outer_inclusive": [
+    164,
+    23,
+    585,
+    159
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    164,
+    23,
+    585,
+    159
+   ]
+  },
+  "box_in_tile_px_exact": [
+   170.52,
+   30.38,
+   579.12,
+   153.12
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    3862,
+    5101,
+    4766,
+    5349
+   ],
+   "scale_final": 0.802,
+   "tile_px": [
+    725,
+    199
+   ]
+  },
+  "plate": "brahms",
+  "page": 14,
+  "start": "glyph/14/1/4/6/12",
+  "stop": "glyph/14/1/4/7/7",
+  "kind": "tie",
+  "run": "obs:342108",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:884110",
+  "lane_row": "obs:342108",
+  "ordinal": 77,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   4119.8,
+   5196.6,
+   4601.1,
+   5241.3
+  ],
+  "box_size_spaces_w_h": [
+   17.5,
+   1.63
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   5170,
+   5280
+  ],
+  "staff_space_px": 27.5,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    207,
+    77,
+    592,
+    112
+   ],
+   "outer_inclusive": [
+    200,
+    70,
+    599,
+    119
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    200,
+    70,
+    599,
+    119
+   ]
+  },
+  "box_in_tile_px_exact": [
+   206.75,
+   76.67,
+   592.75,
+   112.52
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1252,
+    670,
+    1580,
+    813
+   ],
+   "scale_final": 2.2104,
+   "tile_px": [
+    725,
+    316
+   ]
+  },
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/0/2/6/7",
+  "stop": "glyph/4/0/2/7/14",
+  "kind": "tie",
+  "run": "obs:108617",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:138497",
+  "lane_row": "obs:108617",
+  "ordinal": 74,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1364.0,
+   746.5,
+   1469.0,
+   790.5
+  ],
+  "box_size_spaces_w_h": [
+   6.67,
+   2.79
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   709,
+   774
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    248,
+    169,
+    479,
+    265
+   ],
+   "outer_inclusive": [
+    241,
+    162,
+    486,
+    272
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    241,
+    162,
+    486,
+    272
+   ]
+  },
+  "box_in_tile_px_exact": [
+   247.56,
+   169.09,
+   479.65,
+   266.35
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1522,
+    3356,
+    1760,
+    3497
+   ],
+   "scale_final": 3.0462,
+   "tile_px": [
+    725,
+    429
+   ]
+  },
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/1/9/8/4",
+  "stop": "glyph/4/1/9/8/2",
+  "kind": "slur",
+  "run": "obs:108629",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:138509",
+  "lane_row": "obs:108629",
+  "ordinal": 86,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1626.0,
+   3378.5,
+   1666.0,
+   3401.0
+  ],
+  "box_size_spaces_w_h": [
+   2.54,
+   1.43
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   3395,
+   3458
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    317,
+    69,
+    438,
+    136
+   ],
+   "outer_inclusive": [
+    310,
+    62,
+    445,
+    143
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    310,
+    62,
+    445,
+    143
+   ]
+  },
+  "box_in_tile_px_exact": [
+   316.81,
+   68.54,
+   438.66,
+   137.08
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    815,
+    670,
+    1176,
+    813
+   ],
+   "scale_final": 2.0083,
+   "tile_px": [
+    725,
+    288
+   ]
+  },
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/0/2/3/11",
+  "stop": "glyph/4/0/2/4/4",
+  "kind": "slur",
+  "run": "obs:108546",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:138426",
+  "lane_row": "obs:108546",
+  "ordinal": 3,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   910.0,
+   722.5,
+   1067.0,
+   754.0
+  ],
+  "box_size_spaces_w_h": [
+   9.97,
+   2.0
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   709,
+   774
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    191,
+    105,
+    505,
+    168
+   ],
+   "outer_inclusive": [
+    184,
+    98,
+    512,
+    175
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    184,
+    98,
+    512,
+    175
+   ]
+  },
+  "box_in_tile_px_exact": [
+   190.79,
+   105.44,
+   506.09,
+   168.7
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1077,
+    981,
+    1467,
+    1122
+   ],
+   "scale_final": 1.859,
+   "tile_px": [
+    725,
+    262
+   ]
+  },
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/0/4/5/11",
+  "stop": "glyph/4/0/4/6/6",
+  "kind": "tie",
+  "run": "obs:108551",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:138431",
+  "lane_row": "obs:108551",
+  "ordinal": 8,
+  "piece": 0,
+  "box_how": "piece x_range [1212.0, 1335.0] (run held in pieces; piece 0): ink box of the piece",
+  "reader_box_page_px": [
+   1212.0,
+   998.0,
+   1335.0,
+   1030.0
+  ],
+  "box_size_spaces_w_h": [
+   7.81,
+   2.03
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   1020,
+   1083
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    251,
+    32,
+    479,
+    90
+   ],
+   "outer_inclusive": [
+    244,
+    25,
+    486,
+    97
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    244,
+    25,
+    486,
+    97
+   ]
+  },
+  "box_in_tile_px_exact": [
+   250.96,
+   31.6,
+   479.62,
+   91.09
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1202,
+    1265,
+    1803,
+    1415
+   ],
+   "scale_final": 1.2063,
+   "tile_px": [
+    725,
+    181
+   ]
+  },
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/0/6/5/1",
+  "stop": "glyph/6/0/6/7/1",
+  "kind": "slur",
+  "run": "obs:151385",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:211874",
+  "lane_row": "obs:151385",
+  "ordinal": 37,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1329.0,
+   1277.5,
+   1704.0,
+   1317.5
+  ],
+  "box_size_spaces_w_h": [
+   23.81,
+   2.54
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   1313,
+   1376
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    153,
+    15,
+    605,
+    62
+   ],
+   "outer_inclusive": [
+    146,
+    8,
+    612,
+    69
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    146,
+    8,
+    612,
+    69
+   ]
+  },
+  "box_in_tile_px_exact": [
+   153.2,
+   15.08,
+   605.57,
+   63.33
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    896,
+    959,
+    1268,
+    1103
+   ],
+   "scale_final": 1.9489,
+   "tile_px": [
+    725,
+    280
+   ]
+  },
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/0/4/3/8",
+  "stop": "glyph/6/0/4/4/7",
+  "kind": "tie",
+  "run": "obs:151373",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:211862",
+  "lane_row": "obs:151373",
+  "ordinal": 25,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1001.0,
+   971.5,
+   1165.0,
+   1026.5
+  ],
+  "box_size_spaces_w_h": [
+   10.41,
+   3.49
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   1000,
+   1064
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    205,
+    24,
+    523,
+    131
+   ],
+   "outer_inclusive": [
+    198,
+    17,
+    530,
+    138
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    198,
+    17,
+    530,
+    138
+   ]
+  },
+  "box_in_tile_px_exact": [
+   204.64,
+   24.36,
+   524.26,
+   131.55
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    414,
+    2239,
+    799,
+    2380
+   ],
+   "scale_final": 1.8831,
+   "tile_px": [
+    725,
+    266
+   ]
+  },
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/1/2/0/7",
+  "stop": "glyph/6/1/2/1/10",
+  "kind": "tie",
+  "run": "obs:151361",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:211850",
+  "lane_row": "obs:151361",
+  "ordinal": 13,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   509.0,
+   2255.5,
+   683.0,
+   2329.5
+  ],
+  "box_size_spaces_w_h": [
+   11.05,
+   4.7
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2278,
+   2341
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    179,
+    31,
+    506,
+    169
+   ],
+   "outer_inclusive": [
+    172,
+    24,
+    513,
+    176
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    172,
+    24,
+    513,
+    176
+   ]
+  },
+  "box_in_tile_px_exact": [
+   178.9,
+   31.07,
+   506.56,
+   170.42
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    741,
+    959,
+    1112,
+    1103
+   ],
+   "scale_final": 1.9542,
+   "tile_px": [
+    725,
+    281
+   ]
+  },
+  "plate": "litolff",
+  "page": 6,
+  "start": "glyph/6/0/4/2/6",
+  "stop": "glyph/6/0/4/3/8",
+  "kind": "tie",
+  "run": "obs:151372",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:211861",
+  "lane_row": "obs:151372",
+  "ordinal": 24,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   848.0,
+   972.0,
+   1018.0,
+   1027.0
+  ],
+  "box_size_spaces_w_h": [
+   10.79,
+   3.49
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   1000,
+   1064
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    209,
+    25,
+    540,
+    132
+   ],
+   "outer_inclusive": [
+    202,
+    18,
+    547,
+    139
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    202,
+    18,
+    547,
+    139
+   ]
+  },
+  "box_in_tile_px_exact": [
+   209.1,
+   25.4,
+   541.31,
+   132.88
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    745,
+    2046,
+    1032,
+    2187
+   ],
+   "scale_final": 2.5261,
+   "tile_px": [
+    725,
+    356
+   ]
+  },
+  "plate": "litolff",
+  "page": 8,
+  "start": "glyph/8/1/1/3/1",
+  "stop": "glyph/8/1/1/4/4",
+  "kind": "tie",
+  "run": "obs:197751",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:302901",
+  "lane_row": "obs:197751",
+  "ordinal": 4,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   864.0,
+   2134.0,
+   920.0,
+   2165.5
+  ],
+  "box_size_spaces_w_h": [
+   3.56,
+   2.0
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2085,
+   2148
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    301,
+    222,
+    441,
+    301
+   ],
+   "outer_inclusive": [
+    294,
+    215,
+    448,
+    308
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    294,
+    215,
+    448,
+    308
+   ]
+  },
+  "box_in_tile_px_exact": [
+   300.61,
+   222.3,
+   442.07,
+   301.87
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    744,
+    2196,
+    1033,
+    2338
+   ],
+   "scale_final": 2.5087,
+   "tile_px": [
+    725,
+    356
+   ]
+  },
+  "plate": "litolff",
+  "page": 8,
+  "start": "glyph/8/1/2/3/2",
+  "stop": "glyph/8/1/2/4/1",
+  "kind": "tie",
+  "run": "obs:197757",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:302907",
+  "lane_row": "obs:197757",
+  "ordinal": 10,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   839.0,
+   2279.5,
+   918.0,
+   2298.5
+  ],
+  "box_size_spaces_w_h": [
+   5.02,
+   1.21
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2235,
+   2299
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    238,
+    209,
+    436,
+    256
+   ],
+   "outer_inclusive": [
+    231,
+    202,
+    443,
+    263
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    231,
+    202,
+    443,
+    263
+   ]
+  },
+  "box_in_tile_px_exact": [
+   238.32,
+   209.47,
+   436.51,
+   257.14
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1027,
+    965,
+    1320,
+    1103
+   ],
+   "scale_final": 2.4744,
+   "tile_px": [
+    725,
+    342
+   ]
+  },
+  "plate": "litolff",
+  "page": 9,
+  "start": "glyph/9/0/4/4/7",
+  "stop": "glyph/9/0/4/5/4",
+  "kind": "tie",
+  "run": "obs:231365",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:336515",
+  "lane_row": "obs:231365",
+  "ordinal": 23,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1155.0,
+   1068.0,
+   1211.0,
+   1079.0
+  ],
+  "box_size_spaces_w_h": [
+   3.56,
+   0.7
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   1004,
+   1064
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    317,
+    255,
+    454,
+    281
+   ],
+   "outer_inclusive": [
+    310,
+    248,
+    461,
+    288
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    310,
+    248,
+    461,
+    288
+   ]
+  },
+  "box_in_tile_px_exact": [
+   316.72,
+   254.86,
+   455.29,
+   282.08
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    449,
+    2295,
+    1299,
+    2478
+   ],
+   "scale_final": 0.8529,
+   "tile_px": [
+    725,
+    156
+   ]
+  },
+  "plate": "litolff",
+  "page": 9,
+  "start": "glyph/9/1/1/0/8",
+  "stop": "glyph/9/1/1/3/2",
+  "kind": "slur",
+  "run": "obs:231358",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:336508",
+  "lane_row": "obs:231358",
+  "ordinal": 16,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   568.0,
+   2308.0,
+   1202.0,
+   2343.5
+  ],
+  "box_size_spaces_w_h": [
+   40.25,
+   2.25
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2376,
+   2439
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    102,
+    11,
+    641,
+    40
+   ],
+   "outer_inclusive": [
+    95,
+    4,
+    648,
+    47
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    95,
+    4,
+    648,
+    47
+   ]
+  },
+  "box_in_tile_px_exact": [
+   101.5,
+   11.09,
+   642.26,
+   41.37
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1652,
+    799,
+    1993,
+    965
+   ],
+   "scale_final": 2.1261,
+   "tile_px": [
+    725,
+    353
+   ]
+  },
+  "plate": "litolff",
+  "page": 9,
+  "start": "glyph/9/0/3/9/16",
+  "stop": "glyph/9/0/3/10/4",
+  "kind": "slur",
+  "run": "obs:231380",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:336530",
+  "lane_row": "obs:231380",
+  "ordinal": 38,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1753.0,
+   920.0,
+   1879.0,
+   952.0
+  ],
+  "box_size_spaces_w_h": [
+   8.0,
+   2.03
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   838,
+   901
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    215,
+    257,
+    482,
+    324
+   ],
+   "outer_inclusive": [
+    208,
+    250,
+    489,
+    331
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    208,
+    250,
+    489,
+    331
+   ]
+  },
+  "box_in_tile_px_exact": [
+   214.74,
+   257.26,
+   482.62,
+   325.29
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    429,
+    2338,
+    777,
+    2479
+   ],
+   "scale_final": 2.0833,
+   "tile_px": [
+    725,
+    294
+   ]
+  },
+  "plate": "litolff",
+  "page": 10,
+  "start": "glyph/10/1/2/0/11",
+  "stop": "glyph/10/1/2/1/3",
+  "kind": "tie",
+  "run": "obs:277409",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:382559",
+  "lane_row": "obs:277409",
+  "ordinal": 22,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   573.0,
+   2373.5,
+   675.0,
+   2415.0
+  ],
+  "box_size_spaces_w_h": [
+   6.48,
+   2.63
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2377,
+   2440
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    300,
+    74,
+    511,
+    159
+   ],
+   "outer_inclusive": [
+    293,
+    67,
+    518,
+    166
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    293,
+    67,
+    518,
+    166
+   ]
+  },
+  "box_in_tile_px_exact": [
+   300.0,
+   73.96,
+   512.5,
+   160.42
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1968,
+    2762,
+    2314,
+    2926
+   ],
+   "scale_final": 2.0954,
+   "tile_px": [
+    725,
+    344
+   ]
+  },
+  "plate": "litolff",
+  "page": 10,
+  "start": "glyph/10/1/5/10/13",
+  "stop": "glyph/10/1/5/11/5",
+  "kind": "slur",
+  "run": "obs:277510",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:382660",
+  "lane_row": "obs:277510",
+  "ordinal": 123,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   2099.0,
+   2863.5,
+   2212.0,
+   2913.0
+  ],
+  "box_size_spaces_w_h": [
+   7.17,
+   3.14
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2801,
+   2864
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    274,
+    213,
+    510,
+    315
+   ],
+   "outer_inclusive": [
+    267,
+    206,
+    517,
+    322
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    267,
+    206,
+    517,
+    322
+   ]
+  },
+  "box_in_tile_px_exact": [
+   274.49,
+   212.68,
+   511.27,
+   316.4
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    430,
+    2474,
+    776,
+    2615
+   ],
+   "scale_final": 2.0954,
+   "tile_px": [
+    725,
+    296
+   ]
+  },
+  "plate": "litolff",
+  "page": 10,
+  "start": "glyph/10/1/3/0/10",
+  "stop": "glyph/10/1/3/1/8",
+  "kind": "slur",
+  "run": "obs:277436",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:382586",
+  "lane_row": "obs:277436",
+  "ordinal": 49,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   538.0,
+   2552.5,
+   670.0,
+   2593.5
+  ],
+  "box_size_spaces_w_h": [
+   8.38,
+   2.6
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   2513,
+   2576
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    226,
+    164,
+    502,
+    249
+   ],
+   "outer_inclusive": [
+    219,
+    157,
+    509,
+    256
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    219,
+    157,
+    509,
+    256
+   ]
+  },
+  "box_in_tile_px_exact": [
+   226.3,
+   164.49,
+   502.89,
+   250.4
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1502,
+    544,
+    1883,
+    685
+   ],
+   "scale_final": 1.9029,
+   "tile_px": [
+    725,
+    268
+   ]
+  },
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/1/10/7",
+  "stop": "glyph/11/0/1/11/3",
+  "kind": "slur",
+  "run": "obs:304214",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:409364",
+  "lane_row": "obs:304214",
+  "ordinal": 13,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1597.0,
+   578.5,
+   1788.0,
+   650.5
+  ],
+  "box_size_spaces_w_h": [
+   12.13,
+   4.57
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   583,
+   646
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    181,
+    66,
+    543,
+    202
+   ],
+   "outer_inclusive": [
+    174,
+    59,
+    550,
+    209
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    174,
+    59,
+    550,
+    209
+   ]
+  },
+  "box_in_tile_px_exact": [
+   180.77,
+   65.65,
+   544.23,
+   202.66
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1307,
+    691,
+    1630,
+    832
+   ],
+   "scale_final": 2.2446,
+   "tile_px": [
+    725,
+    317
+   ]
+  },
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/2/8/8",
+  "stop": "glyph/11/0/2/9/4",
+  "kind": "slur",
+  "run": "obs:304202",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:409352",
+  "lane_row": "obs:304202",
+  "ordinal": 1,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1437.0,
+   740.0,
+   1521.0,
+   761.5
+  ],
+  "box_size_spaces_w_h": [
+   5.33,
+   1.37
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   730,
+   793
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    292,
+    110,
+    479,
+    157
+   ],
+   "outer_inclusive": [
+    285,
+    103,
+    486,
+    164
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    285,
+    103,
+    486,
+    164
+   ]
+  },
+  "box_in_tile_px_exact": [
+   291.8,
+   109.98,
+   480.34,
+   158.24
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1574,
+    637,
+    1877,
+    781
+   ],
+   "scale_final": 2.3927,
+   "tile_px": [
+    725,
+    345
+   ]
+  },
+  "plate": "litolff",
+  "page": 16,
+  "start": "glyph/16/0/2/9/3",
+  "stop": "glyph/16/0/2/10/2",
+  "kind": "slur",
+  "run": "obs:349796",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:663409",
+  "lane_row": "obs:349796",
+  "ordinal": 47,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1679.0,
+   743.5,
+   1768.0,
+   768.0
+  ],
+  "box_size_spaces_w_h": [
+   5.65,
+   1.56
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   676,
+   740
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    251,
+    255,
+    463,
+    312
+   ],
+   "outer_inclusive": [
+    244,
+    248,
+    470,
+    319
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    244,
+    248,
+    470,
+    319
+   ]
+  },
+  "box_in_tile_px_exact": [
+   251.24,
+   254.83,
+   464.19,
+   313.45
+  ]
+ },
+ {
+  "tile": {
+   "crop_page_px": [
+    1577,
+    478,
+    1875,
+    634
+   ],
+   "scale_final": 2.4329,
+   "tile_px": [
+    725,
+    379
+   ]
+  },
+  "plate": "litolff",
+  "page": 16,
+  "start": "glyph/16/0/1/9/3",
+  "stop": "glyph/16/0/1/10/2",
+  "kind": "tie",
+  "run": "obs:349800",
+  "box_is": "arc reader run box (cv_page_arcs page_arc ink box of the run)",
+  "page_arc_obs": "obs:663413",
+  "lane_row": "obs:349800",
+  "ordinal": 51,
+  "piece": null,
+  "box_how": "page_arc observation bbox_page_px (the whole run)",
+  "reader_box_page_px": [
+   1678.0,
+   491.0,
+   1779.0,
+   519.0
+  ],
+  "box_size_spaces_w_h": [
+   6.41,
+   1.78
+  ],
+  "box_under_4px_at_final_scale": [
+   false,
+   false
+  ],
+  "staff_top_bottom_px": [
+   532,
+   595
+  ],
+  "staff_space_px": 15.75,
+  "staff_check": "",
+  "neighbour_rows_whitened": [],
+  "rect_drawn_tile_px": {
+   "inner_inclusive": [
+    246,
+    32,
+    490,
+    99
+   ],
+   "outer_inclusive": [
+    239,
+    25,
+    497,
+    106
+   ],
+   "line_px": 7,
+   "readback_outer_from_png": [
+    239,
+    25,
+    497,
+    106
+   ]
+  },
+  "box_in_tile_px_exact": [
+   245.72,
+   31.63,
+   491.44,
+   99.75
+  ]
+ }
+]

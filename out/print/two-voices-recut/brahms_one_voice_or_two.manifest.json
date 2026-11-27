@@ -1,0 +1,2467 @@
+{
+ "plate": "brahms",
+ "seed": 20261126,
+ "population_rule": "red bar (written red in the 20261123-night export), written in ONE voice, over-full (counted quarters > meter), Q.VOICES decided one_voice; unique cells; cell 0 excluded (its box holds the system header)",
+ "unique_cells_in_rule": 43,
+ "drawn_from": 41,
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "brahms",
+   "page": 14,
+   "system": 1,
+   "staff": 9,
+   "cell": 1,
+   "parts": [
+    "P12"
+   ],
+   "measure": 106,
+   "file": [
+    {
+     "part": "P12",
+     "measure": 106,
+     "doubled_copy": false,
+     "file_writes": [
+      "NBb4 quarter. d6 v1 #1F6FEB",
+      "NDb5 quarter. d6 v1 CHORD",
+      "NG3 quarter d4 v1 #1F6FEB",
+      "NAb4 quarter. d6 v1",
+      "NC5 quarter. d6 v1 CHORD"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "above"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 14,
+    "system": 1,
+    "staff": 9
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     6500,
+     6610
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      1422,
+      6373,
+      1996,
+      6736
+     ],
+     "header": [
+      640,
+      6373,
+      915,
+      6736
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1464.0,
+     6390.0,
+     1955.0,
+     6720.0
+    ],
+    "rect_inner_edge_page_px": [
+     1464.0,
+     6390.0,
+     1955.0,
+     6720.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/14/1/9/1), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     6438,
+     6701
+    ],
+    "neighbour_limits_px": [
+     6367.0,
+     6748.0
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [
+     [
+      1680,
+      6665
+     ]
+    ],
+    "fits": true,
+    "tile_px": [
+     1752,
+     726
+    ],
+    "rect_thickness_px": 15
+   },
+   "replacement": null
+  },
+  {
+   "tile": 2,
+   "subject": "brahms",
+   "page": 14,
+   "system": 1,
+   "staff": 2,
+   "cell": 3,
+   "parts": [
+    "P3"
+   ],
+   "measure": 108,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 108,
+     "doubled_copy": false,
+     "file_writes": [
+      "NF#4 quarter d4 v1",
+      "NA4 quarter d4 v1 CHORD",
+      "R eighth d2 v1",
+      "NE4 quarter d4 v1",
+      "NG#4 quarter. d6 v1 #1F6FEB",
+      "NB4 quarter. d6 v1 CHORD"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 14,
+    "system": 1,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     4681,
+     4791
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      2417,
+      4580,
+      3029,
+      4917
+     ],
+     "header": [
+      640,
+      4580,
+      881,
+      4917
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2459.0,
+     4571.0,
+     2988.0,
+     4901.0
+    ],
+    "rect_inner_edge_page_px": [
+     2459.0,
+     4593.8,
+     2988.0,
+     4901.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/14/1/2/3), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     4650,
+     4822
+    ],
+    "neighbour_limits_px": [
+     4580.0,
+     4932.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1760,
+     674
+    ],
+    "rect_thickness_px": 15
+   },
+   "replacement": null
+  },
+  {
+   "tile": 3,
+   "subject": "brahms",
+   "page": 4,
+   "system": 0,
+   "staff": 11,
+   "cell": 5,
+   "parts": [
+    "P12"
+   ],
+   "measure": 13,
+   "file": [
+    {
+     "part": "P12",
+     "measure": 13,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb4 half d8 v1",
+      "ND#4 eighth d2 v1",
+      "NE4 quarter. d6 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 4,
+    "system": 0,
+    "staff": 11
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3147,
+     3259
+    ],
+    "staff_space_px": 28.0,
+    "crop_page_px": {
+     "main": [
+      2685,
+      3018,
+      3247,
+      3387
+     ],
+     "header": [
+      648,
+      3018,
+      922,
+      3387
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2727.0,
+     3035.0,
+     3205.0,
+     3371.0
+    ],
+    "rect_inner_edge_page_px": [
+     2727.0,
+     3035.0,
+     3205.0,
+     3371.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/4/0/11/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3130,
+     3275
+    ],
+    "neighbour_limits_px": [
+     3002.2,
+     3410.8
+    ],
+    "foreign_marks_in_cell": 4,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1728,
+     738
+    ],
+    "rect_thickness_px": 15
+   },
+   "replacement": null
+  },
+  {
+   "tile": 4,
+   "subject": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 5,
+   "cell": 5,
+   "parts": [
+    "P6"
+   ],
+   "measure": 33,
+   "file": [
+    {
+     "part": "P6",
+     "measure": 33,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC4 eighth d2 v1",
+      "NC5 eighth d2 v1 CHORD",
+      "R eighth d2 v1",
+      "NC5 quarter d4 v1 #1F6FEB",
+      "NC4 quarter. d6 v1",
+      "NC5 quarter. d6 v1 CHORD"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 5,
+    "system": 0,
+    "staff": 5
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1683,
+     1793
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      3691,
+      1608,
+      4383,
+      1867
+     ],
+     "header": [
+      627,
+      1608,
+      839,
+      1867
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3733.0,
+     1573.0,
+     4342.0,
+     1903.0
+    ],
+    "rect_inner_edge_page_px": [
+     3733.0,
+     1621.8,
+     4342.0,
+     1853.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/5/0/5/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1642,
+     1835
+    ],
+    "neighbour_limits_px": [
+     1608.0,
+     1867.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1862,
+     518
+    ],
+    "rect_thickness_px": 16
+   },
+   "replacement": null
+  },
+  {
+   "tile": 5,
+   "subject": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 10,
+   "cell": 4,
+   "parts": [
+    "P11"
+   ],
+   "measure": 75,
+   "file": [
+    {
+     "part": "P11",
+     "measure": 75,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC4 half d8 v1",
+      "NAb4 half d8 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 12,
+    "system": 0,
+    "staff": 10
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2748,
+     2859
+    ],
+    "staff_space_px": 27.75,
+    "crop_page_px": {
+     "main": [
+      2082,
+      2660,
+      2466,
+      2982
+     ],
+     "header": [
+      630,
+      2660,
+      902,
+      2982
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2124.0,
+     2637.0,
+     2425.0,
+     2970.0
+    ],
+    "rect_inner_edge_page_px": [
+     2124.0,
+     2674.0,
+     2425.0,
+     2969.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/12/0/10/4), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2748,
+     2905
+    ],
+    "neighbour_limits_px": [
+     2660.1,
+     2982.9
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1366,
+     644
+    ],
+    "rect_thickness_px": 12
+   },
+   "replacement": null
+  },
+  {
+   "tile": 6,
+   "subject": "brahms",
+   "page": 12,
+   "system": 1,
+   "staff": 10,
+   "cell": 5,
+   "parts": [
+    "P11"
+   ],
+   "measure": 90,
+   "file": [
+    {
+     "part": "P11",
+     "measure": 90,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb5 quarter. d6 v1",
+      "ND5 half d8 v1",
+      "ND5 quarter. d6 v1"
+     ],
+     "counted_quarters": [
+      5.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 12,
+    "system": 1,
+    "staff": 10
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     6271,
+     6380
+    ],
+    "staff_space_px": 27.25,
+    "crop_page_px": {
+     "main": [
+      3129,
+      6174,
+      3650,
+      6475
+     ],
+     "header": [
+      638,
+      6174,
+      847,
+      6475
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3170.0,
+     6162.0,
+     3610.0,
+     6489.0
+    ],
+    "rect_inner_edge_page_px": [
+     3170.0,
+     6188.5,
+     3610.0,
+     6461.5
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/12/1/10/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     6242,
+     6395
+    ],
+    "neighbour_limits_px": [
+     6174.9,
+     6475.1
+    ],
+    "foreign_marks_in_cell": 5,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1514,
+     602
+    ],
+    "rect_thickness_px": 13
+   },
+   "replacement": null
+  },
+  {
+   "tile": 7,
+   "subject": "brahms",
+   "page": 8,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "parts": [
+    "P13"
+   ],
+   "measure": 50,
+   "file": [
+    {
+     "part": "P13",
+     "measure": 50,
+     "doubled_copy": false,
+     "file_writes": [
+      "NF4 quarter d4 v1",
+      "R quarter d4 v1",
+      "NEb4 quarter d4 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 8,
+    "system": 0,
+    "staff": 9
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3173,
+     3284
+    ],
+    "staff_space_px": 27.75,
+    "crop_page_px": {
+     "main": [
+      2344,
+      2999,
+      2827,
+      3411
+     ],
+     "header": [
+      643,
+      2999,
+      915,
+      3411
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2386.0,
+     3007.0,
+     2786.0,
+     3395.0
+    ],
+    "rect_inner_edge_page_px": [
+     2386.0,
+     3013.0,
+     2786.0,
+     3395.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/8/0/9/4), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3140,
+     3286
+    ],
+    "neighbour_limits_px": [
+     2999.1,
+     3412.9
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1564,
+     824
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 8,
+   "subject": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "parts": [
+    "P4"
+   ],
+   "measure": 136,
+   "file": [
+    {
+     "part": "P4",
+     "measure": 136,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC4 eighth d2 v1",
+      "R eighth d2 v1",
+      "NDb3 quarter d4 v1 #1F6FEB",
+      "NDb4 quarter d4 v1 CHORD",
+      "NBb2 eighth d2 v1 #1F6FEB",
+      "NBb3 eighth d2 v1 CHORD",
+      "R eighth d2 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 25,
+    "system": 0,
+    "staff": 3
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1377,
+     1488
+    ],
+    "staff_space_px": 27.75,
+    "crop_page_px": {
+     "main": [
+      1889,
+      1237,
+      2415,
+      1611
+     ],
+     "header": [
+      632,
+      1237,
+      903,
+      1611
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1931.0,
+     1266.0,
+     2374.0,
+     1599.0
+    ],
+    "rect_inner_edge_page_px": [
+     1931.0,
+     1266.0,
+     2374.0,
+     1598.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/25/0/3/2), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1274,
+     1543
+    ],
+    "neighbour_limits_px": [
+     1223.1,
+     1611.9
+    ],
+    "foreign_marks_in_cell": 3,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1648,
+     748
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 9,
+   "subject": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 7,
+   "cell": 1,
+   "parts": [
+    "P8"
+   ],
+   "measure": 29,
+   "file": [
+    {
+     "part": "P8",
+     "measure": 29,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC4 eighth d2 v1",
+      "NC5 eighth d2 v1 CHORD",
+      "R quarter d4 v1",
+      "R eighth d2 v1",
+      "R eighth d2 v1",
+      "R quarter d4 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 5,
+    "system": 0,
+    "staff": 7
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2062,
+     2172
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      1400,
+      1998,
+      2070,
+      2289
+     ],
+     "header": [
+      627,
+      1998,
+      861,
+      2289
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1442.0,
+     1952.0,
+     2029.0,
+     2282.0
+    ],
+    "rect_inner_edge_page_px": [
+     1442.0,
+     2011.8,
+     2029.0,
+     2275.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/5/0/7/1), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2014,
+     2214
+    ],
+    "neighbour_limits_px": [
+     1998.0,
+     2289.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": false,
+    "tile_px": [
+     1862,
+     582
+    ],
+    "rect_thickness_px": 16
+   },
+   "replacement": null
+  },
+  {
+   "tile": 10,
+   "subject": "brahms",
+   "page": 14,
+   "system": 1,
+   "staff": 0,
+   "cell": 4,
+   "parts": [
+    "P1"
+   ],
+   "measure": 109,
+   "file": [
+    {
+     "part": "P1",
+     "measure": 109,
+     "doubled_copy": false,
+     "file_writes": [
+      "ND5 quarter. d6 v1",
+      "NF#5 quarter. d6 v1 CHORD #1F6FEB",
+      "R eighth d2 v1",
+      "NEb5 quarter. d6 v1",
+      "NG5 quarter. d6 v1 CHORD"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 14,
+    "system": 1,
+    "staff": 0
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     4244,
+     4354
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      2946,
+      4062,
+      3531,
+      4449
+     ],
+     "header": [
+      640,
+      4062,
+      928,
+      4449
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2988.0,
+     4079.0,
+     3490.0,
+     4464.0
+    ],
+    "rect_inner_edge_page_px": [
+     2988.0,
+     4079.0,
+     3490.0,
+     4435.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/14/1/0/4), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     4207,
+     4368
+    ],
+    "neighbour_limits_px": [
+     3778.0,
+     4449.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1800,
+     774
+    ],
+    "rect_thickness_px": 16
+   },
+   "replacement": null
+  },
+  {
+   "tile": 11,
+   "subject": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 12,
+   "cell": 5,
+   "parts": [
+    "P13"
+   ],
+   "measure": 41,
+   "file": [
+    {
+     "part": "P13",
+     "measure": 41,
+     "doubled_copy": false,
+     "file_writes": [
+      "NBb2 quarter d4 v1 #1F6FEB",
+      "R eighth d2 v1",
+      "R eighth d2 v1",
+      "NBb2 eighth d2 v1",
+      "R eighth d2 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "above",
+     "below"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 5,
+    "system": 1,
+    "staff": 12
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     6809,
+     6919
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      3188,
+      6707,
+      3711,
+      7031
+     ],
+     "header": [
+      625,
+      6707,
+      887,
+      7031
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3230.0,
+     6699.0,
+     3670.0,
+     7029.0
+    ],
+    "rect_inner_edge_page_px": [
+     3230.0,
+     6720.8,
+     3670.0,
+     7017.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/5/1/12/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     6785,
+     6926
+    ],
+    "neighbour_limits_px": [
+     6707.0,
+     7031.0
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1624,
+     648
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 12,
+   "subject": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 7,
+   "cell": 7,
+   "parts": [
+    "P8"
+   ],
+   "measure": 35,
+   "file": [
+    {
+     "part": "P8",
+     "measure": 35,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC4 eighth d2 v1",
+      "NC5 eighth d2 v1 CHORD",
+      "R eighth d2 v1",
+      "NC4 eighth d2 v1",
+      "NC5 eighth d2 v1 CHORD",
+      "NC4 quarter d4 v1",
+      "NC5 quarter d4 v1 CHORD",
+      "NC4 eighth d2 v1",
+      "NC5 eighth d2 v1 CHORD",
+      "R quarter d4 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 5,
+    "system": 0,
+    "staff": 7
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2062,
+     2172
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      4872,
+      1998,
+      5554,
+      2289
+     ],
+     "header": [
+      627,
+      1998,
+      861,
+      2289
+     ]
+    },
+    "reader_cell_box_page_px": [
+     4914.0,
+     1952.0,
+     5513.0,
+     2282.0
+    ],
+    "rect_inner_edge_page_px": [
+     4914.0,
+     2011.8,
+     5513.0,
+     2275.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/5/0/7/7), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2016,
+     2216
+    ],
+    "neighbour_limits_px": [
+     1998.0,
+     2289.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1886,
+     582
+    ],
+    "rect_thickness_px": 16
+   },
+   "replacement": null
+  },
+  {
+   "tile": 13,
+   "subject": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 2,
+   "cell": 9,
+   "parts": [
+    "P3"
+   ],
+   "measure": 80,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 80,
+     "doubled_copy": false,
+     "file_writes": [
+      "NF#4 quarter d4 v1",
+      "NA4 quarter d4 v1 CHORD",
+      "R eighth d2 v1",
+      "R quarter d4 v1",
+      "NA4 quarter. d6 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      4.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "below"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 12,
+    "system": 0,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     955,
+     1063
+    ],
+    "staff_space_px": 27.0,
+    "crop_page_px": {
+     "main": [
+      3551,
+      866,
+      3965,
+      1187
+     ],
+     "header": [
+      630,
+      866,
+      861,
+      1187
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3592.0,
+     847.0,
+     3925.0,
+     1171.0
+    ],
+    "rect_inner_edge_page_px": [
+     3592.0,
+     880.3,
+     3925.0,
+     1171.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/12/0/2/9), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     931,
+     1123
+    ],
+    "neighbour_limits_px": [
+     866.8,
+     1217.2
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1344,
+     642
+    ],
+    "rect_thickness_px": 12
+   },
+   "replacement": null
+  },
+  {
+   "tile": 14,
+   "subject": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 13,
+   "cell": 4,
+   "parts": [
+    "P14"
+   ],
+   "measure": 99,
+   "file": [
+    {
+     "part": "P14",
+     "measure": 99,
+     "doubled_copy": false,
+     "file_writes": [
+      "NG2 eighth d2 v1",
+      "R eighth d2 v1",
+      "R eighth d2 v1",
+      "R quarter d4 v1",
+      "NC3 quarter d4 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 14,
+    "system": 0,
+    "staff": 13
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3657,
+     3767
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      2705,
+      3532,
+      3312,
+      3948
+     ],
+     "header": [
+      630,
+      3532,
+      902,
+      3948
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2747.0,
+     3547.0,
+     3271.0,
+     3932.0
+    ],
+    "rect_inner_edge_page_px": [
+     2747.0,
+     3547.0,
+     3271.0,
+     3932.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/14/0/13/4), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3652,
+     3783
+    ],
+    "neighbour_limits_px": [
+     3532.0,
+     4233.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1812,
+     832
+    ],
+    "rect_thickness_px": 16
+   },
+   "replacement": null
+  },
+  {
+   "tile": 15,
+   "subject": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 12,
+   "cell": 5,
+   "parts": [
+    "P13"
+   ],
+   "measure": 24,
+   "file": [
+    {
+     "part": "P13",
+     "measure": 24,
+     "doubled_copy": false,
+     "file_writes": [
+      "ND3 quarter. d6 v1",
+      "ND3 eighth d2 v1",
+      "NG2 half d8 v1 #1F6FEB"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 4,
+    "system": 1,
+    "staff": 12
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     6789,
+     6898
+    ],
+    "staff_space_px": 27.25,
+    "crop_page_px": {
+     "main": [
+      3317,
+      6689,
+      3944,
+      7004
+     ],
+     "header": [
+      632,
+      6689,
+      892,
+      7004
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3358.0,
+     6680.0,
+     3904.0,
+     7007.0
+    ],
+    "rect_inner_edge_page_px": [
+     3358.0,
+     6703.5,
+     3904.0,
+     6990.5
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/4/1/12/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     6787,
+     6939
+    ],
+    "neighbour_limits_px": [
+     6689.9,
+     7004.1
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1828,
+     630
+    ],
+    "rect_thickness_px": 16
+   },
+   "replacement": null
+  },
+  {
+   "tile": 16,
+   "subject": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 12,
+   "cell": 6,
+   "parts": [
+    "P13"
+   ],
+   "measure": 140,
+   "file": [
+    {
+     "part": "P13",
+     "measure": 140,
+     "doubled_copy": false,
+     "file_writes": [
+      "NBb2 quarter d4 v1 #1F6FEB",
+      "R eighth d2 v1",
+      "NDb4 eighth d2 v1",
+      "NBb3 eighth d2 v1",
+      "R eighth d2 v1",
+      "NDb3 eighth d2 v1"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 25,
+    "system": 0,
+    "staff": 12
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3650,
+     3761
+    ],
+    "staff_space_px": 27.75,
+    "crop_page_px": {
+     "main": [
+      3682,
+      3516,
+      4206,
+      3888
+     ],
+     "header": [
+      632,
+      3516,
+      892,
+      3888
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3724.0,
+     3539.0,
+     4165.0,
+     3872.0
+    ],
+    "rect_inner_edge_page_px": [
+     3724.0,
+     3539.0,
+     4165.0,
+     3872.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/25/0/12/6), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3553,
+     3843
+    ],
+    "neighbour_limits_px": [
+     3496.1,
+     3913.9
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1622,
+     744
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 17,
+   "subject": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 0,
+   "cell": 3,
+   "parts": [
+    "P1"
+   ],
+   "measure": 137,
+   "file": [
+    {
+     "part": "P1",
+     "measure": 137,
+     "doubled_copy": false,
+     "file_writes": [
+      "NAb6 quarter d4 v1 #1F6FEB",
+      "R whole d16 v1"
+     ],
+     "counted_quarters": [
+      5.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 25,
+    "system": 0,
+    "staff": 0
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     502,
+     612
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      2332,
+      307,
+      2808,
+      738
+     ],
+     "header": [
+      632,
+      307,
+      913,
+      738
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2374.0,
+     337.0,
+     2767.0,
+     722.0
+    ],
+    "rect_inner_edge_page_px": [
+     2374.0,
+     337.0,
+     2767.0,
+     722.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/25/0/0/3), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     343,
+     612
+    ],
+    "neighbour_limits_px": [
+     0,
+     760.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [
+     [
+      2374,
+      344
+     ]
+    ],
+    "fits": true,
+    "tile_px": [
+     1568,
+     862
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 18,
+   "subject": "brahms",
+   "page": 19,
+   "system": 1,
+   "staff": 2,
+   "cell": 8,
+   "parts": [
+    "P3"
+   ],
+   "measure": 133,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 133,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC#5 eighth d2 v1",
+      "NBb5 eighth d2 v1 CHORD",
+      "R eighth d2 v1",
+      "R eighth d2 v1",
+      "NBb4 eighth. d3 v1",
+      "R eighth d2 v1",
+      "R eighth d2 v1"
+     ],
+     "counted_quarters": [
+      3.25
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 19,
+    "system": 1,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     4577,
+     4688
+    ],
+    "staff_space_px": 27.75,
+    "crop_page_px": {
+     "main": [
+      4862,
+      4469,
+      5545,
+      4815
+     ],
+     "header": [
+      621,
+      4469,
+      863,
+      4815
+     ]
+    },
+    "reader_cell_box_page_px": [
+     4904.0,
+     4466.0,
+     5504.0,
+     4799.0
+    ],
+    "rect_inner_edge_page_px": [
+     4904.0,
+     4483.0,
+     5504.0,
+     4799.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/19/1/2/8), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     4514,
+     4719
+    ],
+    "neighbour_limits_px": [
+     4469.1,
+     4838.9
+    ],
+    "foreign_marks_in_cell": 3,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1904,
+     692
+    ],
+    "rect_thickness_px": 17
+   },
+   "replacement": null
+  },
+  {
+   "tile": 19,
+   "subject": "brahms",
+   "page": 8,
+   "system": 0,
+   "staff": 0,
+   "cell": 12,
+   "parts": [
+    "P1"
+   ],
+   "measure": 58,
+   "file": [
+    {
+     "part": "P1",
+     "measure": 58,
+     "doubled_copy": false,
+     "file_writes": [
+      "R whole. d24 v1"
+     ],
+     "counted_quarters": [
+      6.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 8,
+    "system": 0,
+    "staff": 0
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     586,
+     697
+    ],
+    "staff_space_px": 27.75,
+    "crop_page_px": {
+     "main": [
+      5082,
+      403,
+      5533,
+      879
+     ],
+     "header": [
+      643,
+      403,
+      909,
+      879
+     ]
+    },
+    "reader_cell_box_page_px": [
+     5124.0,
+     420.0,
+     5492.0,
+     863.0
+    ],
+    "rect_inner_edge_page_px": [
+     5124.0,
+     420.0,
+     5492.0,
+     863.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/8/0/0/12), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     586,
+     697
+    ],
+    "neighbour_limits_px": [
+     0,
+     901.9
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1488,
+     952
+    ],
+    "rect_thickness_px": 13
+   },
+   "replacement": null
+  },
+  {
+   "tile": 20,
+   "subject": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 1,
+   "cell": 6,
+   "parts": [
+    "P2"
+   ],
+   "measure": 101,
+   "file": [
+    {
+     "part": "P2",
+     "measure": 101,
+     "doubled_copy": false,
+     "file_writes": [
+      "ND5 quarter. d6 v1",
+      "NB5 quarter. d6 v1 CHORD",
+      "R eighth d2 v1",
+      "R quarter d4 v1",
+      "R eighth. d3 v1"
+     ],
+     "counted_quarters": [
+      3.75
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 14,
+    "system": 0,
+    "staff": 1
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     784,
+     894
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      3658,
+      657,
+      4233,
+      995
+     ],
+     "header": [
+      630,
+      657,
+      893,
+      995
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3700.0,
+     674.0,
+     4192.0,
+     1004.0
+    ],
+    "rect_inner_edge_page_px": [
+     3700.0,
+     674.0,
+     4192.0,
+     981.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/14/0/1/6), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     697,
+     904
+    ],
+    "neighbour_limits_px": [
+     656.0,
+     995.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1730,
+     676
+    ],
+    "rect_thickness_px": 15
+   },
+   "replacement": null
+  },
+  {
+   "tile": 21,
+   "subject": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 0,
+   "cell": 9,
+   "parts": [
+    "P1"
+   ],
+   "measure": 153,
+   "file": [
+    {
+     "part": "P1",
+     "measure": 153,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb6 whole. d24 v1"
+     ],
+     "counted_quarters": [
+      6.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 25,
+    "system": 1,
+    "staff": 0
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     4487,
+     4597
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      5006,
+      4305,
+      5549,
+      4693
+     ],
+     "header": [
+      622,
+      4305,
+      888,
+      4693
+     ]
+    },
+    "reader_cell_box_page_px": [
+     5048.0,
+     4322.0,
+     5508.0,
+     4707.0
+    ],
+    "rect_inner_edge_page_px": [
+     5048.0,
+     4322.0,
+     5508.0,
+     4679.2
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/25/1/0/9), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     4351,
+     4597
+    ],
+    "neighbour_limits_px": [
+     4045.0,
+     4693.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1672,
+     776
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 22,
+   "subject": "brahms",
+   "page": 14,
+   "system": 0,
+   "staff": 11,
+   "cell": 1,
+   "parts": [
+    "P12"
+   ],
+   "measure": 96,
+   "file": [
+    {
+     "part": "P12",
+     "measure": 96,
+     "doubled_copy": false,
+     "file_writes": [
+      "NF3 eighth d2 v1",
+      "NF3 eighth d2 v1",
+      "NF3 eighth d2 v1",
+      "NF3 quarter d4 v1",
+      "NF3 eighth d2 v1",
+      "NF3 eighth d2 v1",
+      "NF3 eighth d2 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 14,
+    "system": 0,
+    "staff": 11
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3188,
+     3297
+    ],
+    "staff_space_px": 27.25,
+    "crop_page_px": {
+     "main": [
+      1389,
+      3065,
+      1908,
+      3401
+     ],
+     "header": [
+      630,
+      3065,
+      897,
+      3401
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1430.0,
+     3079.0,
+     1868.0,
+     3406.0
+    ],
+    "rect_inner_edge_page_px": [
+     1430.0,
+     3079.5,
+     1868.0,
+     3387.5
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/14/0/11/1), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3188,
+     3342
+    ],
+    "neighbour_limits_px": [
+     3065.9,
+     3401.1
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1626,
+     672
+    ],
+    "rect_thickness_px": 14
+   },
+   "replacement": null
+  },
+  {
+   "tile": 23,
+   "subject": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 2,
+   "cell": 7,
+   "parts": [
+    "P3"
+   ],
+   "measure": 121,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 121,
+     "doubled_copy": false,
+     "file_writes": [
+      "NA4 eighth d2 v1",
+      "NE5 eighth d2 v1 CHORD",
+      "R eighth d2 v1",
+      "R eighth d2 v1",
+      "R quarter d4 v1",
+      "NEb5 quarter. d6 v1",
+      "NEb6 quarter. d6 v1 CHORD #1F6FEB"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": [
+     "above"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 19,
+    "system": 0,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1029,
+     1138
+    ],
+    "staff_space_px": 27.25,
+    "crop_page_px": {
+     "main": [
+      3956,
+      899,
+      4460,
+      1263
+     ],
+     "header": [
+      622,
+      899,
+      859,
+      1263
+     ]
+    },
+    "reader_cell_box_page_px": [
+     3997.0,
+     920.0,
+     4420.0,
+     1247.0
+    ],
+    "rect_inner_edge_page_px": [
+     3997.0,
+     920.0,
+     4420.0,
+     1247.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/19/0/2/7), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     933,
+     1187
+    ],
+    "neighbour_limits_px": [
+     899.9,
+     1274.1
+    ],
+    "foreign_marks_in_cell": 8,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1536,
+     728
+    ],
+    "rect_thickness_px": 13
+   },
+   "replacement": null
+  },
+  {
+   "tile": 24,
+   "subject": "brahms",
+   "page": 8,
+   "system": 1,
+   "staff": 5,
+   "cell": 9,
+   "parts": [
+    "P7"
+   ],
+   "measure": 68,
+   "file": [
+    {
+     "part": "P7",
+     "measure": 68,
+     "doubled_copy": false,
+     "file_writes": [
+      "R whole d16 v1",
+      "R quarter d4 v1"
+     ],
+     "counted_quarters": [
+      5.0
+     ],
+     "meter_quarters": 3.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 8,
+    "system": 1,
+    "staff": 5
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     5389,
+     5499
+    ],
+    "staff_space_px": 27.5,
+    "crop_page_px": {
+     "main": [
+      3986,
+      5262,
+      4479,
+      5680
+     ],
+     "header": [
+      619,
+      5262,
+      839,
+      5680
+     ]
+    },
+    "reader_cell_box_page_px": [
+     4028.0,
+     5279.0,
+     4438.0,
+     5664.0
+    ],
+    "rect_inner_edge_page_px": [
+     4028.0,
+     5279.0,
+     4438.0,
+     5664.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/8/1/5/9), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     5389,
+     5499
+    ],
+    "neighbour_limits_px": [
+     5256.0,
+     5731.0
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1480,
+     836
+    ],
+    "rect_thickness_px": 13
+   },
+   "replacement": null
+  }
+ ],
+ "instruction": "For each number: is this bar one voice or two? If two, say the top voice then the bottom voice."
+}

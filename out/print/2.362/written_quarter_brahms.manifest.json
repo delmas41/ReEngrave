@@ -1,0 +1,1188 @@
+{
+ "sheet": "written_quarter_brahms.png",
+ "size": [
+  2900,
+  3302
+ ],
+ "tiles": [
+  {
+   "g": "glyph/4/1/11/2/1",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/1/11/2",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.8398208022117615,
+   "box": [
+    2141.295,
+    6574.9375,
+    2172.93,
+    6658.7425
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 1,
+   "crop_page_px": [
+    1991,
+    6512,
+    2324,
+    6734
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 25,
+   "box_in_tile_px": [
+    406,
+    170,
+    492,
+    397
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.14,
+    3.02
+   ],
+   "sheet_offset_px": [
+    20,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/4/0/6/9/3",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/0/6/9",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7573668956756592,
+   "box": [
+    4672.025,
+    1992.525,
+    4701.175,
+    2076.4
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 2,
+   "crop_page_px": [
+    4522,
+    1896,
+    4852,
+    2116
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 6,
+   "box_in_tile_px": [
+    409,
+    263,
+    489,
+    492
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.06,
+    3.05
+   ],
+   "sheet_offset_px": [
+    740,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/12/0/13/10/3",
+   "plate": "brahms",
+   "page": 12,
+   "bar": "12/0/13/10",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.8243457078933716,
+   "box": [
+    4163.975,
+    3488.025,
+    4197.25,
+    3575.475
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 3,
+   "crop_page_px": [
+    4016,
+    3430,
+    4346,
+    3650
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 13,
+   "box_in_tile_px": [
+    404,
+    158,
+    494,
+    397
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.21,
+    3.18
+   ],
+   "sheet_offset_px": [
+    1460,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/8/1/2/1/9",
+   "plate": "brahms",
+   "page": 8,
+   "bar": "8/1/2/1",
+   "written": "quarter",
+   "color": null,
+   "source": "yolo_detector_view",
+   "cls": "restQuarter",
+   "conf": 0.8322956562042236,
+   "box": [
+    1317.84,
+    4612.24,
+    1352.56,
+    4701.0
+   ],
+   "box_is": "detector box (yolo_detector_view)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 4,
+   "crop_page_px": [
+    1167,
+    4540,
+    1503,
+    4764
+   ],
+   "scale": 2.6786,
+   "staff_space_px": 28.0,
+   "staff_index": 13,
+   "box_in_tile_px": [
+    404,
+    193,
+    497,
+    431
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.24,
+    3.17
+   ],
+   "sheet_offset_px": [
+    2180,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/12/1/0/0/19",
+   "plate": "brahms",
+   "page": 12,
+   "bar": "12/1/0/0",
+   "written": "quarter",
+   "color": "#1F6FEB",
+   "source": "yolo_detector_view",
+   "cls": "restQuarter",
+   "conf": 0.7498234510421753,
+   "box": [
+    958.42236328125,
+    4022.2041015625,
+    993.90673828125,
+    4114.611328125
+   ],
+   "box_is": "detector box (yolo_detector_view)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 5,
+   "crop_page_px": [
+    811,
+    3957,
+    1141,
+    4177
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 14,
+   "box_in_tile_px": [
+    402,
+    178,
+    499,
+    430
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.29,
+    3.36
+   ],
+   "sheet_offset_px": [
+    20,
+    627
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written GUESSED (blue #1F6FEB)"
+  },
+  {
+   "g": "glyph/19/0/7/6/7",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/0/7/6",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7201095223426819,
+   "box": [
+    3575.925,
+    2163.725,
+    3607.0,
+    2243.75
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 6,
+   "crop_page_px": [
+    3426,
+    2098,
+    3756,
+    2318
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 7,
+   "box_in_tile_px": [
+    409,
+    179,
+    494,
+    397
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.13,
+    2.91
+   ],
+   "sheet_offset_px": [
+    740,
+    627
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/25/0/0/2/8",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/0/0/2",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.772031843662262,
+   "box": [
+    2230.75,
+    513.275,
+    2265.675,
+    594.675
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 7,
+   "crop_page_px": [
+    2083,
+    447,
+    2413,
+    667
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 0,
+   "box_in_tile_px": [
+    403,
+    181,
+    498,
+    403
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.27,
+    2.96
+   ],
+   "sheet_offset_px": [
+    1460,
+    627
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/8/1/6/5/5",
+   "plate": "brahms",
+   "page": 8,
+   "bar": "8/1/6/5",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.6349799036979675,
+   "box": [
+    2922.175,
+    5750.8,
+    2958.475,
+    5833.85
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 8,
+   "crop_page_px": [
+    2775,
+    5687,
+    3105,
+    5907
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 17,
+   "box_in_tile_px": [
+    401,
+    174,
+    500,
+    401
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.32,
+    3.02
+   ],
+   "sheet_offset_px": [
+    2180,
+    627
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/14/1/1/2/0",
+   "plate": "brahms",
+   "page": 14,
+   "bar": "14/1/1/2",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7965085506439209,
+   "box": [
+    2236.22,
+    4474.715,
+    2268.375,
+    4561.915
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 9,
+   "crop_page_px": [
+    2089,
+    4406,
+    2416,
+    4624
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 15,
+   "box_in_tile_px": [
+    405,
+    189,
+    494,
+    429
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.18,
+    3.2
+   ],
+   "sheet_offset_px": [
+    20,
+    1174
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/8/1/5/2/8",
+   "plate": "brahms",
+   "page": 8,
+   "bar": "8/1/5/2",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.25142934918403625,
+   "box": [
+    1674.025,
+    5398.075,
+    1706.475,
+    5476.725
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 10,
+   "crop_page_px": [
+    1525,
+    5334,
+    1855,
+    5554
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 16,
+   "box_in_tile_px": [
+    406,
+    175,
+    495,
+    389
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.18,
+    2.86
+   ],
+   "sheet_offset_px": [
+    740,
+    1174
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/8/1/2/4/7",
+   "plate": "brahms",
+   "page": 8,
+   "bar": "8/1/2/4",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4358697533607483,
+   "box": [
+    2394.72,
+    4606.36,
+    2429.44,
+    4687.28
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 11,
+   "crop_page_px": [
+    2244,
+    4540,
+    2580,
+    4764
+   ],
+   "scale": 2.6786,
+   "staff_space_px": 28.0,
+   "staff_index": 13,
+   "box_in_tile_px": [
+    404,
+    178,
+    497,
+    394
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.24,
+    2.89
+   ],
+   "sheet_offset_px": [
+    1460,
+    1174
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/19/0/7/7/9",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/0/7/7",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3311842679977417,
+   "box": [
+    4266.225,
+    2164.275,
+    4299.225,
+    2236.325
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 12,
+   "crop_page_px": [
+    4118,
+    2098,
+    4448,
+    2318
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 7,
+   "box_in_tile_px": [
+    404,
+    181,
+    494,
+    377
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.2,
+    2.62
+   ],
+   "sheet_offset_px": [
+    2180,
+    1174
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/12/1/2/5/3",
+   "plate": "brahms",
+   "page": 12,
+   "bar": "12/1/2/5",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7904719114303589,
+   "box": [
+    3214.825,
+    4459.125,
+    3249.75,
+    4544.925
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 13,
+   "crop_page_px": [
+    3067,
+    4400,
+    3397,
+    4620
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 16,
+   "box_in_tile_px": [
+    403,
+    161,
+    498,
+    395
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.27,
+    3.12
+   ],
+   "sheet_offset_px": [
+    20,
+    1721
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/25/1/9/4/2",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/1/9/4",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.855144202709198,
+   "box": [
+    2859.375,
+    6622.975,
+    2890.725,
+    6705.75
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 14,
+   "crop_page_px": [
+    2710,
+    6560,
+    3040,
+    6780
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 23,
+   "box_in_tile_px": [
+    407,
+    172,
+    493,
+    397
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.14,
+    3.01
+   ],
+   "sheet_offset_px": [
+    740,
+    1721
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/25/0/13/7/4",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/0/13/7",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.6456093788146973,
+   "box": [
+    4407.525,
+    3935.355,
+    4437.2275,
+    4011.9275
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 15,
+   "crop_page_px": [
+    4259,
+    3870,
+    4586,
+    4088
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 13,
+   "box_in_tile_px": [
+    409,
+    180,
+    491,
+    391
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.09,
+    2.81
+   ],
+   "sheet_offset_px": [
+    1460,
+    1721
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/19/0/0/10/4",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/0/0/10",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7290484309196472,
+   "box": [
+    5333.71,
+    556.2225,
+    5367.2275,
+    640.1524999999999
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 16,
+   "crop_page_px": [
+    5187,
+    496,
+    5514,
+    714
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 0,
+   "box_in_tile_px": [
+    404,
+    166,
+    496,
+    397
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.23,
+    3.08
+   ],
+   "sheet_offset_px": [
+    2180,
+    1721
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/5/0/8/1/4",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/0/8/1",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.6887920498847961,
+   "box": [
+    1481.26708984375,
+    2308.37451171875,
+    1511.07568359375,
+    2386.048828125
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 17,
+   "crop_page_px": [
+    1331,
+    2245,
+    1661,
+    2465
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 8,
+   "box_in_tile_px": [
+    410,
+    173,
+    491,
+    385
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.08,
+    2.82
+   ],
+   "sheet_offset_px": [
+    20,
+    2268
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/14/0/12/0/1",
+   "plate": "brahms",
+   "page": 14,
+   "bar": "14/0/12/0",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.6286415457725525,
+   "box": [
+    1241.17578125,
+    3423.8935546875,
+    1278.01953125,
+    3508.3271484375
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 18,
+   "crop_page_px": [
+    1096,
+    3358,
+    1423,
+    3576
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 12,
+   "box_in_tile_px": [
+    400,
+    181,
+    501,
+    414
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.35,
+    3.1
+   ],
+   "sheet_offset_px": [
+    740,
+    2268
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/5/0/7/2/4",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/0/7/2",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7417083978652954,
+   "box": [
+    2062.825,
+    2070.525,
+    2097.475,
+    2149.725
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 19,
+   "crop_page_px": [
+    1915,
+    2007,
+    2245,
+    2227
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 7,
+   "box_in_tile_px": [
+    403,
+    173,
+    498,
+    389
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.26,
+    2.88
+   ],
+   "sheet_offset_px": [
+    1460,
+    2268
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/8/1/7/9/4",
+   "plate": "brahms",
+   "page": 8,
+   "bar": "8/1/7/9",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7155069708824158,
+   "box": [
+    4277.8825,
+    6042.13,
+    4313.58,
+    6127.15
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 20,
+   "crop_page_px": [
+    4132,
+    5980,
+    4459,
+    6198
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 18,
+   "box_in_tile_px": [
+    402,
+    171,
+    500,
+    405
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.31,
+    3.12
+   ],
+   "sheet_offset_px": [
+    2180,
+    2268
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/5/1/7/3/2",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/7/3",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.6177387833595276,
+   "box": [
+    2546.275,
+    5594.1,
+    2576.25,
+    5654.05
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 21,
+   "crop_page_px": [
+    2396,
+    5527,
+    2726,
+    5747
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 21,
+   "box_in_tile_px": [
+    410,
+    183,
+    492,
+    347
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.09,
+    2.18
+   ],
+   "sheet_offset_px": [
+    20,
+    2815
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/25/1/8/4/2",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/1/8/4",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.798981249332428,
+   "box": [
+    2860.8975,
+    6340.655,
+    2890.3125,
+    6420.575
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 22,
+   "crop_page_px": [
+    2709,
+    6274,
+    3042,
+    6496
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 22,
+   "box_in_tile_px": [
+    411,
+    180,
+    490,
+    396
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.06,
+    2.88
+   ],
+   "sheet_offset_px": [
+    740,
+    2815
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/25/1/11/8/2",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/1/11/8",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7635555863380432,
+   "box": [
+    4835.8075,
+    7084.8275,
+    4865.5,
+    7166.4125
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 23,
+   "crop_page_px": [
+    4684,
+    7024,
+    5017,
+    7246
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 25,
+   "box_in_tile_px": [
+    410,
+    164,
+    491,
+    385
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.07,
+    2.94
+   ],
+   "sheet_offset_px": [
+    1460,
+    2815
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  },
+  {
+   "g": "glyph/25/0/9/3/11",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/0/9/3",
+   "written": "quarter",
+   "color": null,
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.33000048995018005,
+   "box": [
+    2410.515,
+    2827.45,
+    2442.125,
+    2911.6525
+   ],
+   "box_is": "detector box (detector)",
+   "n_printed": 1,
+   "head_ink_rest": false,
+   "set": "written_quarter_rest",
+   "n": 24,
+   "crop_page_px": [
+    2263,
+    2768,
+    2590,
+    2986
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 9,
+   "box_in_tile_px": [
+    406,
+    164,
+    493,
+    395
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.16,
+    3.09
+   ],
+   "sheet_offset_px": [
+    2180,
+    2815
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "a quarter rest, written plain (black)"
+  }
+ ],
+ "instruction": "For each number: is it a quarter rest? If not, what is it.",
+ "seed": 20261126,
+ "image_note": "one orange rectangle; its INNER edge is the reader's own box (box_is); line grows outward; ~7 px at sheet size; nothing else drawn"
+}
