@@ -2722,36 +2722,44 @@ def missed_dot_enabled() -> bool:
 
 def _missed_dot_page(log, page: int) -> Dict[str, Any]:
     """The page's unread round marks, once per page: `Q.PAGE_STROKE` blobs (GATHER, saved in the record), each with how many
-    strokes share its ink component, the strokes a `Q.CLAIMED_AREA` names, every detector box and every notehead box with its
-    staff position. Read off the log directly and memoised; the one row a ruling rests on enters its `considered`."""
+    strokes share its ink component, the strokes a `Q.CLAIMED_AREA` names (and the claim rows that name them), every detector box and
+    every notehead box with its staff position. ROADMAP 2.363: read through an `Evidence` of this decision's OWN spec on the page's
+    subject (the page's rows are not the glyph's, so the glyph's `ev` cannot reach them; the arc binder's `_unread_head_ink` does the
+    same), memoised per log and page. That frame's own reads are not this verdict's basis; the rows a ruling actually used enter
+    `considered` through `ev.considered_from_another_frame` (`_with_missed_dot`): the mark's stroke row and the claim rows that
+    named a mark in the dot place."""
+    from ..adjudicate import Evidence as _Ev, REGISTRY
     if _MISSED_DOT_MEMO["log"] is not log:
         _MISSED_DOT_MEMO["log"], _MISSED_DOT_MEMO["pages"] = log, {}
     memo = _MISSED_DOT_MEMO["pages"]
     if page in memo:
         return memo[page]
     psub = Subject(Kind.PAGE, page=page)
+    pev = _Ev(log, psub, REGISTRY[Q.DURATION])
     strokes, comp = [], Counter()
-    for r in log.rows(Q.PAGE_STROKE, psub):
+    for r in pev.rows(Q.PAGE_STROKE, subject=psub):
         d = dict(r.detail or {})
         comp[d.get("component")] += 1
         if r.value == "blob":
             strokes.append((r.id, d))
-    claimed = set()
-    for r in log.rows(Q.CLAIMED_AREA, psub, scope=Scope.SELF_AND_DESCENDANTS):
+    claimed, claim_rows = set(), {}
+    for r in pev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
         for o in (r.detail or {}).get("page_strokes") or ():
-            claimed.add(int(o[0] if isinstance(o, (list, tuple)) else o))
+            n = int(o[0] if isinstance(o, (list, tuple)) else o)
+            claimed.add(n)
+            claim_rows.setdefault(n, []).append(r.id)
     boxes, heads = [], []
-    for r in log.rows(Q.GLYPH_BOX, psub, scope=Scope.SELF_AND_DESCENDANTS):
+    for r in pev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
         b = (r.detail or {}).get("bbox_page_px")
         cls = r.value[0] if isinstance(r.value, (list, tuple)) and r.value else r.value
         if not b or len(b) != 4 or str(cls) == "staff":
             continue
         boxes.append(tuple(float(v) for v in b))
         if (r.detail or {}).get("category") == "notehead":
-            pos = log.rows(Q.NOTEHEAD_STAFF_POSITION, r.subject)
+            pos = pev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=r.subject)
             if pos:
                 heads.append((r.subject.to_key(), tuple(float(v) for v in b), float(pos[-1].value), [r.subject.system, r.subject.staff]))
-    memo[page] = {"strokes": strokes, "comp": comp, "claimed": claimed, "boxes": boxes, "heads": heads}
+    memo[page] = {"strokes": strokes, "comp": comp, "claimed": claimed, "claim_rows": claim_rows, "boxes": boxes, "heads": heads}
     return memo[page]
 
 
@@ -2798,7 +2806,7 @@ def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[s
     if not mine:
         return None, {"why": "no_head_position"}
     _, hb, hstep, staff = mine[0]
-    found, near = [], []
+    found, near, claims = [], [], []
     for rid, d in page["strokes"]:
         if not _in_dot_place(hb, hstep, staff, d):
             continue
@@ -2813,6 +2821,7 @@ def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[s
             why = "dot_touches_its_note"     # page-facts "A dot does not touch its note": joined ink is the note's, never its dot
         elif int(d.get("ordinal", -1)) in page["claimed"]:
             why = "claimed"
+            claims.extend(c for c in page["claim_rows"].get(int(d["ordinal"]), ()) if c not in claims)    # the rows that decided it
         else:
             cx, cy = (b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0
             if any(bb[0] - 1 <= cx <= bb[2] + 1 and bb[1] - 1 <= cy <= bb[3] + 1 for bb in page["boxes"]):
@@ -2832,8 +2841,8 @@ def missed_dot_mark(log, glyph: Subject) -> Tuple[Optional[str], Optional[Dict[s
             found.append((rid, {"blob": [round(float(v), 1) for v in b], "w_spaces": round(w, 2), "h_spaces": round(h, 2),
                                 "gap_spaces": round((b[0] - hb[2]) / sp, 2)}))
     if len(found) != 1:
-        return None, {"why": "two_marks" if found else (near[0] if near else "no_mark"), "near": near}
-    return found[0]
+        return None, {"why": "two_marks" if found else (near[0] if near else "no_mark"), "near": near, "claim_rows": claims}
+    return found[0][0], {**found[0][1], "claim_rows": claims}
 
 
 def _box_overlap_share(a, b) -> float:
@@ -2855,12 +2864,14 @@ def _with_missed_dot(ev: Evidence, ruling: Ruling) -> Ruling:
             or abs(float(v["beats"]) - float(v["written"])) > 1e-9:
         return ruling
     rid, facts = missed_dot_mark(ev.log, ev.subject)
+    claims = list((facts or {}).get("claim_rows") or ())
+    facts = {k: x for k, x in (facts or {}).items() if k != "claim_rows"}
+    ev.considered_from_another_frame(claims + ([rid] if rid else []))      # ROADMAP 2.363: the rows this ruling stood on, never the page
     if rid is None:
         return ruling
-    ev.considered_from_another_frame([rid])
     plain = dict(v)
     dotted = {**v, "beats": float(v["beats"]) * 1.5, "written": float(v["written"]) * 1.5, "dots": 1}
-    return Ruling.narrow([Candidate(value=plain, support=1.0), Candidate(value=dotted, support=0.5)], MISSED_DOT_REASON,
+    return Ruling.narrow([Candidate(value=plain, support=1.0), Candidate(value=dotted, support=0.5)], "dot_ink_no_box",     # == MISSED_DOT_REASON, spelled out so `brakes` finds it
                          used=tuple(ruling.used) + (rid,),
                          **{**dict(ruling.detail or {}), "missed_dot": {**facts, "mark_row": rid, "read_plain_as": ruling.reason}})
 
@@ -3763,7 +3774,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs", "rest_hangs_from_own_line",
              "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead", "wide_box_unread",
              "stem_readers_disagree",
-             "dot_ink_no_box"),       # ROADMAP 2.359 (OFF): == MISSED_DOT_REASON
+             "dot_ink_no_box"),       # ROADMAP 2.359 (default ON): == MISSED_DOT_REASON
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -3868,6 +3879,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             break
     if base is None:
         return Ruling.abstain("unknown_head", head=str(head))
+
+    if missed_dot_enabled():
+        # ROADMAP 2.363: a note from here on. The page's stroke and claim rows `_with_missed_dot` rests on are read here, once per page, through
+        # this decision's declared reads (`_missed_dot_page`), so the wiring and inventory checks see the read; the ruling's basis takes only
+        # the rows it used.
+        _missed_dot_page(ev.log, ev.subject.page)
 
     # ⚠️⚠️ ROADMAP 2.43, DECISIONS 2026-09-30 (Sean): "open noteheads are
     # never beamed except tremolo" -- computed once, up front, and read at

@@ -311,5 +311,69 @@ class TestAStaccatoOverAnotherNoteIsNotADot(unittest.TestCase):
             self.assertIsNotNone(rid, (case, facts))
 
 
+class TestTheRulingRecordsWhatItRead(unittest.TestCase):
+    """ROADMAP 2.363: the page's stroke and claim rows are read through an `Evidence` (the checks see the read), and the verdict's
+    `considered` names only the rows the ruling used -- the mark's stroke row, the claim rows that decided "already claimed" -- never the page."""
+
+    def _ev(self, log, case):
+        adjudicate._ensure_decisions()
+        return adjudicate.Evidence(log, Subject.from_key(CASES[case]), adjudicate.REGISTRY[Q.DURATION])
+
+    def test_a_narrowed_note_names_its_mark_row_and_no_other_page_row(self):
+        log = _log()
+        ev = self._ev(log, "sean_t4")
+        plain = Ruling(value={"beats": 1.0, "written": 1.0, "dots": 0, "beam_levels": 0}, reason="head_and_marks")
+        with _on():
+            got = rhythm._with_missed_dot(ev, plain)
+        self.assertEqual(got.reason, rhythm.MISSED_DOT_REASON)
+        rid = got.detail["missed_dot"]["mark_row"]
+        self.assertIn(rid, ev._seen)
+        self.assertNotIn("claim_rows", got.detail["missed_dot"])
+        page_rows = {r.id for r in log.rows(Q.PAGE_STROKE, Subject(Kind.PAGE, page=8))}
+        self.assertGreater(len(page_rows), 100)                      # the page holds hundreds of stroke rows; the verdict names one
+        self.assertEqual(set(ev._seen) & page_rows, {rid})
+        self.assertLessEqual(len(ev._seen), 1 + len(rhythm.missed_dot_mark(log, ev.subject)[1]["claim_rows"]))
+
+    def test_a_mark_a_claim_holds_is_refused_claimed_and_the_claim_row_is_in_the_basis(self):
+        # Constructed from the real rows: no real head of the 93 holds a claimed mark in its dot place, so ONE real claim row on the
+        # page (any owner) is made to name the real mark of Sean's t4 -- the claim then decides "already claimed" and the ruling stays plain.
+        import copy
+        data = copy.deepcopy(DATA)
+        log0 = _log()
+        rid0, _ = _mark(log0, "sean_t4")
+        ordinal = int(log0.row(rid0).detail["ordinal"])
+        claim = next(o for o in data["observations"] if o["quantity"] == "claimed_area" and (o.get("detail") or {}).get("page_strokes")
+                     and Subject.from_key(o["subject"]).page == 8)
+        claim["detail"]["page_strokes"] = list(claim["detail"]["page_strokes"]) + [ordinal]
+        with mock.patch.dict(globals(), {"DATA": data}):
+            log = _log()
+            ev = self._ev(log, "sean_t4")
+            plain = Ruling(value={"beats": 1.0, "written": 1.0, "dots": 0, "beam_levels": 0}, reason="head_and_marks")
+            rid, facts = rhythm.missed_dot_mark(log, ev.subject)
+            self.assertIsNone(rid)
+            self.assertEqual(facts["why"], "claimed")
+            self.assertTrue(facts["claim_rows"])
+            with _on():
+                self.assertIs(rhythm._with_missed_dot(ev, plain), plain)
+            self.assertEqual(sorted(ev._seen), sorted(facts["claim_rows"]))
+            for c in facts["claim_rows"]:
+                self.assertIn(ordinal, [int(o[0] if isinstance(o, (list, tuple)) else o) for o in log.row(c).detail["page_strokes"]])
+
+    def test_the_page_is_read_through_the_decisions_declared_wants(self):
+        # the read is an `Evidence` read of this decision's own spec: a want removed from the spec raises, never reads silently
+        from tools.omr.staged.adjudicate import UndeclaredEvidence
+        log = _log()
+        spec = adjudicate.REGISTRY[Q.DURATION]
+        self.assertIn(Q.PAGE_STROKE, spec.wants)
+        self.assertIn(Q.CLAIMED_AREA, spec.wants)
+        rhythm._MISSED_DOT_MEMO["log"] = None
+        slim = mock.Mock(wants=tuple(w for w in spec.wants if w != Q.CLAIMED_AREA), quantity=spec.quantity, name=spec.name,
+                         excludes_tiers=())
+        with mock.patch.dict(adjudicate.REGISTRY, {Q.DURATION: slim}):
+            with self.assertRaises(UndeclaredEvidence):
+                rhythm._missed_dot_page(log, 8)
+        rhythm._MISSED_DOT_MEMO["log"] = None
+
+
 if __name__ == "__main__":
     unittest.main()
