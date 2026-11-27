@@ -148,3 +148,12 @@ def test_written_blue_under_its_own_reason():
 
     g = E.claim_guess_of(Rec(), "glyph/0/0/0/0/0")
     assert g is not None and g["rule"] == "second_head_hole" and len(g["candidates"]) == 2
+
+
+def test_the_reason_is_in_the_adjudicators_declared_vocabulary():
+    # the first ON gather (2026-11-27) raised UndeclaredReason: a reason ADJUDICATE returns must be declared on its spec
+    from tools.omr.staged import adjudicate as A
+    from tools.omr.staged.record import Q
+    import tools.omr.staged.adjudicators.notehead_precision  # noqa: F401  (registers the spec)
+    specs = [s for s in A.REGISTRY.values() if s.quantity == Q.NOTEHEAD_IS_NOT_A_NOTEHEAD]
+    assert specs and any(SHH.REASON in s.reasons for s in specs)

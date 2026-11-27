@@ -3721,7 +3721,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
                                      "claim_narrowed:key_signature",
                                      "claimed_by:whole_rest",
                                      "claimed_by:barline", "claimed_by:page_claim",
-                                     "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only",
+                                     "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only", "second_head_hole",
                                      "stem_end_ink_disagrees",
                                      "is_a_rest_shape",
                                      "owner_refused",
