@@ -3,8 +3,7 @@
  "date": "2026-11-26",
  "question": "For each number: is the bar in the orange box written for one voice or two?",
  "answered_by": "Sean",
- "verbatim": "Tile 1 is two voices, tile 2 is one voice, tile 3 is one voice, tile 4 is one voice, tile 5, 6 is one voice, tile 7 is one voice, tile 8 is one voice, tile 9 is one voice, tile 10 is one voice. 13 two voices, tile 14 1, 16 1, tile 17 1, tile 18 1, tile 21, 21, 22, 1, tile 23, 1, tile 24, 1.",
- "reading_note": "OURS: 17 tiles heard clearly. 5, 11, 12, 15, 19, 20, 21 were not heard (dictation dropped them) and are left unanswered (null), not assumed.",
+ "reading_note": "OURS: second dictation answers all 24. Tile 16 is from his first dictation ('16 1'); tile 19 ('19 voice') is read as one voice.",
  "answers": {
   "1": {
    "voices": 2,
@@ -59,7 +58,7 @@
    ]
   },
   "5": {
-   "voices": null,
+   "voices": 1,
    "place": [
     12,
     0,
@@ -137,7 +136,7 @@
    ]
   },
   "11": {
-   "voices": null,
+   "voices": 1,
    "place": [
     5,
     1,
@@ -150,7 +149,7 @@
    ]
   },
   "12": {
-   "voices": null,
+   "voices": 1,
    "place": [
     5,
     0,
@@ -189,7 +188,7 @@
    ]
   },
   "15": {
-   "voices": null,
+   "voices": 1,
    "place": [
     4,
     1,
@@ -236,10 +235,11 @@
    "record_voices": "one_voice",
    "stems_read": [
     "down"
-   ]
+   ],
+   "note": "one voice: a chord that goes down to a single rest and then a unison note"
   },
   "19": {
-   "voices": null,
+   "voices": 1,
    "place": [
     8,
     0,
@@ -250,7 +250,7 @@
    "stems_read": []
   },
   "20": {
-   "voices": null,
+   "voices": 1,
    "place": [
     14,
     0,
@@ -263,7 +263,7 @@
    ]
   },
   "21": {
-   "voices": null,
+   "voices": 1,
    "place": [
     25,
     1,
@@ -310,5 +310,7 @@
    "record_voices": "one_voice",
    "stems_read": []
   }
- }
+ },
+ "verbatim_first": "Tile 1 is two voices, tile 2 is one voice, tile 3 is one voice, tile 4 is one voice, tile 5, 6 is one voice, tile 7 is one voice, tile 8 is one voice, tile 9 is one voice, tile 10 is one voice. 13 two voices, tile 14 1, 16 1, tile 17 1, tile 18 1, tile 21, 21, 22, 1, tile 23, 1, tile 24, 1.",
+ "verbatim": "I'm going to do the Brahms voices again one more time since it dropped numbers. Tau 1 is 2 voices. Tau 2 is 1 voice. Tau 3 is 1 voice. Tau 4 is 1 voice. Tau 5 is 1 voice. Tau 6 is 1 voice. Tau 7 is 1 voice. Tau 8 is 1 voice. Tau 9 is 1 voice. Tau 10 is 1 voice. Tau 11 is 1 voice. Tau 12 is 1 voice. Tau 13 is 2 voices. Tau 14 is 1 voice. Tau 15 is 1 voice. Tau 17 is 1 voice, now 18 is 1 voice, but it's an interesting situation because it's a chord that goes down to single rest and then a unison note. 19 voice, 20 is 1 voice, 21 is 1 voice, 22 is 1 voice, 23 is 1 voice, and 24 is 1 voice."
 }
