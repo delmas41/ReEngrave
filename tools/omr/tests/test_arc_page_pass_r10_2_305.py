@@ -38,7 +38,10 @@ class TestANoteUnderAWordIsRead:
         assert not OW._head_read(_Ev(_V(Outcome.NARROWED, reason="claim_narrowed:key")), "glyph/15/0/0/0/5")
 
     def test_never_a_head_held_in_doubt_for_its_own_ink(self):          # r6 tile 2, Litolff p13 13/0/3/14/7
-        assert not OW._head_read(_Ev(_V(Outcome.NARROWED, reason="stem_end_ink_only")), "glyph/13/0/3/14/7")
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"OMR_ARC_END_AT_INK_HEAD": "0"}):          # pinned OFF: 2.358 landed ON, where such a head is a note an arc may end at
+            assert not OW._head_read(_Ev(_V(Outcome.NARROWED, reason="stem_end_ink_only")), "glyph/13/0/3/14/7")
 
 
 def _h(key, box):
