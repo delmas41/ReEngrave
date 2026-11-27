@@ -1,0 +1,149 @@
+READOUT DIFF at GATHER + ADJUDICATE   20261123-night=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20261123-night.record.json
+                                      20261127-night=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20261127-night.record.json
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! PROVENANCE: the two records differ in
+!!   code      commit: 20261123-night='3881969e95b0d256c339eec46236a7e5ba215f3f'  20261127-night='a93464fb2134ffcabc84e9923e41f07d821792f0'
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+== family (other classes): gathered 20261123-night 27387 / 20261127-night 27387; matched 27387 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+   classes no export family claims: {'beam': 11938, 'ledgerLine': 7817, 'staff': 3016, 'flag8thDown': 1787, 'flag8thUp': 1400, 'arpeggiato': 856, 'stem': 162, 'flag16thUp': 154} ...
+
+== family accidental: gathered 20261123-night 6540 / 20261127-night 6540; matched 6540 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family articulation: gathered 20261123-night 1474 / 20261127-night 1474; matched 1474 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family clef: gathered 20261123-night 1101 / 20261127-night 1101; matched 1101 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family dot: gathered 20261123-night 10115 / 20261127-night 10115; matched 10115 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family dynamic: gathered 20261123-night 3942 / 20261127-night 3942; matched 3942 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family fermata: gathered 20261123-night 12 / 20261127-night 12; matched 12 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family key: gathered 20261123-night 1354 / 20261127-night 1354; matched 1354 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family note: gathered 20261123-night 24454 / 20261127-night 24454; matched 24454 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+   ADJUDICATE status 20261123-night -> 20261127-night: {'narrowed -> kept': 89, 'kept -> narrowed': 37, 'refused -> kept': 3}
+   ADJUDICATE duration: 148 of 24454 changed answer
+          71  narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+          26  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> narrowed:[{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1....
+          19  decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+          12  narrowed:[{"beam_levels": 1, "beats": 0.75, "dots": 1, "written": 0... -> decided:{"beam_levels": 1, "beats": 0.75, "dots": 1, "written": 0.75}
+           8  decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "written": 2.0} -> narrowed:[{"beam_levels": 0, "beats": 2.0, "dots": 0, "written": 2....
+           6  narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+           2  decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0....
+           2  abstained:null -> decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0}
+   ADJUDICATE notehead_is_not_a_notehead: 3 of 24454 changed answer
+           3  decided:true -> decided:false
+   ADJUDICATE stem_value: 10 of 24454 changed answer, 4 same answer by another reason
+           4  narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "head_fill": "...
+           2  narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": "b...
+           2  abstained:null -> decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "head_fill": "b...
+           2  abstained:null -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": "b...
+   e.g. duration: glyph/0/0/8/3/2 ~ glyph/0/0/8/3/2, glyph/0/0/10/1/0 ~ glyph/0/0/10/1/0, glyph/0/0/12/1/1 ~ glyph/0/0/12/1/1, glyph/1/0/0/0/10 ~ glyph/1/0/0/0/10, glyph/1/0/0/0/32 ~ glyph/1/0/0/0/32
+   e.g. stem_value: glyph/1/0/0/0/10 ~ glyph/1/0/0/0/10, glyph/1/0/0/0/32 ~ glyph/1/0/0/0/32, glyph/3/1/3/1/5 ~ glyph/3/1/3/1/5, glyph/3/1/3/1/12 ~ glyph/3/1/3/1/12, glyph/3/1/3/2/8 ~ glyph/3/1/3/2/8
+   e.g. notehead_is_not_a_notehead: glyph/10/1/1/7/8 ~ glyph/10/1/1/7/8, glyph/10/1/1/7/13 ~ glyph/10/1/1/7/13, glyph/17/0/0/1/9 ~ glyph/17/0/0/1/9
+
+== family ornament: gathered 20261123-night 24 / 20261127-night 24; matched 24 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family rest: gathered 20261123-night 8870 / 20261127-night 8870; matched 8870 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family slur: gathered 20261123-night 4708 / 20261127-night 4708; matched 4708 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+   ADJUDICATE arc_kind: 71 of 4708 changed answer
+          40  decided:"slur" -> decided:"tie"
+          29  decided:"slur" -> abstained:null
+           2  abstained:null -> decided:"tie"
+   ADJUDICATE tie_pair: 42 of 4708 changed answer, 1 same answer by another reason
+           4  abstained:null -> decided:{"start": "glyph/9/1/3/5/2", "stop": "glyph/9/1/3/6/3"}
+           3  abstained:null -> decided:{"start": "glyph/0/0/12/3/3", "stop": "glyph/0/0/12/4/2"}
+           3  abstained:null -> decided:{"start": "glyph/11/0/2/1/9", "stop": "glyph/11/0/2/2/4"}
+           2  abstained:null -> decided:{"start": "glyph/0/0/9/3/3", "stop": "glyph/0/0/9/4/3"}
+           2  abstained:null -> decided:{"start": "glyph/0/0/10/3/4", "stop": "glyph/0/0/10/4/4"}
+           2  abstained:null -> decided:{"start": "glyph/1/0/1/1/10", "stop": "glyph/1/0/1/2/2"}
+           2  abstained:null -> decided:{"start": "glyph/9/1/4/3/3", "stop": "glyph/9/1/4/4/3"}
+           2  abstained:null -> decided:{"start": "glyph/10/1/1/7/10", "stop": "glyph/10/1/1/7/8"}
+   e.g. arc_kind: glyph/0/0/9/3/13 ~ glyph/0/0/9/3/13, glyph/0/0/9/4/6 ~ glyph/0/0/9/4/6, glyph/0/0/10/3/12 ~ glyph/0/0/10/3/12, glyph/0/0/10/4/9 ~ glyph/0/0/10/4/9, glyph/0/0/11/3/26 ~ glyph/0/0/11/3/26
+   e.g. tie_pair: glyph/0/0/9/3/13 ~ glyph/0/0/9/3/13, glyph/0/0/9/4/6 ~ glyph/0/0/9/4/6, glyph/0/0/10/3/12 ~ glyph/0/0/10/3/12, glyph/0/0/10/4/9 ~ glyph/0/0/10/4/9, glyph/0/0/11/3/26 ~ glyph/0/0/11/3/26
+
+== family tie: gathered 20261123-night 11989 / 20261127-night 11989; matched 11989 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+   ADJUDICATE arc_kind: 32 of 11989 changed answer
+          24  decided:"tie" -> abstained:null
+           7  decided:"tie" -> decided:"slur"
+           1  decided:"slur" -> abstained:null
+   ADJUDICATE tie_pair: 34 of 11989 changed answer, 6 same answer by another reason
+           3  decided:{"start": "glyph/26/1/3/7/10", "stop": "glyph/26/1/3/8/4"} -> abstained:null
+           2  decided:{"start": "glyph/5/0/11/6/1", "stop": "glyph/5/0/11/7/0"} -> abstained:null
+           2  decided:{"start": "glyph/11/1/1/5/1", "stop": "glyph/11/1/1/6/4"} -> abstained:null
+           2  abstained:null -> decided:{"start": "glyph/14/1/4/5/14", "stop": "glyph/14/1/4/6/12"}
+           2  decided:{"start": "glyph/18/0/1/2/3", "stop": "glyph/18/0/1/3/2"} -> abstained:null
+           2  decided:{"start": "glyph/18/0/13/0/4", "stop": "glyph/18/0/13/1/2"} -> abstained:null
+           2  decided:{"start": "glyph/20/1/3/4/2", "stop": "glyph/20/1/3/5/4"} -> abstained:null
+           1  decided:{"start": "glyph/0/0/12/1/6", "stop": "glyph/0/0/12/1/5"} -> abstained:null
+   e.g. arc_kind: glyph/0/0/12/1/11 ~ glyph/0/0/12/1/11, glyph/4/0/13/3/12 ~ glyph/4/0/13/3/12, glyph/5/0/12/6/15 ~ glyph/5/0/12/6/15, glyph/5/0/12/7/28 ~ glyph/5/0/12/7/28, glyph/9/0/7/5/25 ~ glyph/9/0/7/5/25
+   e.g. tie_pair: glyph/0/0/12/1/11 ~ glyph/0/0/12/1/11, glyph/4/0/13/3/12 ~ glyph/4/0/13/3/12, glyph/5/0/12/6/15 ~ glyph/5/0/12/6/15, glyph/5/0/12/7/28 ~ glyph/5/0/12/7/28, glyph/9/0/7/5/25 ~ glyph/9/0/7/5/25
+
+== family time: gathered 20261123-night 518 / 20261127-night 518; matched 518 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family tuplet: gathered 20261123-night 4 / 20261127-night 4; matched 4 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== family wedge: gathered 20261123-night 2 / 20261127-night 2; matched 2 (0 in another bar); only 20261123-night 0, only 20261127-night 0
+
+== staves, bars, systems (ADJUDICATE, by key)
+   meter: 13 of 53 changed
+        system/0/0: decided:{"cautionary": {"bars_contradict": 1, "bars_fit": 0, "cautionary": true, "corroborated": true, "denominator":... -> decided:{"cautionary": {"bars_contradict": 0, "bars_fit": 0, "cautionary": true, "corroborated": true, "denominator":...
+        system/1/0: decided:{"cautionary": {"bars_contradict": 0, "bars_fit": 0, "cautionary": true, "corroborated": false, "denominator"... -> decided:{"denominator": 8, "numerator": 9, "raw": "9/8", "segments": [{"denominator": 8, "from_cell": 0, "numerator":...
+        system/2/1: decided:{"declined_changes": [{"bars_contradict": 5, "bars_fit": 2, "corroborated": false, "declined_reason": "meter_... -> decided:{"declined_changes": [{"bars_contradict": 5, "bars_fit": 0, "corroborated": false, "declined_reason": "meter_...
+   page_arc_binding: 9 of 27 changed
+        page/1: decided:{"abstained": 53, "not_witnessed": 21, "runs": 222, "written": 148} -> decided:{"abstained": 52, "not_witnessed": 21, "runs": 222, "written": 149}
+        page/5: decided:{"abstained": 29, "not_witnessed": 13, "runs": 196, "written": 154} -> decided:{"abstained": 28, "not_witnessed": 13, "runs": 196, "written": 155}
+        page/8: decided:{"abstained": 28, "not_witnessed": 38, "runs": 149, "written": 83} -> decided:{"abstained": 27, "not_witnessed": 38, "runs": 149, "written": 84}
+   voices: 259 of 6699 changed
+        cell/1/0/2/3: abstained:null -> decided:{"n_voices": 1, "rests_displaced_by_position": {}, "rests_in_every_voice": [], "voices": [[0, 2, 6, 9, 12, 13...
+        cell/1/0/3/2: abstained:null -> decided:{"n_voices": 2, "rests_displaced_by_position": {}, "rests_in_every_voice": [16], "voices": [[12, 16], [0, 2, ...
+        cell/1/0/9/4: abstained:null -> decided:{"n_voices": 1, "rests_displaced_by_position": {}, "rests_in_every_voice": [], "voices": [[3, 6, 7, 8, 11, 18...
+   (bar-level values that NAME glyph indexes (event, voices) change whenever the detector's output order changes; read the glyph lines above for what moved)
+
+== matched glyphs that changed (40 shown of 257)
+   glyph/0/0/8/3/2 ~ glyph/0/0/8/3/2 (iou 1.0): status kept -> narrowed; duration: decided:{"beam_levels": 0, "beats": 2.0, "dots": 0, "written": 2.0} -> narrowed:[{"beam_levels": 0, "beats": 2.0, "dots": 0, "written": 2....
+   glyph/0/0/9/3/13 ~ glyph/0/0/9/3/13 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/9/3/3", "stop": "glyph/0/0/9/4/3"}
+   glyph/0/0/9/4/6 ~ glyph/0/0/9/4/6 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/9/3/3", "stop": "glyph/0/0/9/4/3"}
+   glyph/0/0/10/1/0 ~ glyph/0/0/10/1/0 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/0/0/10/3/12 ~ glyph/0/0/10/3/12 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/10/3/4", "stop": "glyph/0/0/10/4/4"}
+   glyph/0/0/10/4/9 ~ glyph/0/0/10/4/9 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/10/3/4", "stop": "glyph/0/0/10/4/4"}
+   glyph/0/0/11/3/26 ~ glyph/0/0/11/3/26 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/12/3/3", "stop": "glyph/0/0/12/4/2"}
+   glyph/0/0/11/4/10 ~ glyph/0/0/11/4/10 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/12/3/3", "stop": "glyph/0/0/12/4/2"}
+   glyph/0/0/12/1/1 ~ glyph/0/0/12/1/1 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/0/0/12/1/11 ~ glyph/0/0/12/1/11 (iou 1.0): arc_kind: decided:"tie" -> abstained:null; tie_pair: decided:{"start": "glyph/0/0/12/1/6", "stop": "glyph/0/0/12/1/5"} -> abstained:null
+   glyph/0/0/12/4/7 ~ glyph/0/0/12/4/7 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/0/0/12/3/3", "stop": "glyph/0/0/12/4/2"}
+   glyph/1/0/0/0/10 ~ glyph/1/0/0/0/10 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}; stem_value: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": "b...
+   glyph/1/0/0/0/32 ~ glyph/1/0/0/0/32 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}; stem_value: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": "b...
+   glyph/1/0/1/2/13 ~ glyph/1/0/1/2/13 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/1/0/1/1/10", "stop": "glyph/1/0/1/2/2"}
+   glyph/1/0/1/2/14 ~ glyph/1/0/1/2/14 (iou 1.0): arc_kind: decided:"slur" -> decided:"tie"; tie_pair: abstained:null -> decided:{"start": "glyph/1/0/1/1/10", "stop": "glyph/1/0/1/2/2"}
+   glyph/3/0/0/3/10 ~ glyph/3/0/0/3/10 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/0/0/3/16 ~ glyph/3/0/0/3/16 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.75, "dots": 1, "written": 0... -> decided:{"beam_levels": 1, "beats": 0.75, "dots": 1, "written": 0.75}
+   glyph/3/0/1/1/17 ~ glyph/3/0/1/1/17 (iou 1.0): arc_kind: decided:"slur" -> abstained:null
+   glyph/3/0/1/3/2 ~ glyph/3/0/1/3/2 (iou 1.0): duration: decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/0/2/3/22 ~ glyph/3/0/2/3/22 (iou 1.0): duration: decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/0/9/4/3 ~ glyph/3/0/9/4/3 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/0/9/4/12 ~ glyph/3/0/9/4/12 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/0/10/4/3 ~ glyph/3/0/10/4/3 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/10/4/4 ~ glyph/3/0/10/4/4 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/0/10/4/15 ~ glyph/3/0/10/4/15 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/3/1/3 ~ glyph/3/1/3/1/3 (iou 1.0): status kept -> narrowed; duration: decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0....
+   glyph/3/1/3/1/5 ~ glyph/3/1/3/1/5 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}; stem_value: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "head_fill": "...
+   glyph/3/1/3/1/12 ~ glyph/3/1/3/1/12 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}; stem_value: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "head_fill": "...
+   glyph/3/1/3/2/8 ~ glyph/3/1/3/2/8 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}; stem_value: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "head_fill": "...
+   glyph/3/1/3/2/20 ~ glyph/3/1/3/2/20 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}; stem_value: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "head_fill": ... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "head_fill": "...
+   glyph/3/1/4/0/5 ~ glyph/3/1/4/0/5 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.75, "dots": 1, "written": 0... -> decided:{"beam_levels": 1, "beats": 0.75, "dots": 1, "written": 0.75}
+   glyph/3/1/4/0/17 ~ glyph/3/1/4/0/17 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/4/2/6 ~ glyph/3/1/4/2/6 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/4/2/7 ~ glyph/3/1/4/2/7 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/12/1/4 ~ glyph/3/1/12/1/4 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/12/2/7 ~ glyph/3/1/12/2/7 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/13/0/5 ~ glyph/3/1/13/0/5 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/13/0/8 ~ glyph/3/1/13/0/8 (iou 1.0): duration: decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/13/1/2 ~ glyph/3/1/13/1/2 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+   glyph/3/1/13/1/4 ~ glyph/3/1/13/1/4 (iou 1.0): duration: decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5} -> decided:{"beam_levels": 2, "beats": 0.25, "dots": 0, "written": 0.25}
+
+538 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).

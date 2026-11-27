@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-27 -- overnight 20261127-night read (commit a93464fb2; compare vs 20261123-night filed)
+- Both movements exit 0 (Litolff 81 min, Brahms 276 min; no raise or traceback in either log). Compare in `benchmarks/acceptance/overnight/20261127-night/`. CHANGES, not verdicts: 179 commits since the base, 9 flag defaults moved (one acts in GATHER, `OMR_STEM_TIP_COLUMNS`), so no delta has one cause. Base re-exported by this tree: Brahms printed-notes denominator 17149 -> 16773 (2.360 counting; written 15794 unchanged), Litolff 8817 -> 8815.
+- Whole movement, printed notes written (re-exported base -> now): Litolff 8360/8815 -> 8364/8817, Brahms 15794/16773 -> 15894/16776; red bars 277 -> 276 and 429 -> 404; bars that add up 5484 -> 5486 and 6446 -> 6541; unread bars 117 -> 117 and 68 -> 68; blue marks 1372 -> 1370 and 1508 -> 1469.
+- Sean's judged marks (right/wrong/narrowed): Litolff 216/13/8 -> 216/13/8, Brahms 190/15/5 -> 196/15/0; right->wrong 0, right->gone 0 on both. Brahms: 5 narrowed marks now written and right.
+- Not done: no by-cause read of the changes (FINDINGS-by-cause.md / by-cause/ of the previous night not made); no print look at any changed mark.
+
 ## 2026-11-27 -- 2.363 LANDED (no flag): the missed-dot rule records what it reads (`tools/omr/staged/adjudicators/rhythm.py` `_missed_dot_page`, `inventory.py`, `wiring.py`)
 STAGED ADJUDICATE. Page stroke and claim rows are read through the evidence reader, so the duration verdict's basis holds them; three KNOWN_GAPS removed, one reason word a literal. `check` 244 -> 240 open. 20261123-night sample re-adjudicated: no raise, MusicXML byte-identical on both plates with `OMR_MISSED_DOT_TWO_WITNESSES` on and off. Claimed-mark test is constructed, not a judged case. Open: `refused_as_head` and `_stands_over_another_head` reads unrecorded.
 

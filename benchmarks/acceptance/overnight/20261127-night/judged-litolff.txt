@@ -1,0 +1,12 @@
+judged tiles, litolff, today's scorer on BOTH records (index 2313 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            216         13          8          2         39        167
+  TAG             216         13          8          2         39        167
+  right/wrong/narrowed  BASE 216/13/8  ->  TAG 216/13/8
+  moves: right->wrong 0 (must be 0) | right->gone 0 | wrong->right 0 | unwritten->wrong 0 | unwritten->right 0 | still wrong (narrowed without his answer on both nights) 0 | tiles scored on both 406
+  status transitions that are not 'same' (BASE -> TAG: n):
+  RIGHT -> WRONG (0)
+  RIGHT -> GONE (0)
+  WRONG -> RIGHT (0)
+  UNWRITTEN -> WRONG (0)
+  STILL WRONG (same on both nights) (0)

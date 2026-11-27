@@ -1,0 +1,78 @@
+== commits
+BASE 3881969e95b0d256c339eec46236a7e5ba215f3f  TAG a93464fb2134ffcabc84e9923e41f07d821792f0
+git log --oneline 3881969e9..a93464fb2: 179 commits (30 merges, 149 non-merge)
+changed under tools/omr: 61 files changed, 7789 insertions(+), 124 deletions(-)
+files changed by area: tests 43, staged 18
+
+== ROADMAP items named in commit subjects (oldest first; a subject names it, the tree decides whether it is ON)
+  0.15    79804ca83 2.352: a filled sharp must show paper between its uprights (stack_tip_gap, STACK_TIP_GAP_MIN_SP 0.15 sp); Litolff p10 glyph/10/1/9/0/5 no longer claim
+  2.78    f6a561e68 lane_report.compare_judged: a tile narrowed without Sean's answer on both nights is still_wrong, not unwritten -> wrong (Brahms 2.78-phase2-review til
+  2.164   ff367d388 Judged index: the 18 Set H 'Tie' answers (2.164-review) are scored as 'an arc, not a note'; tile 10 records Sean's slur answer; judged_compare prints 
+  2.305   5a271c182 2.360 (a): the old tie pairing's refusals are named apart from the lost ties when the page pass is on (that path writes nothing since 2.305); nothing 
+  2.306   d686face9 test_staged_inventory: the indirect-stem test pins the loop-variable site, not 'stem is indirect only' (stale since 2.306 page_stems observes Q.STEM l
+  2.333   e9af1abb1 2.345: the LilyPond PDF draws the red unread-note marks (2.333 spot, seven 2.343 arc marks)
+  2.340   79804ca83 2.352: a filled sharp must show paper between its uprights (stack_tip_gap, STACK_TIP_GAP_MIN_SP 0.15 sp); Litolff p10 glyph/10/1/9/0/5 no longer claim
+  2.343   137ff1e98 2.343: a tie whose other note is not in the file is marked red and counted, not dropped silently (STAGED EXPORT)
+  2.344   bf8eb0017 DECISIONS + page-facts + ROADMAP 2.344: an arc between the same notes is a tie, printed accidental or not (Sean)
+  2.345   e9af1abb1 2.345: the LilyPond PDF draws the red unread-note marks (2.333 spot, seven 2.343 arc marks)
+  2.346   1df0090e0 ROADMAP 2.346: refused ink does not count in a bar sum (claimed; Sean 'Start it')
+  2.347   d8501bc92 ROADMAP 2.347-2.349 claimed for the night (Sean: work the found-today list overnight)
+  2.348   5509d2d3a 2.348 (a): a system whose meter was never decided is marked meter? in red above its first bar, MusicXML and LilyPond, and counted
+  2.349   d8501bc92 ROADMAP 2.347-2.349 claimed for the night (Sean: work the found-today list overnight)
+  2.350   601faee4c Sean 2026-11-25: two close beams are a sixteenth (DECISIONS, page-facts); ROADMAP 2.350 chord dots, 2.351 head fill by own ink claimed
+  2.351   601faee4c Sean 2026-11-25: two close beams are a sixteenth (DECISIONS, page-facts); ROADMAP 2.350 chord dots, 2.351 head fill by own ink claimed
+  2.352   aba8f6960 ROADMAP 2.352 claimed: a stack of heads with a broken stem is not a sharp (Sean: queue behind round 7); 2.347 FINDINGS: cause of the page-10 refusal
+  2.353   308ef8882 ROADMAP: 2.353 judged scorer claimed; 2.352 build-only in flight; 2.350 build-only in flight (Sean: Yes)
+  2.354   f54b09c4a ROADMAP 2.354 claimed: a head box whose own ink is not a head is refused early, with a reason, never silently
+  2.355   53a50e76c ROADMAP 2.355 claimed: the head's own ink is read from the head (cause trace of HEAD_INK failing on 86 of 625 vouched heads)
+  2.356   4836ab51c ROADMAP 2.356: a whole-movement run on main stops at Brahms p21 (UphillConsequence since 2.346); fix claimed
+  2.357   7a5018e82 ROADMAP 2.357 (a printed dot is tied to its note) and 2.358 (arcs joined to read notes) claimed
+  2.358   7a5018e82 ROADMAP 2.357 (a printed dot is tied to its note) and 2.358 (arcs joined to read notes) claimed
+  2.359   2930c59dd ROADMAP 2.359 claimed: a missed dot written blue where the page and the bar agree
+  2.360   871dacbf0 ROADMAP 2.360 claimed: the ranking counts only real losses
+  2.361   ffc16d0e5 Sean 2026-11-26: define by what it is; ROADMAP 2.361 a rest stands alone, claimed
+  2.362   fb5356210 ROADMAP 2.362 claimed: a quarter rest is known by its shape (look first)
+  2.363   855e16630 ROADMAP 2.363 claimed: the missed-dot rule records what it reads (open findings 244 -> 240)
+  2.364   1e089c6e5 Claim ROADMAP 2.364: the second head of a third is measured by its own ink
+  (29 items)
+
+== 'Land' commits (the ones that flip a default)
+  1f3809c1f Land 2.343: regenerate data-flow page; version_memory, ROADMAP LANDED, DECISIONS
+  442027754 Land 2.344: flag rows, data-flow regenerated, version_memory, ROADMAP LANDED ON
+  70c9d7b76 Land 2.345: version_memory entry, ROADMAP LANDED with open list
+  85e533433 Land 2.344 r2: merge main, flag rows, DECISIONS, version_memory, ROADMAP LANDED ON, data-flow regenerated
+  f5b6a0988 Land 2.344 r2: rule page regenerated, rule_kinds for the sounding rules, fast-tier count
+  d0cb4fb6f Land 2.346: merge main, ROADMAP LANDED ON with open list, version_memory
+  90b675504 Land 2.346: fast-tier count in version_memory
+  d930f127a Land 2.348: merge lane-2.348 (ROADMAP: lane's 2.348 row, main's 2.349-2.351)
+  120db9efc Land inventory test order fix
+  07b7cba94 Land 2.348: ROADMAP row LANDED 2026-11-25, version_memory entry
+  581c7f9ea Land 2.349 ON: two beams read from the ink at the note's own stem (OMR_STEM_TIP_COLUMNS, OMR_TWO_BEAMS_AT_STEM default ON; Sean: Land on)
+  4f7332463 Land 2.352: a stack of noteheads with a broken stem is not a sharp; ROADMAP, FINDINGS, version_memory, data-flow, judged-tiles regenerated
+  f59c7a3b6 Land 2.351 mark-a-dropped-note ON: OMR_INSIDE_VIEW_DROP_MARKED default ON (Sean: Land the mark a dropped note.); OMR_HEAD_FILL_OWN_INK stays OFF
+  cdd9518ad Land 2.356: a bar holding a rest contested between two staves is left out of the meter's bar sum (whole-run crash fix); ROADMAP, DECISIONS, version_memory, data-flow, jud
+  2773de232 Land 2.360: the ranking counts only real losses; ROADMAP, DECISIONS, version_memory, judged-tiles index regenerated
+  27d52e7f0 Land 2.359: a dot the detector missed is written blue where the page and the bar agree, OMR_MISSED_DOT_TWO_WITNESSES default ON
+
+== flag DEFAULTS that differ (same AST scanner on both trees; ON = the default state)
+flag                               BASE     TAG      GATHER? read in (TAG tree)
+OMR_ARC_TIE_SAME_NOTES             absent   ON       no      arc_claim.py
+OMR_ARC_TIE_SAME_SOUNDING          absent   ON       no      arc_claim.py, export.py
+OMR_BAR_AGAINST_NEEDS_MAJORITY     absent   OFF      no      adjudicators/rhythm.py
+OMR_BAR_SUM_SKIPS_REFUSED          absent   ON       no      adjudicators/rhythm.py, wiring.py
+OMR_HEAD_FILL_OWN_INK              absent   OFF      no      adjudicators/rhythm.py
+OMR_INSIDE_VIEW_DROP_MARKED        absent   ON       no      export.py
+OMR_MISSED_DOT_TWO_WITNESSES       absent   ON       no      adjudicators/rhythm.py, inferences.py
+OMR_STEM_TIP_COLUMNS               absent   ON       YES     adjudicators/rhythm.py, beam_strokes.py, gather.py
+OMR_TWO_BEAMS_AT_STEM              absent   ON       no      beam_strokes.py, stroke_map.py
+(9 flags changed default; 186 flags seen by the scan at BASE, 195 at TAG)
+
+== every OMR_* NAME in non-test source: added since BASE (11) / gone (0)  [catches value flags the scan misses]
+  + OMR_ARC_END_AT_INK_HEAD            staged/adjudicators/ownership.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: ON (roadmap 2.358 (i), landed 2026-11-26)
+  + OMR_ARC_JOIN_BY_HEIGHT             staged/export.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: ON (roadmap 2.358 (iii), landed 2026-11-26)
+
+blind spot: a flag read through a path the scan cannot parse and already present at BASE is NOT listed even if its default moved.
