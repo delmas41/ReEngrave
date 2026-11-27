@@ -1,0 +1,180 @@
+{
+ "set": "2.358 newly written arcs (re-cut, exact arc-reader boxes)",
+ "date": "2026-11-26",
+ "question": "24 ties and slurs the new rule would write. For each number: tie or slur?",
+ "answered_by": "Sean",
+ "verbatim": "1 slur 2 tie 3 slur 4 tie 5 tie 6 slur 7 tie 8 tie 9 slur 10 tie 11 tie 12 tie 13 tie 14 tie 15 tie 16 slur 17 slur 18 tie 19 tie 20 tie 21 slur 22 slur 23 tie 24 tie",
+ "answers": {
+  "1": "slur",
+  "2": "tie",
+  "3": "slur",
+  "4": "tie",
+  "5": "tie",
+  "6": "slur",
+  "7": "tie",
+  "8": "tie",
+  "9": "slur",
+  "10": "tie",
+  "11": "tie",
+  "12": "tie",
+  "13": "tie",
+  "14": "tie",
+  "15": "tie",
+  "16": "slur",
+  "17": "slur",
+  "18": "tie",
+  "19": "tie",
+  "20": "tie",
+  "21": "slur",
+  "22": "slur",
+  "23": "tie",
+  "24": "tie"
+ },
+ "compared": [
+  {
+   "tile": 1,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 2,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 3,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 4,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 5,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 6,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 7,
+   "sean": "tie",
+   "file": "slur",
+   "result": "DIFFER"
+  },
+  {
+   "tile": 8,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 9,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 10,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 11,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 12,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 13,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 14,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 15,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 16,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 17,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 18,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  },
+  {
+   "tile": 19,
+   "sean": "tie",
+   "file": "slur",
+   "result": "DIFFER"
+  },
+  {
+   "tile": 20,
+   "sean": "tie",
+   "file": "slur",
+   "result": "DIFFER"
+  },
+  {
+   "tile": 21,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 22,
+   "sean": "slur",
+   "file": "slur",
+   "result": "agree"
+  },
+  {
+   "tile": 23,
+   "sean": "tie",
+   "file": "slur",
+   "result": "DIFFER"
+  },
+  {
+   "tile": 24,
+   "sean": "tie",
+   "file": "tie",
+   "result": "agree"
+  }
+ ],
+ "correction_2026_11_26": "A trace of the four 'Sean tie / file slur' tiles found the key was wrong for three: on tiles 19, 20 and 23 the arc Sean was shown (the lower arc) IS written as a tie; the slur belongs to a second, upper arc of the same chords, which he was not shown. Only tile 7's own arc is written as a slur. So the file's kind agrees with him on 23 of 24. Cause in all four: one head of a two-head chord is missing from the record (never boxed, or refused as a stacked duplicate), so an arc binds to the head that is left."
+}

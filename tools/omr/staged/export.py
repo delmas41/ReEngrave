@@ -3768,48 +3768,67 @@ def _across_system_spans(rec: Record, part: Sequence[StaffRun], measures, breaks
         if not ls:
             counters["arc_across_systems_no_pickup"] += len(rs)
             continue
-        if len(rs) != 1 or len(ls) != 1:
-            counters["arc_across_systems_ambiguous"] += len(rs)
-            continue
-        (a, ma), (b, mb) = rs[0], ls[0]
-        if str(a.get("curve", "")).startswith("page_arc/") or str(b.get("curve", "")).startswith("page_arc/"):
-            # ROADMAP 2.305 r4: the next RUN of the part is not always the next SYSTEM of the page: a record that holds pages 0 and 11 only puts page 11's first
-            # system right after page 0's last (2305 r4 measured: a slur written from Brahms p0 to p11). The two halves must stand on physically consecutive
-            # systems -- the same page's next system, or the next page's first; otherwise the partner page is not in the record (counted, nothing written).
-            pa_, sa_ = (int(v) for v in str(a["head"]).split("/")[1:3])
-            pb_, sb_ = (int(v) for v in str(b["head"]).split("/")[1:3])
-            if not ((pb_ == pa_ and sb_ == sa_ + 1) or (pb_ == pa_ + 1 and sb_ == 0)):
-                counters["arc_across_systems_partner_page_not_in_record"] += 1
-                continue
-        first, last = index[a["head"]][1], index[b["head"]][1]
-        if first is last or voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
-            counters["arc_across_systems_two_voices"] += 1
-            continue
-        if id(first) in taken or id(last) in taken:
-            counters["arc_across_systems_end_already_spanned"] += 1
-            continue
-        xa, xz = _head_x_centre(first), _head_x_centre(last)
-        if xa is None or xz is None:
-            counters["arc_across_systems_head_x_unknown"] += 1
-            continue
-        v = voice_of.get(id(first), 0)
-        # nothing of the voice after the first note in its run, nothing before the second in its own: the two are adjacent in the part
-        after = any(d is not first and voice_of.get(id(d), 0) == v and (_head_x_centre(d) or -1e9) > xa + 1.0
-                    for m in range(first_m[r], last_m[r] + 1) for d in (measures[m]["detections"] or ()) if d.get("category") == "notehead")
-        before = any(d is not last and voice_of.get(id(d), 0) == v and (_head_x_centre(d) or 1e9) < xz - 1.0
-                     for m in range(first_m[r + 1], last_m[r + 1] + 1) for d in (measures[m]["detections"] or ()) if d.get("category") == "notehead")
-        pa, pz = positions.get(a["head"]), positions.get(b["head"])
-        is_tie = (not after and not before and first.get("pitch") and first.get("pitch") == last.get("pitch")
-                  and pa is not None and pa == pz)
-        span = ((ma, xa), (mb, xz), first, last)
-        taken.add(id(first)); taken.add(id(last))
-        if is_tie:
-            ties.append(span)
-            counters["tie_spans_across_systems"] += 1
+        if len(rs) == 1 and len(ls) == 1:
+            pairs_ = [(rs[0], ls[0])]
+        elif _page_arc_bind.join_by_height_enabled():
+            # ROADMAP 2.358 (iii) (`OMR_ARC_JOIN_BY_HEIGHT`): more than one piece on a side of the break -- each joins the ONE piece across it curved the
+            # same way at the same height on the staff (`page_arc_bind.pair_by_height`); a piece with none or two is not joined, counted
+            ij = _page_arc_bind.pair_by_height([c for c, _m in rs], [c for c, _m in ls])
+            pairs_ = [(rs[i], ls[j]) for i, j in ij]
+            counters["arc_across_systems_joined_by_height"] += len(pairs_)
+            counters["arc_across_systems_ambiguous"] += len(rs) - len(pairs_)
         else:
-            slurs.append(span)
-            counters["slur_spans_across_systems"] += 1
+            pairs_ = []
+            counters["arc_across_systems_ambiguous"] += len(rs)
+        for (a, ma), (b, mb) in pairs_:
+            _x_slur, _x_tie = _join_one_pair(a, ma, b, mb, r, index, voice_of, taken, positions, measures, first_m, last_m, counters)
+            if _x_slur is not None:
+                slurs.append(_x_slur)
+            if _x_tie is not None:
+                ties.append(_x_tie)
     return slurs, ties
+
+
+def _join_one_pair(a, ma, b, mb, r, index, voice_of, taken, positions, measures, first_m, last_m, counters) -> Tuple[Optional[tuple], Optional[tuple]]:
+    """ROADMAP 2.271 step 3's body for ONE right-edge piece `a` (bar `ma`) and left-edge piece `b` (bar `mb`) across the break after run `r`, unchanged
+    (moved out of `_across_system_spans` by 2.358 (iii) so several pairs of one part can each be joined): `(slur_span, None)`, `(None, tie_span)` or
+    `(None, None)` with the refusal counted."""
+    if str(a.get("curve", "")).startswith("page_arc/") or str(b.get("curve", "")).startswith("page_arc/"):
+        # ROADMAP 2.305 r4: the next RUN of the part is not always the next SYSTEM of the page: a record that holds pages 0 and 11 only puts page 11's first
+        # system right after page 0's last (2305 r4 measured: a slur written from Brahms p0 to p11). The two halves must stand on physically consecutive
+        # systems -- the same page's next system, or the next page's first; otherwise the partner page is not in the record (counted, nothing written).
+        pa_, sa_ = (int(v) for v in str(a["head"]).split("/")[1:3])
+        pb_, sb_ = (int(v) for v in str(b["head"]).split("/")[1:3])
+        if not ((pb_ == pa_ and sb_ == sa_ + 1) or (pb_ == pa_ + 1 and sb_ == 0)):
+            counters["arc_across_systems_partner_page_not_in_record"] += 1
+            return None, None
+    first, last = index[a["head"]][1], index[b["head"]][1]
+    if first is last or voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
+        counters["arc_across_systems_two_voices"] += 1
+        return None, None
+    if id(first) in taken or id(last) in taken:
+        counters["arc_across_systems_end_already_spanned"] += 1
+        return None, None
+    xa, xz = _head_x_centre(first), _head_x_centre(last)
+    if xa is None or xz is None:
+        counters["arc_across_systems_head_x_unknown"] += 1
+        return None, None
+    v = voice_of.get(id(first), 0)
+    # nothing of the voice after the first note in its run, nothing before the second in its own: the two are adjacent in the part
+    after = any(d is not first and voice_of.get(id(d), 0) == v and (_head_x_centre(d) or -1e9) > xa + 1.0
+                for m in range(first_m[r], last_m[r] + 1) for d in (measures[m]["detections"] or ()) if d.get("category") == "notehead")
+    before = any(d is not last and voice_of.get(id(d), 0) == v and (_head_x_centre(d) or 1e9) < xz - 1.0
+                 for m in range(first_m[r + 1], last_m[r + 1] + 1) for d in (measures[m]["detections"] or ()) if d.get("category") == "notehead")
+    pa, pz = positions.get(a["head"]), positions.get(b["head"])
+    is_tie = (not after and not before and first.get("pitch") and first.get("pitch") == last.get("pitch")
+              and pa is not None and pa == pz)
+    span = ((ma, xa), (mb, xz), first, last)
+    taken.add(id(first)); taken.add(id(last))
+    if is_tie:
+        counters["tie_spans_across_systems"] += 1
+        return None, span
+    counters["slur_spans_across_systems"] += 1
+    return span, None
 
 
 def _with_across_system_joins(kind: str, spans: Sequence[tuple], x_slurs: Sequence[tuple], x_ties: Sequence[tuple],
@@ -3923,7 +3942,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 pa_ties[key] = str(r_["row"])
         for r_ in pa_plan["edges"]:
             across_edges.append({"curve": "page_arc/%s" % r_["row"], "side": r_["edge"], "head": r_["edge_head"], "x_end": r_["x_end"], "sp": r_["sp"],
-                                 "home": r_.get("staff_key")})
+                                 "home": r_.get("staff_key"), "shape": r_.get("shape"), "y_end_spaces": r_.get("y_end_spaces")})
     halves: List[Dict[str, Any]] = []              # ROADMAP 2.343: an arc with one written end, per part
     # ROADMAP 2.343 r2: a page run bound at both ends whose KIND was not read is written as nothing (counted above); its written note says so
     unread_runs = [r_ for r_ in (pa_plan["runs"] if pa_plan is not None else ())

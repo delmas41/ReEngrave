@@ -1,0 +1,344 @@
+{
+ "set": "Litolff red bars written in one voice and over-full, record decided one voice; 24 at random from 33",
+ "date": "2026-11-26",
+ "question": "For each number: is the bar in the orange box written for one voice or two?",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1, 1, tile 2, 2, tile 3, 2, tile 4, 1. Well, tile 4 is interesting because it shows triads, but I don't know if that's an instrument that knows that a tile. Well, they're both on the same, them going the same direction, so it would be one voice. So 4 is one voice. 1, 6, 1. 1, 8, 2, 9, 1, 1, 1, 1, 12, 1, 13, 1, 14, 2, 15, 1, 16, 1, 17, 1, 18, 1, 19, 1, 21, 21, 1, 22, 1, 23, 2, tile 24, 1.",
+ "reading_note": "OURS: the dictation dropped some tile numbers; 5, 7, 10, 11 and 20 are read as 'one' from the run of the count, not heard clearly.",
+ "answers": {
+  "1": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    10,
+    1,
+    6,
+    7
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "2": {
+   "voices": 2,
+   "heard_clearly": true,
+   "place": [
+    9,
+    1,
+    1,
+    6
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "3": {
+   "voices": 2,
+   "heard_clearly": true,
+   "place": [
+    2,
+    0,
+    2,
+    15
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "4": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    6,
+    1,
+    2,
+    9
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "5": {
+   "voices": 1,
+   "heard_clearly": false,
+   "place": [
+    6,
+    1,
+    10,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "6": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    2,
+    0,
+    7,
+    3
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "7": {
+   "voices": 1,
+   "heard_clearly": false,
+   "place": [
+    4,
+    1,
+    8,
+    5
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "8": {
+   "voices": 2,
+   "heard_clearly": true,
+   "place": [
+    6,
+    0,
+    0,
+    9
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "9": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    6,
+    1,
+    6,
+    10
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "10": {
+   "voices": 1,
+   "heard_clearly": false,
+   "place": [
+    4,
+    0,
+    7,
+    3
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "11": {
+   "voices": 1,
+   "heard_clearly": false,
+   "place": [
+    9,
+    0,
+    7,
+    14
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "12": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    6,
+    1,
+    11,
+    1
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "13": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    9,
+    0,
+    5,
+    3
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "14": {
+   "voices": 2,
+   "heard_clearly": true,
+   "place": [
+    2,
+    0,
+    10,
+    2
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "15": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    6,
+    0,
+    3,
+    12
+   ],
+   "record_voices": "one_voice",
+   "stems_read": []
+  },
+  "16": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    6,
+    0,
+    2,
+    8
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "17": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    8,
+    0,
+    3,
+    19
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "18": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    2,
+    1,
+    1,
+    14
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "19": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    4,
+    1,
+    8,
+    4
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "20": {
+   "voices": 1,
+   "heard_clearly": false,
+   "place": [
+    8,
+    0,
+    8,
+    20
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "21": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    10,
+    1,
+    7,
+    10
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "22": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    4,
+    0,
+    3,
+    13
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "down"
+   ]
+  },
+  "23": {
+   "voices": 2,
+   "heard_clearly": true,
+   "place": [
+    6,
+    1,
+    2,
+    1
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  },
+  "24": {
+   "voices": 1,
+   "heard_clearly": true,
+   "place": [
+    2,
+    1,
+    9,
+    11
+   ],
+   "record_voices": "one_voice",
+   "stems_read": [
+    "up"
+   ]
+  }
+ }
+}

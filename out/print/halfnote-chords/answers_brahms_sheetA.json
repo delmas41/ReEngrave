@@ -1,0 +1,438 @@
+{
+ "set": "Brahms, 24 at random from events the file writes as a half or longer",
+ "date": "2026-11-26",
+ "question": "For each number: how many noteheads are on that stem, and what is their value? Say if the box is not on a notehead.",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1, dotted half, 2 heads. Tile 2, dotted half, 2 heads. Tile 3, dotted half, 1 head. Tile 4 is a base clef, or part of a base clef. Tile 5 is a dotted half. The boxes are on one note, but there's two heads, two half notes on that stem. Tile 6 is a single quarter note. Tile 7 is a single dotted half. Tile 8 is two dotted halves on a stem. Tile 9 is two dotted halves on a stem. Tile 10 is a single dotted half. Tile 11 is a flat sign. Tile 12 is part of a sharp sign. Tile 13 is a single dotted half. Tile 14, dotted half, two heads on the stem. Tile 15 is a single dotted half. Tile 16 is a single dotted half. Tile 17, two dotted halves on the stem. Tile 18, a single dotted half. Tile 19, a single dotted half. Tile 20, a single dotted half. Tile 21, two dotted halves on the stem. Tile 22, single dotted half. Tile 23, single dotted half. Tile 24, single dotted half.",
+ "answers": {
+  "1": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/3/3/6",
+    "glyph/12/0/3/3/8"
+   ],
+   "file_writes": [
+    [
+     "D3",
+     "half.",
+     "plain"
+    ],
+    [
+     "B3",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "2": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/2/3/5",
+    "glyph/12/0/2/3/10"
+   ],
+   "file_writes": [
+    [
+     "E4",
+     "half.",
+     "plain"
+    ],
+    [
+     "C5",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "3": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/0/0/4/5/4"
+   ],
+   "file_writes": [
+    [
+     "C2",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "4": {
+   "is_a_note": false,
+   "what": "a bass clef, or part of one",
+   "agrees": false,
+   "subjects": [
+    "glyph/19/0/12/3/9"
+   ],
+   "file_writes": [
+    [
+     "Bb3",
+     "half",
+     "plain"
+    ]
+   ]
+  },
+  "5": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": false,
+   "subjects": [
+    "glyph/25/1/1/4/11"
+   ],
+   "file_writes": [
+    [
+     "Ab5",
+     "half.",
+     "blue"
+    ]
+   ]
+  },
+  "6": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "quarter",
+   "agrees": false,
+   "subjects": [
+    "glyph/4/0/11/5/0"
+   ],
+   "file_writes": [
+    [
+     "Eb4",
+     "half",
+     "plain"
+    ]
+   ]
+  },
+  "7": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/8/1/9/4/5"
+   ],
+   "file_writes": [
+    [
+     "G2",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "8": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/0/12/7",
+    "glyph/12/0/0/12/3"
+   ],
+   "file_writes": [
+    [
+     "E5",
+     "half.",
+     "plain"
+    ],
+    [
+     "G5",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "9": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/25/0/5/1/6",
+    "glyph/25/0/5/1/5"
+   ],
+   "file_writes": [
+    [
+     "C4",
+     "half.",
+     "plain"
+    ],
+    [
+     "C5",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "10": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": false,
+   "subjects": [
+    "glyph/8/1/10/7/2"
+   ],
+   "file_writes": [
+    [
+     "G2",
+     "half",
+     "plain"
+    ]
+   ]
+  },
+  "11": {
+   "is_a_note": false,
+   "what": "a flat sign",
+   "agrees": false,
+   "subjects": [
+    "glyph/19/1/8/1/12"
+   ],
+   "file_writes": [
+    [
+     "E#5",
+     "half",
+     "blue"
+    ]
+   ]
+  },
+  "12": {
+   "is_a_note": false,
+   "what": "part of a sharp sign",
+   "agrees": false,
+   "subjects": [
+    "glyph/19/1/2/4/15"
+   ],
+   "file_writes": [
+    [
+     "D5",
+     "half",
+     "blue"
+    ]
+   ]
+  },
+  "13": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/8/1/9/5/8"
+   ],
+   "file_writes": [
+    [
+     "G2",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "14": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/4/0/5/10/5",
+    "glyph/4/0/5/10/1"
+   ],
+   "file_writes": [
+    [
+     "G4",
+     "half.",
+     "plain"
+    ],
+    [
+     "D5",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "15": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/11/4/2"
+   ],
+   "file_writes": [
+    [
+     "G3",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "16": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/1/8/5"
+   ],
+   "file_writes": [
+    [
+     "C5",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "17": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/8/1/5/7/3",
+    "glyph/8/1/5/7/5"
+   ],
+   "file_writes": [
+    [
+     "C3",
+     "half.",
+     "plain"
+    ],
+    [
+     "C4",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "18": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/9/3/3"
+   ],
+   "file_writes": [
+    [
+     "B4",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "19": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/8/0/2/1/12"
+   ],
+   "file_writes": [
+    [
+     "Bb4",
+     "half.",
+     "blue"
+    ]
+   ]
+  },
+  "20": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/9/1/3"
+   ],
+   "file_writes": [
+    [
+     "B4",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "21": {
+   "is_a_note": true,
+   "heads": 2,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/25/1/0/4/13",
+    "glyph/25/1/0/4/7"
+   ],
+   "file_writes": [
+    [
+     "C6",
+     "half.",
+     "plain"
+    ],
+    [
+     "Ab6",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "22": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/9/9/2"
+   ],
+   "file_writes": [
+    [
+     "G4",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "23": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": true,
+   "subjects": [
+    "glyph/12/0/11/3/0"
+   ],
+   "file_writes": [
+    [
+     "G3",
+     "half.",
+     "plain"
+    ]
+   ]
+  },
+  "24": {
+   "is_a_note": true,
+   "heads": 1,
+   "value": "half.",
+   "agrees": false,
+   "subjects": [
+    "glyph/12/0/11/0/14",
+    "glyph/12/0/11/0/5"
+   ],
+   "file_writes": [
+    [
+     "Bb3",
+     "half.",
+     "plain"
+    ],
+    [
+     "G4",
+     "half.",
+     "plain"
+    ]
+   ]
+  }
+ }
+}

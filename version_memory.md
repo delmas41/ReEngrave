@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-26 -- 2.358 LANDED ON (`OMR_ARC_END_AT_INK_HEAD`, `OMR_ARC_JOIN_BY_HEIGHT`, default ON): an arc ends at a head found by ink at the stem end; arcs join across a system break by height (`tools/omr/staged/page_arc_bind.py`, `adjudicators/ownership.py` `_head_read`, `export.py` `_across_system_spans`)
+STAGED ADJUDICATE + EXPORT. Sample slices off vs on: Litolff ties +30, slurs +18; Brahms ties +10, slurs +2; lost or moved arcs 0; red bars unchanged; judged right->wrong 0; Sean judged 24 new arcs, all real, kind agrees on 23. `OMR_ARC_END_BY_INK` (2.338) stays OFF. One test pinned to the new default (flags-on-by-default), none pinned OFF.
+
 ## 2026-11-26 -- 2.359 LANDED ON (`OMR_MISSED_DOT_TWO_WITNESSES`, default ON): a dot the detector missed is written blue where the page and the bar agree (`tools/omr/staged/adjudicators/rhythm.py` `_with_missed_dot`, `tools/omr/staged/inferences.py` `_missed_dot_guesses`)
 STAGED ADJUDICATE + INFER. A note read plain beside an unread round mark in its own dot place is narrowed {plain, dotted}; INFER writes it dotted, GUESSED (blue), only where every other note in the bar is read and the bar is short by exactly those dots. Never a mark joined to other ink, never a staccato over/under another head, no staff-line-contact test. Frozen sample off vs on: Brahms +14 dotted notes, red bars 110 -> 97; Litolff byte-identical; judged right->wrong 0. Cost: two Brahms notes written plain are now unwritten and red. Not measured on a whole movement. Round 1 crashed once on a meter -> note -> meter loop; fixed by resting on the printed time-signature readings.
 

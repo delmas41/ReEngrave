@@ -1,0 +1,14 @@
+{
+ "set": "2.362 refused restQuarter boxes, Litolff, 24 at random (seed 20261126), exact detector boxes",
+ "date": "2026-11-26",
+ "question": "For each number: is it a quarter rest, or part of one? If not, what is it.",
+ "answered_by": "Sean",
+ "verbatim": "9 and 18 are quarter rests and 14 is part of a quarter rest. None of the rest of the tiles are",
+ "answers": {
+  "9": "a quarter rest",
+  "18": "a quarter rest",
+  "14": "part of a quarter rest",
+  "1-8, 10-13, 15-17, 19-24": "not quarter rests"
+ },
+ "checked_against_the_written_rests": "All three real ones are written as quarter rests from another box on the same ink (9: glyph/9/0/9/7/3; 14: glyph/6/1/3/4/0; 18: glyph/2/0/10/2/2). No rest is lost."
+}

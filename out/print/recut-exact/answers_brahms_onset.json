@@ -1,0 +1,397 @@
+{
+ "set": "Brahms notes written blue for onset_from_partial_bar, 24 at random from 100",
+ "date": "2026-11-26",
+ "question": "On which beat does each boxed note start (count in eighths, 1 to 6)?",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1, 1. Tile 2, beat 1. Tile 3. Four of six, tile 4, 1, tile 5, beat 1, tile 6, beat 1, tile 7, beat 1, tile 8, beat 1, tile 9, beat 1, tile 10, beat 1, tile 11 belongs to the staff below it, tile 12, beat 6, tile 13, beat 6, tile 14, beat 1, tile 15, beat 4, tile 16, beat 1, tile 17, beat 1, tile 18, beat 6, tile 19, beat 3, tile 20, beat 6, tile 21, beat 4 of 6, tile 22, beat 4 of 6, tile 23, beat 1, tile 24, and of 4 and 6.",
+ "reading_note": "OURS: 'and of 4 and 6' on tile 24 is read as the and of 4 (of 6).",
+ "answers": {
+  "1": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "D5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/1/9/7/5",
+   "agrees": true
+  },
+  "2": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "G5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/1/9/6/0",
+   "agrees": true
+  },
+  "3": {
+   "his_eighth_beat": 4,
+   "file_onset_eighths_from_0": [
+    3.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "C#4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/4/0/13/5/3",
+   "agrees": true
+  },
+  "4": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "D3",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/19/0/4/0/8",
+   "agrees": true
+  },
+  "5": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "B4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/19/1/8/7/6",
+   "agrees": true
+  },
+  "6": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "G5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/4/0/9/9/1",
+   "agrees": true
+  },
+  "7": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "F5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/0/2/1/2",
+   "agrees": true
+  },
+  "8": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "D5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/0/2/6/6",
+   "agrees": true
+  },
+  "9": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "E4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/19/1/10/5/2",
+   "agrees": true
+  },
+  "10": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0,
+    0.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "Eb6",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/0/0/1/15",
+   "agrees": true
+  },
+  "11": {
+   "his_eighth_beat": null,
+   "file_onset_eighths_from_0": [
+    3.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "Ab6",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/19/0/8/1/0",
+   "note": "belongs to the staff below it"
+  },
+  "12": {
+   "his_eighth_beat": 6,
+   "file_onset_eighths_from_0": [
+    5.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "C5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/25/0/10/1/7",
+   "agrees": true
+  },
+  "13": {
+   "his_eighth_beat": 6,
+   "file_onset_eighths_from_0": [
+    5.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "C5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/25/0/9/0/11",
+   "agrees": true
+  },
+  "14": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "D3",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/4/1/13/5/0",
+   "agrees": true
+  },
+  "15": {
+   "his_eighth_beat": 4,
+   "file_onset_eighths_from_0": [
+    3.0,
+    4.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "C4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/1/5/0/1",
+   "agrees": true
+  },
+  "16": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0,
+    0.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "Eb4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/0/3/3/4",
+   "agrees": true
+  },
+  "17": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "C5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/0/1/6/14",
+   "agrees": true
+  },
+  "18": {
+   "his_eighth_beat": 6,
+   "file_onset_eighths_from_0": [
+    5.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "F5",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/8/0/2/12/3",
+   "agrees": true
+  },
+  "19": {
+   "his_eighth_beat": 3,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "F#4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/4/1/2/3/13",
+   "agrees": false
+  },
+  "20": {
+   "his_eighth_beat": 6,
+   "file_onset_eighths_from_0": [
+    5.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "Cb6",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/8/0/1/5/5",
+   "agrees": true
+  },
+  "21": {
+   "his_eighth_beat": 4,
+   "file_onset_eighths_from_0": [
+    2.0
+   ],
+   "file_value": "quarter, 1 dot(s), no tuplet",
+   "file_pitch": "Cb4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/8/0/3/8/3",
+   "agrees": false
+  },
+  "22": {
+   "his_eighth_beat": 4,
+   "file_onset_eighths_from_0": [
+    4.0
+   ],
+   "file_value": "eighth, 0 dot(s), no tuplet",
+   "file_pitch": "G2",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/1/13/3/0",
+   "agrees": false
+  },
+  "23": {
+   "his_eighth_beat": 1,
+   "file_onset_eighths_from_0": [
+    0.0
+   ],
+   "file_value": "quarter, 0 dot(s), no tuplet",
+   "file_pitch": "G2",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/1/12/3/1",
+   "agrees": true
+  },
+  "24": {
+   "his_eighth_beat": 4.5,
+   "file_onset_eighths_from_0": [
+    4.5
+   ],
+   "file_value": "16th, 0 dot(s), no tuplet",
+   "file_pitch": "D4",
+   "meter_of_file": [
+    [
+     "6",
+     "8"
+    ]
+   ],
+   "subject": "glyph/5/0/3/6/5",
+   "agrees": false
+  }
+ }
+}

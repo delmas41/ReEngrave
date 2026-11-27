@@ -77,6 +77,67 @@ def end_by_ink_enabled() -> bool:
     return _on(ENV_END_BY_INK)
 
 
+# ── ROADMAP 2.358 (i): AN ARC ENDS AT A NOTE THE PAGE INK READ ───────────────────────────────────────────────────────────────────────────────
+#
+# THE RULE (ours, put in a musician's words): an arc's end rests on the note it reaches, and a note the file writes is a note an arc may end at --
+# also one read from its ink alone at the end of a stem (written blue, GUESSED). NEVER: an arc bound across a separate note nobody read (the unread-ink
+# guard for every other ink stands unchanged); never a note refused or held in doubt for any other reason (a key's claim, a duplicate box).
+#
+# THE CAUSE (step 0, 20261123-night, Litolff 43 / Brahms 13 ends refused `unread_ink_at_end`): the "unread" ink is most often NOT a piece of the tied head
+# but a second notehead box, added where the page ink alone read a head at a stem end (`notehead_precision`, NARROWED `stem_end_ink_only`) -- Litolff 20
+# of 43, Brahms 2 of 13; EXPORT writes 21 of those 22 (blue). ADJUDICATE's arc binder held such a head "not read" (2.305 r7, `ownership._head_read`) and
+# then refused the arc as "cannot tell" -- although the note is in the file and, in most of the 20, IS the arc's note (a chord member it ends on, or the
+# next note). Sean's own judged case for the r7 guard (r6 tile 2, Litolff p13 `13/0/3/13/5 -> 13/0/3/14/7`, stop note narrowed `stem_end_ink_only`)
+# was answered "half notes with a tie" -- RIGHT: the arc to that note was the true reading. No number.
+ENV_END_AT_INK_HEAD = "OMR_ARC_END_AT_INK_HEAD"
+#: the ADJUDICATE reason of a head the page ink alone read at a stem end (`notehead_precision`; `export.STEM_END_INK_ONLY_REASON` writes it blue)
+STEM_END_INK_ONLY = "stem_end_ink_only"
+
+
+def end_at_ink_head_enabled() -> bool:
+    """`OMR_ARC_END_AT_INK_HEAD` (ROADMAP 2.358 (i)), default ON (landed 2026-11-26)."""
+    return _flag_on(ENV_END_AT_INK_HEAD)
+
+
+# ── ROADMAP 2.358 (iii): THE TWO PIECES OF AN ARC ACROSS A SYSTEM BREAK, BY STAFF AND HEIGHT ─────────────────────────────────────────────────
+#
+# THE RULE (Sean 2026-11-13, page-facts: "An arc across a system break is ONE arc in two pieces"; 2026-11-05 "Anything that needs to be done to connect
+# arc separated by systems is fine"): the piece that leaves a system and the piece that enters the next system on the same instrument's staff, curved the
+# same way (both over their notes, or both under) at the same height on the staff, are one arc. Where an instrument has more than one piece on either side
+# of the break, each piece is joined to the ONE piece across the break that matches it so, and only where that one matches it alone. NEVER: two pieces
+# curved opposite ways; two pieces at different heights; a piece with two equally good partners (stacked arcs) -- not joined, counted. The tie-or-slur
+# choice and every other check of the join (`export._across_system_spans`) are unchanged.
+#
+# THE CAUSE (step 0): the join wrote a pair only where the instrument had EXACTLY ONE piece on each side of the break; two arcs crossing one break on one
+# staff (a slur over a tie, two voices) were all "ambiguous" (20261123-night sample: Litolff 2, Brahms 8). Height and curve were never compared.
+# MEASURED BOTH SIDES (sample, same staff index across the break, both ends of each piece read): the pieces of one arc stand 0.02-1.43 spaces apart in
+# height (18 pairs); pieces curved the same way that are NOT one arc 3.35 spaces and more (the next, 7.2+); a cup against a cap 2.89 and more. The cut
+# sits in that gap. NOT CONFIRMED beyond Litolff 984073 / Brahms 317803; it only ever joins where the old rule joined nothing.
+ENV_JOIN_BY_HEIGHT = "OMR_ARC_JOIN_BY_HEIGHT"
+JOIN_HEIGHT_SPACES = 2.0
+
+
+def join_by_height_enabled() -> bool:
+    """`OMR_ARC_JOIN_BY_HEIGHT` (ROADMAP 2.358 (iii)), default ON (landed 2026-11-26)."""
+    return _flag_on(ENV_JOIN_BY_HEIGHT)
+
+
+def pair_by_height(rights: Sequence[Dict[str, Any]], lefts: Sequence[Dict[str, Any]]) -> List[Tuple[int, int]]:
+    """ROADMAP 2.358 (iii): `(i, j)` for each right-edge piece `rights[i]` and left-edge piece `lefts[j]` that are each other's ONLY match: the same
+    `shape` (`above` / `below`, the binder's curve side) and `y_end_spaces` (the end's height below its own staff's top line) within `JOIN_HEIGHT_SPACES`.
+    A piece missing either value matches nothing."""
+    def ok(a: Dict[str, Any], b: Dict[str, Any]) -> bool:
+        sa, sb, ya, yb = a.get("shape"), b.get("shape"), a.get("y_end_spaces"), b.get("y_end_spaces")
+        return sa in ("above", "below") and sa == sb and ya is not None and yb is not None and abs(float(ya) - float(yb)) <= JOIN_HEIGHT_SPACES
+    m = [[ok(a, b) for b in lefts] for a in rights]
+    out = []
+    for i in range(len(rights)):
+        js = [j for j in range(len(lefts)) if m[i][j]]
+        if len(js) == 1 and sum(1 for k in range(len(rights)) if m[k][js[0]]) == 1:
+            out.append((i, js[0]))
+    return out
+
+
 def _seg_gap(px: float, py: float, x: float, y0: float, y1: float) -> float:
     lo, hi = min(y0, y1), max(y0, y1)
     dy = 0.0 if lo <= py <= hi else min(abs(py - lo), abs(py - hi))

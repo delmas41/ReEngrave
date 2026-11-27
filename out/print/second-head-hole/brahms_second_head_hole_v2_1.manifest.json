@@ -1,0 +1,123 @@
+{
+ "sheet": "/private/tmp/claude-501/second-head-hole/brahms_second_head_hole_v2_1.png",
+ "seed": 20261128,
+ "question_suggested": "Is there a second half-note head inside the orange rectangle, on the same stem as the note beside it?",
+ "rule": "second head of a hollow third = a white hole of head size a third from the written head on the same stem (proto.py)",
+ "population_yes": 2,
+ "judged_excluded": 1,
+ "pool": 1,
+ "box_is": "inner edge = the SECOND head ring only: ring of ink round the hole (<=0.5 sp out), stopped on the written-head side at paper or at the narrowest ink row between the two holes (page px, exclusive end)",
+ "tiles": [
+  {
+   "number": 1,
+   "plate": "brahms",
+   "page": 25,
+   "staff": "staff/25/1/0",
+   "measure": "152",
+   "part": "P1",
+   "written_glyph": "glyph/25/1/0/8/11",
+   "written_box_page_px": [
+    4643.6,
+    4402.9,
+    4674.1,
+    4428.7
+   ],
+   "file_writes": {
+    "pitch": "E6",
+    "type": "half",
+    "dots": 1,
+    "color": "blue"
+   },
+   "written_step": -6,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 4641,
+    "x1": 4646,
+    "top": 4396,
+    "bot": 4543,
+    "len_sp": 5.38
+   },
+   "interval": "third below the written head (staff step -6 -> -4)",
+   "hole_step_local": -3.67,
+   "hole_box_page_px": [
+    4647,
+    4432,
+    4665,
+    4440
+   ],
+   "hole_size_sp": [
+    0.65,
+    0.29
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_full_page_px": [
+    4634,
+    4418,
+    4679,
+    4445
+   ],
+   "second_head_ring_page_px": [
+    4634,
+    4418,
+    4679,
+    4445
+   ],
+   "separated_by": "no_written_hole:ring_unchanged",
+   "second_ring_size_sp": [
+    1.64,
+    0.98
+   ],
+   "ring_size_sp": [
+    1.64,
+    0.98
+   ],
+   "staff_space_px": 27.5,
+   "stem_cover": 1.0,
+   "touch_rows": 8,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     4492,
+     4390,
+     4822,
+     4666
+    ],
+    "painted_white_rows": [],
+    "scale": 1.4545,
+    "tile_px": [
+     480,
+     401
+    ],
+    "rect_inner_px": [
+     207,
+     41,
+     271,
+     79
+    ],
+    "rect_outer_px": [
+     200,
+     34,
+     278,
+     86
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     200,
+     34,
+     278,
+     86
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    75
+   ]
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "litolff_sheetA_half_or_longer": {
+  "sheet_size": [
+   3025,
+   5425
+  ],
+  "median_w_sp": 1.66,
+  "median_h_sp": 1.475,
+  "median_w_px": 26.139999999999986,
+  "median_h_px": 23.355000000000018
+ },
+ "litolff_sheetB_chord_or_big_box": {
+  "sheet_size": [
+   3025,
+   5916
+  ],
+  "median_w_sp": 1.6349999999999998,
+  "median_h_sp": 3.545,
+  "median_w_px": 25.550000000000068,
+  "median_h_px": 55.85000000000008
+ },
+ "brahms_sheetA_half_or_longer": {
+  "sheet_size": [
+   3025,
+   5357
+  ],
+  "median_w_sp": 1.61,
+  "median_h_sp": 1.225,
+  "median_w_px": 44.279999999999745,
+  "median_h_px": 34.00999999999999
+ },
+ "brahms_sheetB_chord_or_big_box": {
+  "sheet_size": [
+   3025,
+   5621
+  ],
+  "median_w_sp": 1.47,
+  "median_h_sp": 3.2649999999999997,
+  "median_w_px": 40.42499999999984,
+  "median_h_px": 89.78999999999974
+ }
+}

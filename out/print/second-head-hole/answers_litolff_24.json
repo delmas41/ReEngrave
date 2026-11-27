@@ -1,0 +1,321 @@
+{
+ "set": "Litolff: single written half notes where the prototype hole rule says a second head is a third away; 24 at random from 33 unjudged",
+ "date": "2026-11-26",
+ "question": "How many noteheads on that stem, and is the orange box on one of them?",
+ "answered_by": "Sean",
+ "verbatim": "Tau one is a unison half note. Tau two are two half notes on the single stem. Tau three is a box around part of a half note, and there's two half notes on that stem and a tremolo slash. Tau four, there's two half notes on that stem. Tau five is a single half note. Tau six is a unison half note. Tau seven is a single half note. Tau eight, there are two half notes on that stem. The box is a little bit small around one of them, kind of in between them. Tau nine is a half note, and there's two on that stem. Tau 10, half note, two on the stem. Tau 11, half note, two on the stem. Tau 12, half note, two on the stem. Tau 13 is a part of an arc. Tau 14 is a half note, and there's two on the stem. Tau 15 is a half note, and there's two on the stem. Tau 16 is a half note, unison. Tau 17 is a half note, single. Tau 18 is a half note, two on the stem. Tau 19 is a box around a space in the staff. Tau 20, half note, is two on the stem. Tau 21, half note, two on the stem. Tau 22, half note, two on the stem. Tau 23, half note, two on the stem. Tau 24, a single half note. Some of these are around two notes, and some of them are around one of the notes.",
+ "answers": {
+  "1": {
+   "sean": "unison half note",
+   "rule_right": false,
+   "written_glyph": "glyph/9/0/0/13/2",
+   "written_step": 7,
+   "hole_step_local": 8.94,
+   "file_writes": {
+    "pitch": "F4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "2": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/1/11/6",
+   "written_step": -2,
+   "hole_step_local": 0.0,
+   "file_writes": {
+    "pitch": "Ab5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "3": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/6/1/10/11/0",
+   "written_step": 11,
+   "hole_step_local": 13.18,
+   "file_writes": {
+    "pitch": "D2",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "4": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/8/0/3/5/3",
+   "written_step": -2,
+   "hole_step_local": 0.0,
+   "file_writes": {
+    "pitch": "Gb4",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   }
+  },
+  "5": {
+   "sean": "single half note",
+   "rule_right": false,
+   "written_glyph": "glyph/6/1/11/10/3",
+   "written_step": 5,
+   "hole_step_local": 7.1,
+   "file_writes": {
+    "pitch": "C3",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "6": {
+   "sean": "unison half note",
+   "rule_right": false,
+   "written_glyph": "glyph/10/0/4/1/6",
+   "written_step": 1,
+   "hole_step_local": 3.07,
+   "file_writes": {
+    "pitch": "E5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "7": {
+   "sean": "single half note",
+   "rule_right": false,
+   "written_glyph": "glyph/10/0/2/1/5",
+   "written_step": 3,
+   "hole_step_local": 4.65,
+   "file_writes": {
+    "pitch": "C5",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   }
+  },
+  "8": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/6/0/2/3/4",
+   "written_step": 0,
+   "hole_step_local": 2.25,
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "9": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/2/1/0/11/2",
+   "written_step": -6,
+   "hole_step_local": -4.06,
+   "file_writes": {
+    "pitch": "Eb6",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   }
+  },
+  "10": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/9/1/1/8/2",
+   "written_step": 0,
+   "hole_step_local": 2.0,
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "11": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/16/0/1/7/3",
+   "written_step": -1,
+   "hole_step_local": 0.95,
+   "file_writes": {
+    "pitch": "G5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "12": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/4/0/2/2/0",
+   "written_step": 0,
+   "hole_step_local": 2.0,
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "13": {
+   "sean": "not a head: part of an arc",
+   "rule_right": false,
+   "written_glyph": "glyph/10/0/2/2/5",
+   "written_step": 3,
+   "hole_step_local": 0.74,
+   "file_writes": {
+    "pitch": "C5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "14": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/9/1/1/10/1",
+   "written_step": 2,
+   "hole_step_local": 0.0,
+   "file_writes": {
+    "pitch": "D5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "15": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/6/0/3/3/6",
+   "written_step": 1,
+   "hole_step_local": 3.15,
+   "file_writes": {
+    "pitch": "D4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "16": {
+   "sean": "unison half note",
+   "rule_right": false,
+   "written_glyph": "glyph/8/0/0/2/2",
+   "written_step": -2,
+   "hole_step_local": 0.19,
+   "file_writes": {
+    "pitch": "A5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "17": {
+   "sean": "single half note",
+   "rule_right": false,
+   "written_glyph": "glyph/4/0/1/2/3",
+   "written_step": -4,
+   "hole_step_local": -2.24,
+   "file_writes": {
+    "pitch": "C6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "18": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/1/1/1",
+   "written_step": -1,
+   "hole_step_local": 0.99,
+   "file_writes": {
+    "pitch": "G5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "19": {
+   "sean": "not a head: a space in the staff",
+   "rule_right": false,
+   "written_glyph": "glyph/4/1/7/7/8",
+   "written_step": 5,
+   "hole_step_local": 3.01,
+   "file_writes": {
+    "pitch": "Ab4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "20": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/0/2/8",
+   "written_step": -6,
+   "hole_step_local": -3.78,
+   "file_writes": {
+    "pitch": "Eb6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "21": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/0/8/7",
+   "written_step": -7,
+   "hole_step_local": -4.94,
+   "file_writes": {
+    "pitch": "F#6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "22": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/4/1/1/5/10",
+   "written_step": -2,
+   "hole_step_local": 0.0,
+   "file_writes": {
+    "pitch": "Ab5",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   }
+  },
+  "23": {
+   "sean": "two heads on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/11/0/1/9/2",
+   "written_step": 0,
+   "hole_step_local": 2.0,
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   }
+  },
+  "24": {
+   "sean": "single half note",
+   "rule_right": false,
+   "written_glyph": "glyph/6/1/11/9/0",
+   "written_step": 6,
+   "hole_step_local": 8.0,
+   "file_writes": {
+    "pitch": "Bb2",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   }
+  }
+ }
+}
