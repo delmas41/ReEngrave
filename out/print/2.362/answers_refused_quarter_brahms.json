@@ -9,5 +9,6 @@
   "2": "a box around part of a quarter rest; the box is too small",
   "8": "a box around part of a quarter rest; the box is too small",
   "3-7, 9-24": "not quarter rests"
- }
+ },
+ "checked_against_the_written_rests": "All three partial boxes sit on quarter rests that are written from another, full box (1: glyph/4/1/5/5/0; 2: glyph/4/0/6/9/3; 8: glyph/25/0/10/6/4). No rest is lost."
 }
