@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **566 rule exits** are sorted (607 declared reasons on 63 decisions, less 69 positive exits and 63 stubs, plus 28 EVALUATE/INFER/post-pass rules and 63 guard modules): **183 CONVENTION** (A), **10 ERASURE** (B), **112 DOUBLE-COUNT** (C), **173 OTHER** (D), **88 UNSURE** (U).
+1. **568 rule exits** are sorted (608 declared reasons on 63 decisions, less 69 positive exits and 63 stubs, plus 28 EVALUATE/INFER/post-pass rules and 64 guard modules): **183 CONVENTION** (A), **10 ERASURE** (B), **112 DOUBLE-COUNT** (C), **173 OTHER** (D), **90 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,464 / 24,156; OTHER 51,123 / 127,450; UNSURE 5,275 / 20,547. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **88 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **90 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -278,7 +278,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_staff_ordi
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_arpeggiato_is_not_an_arpeggiato` (family_precision): `quarter_rest_shaped_ink` | 0 / 0 | 0 / 0 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_rest_is_not_a_rest` (family_precision): `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `whole_rest_hangs`, `rest_owner_refused`, `rest_holds_a_stem`, `rest_is_an_accidentals_ink` | 0 / 0 | 58 / 20 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_key_signature` (header): `key_slots` | 0 / 0 | 0 / 0 | - | open |
-| NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `claimed_by:whole_rest`, `stem_end_ink_claimed`, `stem_end_ink_unladdered`, `stem_end_ink_only`, `stem_end_ink_disagrees`, `owner_refused` | 0 / 0 | 58 / 74 | - | open |
+| NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `claimed_by:whole_rest`, `stem_end_ink_claimed`, `stem_end_ink_unladdered`, `stem_end_ink_only`, `second_head_hole`, `stem_end_ink_disagrees`, `owner_refused` | 0 / 0 | 58 / 74 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_accidental_owner` (ownership): `owner_refused` | 0 / 0 | 0 / 0 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_arc_kind` (ownership): `arc_ends_unread` | 0 / 0 | 0 / 0 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_glyph_owner` (ownership): `ledger_over_stem` | 0 / 0 | 12 / 2 | - | open |
@@ -379,6 +379,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `page_strokes.py` | C | the PAGE stroke map: the cell finders on one raster assembled from each staff's erased band + the page, barline columns carved out first; records, decides nothing | Sean 2026-11-03 (2.260a M2) | open: M3 / M4 read it |
 | `page_tremolo.py` | U | NOT YET CLASSIFIED | - | open |
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
+| `second_head_hole.py` | U | NOT YET CLASSIFIED | - | open |
 | `second_hollow.py` | U | a SECOND detector at GATHER for hollow heads only | ROADMAP 2.114 | open: a second reading of the same ink |
 | `staff_family.py` | U | NOT YET CLASSIFIED | - | open |
 | `stem_end_heads.py` | A | a stem with no head is a note we have not seen: look at its end | Sean 2026-10-01 (2.179 "if there are stems then there are notes") | kept |
@@ -413,7 +414,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **NOT YET CLASSIFIED** (`adjudicate_arpeggiato_is_not_an_arpeggiato`: `quarter_rest_shaped_ink`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_rest_is_not_a_rest`: `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `whole_rest_hangs`, `rest_owner_refused`, `rest_holds_a_stem`, `rest_is_an_accidentals_ink`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_key_signature`: `key_slots`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
-- **NOT YET CLASSIFIED** (`adjudicate_notehead_is_not_a_notehead`: `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `claimed_by:whole_rest`, `stem_end_ink_claimed`, `stem_end_ink_unladdered`, `stem_end_ink_only`, `stem_end_ink_disagrees`, `owner_refused`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
+- **NOT YET CLASSIFIED** (`adjudicate_notehead_is_not_a_notehead`: `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `claimed_by:whole_rest`, `stem_end_ink_claimed`, `stem_end_ink_unladdered`, `stem_end_ink_only`, `second_head_hole`, `stem_end_ink_disagrees`, `owner_refused`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_accidental_owner`: `owner_refused`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_arc_kind`: `arc_ends_unread`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_glyph_owner`: `ledger_over_stem`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
@@ -446,6 +447,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`page_ledger.py`**: not classified.
 - **`page_stems.py`**: not classified.
 - **`page_tremolo.py`**: not classified.
+- **`second_head_hole.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
 - **`staff_family.py`**: not classified.
 - **`stem_strokes.py`**: not classified.
