@@ -1,0 +1,1140 @@
+{
+ "sheet": "refused_quarter_box_litolff.png",
+ "size": [
+  2900,
+  3642
+ ],
+ "tiles": [
+  {
+   "g": "glyph/4/1/10/8/2",
+   "plate": "litolff",
+   "page": 4,
+   "bar": "4/1/10/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4621410071849823,
+   "box": [
+    1668.44,
+    3515.4,
+    1679.64,
+    3577.8
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 1,
+   "crop_page_px": [
+    1578,
+    3497,
+    1770,
+    3625
+   ],
+   "scale": 4.6875,
+   "staff_space_px": 16.0,
+   "staff_index": 21,
+   "box_in_tile_px": [
+    424,
+    86,
+    476,
+    379
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.7,
+    3.9
+   ],
+   "sheet_offset_px": [
+    20,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/4/1/0/8/6",
+   "plate": "litolff",
+   "page": 4,
+   "bar": "4/1/0/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3411755859851837,
+   "box": [
+    1660.0475,
+    2178.3425,
+    1670.4425,
+    2212.3625
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 2,
+   "crop_page_px": [
+    1571,
+    2146,
+    1760,
+    2272
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 11,
+   "box_in_tile_px": [
+    424,
+    154,
+    474,
+    316
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.66,
+    2.16
+   ],
+   "sheet_offset_px": [
+    740,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/10/1/7/0/10",
+   "plate": "litolff",
+   "page": 10,
+   "bar": "10/1/7/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.586931049823761,
+   "box": [
+    519.3775,
+    3078.15,
+    529.3,
+    3144.4575
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 3,
+   "crop_page_px": [
+    430,
+    3070,
+    619,
+    3200
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 18,
+   "box_in_tile_px": [
+    426,
+    39,
+    473,
+    355
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.63,
+    4.21
+   ],
+   "sheet_offset_px": [
+    1460,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/9/0/9/3/7",
+   "plate": "litolff",
+   "page": 9,
+   "bar": "9/0/9/3",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.28832173347473145,
+   "box": [
+    980.935,
+    1665.13,
+    993.955,
+    1713.645
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 4,
+   "crop_page_px": [
+    894,
+    1627,
+    1080,
+    1751
+   ],
+   "scale": 4.8387,
+   "staff_space_px": 15.5,
+   "staff_index": 9,
+   "box_in_tile_px": [
+    421,
+    185,
+    484,
+    419
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.84,
+    3.13
+   ],
+   "sheet_offset_px": [
+    2180,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/10/1/9/2/1",
+   "plate": "litolff",
+   "page": 10,
+   "bar": "10/1/9/2",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.49012699723243713,
+   "box": [
+    767.0,
+    3394.9275,
+    775.82,
+    3471.4725
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 5,
+   "crop_page_px": [
+    677,
+    3376,
+    866,
+    3502
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 20,
+   "box_in_tile_px": [
+    429,
+    90,
+    471,
+    455
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.56,
+    4.86
+   ],
+   "sheet_offset_px": [
+    20,
+    641
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/16/1/3/5/4",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/1/3/5",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.2749493420124054,
+   "box": [
+    1339.4125,
+    2488.9375,
+    1353.43,
+    2552.5675
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 6,
+   "crop_page_px": [
+    1252,
+    2454,
+    1441,
+    2580
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 14,
+   "box_in_tile_px": [
+    416,
+    166,
+    483,
+    469
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.89,
+    4.04
+   ],
+   "sheet_offset_px": [
+    740,
+    641
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/16/1/6/11/4",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/1/6/11",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.32668033242225647,
+   "box": [
+    2210.0,
+    2922.63,
+    2215.1975,
+    2988.6225
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 7,
+   "crop_page_px": [
+    2118,
+    2890,
+    2307,
+    3016
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 17,
+   "box_in_tile_px": [
+    438,
+    155,
+    463,
+    470
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.33,
+    4.19
+   ],
+   "sheet_offset_px": [
+    1460,
+    641
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/16/0/3/0/14",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/0/3/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3388429880142212,
+   "box": [
+    592.07,
+    757.0,
+    596.9525,
+    804.565
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 8,
+   "crop_page_px": [
+    500,
+    749,
+    689,
+    914
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 3,
+   "box_in_tile_px": [
+    438,
+    38,
+    462,
+    265
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.31,
+    3.02
+   ],
+   "sheet_offset_px": [
+    2180,
+    641
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/9/0/9/7/8",
+   "plate": "litolff",
+   "page": 9,
+   "bar": "9/0/9/7",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4871215522289276,
+   "box": [
+    1457.975,
+    1656.76,
+    1476.42,
+    1705.275
+   ],
+   "reason": "rest_is_a_duplicate_box",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 9,
+   "crop_page_px": [
+    1374,
+    1627,
+    1560,
+    1751
+   ],
+   "scale": 4.8387,
+   "staff_space_px": 15.5,
+   "staff_index": 9,
+   "box_in_tile_px": [
+    406,
+    144,
+    496,
+    379
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.19,
+    3.13
+   ],
+   "sheet_offset_px": [
+    20,
+    1332
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_is_a_duplicate_box)"
+  },
+  {
+   "g": "glyph/11/0/7/15/0",
+   "plate": "litolff",
+   "page": 11,
+   "bar": "11/0/7/15",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.38169747591018677,
+   "box": [
+    2292.56,
+    1424.57,
+    2301.705,
+    1474.635
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 10,
+   "crop_page_px": [
+    2204,
+    1410,
+    2390,
+    1534
+   ],
+   "scale": 4.8387,
+   "staff_space_px": 15.5,
+   "staff_index": 7,
+   "box_in_tile_px": [
+    429,
+    70,
+    473,
+    313
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.59,
+    3.23
+   ],
+   "sheet_offset_px": [
+    740,
+    1332
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/2/1/5/0/6",
+   "plate": "litolff",
+   "page": 2,
+   "bar": "2/1/5/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.508102536201477,
+   "box": [
+    514.55,
+    2763.0,
+    524.0,
+    2776.23
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 11,
+   "crop_page_px": [
+    425,
+    2674,
+    614,
+    2800
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 15,
+   "box_in_tile_px": [
+    426,
+    424,
+    471,
+    487
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.6,
+    0.84
+   ],
+   "sheet_offset_px": [
+    1460,
+    1332
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/16/1/9/10/6",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/1/9/10",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3218521177768707,
+   "box": [
+    2144.805,
+    3391.1025,
+    2155.0425,
+    3448.1175
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 12,
+   "crop_page_px": [
+    2055,
+    3358,
+    2244,
+    3484
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 20,
+   "box_in_tile_px": [
+    428,
+    158,
+    476,
+    429
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.65,
+    3.62
+   ],
+   "sheet_offset_px": [
+    2180,
+    1332
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/16/0/6/8/11",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/0/6/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.396136611700058,
+   "box": [
+    1446.0,
+    1271.075,
+    1451.8275,
+    1303.3625
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 13,
+   "crop_page_px": [
+    1354,
+    1206,
+    1543,
+    1332
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 6,
+   "box_in_tile_px": [
+    438,
+    310,
+    466,
+    464
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.37,
+    2.05
+   ],
+   "sheet_offset_px": [
+    20,
+    1879
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/6/1/2/4/8",
+   "plate": "litolff",
+   "page": 6,
+   "bar": "6/1/2/4",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.30622541904449463,
+   "box": [
+    1362.7575,
+    2389.825,
+    1373.1525,
+    2404.0
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 14,
+   "crop_page_px": [
+    1275,
+    2382,
+    1461,
+    2528
+   ],
+   "scale": 4.8387,
+   "staff_space_px": 15.5,
+   "staff_index": 13,
+   "box_in_tile_px": [
+    425,
+    38,
+    475,
+    106
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.67,
+    0.91
+   ],
+   "sheet_offset_px": [
+    740,
+    1879
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/11/1/0/5/8",
+   "plate": "litolff",
+   "page": 11,
+   "bar": "11/1/0/5",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.2913972735404968,
+   "box": [
+    1117.0,
+    1899.8225,
+    1127.71,
+    1965.185
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 15,
+   "crop_page_px": [
+    1028,
+    1870,
+    1217,
+    1996
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 9,
+   "box_in_tile_px": [
+    424,
+    142,
+    475,
+    453
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.68,
+    4.15
+   ],
+   "sheet_offset_px": [
+    1460,
+    1879
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/6/1/2/3/8",
+   "plate": "litolff",
+   "page": 6,
+   "bar": "6/1/2/3",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.27076396346092224,
+   "box": [
+    1025.0,
+    2273.905,
+    1030.355,
+    2326.3525
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 16,
+   "crop_page_px": [
+    933,
+    2246,
+    1122,
+    2372
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 12,
+   "box_in_tile_px": [
+    438,
+    133,
+    464,
+    383
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.34,
+    3.33
+   ],
+   "sheet_offset_px": [
+    2180,
+    1879
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/2/0/5/1/16",
+   "plate": "litolff",
+   "page": 2,
+   "bar": "2/0/5/1",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.27753445506095886,
+   "box": [
+    617.0,
+    1062.1575,
+    630.23,
+    1081.3725
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 17,
+   "crop_page_px": [
+    529,
+    974,
+    718,
+    1100
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 4,
+   "box_in_tile_px": [
+    419,
+    420,
+    482,
+    511
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.84,
+    1.22
+   ],
+   "sheet_offset_px": [
+    20,
+    2508
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/2/0/10/2/7",
+   "plate": "litolff",
+   "page": 2,
+   "bar": "2/0/10/2",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3776152729988098,
+   "box": [
+    836.37,
+    1880.0,
+    858.8925,
+    1927.25
+   ],
+   "reason": "rest_is_a_duplicate_box",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 18,
+   "crop_page_px": [
+    753,
+    1848,
+    942,
+    1974
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 10,
+   "box_in_tile_px": [
+    397,
+    152,
+    504,
+    377
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.43,
+    3.0
+   ],
+   "sheet_offset_px": [
+    740,
+    2508
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_is_a_duplicate_box)"
+  },
+  {
+   "g": "glyph/2/0/1/15/12",
+   "plate": "litolff",
+   "page": 2,
+   "bar": "2/0/1/15",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.2888609766960144,
+   "box": [
+    2351.0,
+    553.725,
+    2357.4575,
+    615.9375
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 19,
+   "crop_page_px": [
+    2260,
+    518,
+    2449,
+    644
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 1,
+   "box_in_tile_px": [
+    433,
+    170,
+    464,
+    466
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.41,
+    3.95
+   ],
+   "sheet_offset_px": [
+    1460,
+    2508
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/6/1/11/5/2",
+   "plate": "litolff",
+   "page": 6,
+   "bar": "6/1/11/5",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.46350160241127014,
+   "box": [
+    1482.645,
+    3562.4175,
+    1499.655,
+    3633.135
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 20,
+   "crop_page_px": [
+    1397,
+    3530,
+    1586,
+    3656
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 21,
+   "box_in_tile_px": [
+    408,
+    154,
+    489,
+    491
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.08,
+    4.49
+   ],
+   "sheet_offset_px": [
+    2180,
+    2508
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/16/0/2/0/12",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/0/2/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4384053647518158,
+   "box": [
+    591.8,
+    768.64,
+    596.92,
+    804.0
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 21,
+   "crop_page_px": [
+    500,
+    761,
+    689,
+    914
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 3,
+   "box_in_tile_px": [
+    437,
+    36,
+    462,
+    205
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.33,
+    2.25
+   ],
+   "sheet_offset_px": [
+    20,
+    3055
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/6/0/4/8/10",
+   "plate": "litolff",
+   "page": 6,
+   "bar": "6/0/4/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.31238365173339844,
+   "box": [
+    1854.32,
+    904.0,
+    1863.92,
+    915.68
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 22,
+   "crop_page_px": [
+    1765,
+    796,
+    1954,
+    924
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 3,
+   "box_in_tile_px": [
+    425,
+    514,
+    471,
+    570
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.61,
+    0.74
+   ],
+   "sheet_offset_px": [
+    740,
+    3055
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/10/1/9/14/2",
+   "plate": "litolff",
+   "page": 10,
+   "bar": "10/1/9/14",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3058561384677887,
+   "box": [
+    2571.84,
+    3345.0,
+    2582.865,
+    3360.2775
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 23,
+   "crop_page_px": [
+    2481,
+    3223,
+    2673,
+    3368
+   ],
+   "scale": 4.6875,
+   "staff_space_px": 16.0,
+   "staff_index": 19,
+   "box_in_tile_px": [
+    426,
+    572,
+    477,
+    643
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.69,
+    0.95
+   ],
+   "sheet_offset_px": [
+    1460,
+    3055
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/16/1/3/2/14",
+   "plate": "litolff",
+   "page": 16,
+   "bar": "16/1/3/2",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.5214743614196777,
+   "box": [
+    831.42,
+    2520.4375,
+    852.84,
+    2548.4725
+   ],
+   "reason": "rest_is_a_duplicate_box",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 24,
+   "crop_page_px": [
+    748,
+    2454,
+    937,
+    2580
+   ],
+   "scale": 4.7619,
+   "staff_space_px": 15.75,
+   "staff_index": 14,
+   "box_in_tile_px": [
+    397,
+    316,
+    499,
+    450
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.36,
+    1.78
+   ],
+   "sheet_offset_px": [
+    2180,
+    3055
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_is_a_duplicate_box)"
+  }
+ ],
+ "instruction": "For each number: is it a quarter rest? If not, what is it.",
+ "seed": 20261126,
+ "image_note": "one orange rectangle; its INNER edge is the reader's own box (box_is); line grows outward; ~7 px at sheet size; nothing else drawn"
+}

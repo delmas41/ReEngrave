@@ -1,0 +1,3402 @@
+{
+ "plate": "brahms",
+ "sheet": "/private/tmp/claude-501/recut-exact/brahms_onset_from_partial_bar.png",
+ "rule": "onset_from_partial_bar",
+ "population_distinct_heads": 100,
+ "shown": 24,
+ "seed": 20261126,
+ "sampling": "random.Random(20261126).sample over distinct head subjects sorted by (page, subject)",
+ "question_for_sean": "Counting from the barline at the left of the bar, on which beat does each boxed note start (for example beat 1, the 'and' after beat 1, beat 2 ...)? The whole bar is shown, barline to barline.",
+ "note": "manifest is for the manager only; never shown to Sean",
+ "recut": "re-cut 2026-11-26: exact detector notehead box, orange 7 px at final tile size, inner edge on the box, no padding, one staff per tile",
+ "box_is": "detector notehead box (head_box_page_px)",
+ "size": [
+  3025,
+  2950
+ ],
+ "median_box_spaces_w_h": [
+  1.4,
+  1.23
+ ],
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/5/1/9/7/5",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "43",
+     "pitch": "D5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/9",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    4187.3,
+    6081.7,
+    4226.6,
+    6116.3
+   ],
+   "cell": "cell/5/1/9/7",
+   "cell_box": [
+    4156.0,
+    5964.0,
+    4573.0,
+    6291.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "43",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    78,
+    98,
+    208,
+    219
+   ],
+   "old_tile_px": [
+    901,
+    426
+   ],
+   "old_scale": 1.954,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4187.3,
+    6081.7,
+    4226.6,
+    6116.3
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      4134,
+      6005,
+      4595,
+      6250
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.5727,
+    "tile_px": [
+     725,
+     385
+    ]
+   },
+   "crop_page_px": [
+    4134,
+    6005,
+    4595,
+    6250
+   ],
+   "box_size_spaces_w_h": [
+    1.44,
+    1.27
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    83.82,
+    120.62,
+    145.63,
+    175.04
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     84,
+     121,
+     145,
+     174
+    ],
+    "outer_inclusive": [
+     77,
+     114,
+     152,
+     181
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     77,
+     114,
+     152,
+     181
+    ]
+   },
+   "staff_top_bottom_px": [
+    6073,
+    6182
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/5/1/9/6/0",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "42",
+     "pitch": "G5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/9",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    3700.5,
+    6041.1,
+    3740.3,
+    6074.1
+   ],
+   "cell": "cell/5/1/9/6",
+   "cell_box": [
+    3670.0,
+    5964.0,
+    4156.0,
+    6291.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "42",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    66,
+    47,
+    180,
+    149
+   ],
+   "old_tile_px": [
+    901,
+    401
+   ],
+   "old_scale": 1.699,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    3700.5,
+    6041.1,
+    3740.3,
+    6074.1
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      3648,
+      6005,
+      4178,
+      6250
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.3679,
+    "tile_px": [
+     725,
+     335
+    ]
+   },
+   "crop_page_px": [
+    3648,
+    6005,
+    4178,
+    6250
+   ],
+   "box_size_spaces_w_h": [
+    1.46,
+    1.21
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    71.82,
+    49.38,
+    126.26,
+    94.52
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     72,
+     49,
+     125,
+     94
+    ],
+    "outer_inclusive": [
+     65,
+     42,
+     132,
+     101
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     65,
+     42,
+     132,
+     101
+    ]
+   },
+   "staff_top_bottom_px": [
+    6073,
+    6182
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/4/0/13/5/3",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P14",
+     "measure": "13",
+     "pitch": "C#4",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/0/13",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    3024.3,
+    3624.0,
+    3061.7,
+    3657.0
+   ],
+   "cell": "cell/4/0/13/5",
+   "cell_box": [
+    2727.0,
+    3558.0,
+    3205.0,
+    3943.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P14",
+      "measure": "13",
+      "voice": 1,
+      "onset_quarters": 1.5,
+      "onset_eighths": 3.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    527,
+    47,
+    639,
+    151
+   ],
+   "old_tile_px": [
+    900,
+    431
+   ],
+   "old_scale": 1.724,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    3024.3,
+    3624.0,
+    3061.7,
+    3657.0
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      2705,
+      3599,
+      3227,
+      3847
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.3889,
+    "tile_px": [
+     725,
+     345
+    ]
+   },
+   "crop_page_px": [
+    2705,
+    3599,
+    3227,
+    3847
+   ],
+   "box_size_spaces_w_h": [
+    1.36,
+    1.2
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    443.47,
+    34.72,
+    495.42,
+    80.56
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     443,
+     35,
+     494,
+     80
+    ],
+    "outer_inclusive": [
+     436,
+     28,
+     501,
+     87
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     436,
+     28,
+     501,
+     87
+    ]
+   },
+   "staff_top_bottom_px": [
+    3668,
+    3778
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/19/0/4/0/8",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P5",
+     "measure": "114",
+     "pitch": "D3",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/0/4",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    944.2,
+    1573.1,
+    981.9,
+    1606.4
+   ],
+   "cell": "cell/19/0/4/0",
+   "cell_box": [
+    636.0,
+    1426.0,
+    1535.0,
+    1756.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P5",
+      "measure": "114",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    316,
+    78,
+    382,
+    139
+   ],
+   "old_tile_px": [
+    943,
+    220
+   ],
+   "old_scale": 1.0,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    944.2,
+    1573.1,
+    981.9,
+    1606.4
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      614,
+      1467,
+      1557,
+      1715
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 0.7688,
+    "tile_px": [
+     725,
+     191
+    ]
+   },
+   "crop_page_px": [
+    614,
+    1467,
+    1557,
+    1715
+   ],
+   "box_size_spaces_w_h": [
+    1.37,
+    1.21
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    253.87,
+    81.57,
+    282.85,
+    107.17
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     254,
+     82,
+     282,
+     106
+    ],
+    "outer_inclusive": [
+     247,
+     75,
+     289,
+     113
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     247,
+     75,
+     289,
+     113
+    ]
+   },
+   "staff_top_bottom_px": [
+    1536,
+    1646
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/19/1/8/7/6",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "132",
+     "pitch": "B4",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/1/8",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    4449.6,
+    6013.8,
+    4490.3,
+    6049.2
+   ],
+   "cell": "cell/19/1/8/7",
+   "cell_box": [
+    4385.0,
+    5868.0,
+    4904.0,
+    6198.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "132",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    116,
+    123,
+    226,
+    224
+   ],
+   "old_tile_px": [
+    900,
+    352
+   ],
+   "old_scale": 1.599,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4449.6,
+    6013.8,
+    4490.3,
+    6049.2
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      4363,
+      5909,
+      4926,
+      6157
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.2877,
+    "tile_px": [
+     725,
+     319
+    ]
+   },
+   "crop_page_px": [
+    4363,
+    5909,
+    4926,
+    6157
+   ],
+   "box_size_spaces_w_h": [
+    1.48,
+    1.29
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    111.52,
+    134.96,
+    163.93,
+    180.54
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     112,
+     135,
+     163,
+     180
+    ],
+    "outer_inclusive": [
+     105,
+     128,
+     170,
+     187
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     105,
+     128,
+     170,
+     187
+    ]
+   },
+   "staff_top_bottom_px": [
+    5978,
+    6088
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/4/0/9/9/1",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "17",
+     "pitch": "G5",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/0/9",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    4673.4,
+    2618.2,
+    4709.4,
+    2650.4
+   ],
+   "cell": "cell/4/0/9/9",
+   "cell_box": [
+    4592.0,
+    2536.0,
+    5054.0,
+    2866.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "17",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    159,
+    49,
+    272,
+    155
+   ],
+   "old_tile_px": [
+    900,
+    416
+   ],
+   "old_scale": 1.779,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4673.4,
+    2618.2,
+    4709.4,
+    2650.4
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      4570,
+      2577,
+      5076,
+      2825
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.4328,
+    "tile_px": [
+     725,
+     355
+    ]
+   },
+   "crop_page_px": [
+    4570,
+    2577,
+    5076,
+    2825
+   ],
+   "box_size_spaces_w_h": [
+    1.31,
+    1.17
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    148.15,
+    59.03,
+    199.73,
+    105.17
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     148,
+     59,
+     199,
+     104
+    ],
+    "outer_inclusive": [
+     141,
+     52,
+     206,
+     111
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     141,
+     52,
+     206,
+     111
+    ]
+   },
+   "staff_top_bottom_px": [
+    2646,
+    2756
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/5/0/2/1/2",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "29",
+     "pitch": "F5",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/2",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1485.3,
+    992.0,
+    1524.3,
+    1025.8
+   ],
+   "cell": "cell/5/0/2/1",
+   "cell_box": [
+    1442.0,
+    902.0,
+    2029.0,
+    1229.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "29",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    74,
+    39,
+    168,
+    126
+   ],
+   "old_tile_px": [
+    901,
+    318
+   ],
+   "old_scale": 1.427,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    1485.3,
+    992.0,
+    1524.3,
+    1025.8
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      1420,
+      943,
+      2051,
+      1188
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.149,
+    "tile_px": [
+     725,
+     281
+    ]
+   },
+   "crop_page_px": [
+    1420,
+    943,
+    2051,
+    1188
+   ],
+   "box_size_spaces_w_h": [
+    1.43,
+    1.24
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    75.03,
+    56.3,
+    119.84,
+    95.13
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     75,
+     56,
+     119,
+     94
+    ],
+    "outer_inclusive": [
+     68,
+     49,
+     126,
+     101
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     68,
+     49,
+     126,
+     101
+    ]
+   },
+   "staff_top_bottom_px": [
+    1011,
+    1120
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/5/0/2/6/6",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "34",
+     "pitch": "D5",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/2",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    4384.7,
+    1020.7,
+    4425.8,
+    1055.6
+   ],
+   "cell": "cell/5/0/2/6",
+   "cell_box": [
+    4342.0,
+    902.0,
+    4914.0,
+    1229.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "34",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    75,
+    75,
+    175,
+    166
+   ],
+   "old_tile_px": [
+    901,
+    319
+   ],
+   "old_scale": 1.462,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4384.7,
+    1020.7,
+    4425.8,
+    1055.6
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      4320,
+      943,
+      4936,
+      1188
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.1769,
+    "tile_px": [
+     725,
+     288
+    ]
+   },
+   "crop_page_px": [
+    4320,
+    943,
+    4936,
+    1188
+   ],
+   "box_size_spaces_w_h": [
+    1.51,
+    1.28
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    76.15,
+    91.45,
+    124.52,
+    132.52
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     76,
+     91,
+     124,
+     132
+    ],
+    "outer_inclusive": [
+     69,
+     84,
+     131,
+     139
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     69,
+     84,
+     131,
+     139
+    ]
+   },
+   "staff_top_bottom_px": [
+    1011,
+    1120
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/19/1/10/5/2",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P12",
+     "measure": "130",
+     "pitch": "E4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/1/10",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    3359.9,
+    6454.1,
+    3398.4,
+    6488.2
+   ],
+   "cell": "cell/19/1/10/5",
+   "cell_box": [
+    3281.0,
+    6335.0,
+    3827.0,
+    6665.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P12",
+      "measure": "130",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    133,
+    77,
+    234,
+    171
+   ],
+   "old_tile_px": [
+    900,
+    336
+   ],
+   "old_scale": 1.525,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    3359.9,
+    6454.1,
+    3398.4,
+    6488.2
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      3259,
+      6376,
+      3849,
+      6624
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.2288,
+    "tile_px": [
+     725,
+     304
+    ]
+   },
+   "crop_page_px": [
+    3259,
+    6376,
+    3849,
+    6624
+   ],
+   "box_size_spaces_w_h": [
+    1.4,
+    1.24
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    123.99,
+    95.97,
+    171.3,
+    137.87
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     124,
+     96,
+     170,
+     137
+    ],
+    "outer_inclusive": [
+     117,
+     89,
+     177,
+     144
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     117,
+     89,
+     177,
+     144
+    ]
+   },
+   "staff_top_bottom_px": [
+    6445,
+    6555
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/5/0/0/1/15",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P1",
+     "measure": "29",
+     "pitch": "Eb6",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    },
+    {
+     "part": "P1",
+     "measure": "29",
+     "pitch": "Eb6",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/0",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1485.0,
+    429.1,
+    1525.1,
+    464.3
+   ],
+   "cell": "cell/5/0/0/1",
+   "cell_box": [
+    1442.0,
+    368.0,
+    2029.0,
+    749.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P1",
+      "measure": "29",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     },
+     {
+      "part": "P1",
+      "measure": "29",
+      "voice": 2,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    73,
+    39,
+    169,
+    128
+   ],
+   "old_tile_px": [
+    901,
+    437
+   ],
+   "old_scale": 1.427,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    1485.0,
+    429.1,
+    1525.1,
+    464.3
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      1420,
+      407,
+      2051,
+      708
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.149,
+    "tile_px": [
+     725,
+     346
+    ]
+   },
+   "crop_page_px": [
+    1420,
+    407,
+    2051,
+    708
+   ],
+   "box_size_spaces_w_h": [
+    1.47,
+    1.29
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    74.68,
+    25.39,
+    120.76,
+    65.84
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     75,
+     25,
+     120,
+     65
+    ],
+    "outer_inclusive": [
+     68,
+     18,
+     127,
+     72
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     68,
+     18,
+     127,
+     72
+    ]
+   },
+   "staff_top_bottom_px": [
+    531,
+    640
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": "KEY STAFF FAR FROM HEAD"
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/19/0/8/1/0",
+   "page": 19,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "115",
+     "pitch": "Ab6",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/19/0/8",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1817.3,
+    2488.3,
+    1855.2,
+    2520.2
+   ],
+   "cell": "cell/19/0/8/1",
+   "cell_box": [
+    1535.0,
+    2239.0,
+    1980.0,
+    2566.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "115",
+      "voice": 1,
+      "onset_quarters": 1.5,
+      "onset_eighths": 3.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    535,
+    333,
+    655,
+    442
+   ],
+   "old_tile_px": [
+    901,
+    492
+   ],
+   "old_scale": 1.842,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    1817.3,
+    2488.3,
+    1855.2,
+    2520.2
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      1513,
+      2280,
+      2002,
+      2542
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.4826,
+    "tile_px": [
+     725,
+     388
+    ]
+   },
+   "crop_page_px": [
+    1513,
+    2280,
+    2002,
+    2542
+   ],
+   "box_size_spaces_w_h": [
+    1.39,
+    1.17
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    451.16,
+    308.83,
+    507.35,
+    356.12
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     451,
+     309,
+     506,
+     355
+    ],
+    "outer_inclusive": [
+     444,
+     302,
+     513,
+     362
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     444,
+     302,
+     513,
+     362
+    ]
+   },
+   "staff_top_bottom_px": [
+    2348,
+    2457
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/25/0/10/1/7",
+   "page": 25,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P11",
+     "measure": "135",
+     "pitch": "C5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/25/0/10",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    1834.9,
+    3108.4,
+    1873.8,
+    3142.5
+   ],
+   "cell": "cell/25/0/10/1",
+   "cell_box": [
+    1427.0,
+    2976.0,
+    1931.0,
+    3309.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P11",
+      "measure": "135",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    683,
+    103,
+    792,
+    204
+   ],
+   "old_tile_px": [
+    899,
+    364
+   ],
+   "old_scale": 1.641,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    1834.9,
+    3108.4,
+    1873.8,
+    3142.5
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      1405,
+      3018,
+      1953,
+      3267
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.323,
+    "tile_px": [
+     725,
+     329
+    ]
+   },
+   "crop_page_px": [
+    1405,
+    3018,
+    1953,
+    3267
+   ],
+   "box_size_spaces_w_h": [
+    1.4,
+    1.23
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    568.75,
+    119.6,
+    620.22,
+    164.71
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     569,
+     120,
+     619,
+     164
+    ],
+    "outer_inclusive": [
+     562,
+     113,
+     626,
+     171
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     562,
+     113,
+     626,
+     171
+    ]
+   },
+   "staff_top_bottom_px": [
+    3087,
+    3198
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 13,
+   "subject": "glyph/25/0/9/0/11",
+   "page": 25,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P10",
+     "measure": "134",
+     "pitch": "C5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/25/0/9",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1307.3,
+    2844.6,
+    1345.4,
+    2877.0
+   ],
+   "cell": "cell/25/0/9/0",
+   "cell_box": [
+    646.0,
+    2713.0,
+    1427.0,
+    3040.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P10",
+      "measure": "134",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    731,
+    69,
+    802,
+    134
+   ],
+   "old_tile_px": [
+    900,
+    238
+   ],
+   "old_scale": 1.091,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    1307.3,
+    2844.6,
+    1345.4,
+    2877.0
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      624,
+      2754,
+      1449,
+      2999
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 0.8788,
+    "tile_px": [
+     725,
+     215
+    ]
+   },
+   "crop_page_px": [
+    624,
+    2754,
+    1449,
+    2999
+   ],
+   "box_size_spaces_w_h": [
+    1.4,
+    1.19
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    600.48,
+    79.62,
+    633.96,
+    108.09
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     600,
+     80,
+     633,
+     107
+    ],
+    "outer_inclusive": [
+     593,
+     73,
+     640,
+     114
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     593,
+     73,
+     640,
+     114
+    ]
+   },
+   "staff_top_bottom_px": [
+    2822,
+    2931
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 14,
+   "subject": "glyph/4/1/13/5/0",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P14",
+     "measure": "24",
+     "pitch": "D3",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/1/13",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    3404.1,
+    7053.3,
+    3442.9,
+    7086.0
+   ],
+   "cell": "cell/4/1/13/5",
+   "cell_box": [
+    3358.0,
+    6904.0,
+    3904.0,
+    7292.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P14",
+      "measure": "24",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    83,
+    121,
+    184,
+    213
+   ],
+   "old_tile_px": [
+    899,
+    338
+   ],
+   "old_scale": 1.524,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    3404.1,
+    7053.3,
+    3442.9,
+    7086.0
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      3336,
+      6946,
+      3926,
+      7195
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.2288,
+    "tile_px": [
+     725,
+     306
+    ]
+   },
+   "crop_page_px": [
+    3336,
+    6946,
+    3926,
+    7195
+   ],
+   "box_size_spaces_w_h": [
+    1.4,
+    1.18
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    83.68,
+    131.85,
+    131.36,
+    172.03
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     84,
+     132,
+     130,
+     171
+    ],
+    "outer_inclusive": [
+     77,
+     125,
+     137,
+     178
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     77,
+     125,
+     137,
+     178
+    ]
+   },
+   "staff_top_bottom_px": [
+    7015,
+    7126
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 15,
+   "subject": "glyph/5/1/5/0/1",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P6",
+     "measure": "36",
+     "pitch": "C4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/5",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    1159.9,
+    5234.4,
+    1198.4,
+    5268.2
+   ],
+   "cell": "cell/5/1/5/0",
+   "cell_box": [
+    639.0,
+    5005.0,
+    1330.0,
+    5332.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P6",
+      "measure": "36",
+      "voice": 1,
+      "onset_quarters": 1.5,
+      "onset_eighths": 3.0,
+      "blue": false,
+      "rules": []
+     },
+     {
+      "part": "P6",
+      "measure": "36",
+      "voice": 2,
+      "onset_quarters": 2.0,
+      "onset_eighths": 4.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    649,
+    197,
+    729,
+    272
+   ],
+   "old_tile_px": [
+    900,
+    305
+   ],
+   "old_scale": 1.225,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    1159.9,
+    5234.4,
+    1198.4,
+    5268.2
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      617,
+      5046,
+      1352,
+      5291
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 0.9864,
+    "tile_px": [
+     725,
+     242
+    ]
+   },
+   "crop_page_px": [
+    617,
+    5046,
+    1352,
+    5291
+   ],
+   "box_size_spaces_w_h": [
+    1.41,
+    1.24
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    535.51,
+    185.84,
+    573.49,
+    219.18
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     536,
+     186,
+     572,
+     218
+    ],
+    "outer_inclusive": [
+     529,
+     179,
+     579,
+     225
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     529,
+     179,
+     579,
+     225
+    ]
+   },
+   "staff_top_bottom_px": [
+    5114,
+    5223
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 16,
+   "subject": "glyph/5/0/3/3/4",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "31",
+     "pitch": "Eb4",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/3",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    2618.2,
+    1258.0,
+    2655.8,
+    1293.2
+   ],
+   "cell": "cell/5/0/3/3",
+   "cell_box": [
+    2580.0,
+    1167.0,
+    3133.0,
+    1494.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P4",
+      "measure": "31",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": false,
+      "rules": []
+     },
+     {
+      "part": "P4",
+      "measure": "31",
+      "voice": 2,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    70,
+    41,
+    168,
+    135
+   ],
+   "old_tile_px": [
+    901,
+    336
+   ],
+   "old_scale": 1.509,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    2618.2,
+    1258.0,
+    2655.8,
+    1293.2
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      2558,
+      1208,
+      3155,
+      1453
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.2144,
+    "tile_px": [
+     725,
+     297
+    ]
+   },
+   "crop_page_px": [
+    2558,
+    1208,
+    3155,
+    1453
+   ],
+   "box_size_spaces_w_h": [
+    1.38,
+    1.29
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    73.11,
+    60.72,
+    118.77,
+    103.47
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     73,
+     61,
+     118,
+     102
+    ],
+    "outer_inclusive": [
+     66,
+     54,
+     125,
+     109
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     66,
+     54,
+     125,
+     109
+    ]
+   },
+   "staff_top_bottom_px": [
+    1276,
+    1385
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 17,
+   "subject": "glyph/5/0/1/6/14",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "34",
+     "pitch": "C5",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/1",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    4383.6,
+    776.0,
+    4423.3,
+    806.5
+   ],
+   "cell": "cell/5/0/1/6",
+   "cell_box": [
+    4342.0,
+    640.0,
+    4914.0,
+    970.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P2",
+      "measure": "34",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    73,
+    98,
+    171,
+    183
+   ],
+   "old_tile_px": [
+    900,
+    321
+   ],
+   "old_scale": 1.461,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4383.6,
+    776.0,
+    4423.3,
+    806.5
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      4320,
+      681,
+      4936,
+      929
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.1769,
+    "tile_px": [
+     725,
+     292
+    ]
+   },
+   "crop_page_px": [
+    4320,
+    681,
+    4936,
+    929
+   ],
+   "box_size_spaces_w_h": [
+    1.44,
+    1.11
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    74.85,
+    111.81,
+    121.58,
+    147.71
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     75,
+     112,
+     121,
+     147
+    ],
+    "outer_inclusive": [
+     68,
+     105,
+     128,
+     154
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     68,
+     105,
+     128,
+     154
+    ]
+   },
+   "staff_top_bottom_px": [
+    750,
+    860
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 18,
+   "subject": "glyph/8/0/2/12/3",
+   "page": 8,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "58",
+     "pitch": "F5",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/2",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    5394.6,
+    1183.2,
+    5432.3,
+    1216.8
+   ],
+   "cell": "cell/8/0/2/12",
+   "cell_box": [
+    5124.0,
+    1043.0,
+    5492.0,
+    1483.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "58",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    609,
+    60,
+    752,
+    193
+   ],
+   "old_tile_px": [
+    900,
+    505
+   ],
+   "old_scale": 2.184,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    5394.6,
+    1183.2,
+    5432.3,
+    1216.8
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      5102,
+      1139,
+      5514,
+      1387
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.7597,
+    "tile_px": [
+     725,
+     437
+    ]
+   },
+   "crop_page_px": [
+    5102,
+    1139,
+    5514,
+    1387
+   ],
+   "box_size_spaces_w_h": [
+    1.37,
+    1.22
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    514.89,
+    77.78,
+    581.23,
+    136.91
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     515,
+     78,
+     580,
+     136
+    ],
+    "outer_inclusive": [
+     508,
+     71,
+     587,
+     143
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     508,
+     71,
+     587,
+     143
+    ]
+   },
+   "staff_top_bottom_px": [
+    1208,
+    1318
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 19,
+   "subject": "glyph/4/1/2/3/13",
+   "page": 4,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P3",
+     "measure": "22",
+     "pitch": "F#4",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/4/1/2",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    2535.1,
+    4639.9,
+    2572.6,
+    4670.2
+   ],
+   "cell": "cell/4/1/2/3",
+   "cell_box": [
+    2347.0,
+    4449.0,
+    2808.0,
+    4837.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P3",
+      "measure": "22",
+      "voice": 2,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    350,
+    217,
+    466,
+    321
+   ],
+   "old_tile_px": [
+    899,
+    395
+   ],
+   "old_scale": 1.781,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    2535.1,
+    4639.9,
+    2572.6,
+    4670.2
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      2325,
+      4491,
+      2830,
+      4740
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.4356,
+    "tile_px": [
+     725,
+     358
+    ]
+   },
+   "crop_page_px": [
+    2325,
+    4491,
+    2830,
+    4740
+   ],
+   "box_size_spaces_w_h": [
+    1.35,
+    1.09
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    301.63,
+    213.77,
+    355.47,
+    257.27
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     302,
+     214,
+     354,
+     256
+    ],
+    "outer_inclusive": [
+     295,
+     207,
+     361,
+     263
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     295,
+     207,
+     361,
+     263
+    ]
+   },
+   "staff_top_bottom_px": [
+    4560,
+    4671
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 20,
+   "subject": "glyph/8/0/1/5/5",
+   "page": 8,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P2",
+     "measure": "51",
+     "pitch": "Cb6",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/1",
+   "staff_space_px": 28.5,
+   "head_box_page_px": [
+    3087.8,
+    842.9,
+    3127.4,
+    878.8
+   ],
+   "cell": "cell/8/0/1/5",
+   "cell_box": [
+    2786.0,
+    742.0,
+    3179.0,
+    1141.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P2",
+      "measure": "51",
+      "voice": 1,
+      "onset_quarters": 2.5,
+      "onset_eighths": 5.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    637,
+    59,
+    777,
+    191
+   ],
+   "old_tile_px": [
+    901,
+    583
+   ],
+   "old_scale": 2.052,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    3087.8,
+    842.9,
+    3127.4,
+    878.8
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      2763,
+      820,
+      3202,
+      1098
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.6515,
+    "tile_px": [
+     725,
+     459
+    ]
+   },
+   "crop_page_px": [
+    2763,
+    820,
+    3202,
+    1098
+   ],
+   "box_size_spaces_w_h": [
+    1.39,
+    1.26
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    536.4,
+    37.82,
+    601.8,
+    97.11
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     536,
+     38,
+     601,
+     96
+    ],
+    "outer_inclusive": [
+     529,
+     31,
+     608,
+     103
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     529,
+     31,
+     608,
+     103
+    ]
+   },
+   "staff_top_bottom_px": [
+    913,
+    1027
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 21,
+   "subject": "glyph/8/0/3/8/3",
+   "page": 8,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "54",
+     "pitch": "Cb4",
+     "value": "quarter, 1 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/8/0/3",
+   "staff_space_px": 27.75,
+   "head_box_page_px": [
+    4018.0,
+    1522.3,
+    4057.9,
+    1556.1
+   ],
+   "cell": "cell/8/0/3/8",
+   "cell_box": [
+    3829.0,
+    1348.0,
+    4131.0,
+    1791.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P4",
+      "measure": "54",
+      "voice": 1,
+      "onset_quarters": 1.0,
+      "onset_eighths": 2.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    512,
+    131,
+    688,
+    291
+   ],
+   "old_tile_px": [
+    899,
+    577
+   ],
+   "old_scale": 2.598,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4018.0,
+    1522.3,
+    4057.9,
+    1556.1
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      3807,
+      1445,
+      4153,
+      1694
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 2.0954,
+    "tile_px": [
+     725,
+     522
+    ]
+   },
+   "crop_page_px": [
+    3807,
+    1445,
+    4153,
+    1694
+   ],
+   "box_size_spaces_w_h": [
+    1.44,
+    1.22
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    442.12,
+    161.97,
+    525.73,
+    232.8
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     442,
+     162,
+     525,
+     232
+    ],
+    "outer_inclusive": [
+     435,
+     155,
+     532,
+     239
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     435,
+     155,
+     532,
+     239
+    ]
+   },
+   "staff_top_bottom_px": [
+    1514,
+    1625
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 22,
+   "subject": "glyph/5/1/13/3/0",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P14",
+     "measure": "39",
+     "pitch": "G2",
+     "value": "eighth, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_suffix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/13",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    2542.7,
+    7136.3,
+    2582.6,
+    7171.0
+   ],
+   "cell": "cell/5/1/13/3",
+   "cell_box": [
+    2271.0,
+    6932.0,
+    2758.0,
+    7317.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P14",
+      "measure": "39",
+      "voice": 1,
+      "onset_quarters": 2.0,
+      "onset_eighths": 4.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_suffix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    474,
+    230,
+    589,
+    335
+   ],
+   "old_tile_px": [
+    900,
+    381
+   ],
+   "old_scale": 1.695,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    2542.7,
+    7136.3,
+    2582.6,
+    7171.0
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      2249,
+      6973,
+      2780,
+      7221
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.3653,
+    "tile_px": [
+     725,
+     338
+    ]
+   },
+   "crop_page_px": [
+    2249,
+    6973,
+    2780,
+    7221
+   ],
+   "box_size_spaces_w_h": [
+    1.45,
+    1.26
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    401.0,
+    222.96,
+    455.48,
+    270.34
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     401,
+     223,
+     454,
+     269
+    ],
+    "outer_inclusive": [
+     394,
+     216,
+     461,
+     276
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     394,
+     216,
+     461,
+     276
+    ]
+   },
+   "staff_top_bottom_px": [
+    7042,
+    7152
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 23,
+   "subject": "glyph/5/1/12/3/1",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P13",
+     "measure": "39",
+     "pitch": "G2",
+     "value": "quarter, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/1/12",
+   "staff_space_px": 27.5,
+   "head_box_page_px": [
+    2310.9,
+    6901.1,
+    2347.7,
+    6936.3
+   ],
+   "cell": "cell/5/1/12/3",
+   "cell_box": [
+    2271.0,
+    6699.0,
+    2758.0,
+    7029.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P13",
+      "measure": "39",
+      "voice": 1,
+      "onset_quarters": 0.0,
+      "onset_eighths": 0.0,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    82,
+    226,
+    191,
+    332
+   ],
+   "old_tile_px": [
+    900,
+    380
+   ],
+   "old_scale": 1.695,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    2310.9,
+    6901.1,
+    2347.7,
+    6936.3
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      2249,
+      6740,
+      2780,
+      6988
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.3653,
+    "tile_px": [
+     725,
+     338
+    ]
+   },
+   "crop_page_px": [
+    2249,
+    6740,
+    2780,
+    6988
+   ],
+   "box_size_spaces_w_h": [
+    1.34,
+    1.28
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    84.52,
+    219.96,
+    134.76,
+    268.02
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     85,
+     220,
+     134,
+     267
+    ],
+    "outer_inclusive": [
+     78,
+     213,
+     141,
+     274
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     78,
+     213,
+     141,
+     274
+    ]
+   },
+   "staff_top_bottom_px": [
+    6809,
+    6919
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  },
+  {
+   "tile": 24,
+   "subject": "glyph/5/0/3/6/5",
+   "page": 5,
+   "rule": "onset_from_partial_bar",
+   "file_writes": [
+    {
+     "part": "P4",
+     "measure": "34",
+     "pitch": "D4",
+     "value": "16th, 0 dot(s), no tuplet",
+     "colour_attr": "color=\"#1F6FEB\"",
+     "guess": [
+      {
+       "quantity": "onset",
+       "rule": "onset_from_partial_bar_prefix",
+       "stage": "EXPORT"
+      }
+     ]
+    }
+   ],
+   "staff": "staff/5/0/3",
+   "staff_space_px": 27.25,
+   "head_box_page_px": [
+    4701.2,
+    1272.3,
+    4741.7,
+    1306.4
+   ],
+   "cell": "cell/5/0/3/6",
+   "cell_box": [
+    4342.0,
+    1167.0,
+    4914.0,
+    1494.0
+   ],
+   "detail": {
+    "meter_of_file": [
+     [
+      "6",
+      "8"
+     ]
+    ],
+    "onsets_in_file": [
+     {
+      "part": "P4",
+      "measure": "34",
+      "voice": 1,
+      "onset_quarters": 2.25,
+      "onset_eighths": 4.5,
+      "blue": true,
+      "rules": [
+       "onset_from_partial_bar_prefix"
+      ]
+     }
+    ]
+   },
+   "old_rect_tile_px": [
+    537,
+    54,
+    636,
+    143
+   ],
+   "old_tile_px": [
+    901,
+    319
+   ],
+   "old_scale": 1.462,
+   "box_is": "detector notehead box",
+   "reader_box_page_px": [
+    4701.2,
+    1272.3,
+    4741.7,
+    1306.4
+   ],
+   "tile_geometry": {
+    "parts_page_px": [
+     [
+      4320,
+      1208,
+      4936,
+      1453
+     ]
+    ],
+    "gap_px_page": 0,
+    "scale_final": 1.1769,
+    "tile_px": [
+     725,
+     288
+    ]
+   },
+   "crop_page_px": [
+    4320,
+    1208,
+    4936,
+    1453
+   ],
+   "box_size_spaces_w_h": [
+    1.49,
+    1.25
+   ],
+   "box_under_4px_at_final_scale": [
+    false,
+    false
+   ],
+   "box_in_tile_px_exact": [
+    448.65,
+    75.68,
+    496.32,
+    115.81
+   ],
+   "rect_drawn_tile_px": {
+    "inner_inclusive": [
+     449,
+     76,
+     495,
+     115
+    ],
+    "outer_inclusive": [
+     442,
+     69,
+     502,
+     122
+    ],
+    "line_px": 7,
+    "readback_outer_from_png": [
+     442,
+     69,
+     502,
+     122
+    ]
+   },
+   "staff_top_bottom_px": [
+    1276,
+    1385
+   ],
+   "neighbour_rows_whitened": [],
+   "staff_check": ""
+  }
+ ]
+}

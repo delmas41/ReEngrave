@@ -1,0 +1,1140 @@
+{
+ "sheet": "refused_quarter_box_brahms.png",
+ "size": [
+  2900,
+  3568
+ ],
+ "tiles": [
+  {
+   "g": "glyph/4/1/4/5/6",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/1/4/5",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.47927606105804443,
+   "box": [
+    3640.0375,
+    5235.195,
+    3658.295,
+    5251.0
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 1,
+   "crop_page_px": [
+    3484,
+    5170,
+    3814,
+    5390
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 19,
+   "box_in_tile_px": [
+    426,
+    178,
+    475,
+    221
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.66,
+    0.57
+   ],
+   "sheet_offset_px": [
+    20,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/4/0/7/9/17",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/0/7/9",
+   "source": "yolo_detector_view",
+   "cls": "restQuarter",
+   "conf": 0.6137003898620605,
+   "box": [
+    4671.0875,
+    2028.11,
+    4703.2775,
+    2075.285
+   ],
+   "reason": "rest_outside_its_staff",
+   "outcome": "decided",
+   "box_is": "detector box (yolo_detector_view)",
+   "set": "refused_restQuarter_box",
+   "n": 2,
+   "crop_page_px": [
+    4522,
+    1896,
+    4852,
+    2116
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 6,
+   "box_in_tile_px": [
+    407,
+    360,
+    494,
+    489
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    1.17,
+    1.72
+   ],
+   "sheet_offset_px": [
+    740,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_outside_its_staff)"
+  },
+  {
+   "g": "glyph/12/1/12/4/10",
+   "plate": "brahms",
+   "page": 12,
+   "bar": "12/1/12/4",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.45395326614379883,
+   "box": [
+    2956.565,
+    6767.435,
+    2969.3725,
+    6856.815
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 3,
+   "crop_page_px": [
+    2799,
+    6690,
+    3126,
+    6908
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 26,
+   "box_in_tile_px": [
+    434,
+    213,
+    469,
+    459
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.47,
+    3.28
+   ],
+   "sheet_offset_px": [
+    1460,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/5/1/10/2/19",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/10/2",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3856290578842163,
+   "box": [
+    1852.4,
+    6508.875,
+    1870.55,
+    6535.0
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 4,
+   "crop_page_px": [
+    1696,
+    6495,
+    2026,
+    6751
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 25,
+   "box_in_tile_px": [
+    427,
+    38,
+    476,
+    109
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.66,
+    0.95
+   ],
+   "sheet_offset_px": [
+    2180,
+    80
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/5/1/4/0/12",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/4/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.2998828589916229,
+   "box": [
+    825.9208984375,
+    4900.48486328125,
+    851.22607421875,
+    4974.03857421875
+   ],
+   "reason": "claimed_by:key_signature",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 5,
+   "crop_page_px": [
+    675,
+    4860,
+    1002,
+    5078
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 18,
+   "box_in_tile_px": [
+    415,
+    111,
+    485,
+    314
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.93,
+    2.7
+   ],
+   "sheet_offset_px": [
+    20,
+    703
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:key_signature)"
+  },
+  {
+   "g": "glyph/14/0/5/3/10",
+   "plate": "brahms",
+   "page": 14,
+   "bar": "14/0/5/3",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.2732056975364685,
+   "box": [
+    2629.535,
+    1671.01,
+    2643.9425,
+    1723.8375
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 6,
+   "crop_page_px": [
+    2467,
+    1640,
+    2806,
+    1866
+   ],
+   "scale": 2.6549,
+   "staff_space_px": 28.25,
+   "staff_index": 5,
+   "box_in_tile_px": [
+    432,
+    82,
+    470,
+    223
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.51,
+    1.87
+   ],
+   "sheet_offset_px": [
+    740,
+    703
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/19/1/7/8/10",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/1/7/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3522705137729645,
+   "box": [
+    4904.0,
+    5617.171875,
+    4913.375,
+    5657.30859375
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 7,
+   "crop_page_px": [
+    4744,
+    5489,
+    5074,
+    5709
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 20,
+   "box_in_tile_px": [
+    436,
+    350,
+    462,
+    459
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.34,
+    1.46
+   ],
+   "sheet_offset_px": [
+    1460,
+    703
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/25/0/10/6/12",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/0/10/6",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4975679814815521,
+   "box": [
+    3753.415,
+    3093.9375,
+    3777.5575,
+    3151.1025
+   ],
+   "reason": "rest_is_a_duplicate_box",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 8,
+   "crop_page_px": [
+    3599,
+    3032,
+    3932,
+    3254
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 10,
+   "box_in_tile_px": [
+    417,
+    167,
+    483,
+    322
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.87,
+    2.06
+   ],
+   "sheet_offset_px": [
+    2180,
+    703
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_is_a_duplicate_box)"
+  },
+  {
+   "g": "glyph/5/1/12/8/10",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/12/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.27120983600616455,
+   "box": [
+    5003.65,
+    6956.125,
+    5013.825,
+    7029.0
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 9,
+   "crop_page_px": [
+    4844,
+    6942,
+    5174,
+    7207
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 27,
+   "box_in_tile_px": [
+    435,
+    39,
+    463,
+    237
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.37,
+    2.65
+   ],
+   "sheet_offset_px": [
+    20,
+    1250
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/19/1/10/1/15",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/1/10/1",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4466893970966339,
+   "box": [
+    1748.35,
+    6336.925,
+    1754.95,
+    6404.3
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 10,
+   "crop_page_px": [
+    1587,
+    6323,
+    1917,
+    6610
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 24,
+   "box_in_tile_px": [
+    440,
+    38,
+    458,
+    222
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.24,
+    2.45
+   ],
+   "sheet_offset_px": [
+    740,
+    1250
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/5/1/12/0/19",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/12/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4609212279319763,
+   "box": [
+    1155.56298828125,
+    6790.0986328125,
+    1169.73388671875,
+    6885.58349609375
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 11,
+   "crop_page_px": [
+    998,
+    6754,
+    1328,
+    6974
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 26,
+   "box_in_tile_px": [
+    430,
+    98,
+    468,
+    359
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.52,
+    3.47
+   ],
+   "sheet_offset_px": [
+    1460,
+    1250
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/5/1/10/6/24",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/10/6",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.2928779423236847,
+   "box": [
+    4149.05,
+    6205.55,
+    4155.925,
+    6284.475
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 12,
+   "crop_page_px": [
+    3989,
+    6018,
+    4316,
+    6298
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 23,
+   "box_in_tile_px": [
+    441,
+    516,
+    459,
+    733
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.25,
+    2.9
+   ],
+   "sheet_offset_px": [
+    2180,
+    1250
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/19/1/7/8/7",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/1/7/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.38226547837257385,
+   "box": [
+    4904.0,
+    5616.0,
+    4911.03125,
+    5657.89453125
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 13,
+   "crop_page_px": [
+    4743,
+    5489,
+    5073,
+    5709
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 20,
+   "box_in_tile_px": [
+    439,
+    346,
+    458,
+    461
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.26,
+    1.52
+   ],
+   "sheet_offset_px": [
+    20,
+    1939
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/14/1/4/3/13",
+   "plate": "brahms",
+   "page": 14,
+   "bar": "14/1/4/3",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3026561141014099,
+   "box": [
+    2549.2,
+    5152.95,
+    2564.325,
+    5204.375
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 14,
+   "crop_page_px": [
+    2392,
+    5115,
+    2722,
+    5335
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 18,
+   "box_in_tile_px": [
+    429,
+    103,
+    470,
+    244
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.55,
+    1.87
+   ],
+   "sheet_offset_px": [
+    740,
+    1939
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/4/0/3/6/13",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/0/3/6",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3765084445476532,
+   "box": [
+    3641.785,
+    1442.7725,
+    3650.9425,
+    1493.0
+   ],
+   "reason": "claimed_by:barline",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 15,
+   "crop_page_px": [
+    3481,
+    1429,
+    3811,
+    1658
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 4,
+   "box_in_tile_px": [
+    439,
+    38,
+    463,
+    175
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.33,
+    1.83
+   ],
+   "sheet_offset_px": [
+    1460,
+    1939
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: claimed_by:barline)"
+  },
+  {
+   "g": "glyph/25/0/7/7/0",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/0/7/7",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.7493208050727844,
+   "box": [
+    4407.2525,
+    2209.0,
+    4417.335,
+    2242.5175
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 16,
+   "crop_page_px": [
+    4246,
+    2042,
+    4579,
+    2264
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 6,
+   "box_in_tile_px": [
+    436,
+    451,
+    463,
+    542
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.36,
+    1.21
+   ],
+   "sheet_offset_px": [
+    2180,
+    1939
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/19/1/12/2/8",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/1/12/2",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.5228009223937988,
+   "box": [
+    1915.395,
+    6939.9975,
+    1934.82,
+    7051.83
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 17,
+   "crop_page_px": [
+    1759,
+    6926,
+    2092,
+    7160
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 26,
+   "box_in_tile_px": [
+    423,
+    38,
+    475,
+    340
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.7,
+    4.03
+   ],
+   "sheet_offset_px": [
+    20,
+    2505
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/4/1/7/8/11",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/1/7/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.5357199907302856,
+   "box": [
+    5411.325,
+    5829.0,
+    5436.35,
+    5883.175
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 18,
+   "crop_page_px": [
+    5256,
+    5792,
+    5592,
+    6016
+   ],
+   "scale": 2.6786,
+   "staff_space_px": 28.0,
+   "staff_index": 22,
+   "box_in_tile_px": [
+    416,
+    99,
+    483,
+    244
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.89,
+    1.93
+   ],
+   "sheet_offset_px": [
+    740,
+    2505
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/19/0/10/8/18",
+   "plate": "brahms",
+   "page": 19,
+   "bar": "19/0/10/8",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3193792402744293,
+   "box": [
+    4435.805,
+    3059.9225,
+    4456.515,
+    3076.0
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 19,
+   "crop_page_px": [
+    4283,
+    3024,
+    4610,
+    3242
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 11,
+   "box_in_tile_px": [
+    421,
+    99,
+    478,
+    143
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.76,
+    0.59
+   ],
+   "sheet_offset_px": [
+    1460,
+    2505
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/4/1/7/6/5",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/1/7/6",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4007512331008911,
+   "box": [
+    4362.425,
+    5827.075,
+    4381.125,
+    5882.9
+   ],
+   "reason": "rest_outside_its_staff",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 20,
+   "crop_page_px": [
+    4204,
+    5792,
+    4540,
+    6016
+   ],
+   "scale": 2.6786,
+   "staff_space_px": 28.0,
+   "staff_index": 22,
+   "box_in_tile_px": [
+    424,
+    94,
+    474,
+    243
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.67,
+    1.99
+   ],
+   "sheet_offset_px": [
+    2180,
+    2505
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_outside_its_staff)"
+  },
+  {
+   "g": "glyph/5/1/3/0/22",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/1/3/0",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.4592512547969818,
+   "box": [
+    825.58349609375,
+    4900.05615234375,
+    839.4169921875,
+    4945.26806640625
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 21,
+   "crop_page_px": [
+    669,
+    4860,
+    996,
+    5078
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 18,
+   "box_in_tile_px": [
+    431,
+    110,
+    469,
+    235
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.51,
+    1.66
+   ],
+   "sheet_offset_px": [
+    20,
+    3077
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/5/0/12/7/23",
+   "plate": "brahms",
+   "page": 5,
+   "bar": "5/0/12/7",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.33513909578323364,
+   "box": [
+    5214.669921875,
+    3320.57421875,
+    5227.5390625,
+    3416.5078125
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 22,
+   "crop_page_px": [
+    5058,
+    3288,
+    5385,
+    3506
+   ],
+   "scale": 2.7523,
+   "staff_space_px": 27.25,
+   "staff_index": 12,
+   "box_in_tile_px": [
+    431,
+    90,
+    467,
+    354
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.47,
+    3.52
+   ],
+   "sheet_offset_px": [
+    740,
+    3077
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  },
+  {
+   "g": "glyph/4/0/1/9/15",
+   "plate": "brahms",
+   "page": 4,
+   "bar": "4/0/1/9",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.3437344431877136,
+   "box": [
+    4886.9825,
+    944.365,
+    4904.7425,
+    976.0
+   ],
+   "reason": "rest_clipped_by_crop",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 23,
+   "crop_page_px": [
+    4731,
+    931,
+    5061,
+    1153
+   ],
+   "scale": 2.7273,
+   "staff_space_px": 27.5,
+   "staff_index": 2,
+   "box_in_tile_px": [
+    425,
+    36,
+    474,
+    123
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.65,
+    1.15
+   ],
+   "sheet_offset_px": [
+    1460,
+    3077
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_clipped_by_crop)"
+  },
+  {
+   "g": "glyph/25/1/8/9/4",
+   "plate": "brahms",
+   "page": 25,
+   "bar": "25/1/8/9",
+   "source": "detector",
+   "cls": "restQuarter",
+   "conf": 0.25660866498947144,
+   "box": [
+    5137.6325,
+    6312.905,
+    5149.565,
+    6399.7625
+   ],
+   "reason": "rest_stroke_into_a_head",
+   "outcome": "decided",
+   "box_is": "detector box (detector)",
+   "set": "refused_restQuarter_box",
+   "n": 24,
+   "crop_page_px": [
+    4977,
+    6274,
+    5310,
+    6496
+   ],
+   "scale": 2.7027,
+   "staff_space_px": 27.75,
+   "staff_index": 22,
+   "box_in_tile_px": [
+    434,
+    105,
+    466,
+    340
+   ],
+   "line_px_in_tile": 9,
+   "other_staff_rows_whitened": [],
+   "box_sp": [
+    0.43,
+    3.13
+   ],
+   "sheet_offset_px": [
+    2180,
+    3077
+   ],
+   "sheet_tile_w": 700,
+   "file_writes": "nothing: the box was refused as a rest (reason word: rest_stroke_into_a_head)"
+  }
+ ],
+ "instruction": "For each number: is it a quarter rest? If not, what is it.",
+ "seed": 20261126,
+ "image_note": "one orange rectangle; its INNER edge is the reader's own box (box_is); line grows outward; ~7 px at sheet size; nothing else drawn"
+}

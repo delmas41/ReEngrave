@@ -1,0 +1,38 @@
+{
+ "set": "extra notes: Litolff notes from low-confidence boxes with no clean head",
+ "date": "2026-11-26",
+ "question": "24 Litolff marks the file writes as a note. For each number: is it a notehead? If yes: half note, or black. If no: what is it.",
+ "answered_by": "Sean",
+ "verbatim": "1 is part of a beam, 2 half note, 3 half note, 4 part of a beam, 5 half note, 6 2 half notes, 7 half note, 8 2 quarter note heads, 9 2 half note heads, 10 half note, 11 half note, 12 half note, 13 2 eighth note heads, 14 half note, 15 half note, 16 half note, 17 half note, 18 half note, 19 quarter note, 20 half note, 21 quarter note, 22 half note, 23 tremolo slash, 24 half note.",
+ "answers": {
+  "1": "part of a beam",
+  "2": "half note",
+  "3": "half note",
+  "4": "part of a beam",
+  "5": "half note",
+  "6": "two half notes",
+  "7": "half note",
+  "8": "two quarter-note heads",
+  "9": "two half-note heads",
+  "10": "half note",
+  "11": "half note",
+  "12": "half note",
+  "13": "two eighth-note heads",
+  "14": "half note",
+  "15": "half note",
+  "16": "half note",
+  "17": "half note",
+  "18": "half note",
+  "19": "quarter note",
+  "20": "half note",
+  "21": "quarter note",
+  "22": "half note",
+  "23": "a tremolo slash",
+  "24": "half note"
+ },
+ "tally": {
+  "not a note": 3,
+  "value right": 21,
+  "box holds two heads": 4
+ }
+}

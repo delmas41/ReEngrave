@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-26 -- 2.360 LANDED (no flag): the ranking counts only real losses (`tools/omr/staged/counted_marks.py`, `export_saved`)
+Counting only, STAGED EXPORT readout. Old tie-pairing refusals, the second half of an arc across a system break, boxes on a written note's dot and boxes on a written rest are named apart instead of counted as lost ties/notes; too-narrow boxes with nothing identifiable stay counted. 20261123-night, 8 pages per plate: ties+slurs not written Litolff 47.6 -> 36.8, Brahms 60.1 -> 32.8; notes not written Litolff 31.0 -> 30.8, Brahms 45.6 -> 31.8. Committed 20261123-night ranking files keep the old counting.
+
+## 2026-11-26 -- 2.356 LANDED (no new flag): the whole-movement crash at Brahms page 21 (`tools/omr/staged/adjudicators/rhythm.py`, `_bar_lengths_for`)
+
+2.346 put rest refusals into the meter's bar-sum basis; the rest rule stands on the meter and overturned one, so `Log.record` raised `UphillConsequence` in `reinstate_rest_between_staves`. A bar holding a rest contested between two staves is now left out of the meter's bar sum (under `OMR_BAR_SUM_SKIPS_REFUSED`). Tests: `test_staged_uphill_rest_between_staves_2_356.py` (real Brahms 21/0 fixture), `test_staged_cause_reads_effect_2_356.py`. Both saved whole-movement records re-adjudicate/evaluate/export clean; no overnight gather run. Open: `reconcile_chord_duration` basis omits the meter; rest rule's `_voice_count` read is unlisted.
+
 ## 2026-11-25 -- 2.352 LANDED ON (no flag): a stack of noteheads with a broken stem is not a sharp (`tools/omr/staged/page_accidental_ink.py`)
 - Cause and lesson: the 2.336 sharp reader's stem guard saw only strokes the stroke map calls uprights, so head-shaped ink was claimed as a sharp and later refused the real head. Four grounds now (same bar, note near ink to ink, not narrower than two-thirds of a sharp, not two hollow heads) plus a staff-of-own-ink tie rule; a claim-counting replay missed a list-order tie that lost two real sharps, a real page read caught it. Frozen sample 16 pages: Brahms unchanged, Litolff changes only on p2/p4/p10 (all judged), red bars equal, judged right->wrong 0. Two older tests edited (2.340 rest gap, accidental_not_head rounded ends), controls verified to fail. Open: second half note on p4/p13 (2.351); 2.347 to re-measure.
 

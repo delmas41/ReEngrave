@@ -1,0 +1,43 @@
+{
+ "set": "extra notes: Brahms rests listed weak",
+ "date": "2026-11-26",
+ "question": "24 Brahms marks the file writes as a rest though the page check listed each box as weak. For each number: is it a rest? If yes which kind; if no, what is it.",
+ "answered_by": "Sean",
+ "verbatim": "Tile 1 is a whole note rest. Tile 2 is an eighth note rest. Tile 3 is an eighth note rest. Tile 4 is the stem of an eighth note. Tile 5 is an eighth note rest. Tile 6 is a whole note rest. Tile 7 is a whole note rest. Tile 8 is an eighth note rest. Tile 9 is an eighth note rest. Tile 10 is most of a quarter note rest. Tile 11 is a quarter note rest. Tile 12 is a whole note rest. Tile 13 is an eighth note rest. Tile 14 is the stem of an eighth note. Tile 15 is an eighth note rest. Tile 16 is a quarter note rest. Tile 17 is an eighth note rest. Tile 18 is an eighth note rest. Tile 19 is an eighth note rest. Tile 20 is half of an eighth note rest. Tile 21 is an eighth note rest. Tile 22 is an eighth note rest. Tile 23 is a whole note rest. Tile 24 is a box around two half eighth note rests.",
+ "answers": {
+  "1": "whole rest",
+  "2": "eighth rest",
+  "3": "eighth rest",
+  "4": "the stem of an eighth note",
+  "5": "eighth rest",
+  "6": "whole rest",
+  "7": "whole rest",
+  "8": "eighth rest",
+  "9": "eighth rest",
+  "10": "most of a quarter rest",
+  "11": "quarter rest",
+  "12": "whole rest",
+  "13": "eighth rest",
+  "14": "the stem of an eighth note",
+  "15": "eighth rest",
+  "16": "quarter rest",
+  "17": "eighth rest",
+  "18": "eighth rest",
+  "19": "eighth rest",
+  "20": "half of an eighth rest",
+  "21": "eighth rest",
+  "22": "eighth rest",
+  "23": "whole rest",
+  "24": "a box around two eighth rests [said: 'two half eighth note rests']"
+ },
+ "compared_with_the_file": {
+  "real rests": "22 of 24, each written as the right kind (tile 24: one box around two eighth rests, written as ONE blue eighth rest)",
+  "not rests": {
+   "4": "the stem of an eighth note, written as a quarter rest",
+   "14": "the stem of an eighth note, written as a quarter rest"
+  },
+  "detector_confidence": "real rests 0.25-0.85 (tiles 6 and 17 at 0.25, 12 at 0.35, 20 at 0.36); the two stems 0.29 and 0.26 -- the Litolff gap at 0.36/0.39 does not hold on Brahms",
+  "ink_test_from_the_measurement_lane": "its look, made before these answers: 22 stand alone, tiles 4 and 14 are a stem with a flag joined to a note, tile 24 covers two rests -- the same split Sean gives",
+  "ours": "The weak flag is wrong 22 times in 24 here. Both non-rests are again stems read as quarter rests."
+ }
+}

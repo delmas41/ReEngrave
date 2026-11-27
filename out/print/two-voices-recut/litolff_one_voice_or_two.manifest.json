@@ -1,0 +1,2478 @@
+{
+ "plate": "litolff",
+ "seed": 20261126,
+ "population_rule": "red bar (written red in the 20261123-night export), written in ONE voice, over-full (counted quarters > meter), Q.VOICES decided one_voice; unique cells; cell 0 excluded (its box holds the system header)",
+ "unique_cells_in_rule": 35,
+ "drawn_from": 33,
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "litolff",
+   "page": 10,
+   "system": 1,
+   "staff": 6,
+   "cell": 7,
+   "parts": [
+    "P7"
+   ],
+   "measure": 194,
+   "file": [
+    {
+     "part": "P7",
+     "measure": 194,
+     "doubled_copy": false,
+     "file_writes": [
+      "R quarter d8 v1",
+      "NC3 quarter d8 v1",
+      "NC3 quarter d8 v1"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 10,
+    "system": 1,
+    "staff": 6
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2935,
+     2998
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      1506,
+      2870,
+      1726,
+      3099
+     ],
+     "header": [
+      326,
+      2870,
+      460,
+      3099
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1530.0,
+     2872.0,
+     1703.0,
+     3092.0
+    ],
+    "rect_inner_edge_page_px": [
+     1530.0,
+     2878.2,
+     1703.0,
+     3091.8
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/10/1/6/7), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2921,
+     2998
+    ],
+    "neighbour_limits_px": [
+     2870.3,
+     3099.7
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     620
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 2,
+   "subject": "litolff",
+   "page": 9,
+   "system": 1,
+   "staff": 1,
+   "cell": 6,
+   "parts": [
+    "P2"
+   ],
+   "measure": 167,
+   "file": [
+    {
+     "part": "P2",
+     "measure": 167,
+     "doubled_copy": false,
+     "file_writes": [
+      "NG5 half d16 v1",
+      "NF5 quarter d8 v1",
+      "NEb5 quarter d8 v1",
+      "ND5 half d16 v1",
+      "NF5 quarter d8 v1",
+      "NEb5 quarter d8 v1 #1F6FEB",
+      "ND5 quarter d8 v1"
+     ],
+     "counted_quarters": [
+      9.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "above"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 9,
+    "system": 1,
+    "staff": 1
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2376,
+     2439
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      1446,
+      2303,
+      1823,
+      2506
+     ],
+     "header": [
+      338,
+      2303,
+      494,
+      2506
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1470.0,
+     2313.0,
+     1800.0,
+     2502.0
+    ],
+    "rect_inner_edge_page_px": [
+     1470.0,
+     2313.0,
+     1800.0,
+     2498.8
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/9/1/1/6), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2332,
+     2439
+    ],
+    "neighbour_limits_px": [
+     2292.3,
+     2506.7
+    ],
+    "foreign_marks_in_cell": 1,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     1096,
+     406
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 3,
+   "subject": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 15,
+   "parts": [
+    "P3"
+   ],
+   "measure": 32,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 32,
+     "doubled_copy": false,
+     "file_writes": [
+      "R eighth d4 v1",
+      "NE5 eighth d4 v1",
+      "R whole d32 v1",
+      "NE5 eighth d4 v1 #1F6FEB"
+     ],
+     "counted_quarters": [
+      5.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "above",
+     "below"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 2,
+    "system": 0,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     668,
+     731
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2327,
+      618,
+      2500,
+      829
+     ],
+     "header": [
+      328,
+      618,
+      462,
+      829
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2351.0,
+     605.0,
+     2477.0,
+     825.0
+    ],
+    "rect_inner_edge_page_px": [
+     2351.0,
+     626.2,
+     2477.0,
+     821.8
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/2/0/2/15), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     633,
+     739
+    ],
+    "neighbour_limits_px": [
+     618.3,
+     829.7
+    ],
+    "foreign_marks_in_cell": 1,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     655
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 4,
+   "subject": "litolff",
+   "page": 6,
+   "system": 1,
+   "staff": 2,
+   "cell": 9,
+   "parts": [
+    "P3"
+   ],
+   "measure": 101,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 101,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC5 quarter d8 v1 #1F6FEB",
+      "NA4 eighth d4 v1",
+      "NC5 eighth d4 v1 CHORD",
+      "NB4 eighth d4 v1 #1F6FEB",
+      "ND5 eighth d4 v1 CHORD",
+      "ND5 eighth d4 v1"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 1,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2278,
+     2341
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2044,
+      2205,
+      2259,
+      2413
+     ],
+     "header": [
+      329,
+      2205,
+      463,
+      2413
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2068.0,
+     2215.0,
+     2236.0,
+     2404.0
+    ],
+    "rect_inner_edge_page_px": [
+     2068.0,
+     2215.0,
+     2236.0,
+     2404.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/1/2/9), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2276,
+     2365
+    ],
+    "neighbour_limits_px": [
+     2203.3,
+     2428.7
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     571
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 5,
+   "subject": "litolff",
+   "page": 6,
+   "system": 1,
+   "staff": 10,
+   "cell": 5,
+   "parts": [
+    "P11"
+   ],
+   "measure": 97,
+   "file": [
+    {
+     "part": "P11",
+     "measure": 97,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb3 quarter d8 v1 #1F6FEB",
+      "NF3 eighth d4 v1",
+      "NF3 eighth d4 v1",
+      "NF3 eighth d4 v1",
+      "NEb3 eighth d4 v1 #1F6FEB"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 1,
+    "staff": 10
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3436,
+     3499
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      1401,
+      3368,
+      1633,
+      3554
+     ],
+     "header": [
+      329,
+      3368,
+      468,
+      3554
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1425.0,
+     3373.0,
+     1610.0,
+     3562.0
+    ],
+    "rect_inner_edge_page_px": [
+     1425.0,
+     3376.2,
+     1610.0,
+     3546.8
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/1/10/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3421,
+     3508
+    ],
+    "neighbour_limits_px": [
+     3368.3,
+     3554.7
+    ],
+    "foreign_marks_in_cell": 3,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     481
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 6,
+   "subject": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 3,
+   "parts": [
+    "P8"
+   ],
+   "measure": 20,
+   "file": [
+    {
+     "part": "P8",
+     "measure": 20,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb4 half d16 v1 #1F6FEB",
+      "NAb3 quarter d8 v1",
+      "NF#4 quarter d8 v1 CHORD #1F6FEB",
+      "R quarter d8 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 2,
+    "system": 0,
+    "staff": 7
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1439,
+     1503
+    ],
+    "staff_space_px": 16.0,
+    "crop_page_px": {
+     "main": [
+      848,
+      1365,
+      1003,
+      1576
+     ],
+     "header": [
+      328,
+      1365,
+      467,
+      1576
+     ]
+    },
+    "reader_cell_box_page_px": [
+     872.0,
+     1375.0,
+     979.0,
+     1567.0
+    ],
+    "rect_inner_edge_page_px": [
+     872.0,
+     1375.0,
+     979.0,
+     1567.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/2/0/7/3), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1435,
+     1547
+    ],
+    "neighbour_limits_px": [
+     1344.4,
+     1578.6
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     680
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 7,
+   "subject": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "cell": 5,
+   "parts": [
+    "P9"
+   ],
+   "measure": 69,
+   "file": [
+    {
+     "part": "P9",
+     "measure": 69,
+     "doubled_copy": false,
+     "file_writes": [
+      "NBb4 eighth d4 v1",
+      "NC6 eighth d4 v1",
+      "NBb5 eighth d4 v1",
+      "NEb4 eighth d4 v1",
+      "NAb5 eighth d4 v1"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 4,
+    "system": 1,
+    "staff": 8
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3260,
+     3324
+    ],
+    "staff_space_px": 16.0,
+    "crop_page_px": {
+     "main": [
+      1168,
+      3197,
+      1363,
+      3388
+     ],
+     "header": [
+      341,
+      3197,
+      477,
+      3388
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1192.0,
+     3196.0,
+     1339.0,
+     3388.0
+    ],
+    "rect_inner_edge_page_px": [
+     1192.0,
+     3205.4,
+     1339.0,
+     3380.6
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/4/1/8/5), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3213,
+     3349
+    ],
+    "neighbour_limits_px": [
+     3197.4,
+     3388.6
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     550
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 8,
+   "subject": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 0,
+   "cell": 9,
+   "parts": [
+    "P1"
+   ],
+   "measure": 88,
+   "file": [
+    {
+     "part": "P1",
+     "measure": 88,
+     "doubled_copy": false,
+     "file_writes": [
+      "NBb5 half d16 v1 #1F6FEB",
+      "ND4 quarter d8 v1"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 0,
+    "staff": 0
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     393,
+     455
+    ],
+    "staff_space_px": 15.5,
+    "crop_page_px": {
+     "main": [
+      1916,
+      290,
+      2124,
+      523
+     ],
+     "header": [
+      326,
+      290,
+      467,
+      523
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1940.0,
+     300.0,
+     2101.0,
+     517.0
+    ],
+    "rect_inner_edge_page_px": [
+     1940.0,
+     300.0,
+     2101.0,
+     516.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/0/0/9), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     313,
+     455
+    ],
+    "neighbour_limits_px": [
+     0,
+     523.8
+    ],
+    "foreign_marks_in_cell": 1,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     640
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 9,
+   "subject": "litolff",
+   "page": 6,
+   "system": 1,
+   "staff": 6,
+   "cell": 10,
+   "parts": [
+    "P7"
+   ],
+   "measure": 102,
+   "file": [
+    {
+     "part": "P7",
+     "measure": 102,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC3 half d16 v1",
+      "NB3 half d16 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 1,
+    "staff": 6
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2890,
+     2953
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2212,
+      2817,
+      2431,
+      3025
+     ],
+     "header": [
+      329,
+      2817,
+      452,
+      3025
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2236.0,
+     2827.0,
+     2408.0,
+     3016.0
+    ],
+    "rect_inner_edge_page_px": [
+     2236.0,
+     2827.0,
+     2408.0,
+     3016.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/1/6/10), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2877,
+     2953
+    ],
+    "neighbour_limits_px": [
+     2817.3,
+     3045.7
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     582
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 10,
+   "subject": "litolff",
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "cell": 3,
+   "parts": [
+    "P9"
+   ],
+   "measure": 52,
+   "file": [
+    {
+     "part": "P9",
+     "measure": 52,
+     "doubled_copy": false,
+     "file_writes": [
+      "NG4 quarter d8 v1",
+      "NG4 quarter d8 v1",
+      "NF4 quarter d8 v1"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 4,
+    "system": 0,
+    "staff": 7
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1467,
+     1530
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      860,
+      1394,
+      1062,
+      1602
+     ],
+     "header": [
+      340,
+      1394,
+      481,
+      1602
+     ]
+    },
+    "reader_cell_box_page_px": [
+     884.0,
+     1404.0,
+     1039.0,
+     1593.0
+    ],
+    "rect_inner_edge_page_px": [
+     884.0,
+     1404.0,
+     1039.0,
+     1593.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/4/0/7/3), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1467,
+     1545
+    ],
+    "neighbour_limits_px": [
+     1392.3,
+     1603.7
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     581
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 11,
+   "subject": "litolff",
+   "page": 9,
+   "system": 0,
+   "staff": 7,
+   "cell": 14,
+   "parts": [
+    "P8"
+   ],
+   "measure": 160,
+   "file": [
+    {
+     "part": "P8",
+     "measure": 160,
+     "doubled_copy": false,
+     "file_writes": [
+      "ND5 eighth d4 v1",
+      "NG5 eighth d4 v1",
+      "NF4 eighth d4 v1",
+      "NG5 eighth d4 v1",
+      "NF5 eighth d4 v1"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice, file written in one voice and over-full",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 9,
+    "system": 0,
+    "staff": 7
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1397,
+     1459
+    ],
+    "staff_space_px": 15.5,
+    "crop_page_px": {
+     "main": [
+      2407,
+      1325,
+      2650,
+      1516
+     ],
+     "header": [
+      341,
+      1325,
+      473,
+      1516
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2431.0,
+     1335.0,
+     2627.0,
+     1521.0
+    ],
+    "rect_inner_edge_page_px": [
+     2431.0,
+     1335.0,
+     2627.0,
+     1509.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/9/0/7/14), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1384,
+     1475
+    ],
+    "neighbour_limits_px": [
+     1314.2,
+     1516.8
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     489
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": {
+    "replaced_original": [
+     8,
+     0,
+     7,
+     10
+    ],
+    "reason": "far heads / ink spanning more than one staff region: cannot be shown on one staff"
+   }
+  },
+  {
+   "tile": 12,
+   "subject": "litolff",
+   "page": 6,
+   "system": 1,
+   "staff": 11,
+   "cell": 1,
+   "parts": [
+    "P12"
+   ],
+   "measure": 93,
+   "file": [
+    {
+     "part": "P12",
+     "measure": 93,
+     "doubled_copy": false,
+     "file_writes": [
+      "NG2 half. d24 v1"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 1,
+    "staff": 11
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3561,
+     3624
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      629,
+      3505,
+      851,
+      3727
+     ],
+     "header": [
+      329,
+      3505,
+      471,
+      3727
+     ]
+    },
+    "reader_cell_box_page_px": [
+     653.0,
+     3498.0,
+     828.0,
+     3718.0
+    ],
+    "rect_inner_edge_page_px": [
+     653.0,
+     3513.2,
+     828.0,
+     3718.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/1/11/1), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3559,
+     3637
+    ],
+    "neighbour_limits_px": [
+     3505.3,
+     3813
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     585
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 13,
+   "subject": "litolff",
+   "page": 9,
+   "system": 0,
+   "staff": 5,
+   "cell": 3,
+   "parts": [
+    "P6"
+   ],
+   "measure": 149,
+   "file": [
+    {
+     "part": "P6",
+     "measure": 149,
+     "doubled_copy": false,
+     "file_writes": [
+      "R eighth. d6 v1",
+      "NG4 eighth d4 v1",
+      "NG5 eighth d4 v1 CHORD",
+      "NG4 eighth d4 v1",
+      "NG5 eighth d4 v1 CHORD",
+      "NG4 eighth d4 v1",
+      "NG5 eighth d4 v1 CHORD"
+     ],
+     "counted_quarters": [
+      2.25
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 9,
+    "system": 0,
+    "staff": 5
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1118,
+     1181
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      883,
+      1070,
+      1116,
+      1238
+     ],
+     "header": [
+      341,
+      1070,
+      472,
+      1238
+     ]
+    },
+    "reader_cell_box_page_px": [
+     907.0,
+     1055.0,
+     1093.0,
+     1244.0
+    ],
+    "rect_inner_edge_page_px": [
+     907.0,
+     1078.2,
+     1093.0,
+     1230.8
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/9/0/5/3), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1099,
+     1206
+    ],
+    "neighbour_limits_px": [
+     1070.3,
+     1238.7
+    ],
+    "foreign_marks_in_cell": 3,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     443
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 14,
+   "subject": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "cell": 2,
+   "parts": [
+    "P11",
+    "P12"
+   ],
+   "measure": 19,
+   "file": [
+    {
+     "part": "P11",
+     "measure": 19,
+     "doubled_copy": false,
+     "file_writes": [
+      "NC3 half d16 v1",
+      "R quarter d8 v1"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    },
+    {
+     "part": "P12",
+     "measure": 19,
+     "doubled_copy": true,
+     "file_writes": [
+      "NC3 half d16 v1",
+      "R quarter d8 v1"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 2,
+    "system": 0,
+    "staff": 10
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1880,
+     1943
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      750,
+      1804,
+      895,
+      2046
+     ],
+     "header": [
+      328,
+      1804,
+      469,
+      2046
+     ]
+    },
+    "reader_cell_box_page_px": [
+     774.0,
+     1817.0,
+     872.0,
+     2037.0
+    ],
+    "rect_inner_edge_page_px": [
+     774.0,
+     1817.0,
+     872.0,
+     2037.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/2/0/10/2), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1823,
+     1967
+    ],
+    "neighbour_limits_px": [
+     1804.3,
+     2137.7
+    ],
+    "foreign_marks_in_cell": 1,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     803
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 15,
+   "subject": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 3,
+   "cell": 12,
+   "parts": [
+    "P4"
+   ],
+   "measure": 91,
+   "file": [
+    {
+     "part": "P4",
+     "measure": 91,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb3 quarter d8 v1",
+      "NF3 half d16 v1",
+      "NBb3 half d16 v1 CHORD"
+     ],
+     "counted_quarters": [
+      3.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 0,
+    "staff": 3
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     827,
+     890
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2414,
+      754,
+      2642,
+      993
+     ],
+     "header": [
+      326,
+      754,
+      468,
+      993
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2438.0,
+     764.0,
+     2619.0,
+     984.0
+    ],
+    "rect_inner_edge_page_px": [
+     2438.0,
+     764.0,
+     2619.0,
+     984.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/0/3/12), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     809,
+     897
+    ],
+    "neighbour_limits_px": [
+     747.3,
+     993.7
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     620
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 16,
+   "subject": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 2,
+   "cell": 8,
+   "parts": [
+    "P3"
+   ],
+   "measure": 87,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 87,
+     "doubled_copy": false,
+     "file_writes": [
+      "R eighth d4 v1",
+      "NF4 eighth d4 v1",
+      "NA4 eighth d4 v1 CHORD",
+      "NG#4 eighth d4 v1 #1F6FEB",
+      "NE5 eighth d4 v1 CHORD",
+      "NG#4 eighth d4 v1 #1F6FEB",
+      "NE5 eighth d4 v1 CHORD",
+      "NBb4 eighth d4 v1",
+      "ND5 eighth d4 v1 CHORD"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 0,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     678,
+     741
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      1718,
+      605,
+      1963,
+      813
+     ],
+     "header": [
+      326,
+      605,
+      463,
+      813
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1742.0,
+     615.0,
+     1940.0,
+     804.0
+    ],
+    "rect_inner_edge_page_px": [
+     1742.0,
+     615.0,
+     1940.0,
+     804.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/0/2/8), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     677,
+     777
+    ],
+    "neighbour_limits_px": [
+     596.3,
+     820.7
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     523
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 17,
+   "subject": "litolff",
+   "page": 8,
+   "system": 0,
+   "staff": 3,
+   "cell": 19,
+   "parts": [
+    "P4"
+   ],
+   "measure": 124,
+   "file": [
+    {
+     "part": "P4",
+     "measure": 124,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb4 half d16 v1 #1F6FEB",
+      "NG4 half d16 v1",
+      "NA4 half d16 v1 CHORD"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 8,
+    "system": 0,
+    "staff": 3
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     864,
+     927
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2250,
+      784,
+      2424,
+      1024
+     ],
+     "header": [
+      341,
+      784,
+      484,
+      1024
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2274.0,
+     801.0,
+     2401.0,
+     1021.0
+    ],
+    "rect_inner_edge_page_px": [
+     2274.0,
+     801.0,
+     2401.0,
+     1016.8
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/8/0/3/19), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     801,
+     927
+    ],
+    "neighbour_limits_px": [
+     784.3,
+     1024.7
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     722
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 18,
+   "subject": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 1,
+   "cell": 14,
+   "parts": [
+    "P2"
+   ],
+   "measure": 48,
+   "file": [
+    {
+     "part": "P2",
+     "measure": 48,
+     "doubled_copy": false,
+     "file_writes": [
+      "NG5 half d16 v1",
+      "NG5 half d16 v1"
+     ],
+     "counted_quarters": [
+      4.0
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 2,
+    "system": 1,
+    "staff": 1
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2276,
+     2340
+    ],
+    "staff_space_px": 16.0,
+    "crop_page_px": {
+     "main": [
+      2429,
+      2213,
+      2658,
+      2405
+     ],
+     "header": [
+      327,
+      2213,
+      469,
+      2405
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2453.0,
+     2212.0,
+     2634.0,
+     2404.0
+    ],
+    "rect_inner_edge_page_px": [
+     2453.0,
+     2221.4,
+     2634.0,
+     2397.6
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/2/1/1/14), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2249,
+     2340
+    ],
+    "neighbour_limits_px": [
+     2213.4,
+     2405.6
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     496
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 19,
+   "subject": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "cell": 4,
+   "parts": [
+    "P9"
+   ],
+   "measure": 68,
+   "file": [
+    {
+     "part": "P9",
+     "measure": 68,
+     "doubled_copy": false,
+     "file_writes": [
+      "NBb4 eighth d4 v1",
+      "NAb4 half d16 v1",
+      "NBb4 eighth d4 v1",
+      "NAb4 eighth d4 v1"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 4,
+    "system": 1,
+    "staff": 8
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3260,
+     3324
+    ],
+    "staff_space_px": 16.0,
+    "crop_page_px": {
+     "main": [
+      1014,
+      3197,
+      1216,
+      3388
+     ],
+     "header": [
+      341,
+      3197,
+      477,
+      3388
+     ]
+    },
+    "reader_cell_box_page_px": [
+     1038.0,
+     3196.0,
+     1192.0,
+     3388.0
+    ],
+    "rect_inner_edge_page_px": [
+     1038.0,
+     3205.4,
+     1192.0,
+     3380.6
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/4/1/8/4), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3240,
+     3354
+    ],
+    "neighbour_limits_px": [
+     3197.4,
+     3388.6
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     539
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 20,
+   "subject": "litolff",
+   "page": 8,
+   "system": 0,
+   "staff": 8,
+   "cell": 20,
+   "parts": [
+    "P11",
+    "P12"
+   ],
+   "measure": 125,
+   "file": [
+    {
+     "part": "P11",
+     "measure": 125,
+     "doubled_copy": false,
+     "file_writes": [
+      "R 16th d2 v1",
+      "NF2 half d16 v1"
+     ],
+     "counted_quarters": [
+      2.25
+     ],
+     "meter_quarters": 2.0
+    },
+    {
+     "part": "P12",
+     "measure": 125,
+     "doubled_copy": true,
+     "file_writes": [
+      "R 16th d2 v1",
+      "NF2 half d16 v1"
+     ],
+     "counted_quarters": [
+      2.25
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "below"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 8,
+    "system": 0,
+    "staff": 8
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     1615,
+     1678
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2377,
+      1551,
+      2528,
+      1781
+     ],
+     "header": [
+      341,
+      1551,
+      486,
+      1781
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2401.0,
+     1552.0,
+     2505.0,
+     1772.0
+    ],
+    "rect_inner_edge_page_px": [
+     2401.0,
+     1559.2,
+     2505.0,
+     1772.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/8/0/8/20), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     1615,
+     1708
+    ],
+    "neighbour_limits_px": [
+     1551.3,
+     1928.7
+    ],
+    "foreign_marks_in_cell": 2,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     739
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 21,
+   "subject": "litolff",
+   "page": 10,
+   "system": 1,
+   "staff": 7,
+   "cell": 10,
+   "parts": [
+    "P8"
+   ],
+   "measure": 197,
+   "file": [
+    {
+     "part": "P8",
+     "measure": 197,
+     "doubled_copy": false,
+     "file_writes": [
+      "NF#5 quarter d8 v1 #1F6FEB",
+      "NEb5 eighth d4 v1 #1F6FEB",
+      "NEb5 eighth d4 v1 #1F6FEB",
+      "NEb5 eighth d4 v1 #1F6FEB"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 10,
+    "system": 1,
+    "staff": 7
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3106,
+     3169
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      2010,
+      3004,
+      2205,
+      3241
+     ],
+     "header": [
+      326,
+      3004,
+      479,
+      3241
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2034.0,
+     3012.0,
+     2182.0,
+     3232.0
+    ],
+    "rect_inner_edge_page_px": [
+     2034.0,
+     3012.2,
+     2182.0,
+     3232.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/10/1/7/10), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3095,
+     3174
+    ],
+    "neighbour_limits_px": [
+     3004.3,
+     3248.7
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     652
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 22,
+   "subject": "litolff",
+   "page": 4,
+   "system": 0,
+   "staff": 3,
+   "cell": 13,
+   "parts": [
+    "P4"
+   ],
+   "measure": 62,
+   "file": [
+    {
+     "part": "P4",
+     "measure": 62,
+     "doubled_copy": false,
+     "file_writes": [
+      "NEb3 quarter. d12 v1",
+      "NG3 quarter. d12 v1 CHORD",
+      "R quarter d8 v1"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "down"
+    ],
+    "rests_printed_outside_own_staff": []
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 4,
+    "system": 0,
+    "staff": 3
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     842,
+     904
+    ],
+    "staff_space_px": 15.5,
+    "crop_page_px": {
+     "main": [
+      2291,
+      780,
+      2484,
+      1006
+     ],
+     "header": [
+      340,
+      780,
+      478,
+      1006
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2315.0,
+     780.0,
+     2461.0,
+     997.0
+    ],
+    "rect_inner_edge_page_px": [
+     2315.0,
+     788.0,
+     2461.0,
+     997.0
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/4/0/3/13), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     838,
+     916
+    ],
+    "neighbour_limits_px": [
+     780.2,
+     1013.8
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     998,
+     653
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 23,
+   "subject": "litolff",
+   "page": 6,
+   "system": 1,
+   "staff": 2,
+   "cell": 1,
+   "parts": [
+    "P3"
+   ],
+   "measure": 93,
+   "file": [
+    {
+     "part": "P3",
+     "measure": 93,
+     "doubled_copy": false,
+     "file_writes": [
+      "NA4 eighth d4 v1",
+      "NC5 eighth d4 v1 CHORD",
+      "NA4 eighth d4 v1",
+      "R eighth d4 v1",
+      "R quarter d8 v1",
+      "NB4 eighth d4 v1",
+      "NC5 eighth d4 v1"
+     ],
+     "counted_quarters": [
+      3.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "below"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 6,
+    "system": 1,
+    "staff": 2
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     2278,
+     2341
+    ],
+    "staff_space_px": 15.75,
+    "crop_page_px": {
+     "main": [
+      629,
+      2205,
+      851,
+      2413
+     ],
+     "header": [
+      329,
+      2205,
+      463,
+      2413
+     ]
+    },
+    "reader_cell_box_page_px": [
+     653.0,
+     2215.0,
+     828.0,
+     2404.0
+    ],
+    "rect_inner_edge_page_px": [
+     653.0,
+     2215.0,
+     828.0,
+     2404.0
+    ],
+    "rect_note": [
+     "record cell box drawn as held, no clipping needed"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/6/1/2/1), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     2246,
+     2379
+    ],
+    "neighbour_limits_px": [
+     2203.3,
+     2428.7
+    ],
+    "foreign_marks_in_cell": 1,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     560
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  },
+  {
+   "tile": 24,
+   "subject": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 11,
+   "parts": [
+    "P10"
+   ],
+   "measure": 45,
+   "file": [
+    {
+     "part": "P10",
+     "measure": 45,
+     "doubled_copy": false,
+     "file_writes": [
+      "R eighth d4 v1",
+      "ND3 half d16 v1"
+     ],
+     "counted_quarters": [
+      2.5
+     ],
+     "meter_quarters": 2.0
+    }
+   ],
+   "record": {
+    "q_voices": [
+     "decided",
+     "one_voice",
+     1
+    ],
+    "stems_read": [
+     "up"
+    ],
+    "rests_printed_outside_own_staff": [
+     "below"
+    ]
+   },
+   "lost": "record Q.VOICES decided one_voice (no up-stem and down-stem event pair), file written in one voice and over-full; the exact fact missing is not traced bar by bar",
+   "already_answered_by_Sean": null,
+   "staff_used": {
+    "page": 2,
+    "system": 1,
+    "staff": 9
+   },
+   "tile_crop": {
+    "staff_lines_page_px": [
+     3401,
+     3465
+    ],
+    "staff_space_px": 16.0,
+    "crop_page_px": {
+     "main": [
+      2062,
+      3327,
+      2225,
+      3528
+     ],
+     "header": [
+      327,
+      3327,
+      473,
+      3528
+     ]
+    },
+    "reader_cell_box_page_px": [
+     2086.0,
+     3337.0,
+     2201.0,
+     3529.0
+    ],
+    "rect_inner_edge_page_px": [
+     2086.0,
+     3337.0,
+     2201.0,
+     3520.6
+    ],
+    "rect_note": [
+     "clipped vertically to this staff region, between neighbouring staves"
+    ],
+    "rect_sized_from": "reader cell box (record cell_box cell/2/1/9/11), inner edge on the box, line grows outward, no padding",
+    "marks_vertical_px": [
+     3401,
+     3512
+    ],
+    "neighbour_limits_px": [
+     3325.4,
+     3528.6
+    ],
+    "foreign_marks_in_cell": 0,
+    "far_heads_without_ledger_lines": [],
+    "fits": true,
+    "tile_px": [
+     999,
+     618
+    ],
+    "rect_thickness_px": 9
+   },
+   "replacement": null
+  }
+ ],
+ "instruction": "For each number: is this bar one voice or two? If two, say the top voice then the bottom voice."
+}

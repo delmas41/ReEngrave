@@ -1,0 +1,1371 @@
+{
+ "sheet": "brahms_N_notes_lowconf_no_clean_head.png",
+ "instruction": "For each number: what is the ink in the orange box? (a note, a rest, part of a tie, part of a beam, a stem, a dot, a letter, something else...)",
+ "seed": 20261126,
+ "rule": null,
+ "size": [
+  2950,
+  3437
+ ],
+ "tiles": [
+  {
+   "n": 1,
+   "subject": "glyph/25/1/2/9/14",
+   "plate": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 2,
+   "cell": 9,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "E5",
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "153"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfOnLine, confidence 0.36",
+    "cell_strokes_owned": [
+     12
+    ],
+    "page_mark": "head:page_head_alone ink_px=428",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [6344, 6351]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_where_a_whole_rest_can_hang",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    5102,
+    4946,
+    5138,
+    4966
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4939,
+     4891,
+     5300,
+     5113
+    ],
+    "scale": 2.493,
+    "rect": [
+     373,
+     102,
+     531,
+     221
+    ]
+   }
+  },
+  {
+   "n": 2,
+   "subject": "glyph/25/0/9/4/12",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 9,
+   "cell": 4,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "D-15",
+    "colour": "blue",
+    "part": "P10",
+    "measure": "138"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.44",
+    "cell_strokes_owned": [
+     15
+    ],
+    "page_mark": "head:page_head_alone ink_px=1025",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [3794]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    2950,
+    2829,
+    2986,
+    2863
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2791,
+     2767,
+     3145,
+     2985
+    ],
+    "scale": 2.542,
+    "rect": [
+     371,
+     123,
+     531,
+     279
+    ]
+   }
+  },
+  {
+   "n": 3,
+   "subject": "glyph/12/0/10/2/3",
+   "plate": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 10,
+   "cell": 2,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "B-14",
+    "colour": "plain black",
+    "part": "P11",
+    "measure": "73"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.45",
+    "cell_strokes_owned": [
+     11
+    ],
+    "page_mark": "head:page_head_alone ink_px=697",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_where_a_whole_rest_can_hang",
+     "duration decided adjudicate_duration/head_and_marks",
+     "duration decided share_stem_value/stem_value_follows"
+    ]
+   },
+   "box_page_px": [
+    1593,
+    2801,
+    1631,
+    2823
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1431,
+     2692,
+     1792,
+     2914
+    ],
+    "scale": 2.493,
+    "rect": [
+     369,
+     238,
+     533,
+     362
+    ]
+   }
+  },
+  {
+   "n": 4,
+   "subject": "glyph/4/0/2/10/11",
+   "plate": "brahms",
+   "page": 4,
+   "system": 0,
+   "staff": 2,
+   "cell": 10,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "E5",
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "18"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.25",
+    "cell_strokes_owned": [
+     19,
+     22
+    ],
+    "page_mark": "head:page_head_alone ink_px=587",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [5659, 5750]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    5127,
+    984,
+    5171,
+    1018
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4969,
+     933,
+     5327,
+     1153
+    ],
+    "scale": 2.514,
+    "rect": [
+     362,
+     93,
+     542,
+     248
+    ]
+   }
+  },
+  {
+   "n": 5,
+   "subject": "glyph/4/1/3/5/12",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "B3",
+    "colour": "plain black",
+    "part": "P4",
+    "measure": "24"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.32",
+    "cell_strokes_owned": [
+     24
+    ],
+    "page_mark": "head:page_head_alone ink_px=1021",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [4021]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    3786,
+    4879,
+    3824,
+    4908
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3627,
+     4797,
+     3982,
+     5015
+    ],
+    "scale": 2.535,
+    "rect": [
+     368,
+     172,
+     535,
+     316
+    ]
+   }
+  },
+  {
+   "n": 6,
+   "subject": "glyph/12/0/2/3/10",
+   "plate": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "C5",
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "74"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.35",
+    "cell_strokes_owned": [
+     5,
+     11
+    ],
+    "page_mark": "head:page_head_alone ink_px=759",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [1982, 2050]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks",
+     "duration decided share_stem_value/stem_value_follows"
+    ]
+   },
+   "box_page_px": [
+    1914,
+    985,
+    1965,
+    1013
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1763,
+     901,
+     2114,
+     1117
+    ],
+    "scale": 2.564,
+    "rect": [
+     352,
+     180,
+     552,
+     321
+    ]
+   }
+  },
+  {
+   "n": 7,
+   "subject": "glyph/19/1/1/8/17",
+   "plate": "brahms",
+   "page": 19,
+   "system": 1,
+   "staff": 1,
+   "cell": 8,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "A-14",
+    "colour": "plain black",
+    "part": "P2",
+    "measure": "133"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.41",
+    "cell_strokes_owned": [
+     30,
+     35
+    ],
+    "page_mark": "head:page_head_alone ink_px=1187",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [5863]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    5214,
+    4402,
+    5254,
+    4432
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     5056,
+     4294,
+     5411,
+     4512
+    ],
+    "scale": 2.535,
+    "rect": [
+     366,
+     240,
+     537,
+     386
+    ]
+   }
+  },
+  {
+   "n": 8,
+   "subject": "glyph/19/1/8/1/12",
+   "plate": "brahms",
+   "page": 19,
+   "system": 1,
+   "staff": 8,
+   "cell": 1,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "E15",
+    "colour": "blue",
+    "part": "P10",
+    "measure": "126"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfOnLine, confidence 0.30",
+    "cell_strokes_owned": [
+     2,
+     3,
+     4
+    ],
+    "page_mark": "head:page_head ink_px=1158",
+    "head_ink": "abstained: not_one_head (holds_another_marks_ink)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [1196, 1200]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    1337,
+    5953,
+    1371,
+    6027
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1175,
+     5923,
+     1532,
+     6143
+    ],
+    "scale": 2.521,
+    "rect": [
+     373,
+     42,
+     529,
+     297
+    ]
+   }
+  },
+  {
+   "n": 9,
+   "subject": "glyph/4/0/6/10/5",
+   "plate": "brahms",
+   "page": 4,
+   "system": 0,
+   "staff": 6,
+   "cell": 10,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "D5",
+    "colour": "plain black",
+    "part": "P7",
+    "measure": "18"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadWholeOnLine, confidence 0.42",
+    "cell_strokes_owned": [
+     3,
+     4,
+     6,
+     8,
+     9
+    ],
+    "page_mark": "head:page_head_alone ink_px=928",
+    "head_ink": "abstained: not_one_head (too_wide)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [5520, 5532, 5568]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/whole_class_on_a_stem"
+    ]
+   },
+   "box_page_px": [
+    5088,
+    1961,
+    5134,
+    1994
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4932,
+     1896,
+     5289,
+     2116
+    ],
+    "scale": 2.521,
+    "rect": [
+     358,
+     129,
+     544,
+     282
+    ]
+   }
+  },
+  {
+   "n": 10,
+   "subject": "glyph/14/1/4/7/8",
+   "plate": "brahms",
+   "page": 14,
+   "system": 1,
+   "staff": 4,
+   "cell": 7,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "G3",
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "112"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.44",
+    "cell_strokes_owned": [
+     5,
+     10,
+     11,
+     14
+    ],
+    "page_mark": "head:page_head ink_px=863",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [4370, 4374, 4386]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    4539,
+    5328,
+    4581,
+    5361
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4381,
+     5115,
+     4738,
+     5383
+    ],
+    "scale": 2.521,
+    "rect": [
+     363,
+     501,
+     540,
+     656
+    ]
+   }
+  },
+  {
+   "n": 11,
+   "subject": "glyph/5/1/11/5/9",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 11,
+   "cell": 5,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "D4",
+    "colour": "plain black",
+    "part": "P12",
+    "measure": "41"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.45",
+    "cell_strokes_owned": [
+     18
+    ],
+    "page_mark": "head:page_head_alone ink_px=1026",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [4226]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    3450,
+    6617,
+    3488,
+    6644
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3290,
+     6531,
+     3648,
+     6751
+    ],
+    "scale": 2.514,
+    "rect": [
+     368,
+     180,
+     534,
+     319
+    ]
+   }
+  },
+  {
+   "n": 12,
+   "subject": "glyph/5/0/5/0/15",
+   "plate": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 5,
+   "cell": 0,
+   "file_writes": {
+    "element": "note",
+    "type": "quarter",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "C4",
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "28"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.40",
+    "cell_strokes_owned": [
+     31,
+     32,
+     33
+    ],
+    "page_mark": "head:page_head_alone ink_px=1287",
+    "head_ink": "abstained: not_one_head (too_wide)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    977,
+    1815,
+    1027,
+    1848
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     823,
+     1628,
+     1180,
+     1869
+    ],
+    "scale": 2.521,
+    "rect": [
+     353,
+     438,
+     549,
+     588
+    ]
+   }
+  },
+  {
+   "n": 13,
+   "subject": "glyph/5/1/3/7/11",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cell": 7,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "D4",
+    "colour": "plain black",
+    "part": "P4",
+    "measure": "43"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.25",
+    "cell_strokes_owned": [
+     19
+    ],
+    "page_mark": "head:page_head_alone ink_px=1022",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [5553]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    4369,
+    4730,
+    4410,
+    4756
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4211,
+     4673,
+     4566,
+     4891
+    ],
+    "scale": 2.535,
+    "rect": [
+     365,
+     110,
+     538,
+     245
+    ]
+   }
+  },
+  {
+   "n": 14,
+   "subject": "glyph/12/0/2/7/7",
+   "plate": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 2,
+   "cell": 7,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "B-14",
+    "colour": "plain black",
+    "part": "P3",
+    "measure": "78"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfOnLine, confidence 0.36",
+    "cell_strokes_owned": [
+     6,
+     9,
+     10,
+     12,
+     13
+    ],
+    "page_mark": "head:page_head ink_px=1167",
+    "head_ink": "abstained: not_one_head (too_wide)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks",
+     "duration decided share_stem_value/stem_value_follows"
+    ]
+   },
+   "box_page_px": [
+    3046,
+    990,
+    3093,
+    1024
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2893,
+     901,
+     3244,
+     1117
+    ],
+    "scale": 2.564,
+    "rect": [
+     357,
+     192,
+     547,
+     350
+    ]
+   }
+  },
+  {
+   "n": 15,
+   "subject": "glyph/25/0/7/1/10",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 7,
+   "cell": 1,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "C5",
+    "colour": "plain black",
+    "part": "P8",
+    "measure": "135"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.35",
+    "cell_strokes_owned": [
+     8,
+     16
+    ],
+    "page_mark": "head:page_head_alone ink_px=672",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [1469, 1548]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    1477,
+    2342,
+    1519,
+    2372
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1320,
+     2263,
+     1675,
+     2481
+    ],
+    "scale": 2.535,
+    "rect": [
+     362,
+     166,
+     540,
+     312
+    ]
+   }
+  },
+  {
+   "n": 16,
+   "subject": "glyph/25/0/1/1/43",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 1,
+   "cell": 1,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "A4",
+    "colour": "plain black",
+    "part": "P2",
+    "measure": "135"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.27",
+    "cell_strokes_owned": [
+     13
+    ],
+    "page_mark": "head:page_head_alone ink_px=1088",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [1532]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    1485,
+    826,
+    1523,
+    855
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1323,
+     715,
+     1684,
+     937
+    ],
+    "scale": 2.493,
+    "rect": [
+     369,
+     242,
+     533,
+     385
+    ]
+   }
+  },
+  {
+   "n": 17,
+   "subject": "glyph/19/0/12/3/9",
+   "plate": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 12,
+   "cell": 3,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "B-13",
+    "colour": "plain black",
+    "part": "P13",
+    "measure": "117"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfOnLine, confidence 0.33",
+    "cell_strokes_owned": [
+     12,
+     13,
+     14,
+     15,
+     16,
+     17
+    ],
+    "page_mark": "head:page_head_alone ink_px=2189",
+    "head_ink": "abstained: not_one_head (too_wide)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    2490,
+    3347,
+    2543,
+    3434
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2337,
+     3292,
+     2695,
+     3512
+    ],
+    "scale": 2.514,
+    "rect": [
+     349,
+     104,
+     553,
+     391
+    ]
+   }
+  },
+  {
+   "n": 18,
+   "subject": "glyph/25/1/5/9/5",
+   "plate": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 5,
+   "cell": 9,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "C5",
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "153"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.44",
+    "cell_strokes_owned": [
+     8,
+     10,
+     13
+    ],
+    "page_mark": "head:page_head_alone ink_px=970",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [6352, 6380]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    5102,
+    5616,
+    5146,
+    5651
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4943,
+     5539,
+     5304,
+     5761
+    ],
+    "scale": 2.493,
+    "rect": [
+     361,
+     157,
+     541,
+     313
+    ]
+   }
+  },
+  {
+   "n": 19,
+   "subject": "glyph/12/0/3/2/7",
+   "plate": "brahms",
+   "page": 12,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "D3",
+    "colour": "plain black",
+    "part": "P4",
+    "measure": "73"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfOnLine, confidence 0.35",
+    "cell_strokes_owned": [
+     6,
+     8,
+     9,
+     15
+    ],
+    "page_mark": "head:page_head_alone ink_px=1163",
+    "head_ink": "abstained: not_one_head (too_wide)",
+    "page_head_claim": "no head claim filed",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    1562,
+    1270,
+    1605,
+    1303
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     1404,
+     1173,
+     1762,
+     1393
+    ],
+    "scale": 2.514,
+    "rect": [
+     363,
+     208,
+     541,
+     362
+    ]
+   }
+  },
+  {
+   "n": 20,
+   "subject": "glyph/4/0/11/6/12",
+   "plate": "brahms",
+   "page": 4,
+   "system": 0,
+   "staff": 11,
+   "cell": 6,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "D14",
+    "colour": "blue",
+    "part": "P12",
+    "measure": "14"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackInSpace, confidence 0.41",
+    "cell_strokes_owned": [
+     13
+    ],
+    "page_mark": "head:page_head_alone ink_px=1107",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [3592]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    3384,
+    3174,
+    3423,
+    3205
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3221,
+     3091,
+     3585,
+     3315
+    ],
+    "scale": 2.473,
+    "rect": [
+     368,
+     170,
+     534,
+     317
+    ]
+   }
+  },
+  {
+   "n": 21,
+   "subject": "glyph/25/0/5/0/9",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 5,
+   "cell": 0,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "C4",
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "134"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.30",
+    "cell_strokes_owned": [
+     14,
+     17,
+     18,
+     22
+    ],
+    "page_mark": "head:page_head_alone ink_px=823",
+    "head_ink": "abstained: not_one_head (too_wide)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [767, 784]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    987,
+    1995,
+    1028,
+    2023
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     830,
+     1820,
+     1184,
+     2044
+    ],
+    "scale": 2.542,
+    "rect": [
+     363,
+     411,
+     537,
+     551
+    ]
+   }
+  },
+  {
+   "n": 22,
+   "subject": "glyph/25/1/5/9/6",
+   "plate": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 5,
+   "cell": 9,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "E-15",
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "153"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.43",
+    "cell_strokes_owned": [
+     7,
+     8,
+     12
+    ],
+    "page_mark": "head:page_head_alone ink_px=724",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [6336, 6363]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    5104,
+    5588,
+    5146,
+    5622
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     4944,
+     5539,
+     5305,
+     5761
+    ],
+    "scale": 2.493,
+    "rect": [
+     363,
+     86,
+     539,
+     241
+    ]
+   }
+  },
+  {
+   "n": 23,
+   "subject": "glyph/25/0/11/3/14",
+   "plate": "brahms",
+   "page": 25,
+   "system": 0,
+   "staff": 11,
+   "cell": 3,
+   "file_writes": {
+    "element": "note",
+    "type": "eighth",
+    "dots": 0,
+    "tuplet": false,
+    "pitch": "D-14",
+    "colour": "blue",
+    "part": "P12",
+    "measure": "137"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadBlackOnLine, confidence 0.32",
+    "cell_strokes_owned": [
+     66,
+     68
+    ],
+    "page_mark": "head:page_head_alone ink_px=1208",
+    "head_ink": "abstained: readers_split (None)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [3463]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    2681,
+    3398,
+    2719,
+    3431
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     2521,
+     3320,
+     2878,
+     3540
+    ],
+    "scale": 2.521,
+    "rect": [
+     369,
+     162,
+     533,
+     314
+    ]
+   }
+  },
+  {
+   "n": 24,
+   "subject": "glyph/25/1/5/6/15",
+   "plate": "brahms",
+   "page": 25,
+   "system": 1,
+   "staff": 5,
+   "cell": 6,
+   "file_writes": {
+    "element": "note",
+    "type": "half",
+    "dots": 1,
+    "tuplet": false,
+    "pitch": "C5",
+    "colour": "plain black",
+    "part": "P6",
+    "measure": "150"
+   },
+   "record_account": {
+    "box_made_by": "detector: class noteheadHalfInSpace, confidence 0.29",
+    "cell_strokes_owned": [
+     3,
+     9
+    ],
+    "page_mark": "head:page_head_alone ink_px=556",
+    "head_ink": "abstained: not_one_head (too_small)",
+    "page_head_claim": "READ head claim by cv_page_heads (page_head_oval) on page strokes [4614]",
+    "verdicts": [
+     "notehead_is_not_a_notehead decided adjudicate_notehead_is_not_a_notehead/notehead",
+     "notehead_is_a_whole_rest decided adjudicate_notehead_is_a_whole_rest/not_rest_shaped",
+     "duration decided adjudicate_duration/head_and_marks"
+    ]
+   },
+   "box_page_px": [
+    3739,
+    5620,
+    3780,
+    5652
+   ],
+   "your_look": null,
+   "tile": {
+    "crop": [
+     3579,
+     5539,
+     3940,
+     5761
+    ],
+    "scale": 2.493,
+    "rect": [
+     364,
+     168,
+     536,
+     317
+    ]
+   }
+  }
+ ]
+}
