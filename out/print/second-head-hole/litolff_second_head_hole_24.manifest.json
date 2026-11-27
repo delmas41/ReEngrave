@@ -1,0 +1,2431 @@
+{
+ "sheet": "/private/tmp/claude-501/second-head-hole/litolff_second_head_hole_24.png",
+ "seed": 20261128,
+ "question_suggested": "Is there a second half-note head inside the orange rectangle, on the same stem as the note beside it?",
+ "rule": "second head of a hollow third = a white hole of head size a third from the written head on the same stem (proto.py)",
+ "population_yes": 41,
+ "judged_excluded": 8,
+ "pool": 33,
+ "box_is": "inner edge = the ring of ink round the hole, as the rule measured it (page px, exclusive end)",
+ "tiles": [
+  {
+   "number": 1,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/0/0",
+   "measure": "159",
+   "part": "P1",
+   "written_glyph": "glyph/9/0/0/13/2",
+   "written_box_page_px": [
+    2337.5,
+    455.7,
+    2363.0,
+    487.0
+   ],
+   "file_writes": {
+    "pitch": "F4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 7,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 2358,
+    "x1": 2361,
+    "top": 421,
+    "bot": 487,
+    "len_sp": 4.58
+   },
+   "interval": "third below the written head (staff step 7 -> 9)",
+   "hole_step_local": 8.94,
+   "hole_box_page_px": [
+    2343,
+    471,
+    2356,
+    483
+   ],
+   "hole_size_sp": [
+    0.89,
+    0.82
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    2337,
+    464,
+    2363,
+    488
+   ],
+   "ring_size_sp": [
+    1.78,
+    1.64
+   ],
+   "staff_space_px": 14.62,
+   "stem_cover": 1.0,
+   "touch_rows": 12,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2262,
+     375,
+     2437,
+     512
+    ],
+    "painted_white_rows": [],
+    "scale": 2.736,
+    "tile_px": [
+     479,
+     375
+    ],
+    "rect_inner_px": [
+     205,
+     244,
+     275,
+     308
+    ],
+    "rect_outer_px": [
+     198,
+     237,
+     282,
+     315
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     198,
+     237,
+     282,
+     315
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    75
+   ]
+  },
+  {
+   "number": 2,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/1/1",
+   "measure": "198",
+   "part": "P2",
+   "written_glyph": "glyph/10/1/1/11/6",
+   "written_box_page_px": [
+    2189.7,
+    2215.8,
+    2219.2,
+    2232.1
+   ],
+   "file_writes": {
+    "pitch": "Ab5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -2,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 2179,
+    "x1": 2184,
+    "top": 2104,
+    "bot": 2580,
+    "len_sp": 30.29
+   },
+   "interval": "third below the written head (staff step -2 -> 0)",
+   "hole_step_local": 0.0,
+   "hole_box_page_px": [
+    2185,
+    2229,
+    2214,
+    2263
+   ],
+   "hole_size_sp": [
+    1.84,
+    2.16
+   ],
+   "hole_pieces": 3,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    2178,
+    2221,
+    2219,
+    2271
+   ],
+   "ring_size_sp": [
+    2.6,
+    3.17
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 1.0,
+   "touch_rows": 13,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2104,
+     2205,
+     2293,
+     2351
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     371
+    ],
+    "rect_inner_px": [
+     188,
+     41,
+     291,
+     167
+    ],
+    "rect_outer_px": [
+     181,
+     34,
+     298,
+     174
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     181,
+     34,
+     298,
+     174
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    531,
+    75
+   ]
+  },
+  {
+   "number": 3,
+   "plate": "litolff",
+   "page": 6,
+   "staff": "staff/6/1/10",
+   "measure": "103",
+   "part": "P11",
+   "written_glyph": "glyph/6/1/10/11/0",
+   "written_box_page_px": [
+    2458.6,
+    3524.2,
+    2487.1,
+    3546.2
+   ],
+   "file_writes": {
+    "pitch": "D2",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 11,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 2481,
+    "x1": 2486,
+    "top": 3436,
+    "bot": 3543,
+    "len_sp": 6.7
+   },
+   "interval": "third below the written head (staff step 11 -> 13)",
+   "hole_step_local": 13.18,
+   "hole_box_page_px": [
+    2466,
+    3540,
+    2473,
+    3546
+   ],
+   "hole_size_sp": [
+    0.43,
+    0.37
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    2461,
+    3532,
+    2481,
+    3550
+   ],
+   "ring_size_sp": [
+    1.24,
+    1.12
+   ],
+   "staff_space_px": 16.12,
+   "stem_cover": 1.0,
+   "touch_rows": 6,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2374,
+     3396,
+     2567,
+     3566
+    ],
+    "painted_white_rows": [
+     [
+      3552.94,
+      3632.06
+     ]
+    ],
+    "scale": 2.4814,
+    "tile_px": [
+     479,
+     422
+    ],
+    "rect_inner_px": [
+     216,
+     337,
+     265,
+     381
+    ],
+    "rect_outer_px": [
+     209,
+     330,
+     272,
+     388
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     209,
+     330,
+     272,
+     388
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1037,
+    75
+   ]
+  },
+  {
+   "number": 4,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/0/3",
+   "measure": "110",
+   "part": "P4",
+   "written_glyph": "glyph/8/0/3/5/3",
+   "written_box_page_px": [
+    946.9,
+    839.9,
+    975.1,
+    858.0
+   ],
+   "file_writes": {
+    "pitch": "Gb4",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "written_step": -2,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 950,
+    "x1": 954,
+    "top": 847,
+    "bot": 922,
+    "len_sp": 4.83
+   },
+   "interval": "third below the written head (staff step -2 -> 0)",
+   "hole_step_local": 0.0,
+   "hole_box_page_px": [
+    952,
+    856,
+    969,
+    877
+   ],
+   "hole_size_sp": [
+    1.08,
+    1.33
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    947,
+    848,
+    974,
+    885
+   ],
+   "ring_size_sp": [
+    1.71,
+    2.35
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 1.0,
+   "touch_rows": 16,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     866,
+     825,
+     1055,
+     966
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     358
+    ],
+    "rect_inner_px": [
+     206,
+     58,
+     273,
+     151
+    ],
+    "rect_outer_px": [
+     199,
+     51,
+     280,
+     158
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     199,
+     51,
+     280,
+     158
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1543,
+    75
+   ]
+  },
+  {
+   "number": 5,
+   "plate": "litolff",
+   "page": 6,
+   "staff": "staff/6/1/11",
+   "measure": "102",
+   "part": "P12",
+   "written_glyph": "glyph/6/1/11/10/3",
+   "written_box_page_px": [
+    2277.4,
+    3606.2,
+    2303.1,
+    3625.3
+   ],
+   "file_writes": {
+    "pitch": "C3",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 5,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 2296,
+    "x1": 2300,
+    "top": 3561,
+    "bot": 3624,
+    "len_sp": 3.88
+   },
+   "interval": "third below the written head (staff step 5 -> 7)",
+   "hole_step_local": 7.1,
+   "hole_box_page_px": [
+    2282,
+    3610,
+    2296,
+    3621
+   ],
+   "hole_size_sp": [
+    0.85,
+    0.67
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    2276,
+    3602,
+    2304,
+    3626
+   ],
+   "ring_size_sp": [
+    1.7,
+    1.45
+   ],
+   "staff_space_px": 16.5,
+   "stem_cover": 1.0,
+   "touch_rows": 11,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2191,
+     3520,
+     2389,
+     3665
+    ],
+    "painted_white_rows": [],
+    "scale": 2.4242,
+    "tile_px": [
+     480,
+     352
+    ],
+    "rect_inner_px": [
+     206,
+     199,
+     273,
+     256
+    ],
+    "rect_outer_px": [
+     199,
+     192,
+     280,
+     263
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     199,
+     192,
+     280,
+     263
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    572
+   ]
+  },
+  {
+   "number": 6,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/0/4",
+   "measure": "174",
+   "part": "P5",
+   "written_glyph": "glyph/10/0/4/1/6",
+   "written_box_page_px": [
+    672.2,
+    1018.3,
+    697.6,
+    1037.0
+   ],
+   "file_writes": {
+    "pitch": "E5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 1,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 693,
+    "x1": 695,
+    "top": 982,
+    "bot": 1040,
+    "len_sp": 3.81
+   },
+   "interval": "third below the written head (staff step 1 -> 3)",
+   "hole_step_local": 3.07,
+   "hole_box_page_px": [
+    687,
+    1025,
+    693,
+    1031
+   ],
+   "hole_size_sp": [
+    0.39,
+    0.39
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    679,
+    1017,
+    698,
+    1039
+   ],
+   "ring_size_sp": [
+    1.23,
+    1.42
+   ],
+   "staff_space_px": 15.5,
+   "stem_cover": 1.0,
+   "touch_rows": 6,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     596,
+     970,
+     782,
+     1111
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5806,
+    "tile_px": [
+     480,
+     364
+    ],
+    "rect_inner_px": [
+     214,
+     121,
+     262,
+     177
+    ],
+    "rect_outer_px": [
+     207,
+     114,
+     269,
+     184
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     207,
+     114,
+     269,
+     184
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    531,
+    572
+   ]
+  },
+  {
+   "number": 7,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/0/2",
+   "measure": "174",
+   "part": "P3",
+   "written_glyph": "glyph/10/0/2/1/5",
+   "written_box_page_px": [
+    660.2,
+    732.7,
+    699.6,
+    753.9
+   ],
+   "file_writes": {
+    "pitch": "C5",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "written_step": 3,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 694,
+    "x1": 697,
+    "top": 692,
+    "bot": 752,
+    "len_sp": 3.97
+   },
+   "interval": "third below the written head (staff step 3 -> 5)",
+   "hole_step_local": 4.65,
+   "hole_box_page_px": [
+    668,
+    737,
+    691,
+    748
+   ],
+   "hole_size_sp": [
+    1.5,
+    0.72
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    660,
+    729,
+    699,
+    755
+   ],
+   "ring_size_sp": [
+    2.54,
+    1.69
+   ],
+   "staff_space_px": 15.38,
+   "stem_cover": 1.0,
+   "touch_rows": 11,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     587,
+     672,
+     772,
+     811
+    ],
+    "painted_white_rows": [],
+    "scale": 2.6008,
+    "tile_px": [
+     481,
+     362
+    ],
+    "rect_inner_px": [
+     190,
+     148,
+     290,
+     215
+    ],
+    "rect_outer_px": [
+     183,
+     141,
+     297,
+     222
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     183,
+     141,
+     297,
+     222
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1037,
+    572
+   ]
+  },
+  {
+   "number": 8,
+   "plate": "litolff",
+   "page": 6,
+   "staff": "staff/6/0/2",
+   "measure": "82",
+   "part": "P3",
+   "written_glyph": "glyph/6/0/2/3/4",
+   "written_box_page_px": [
+    990.3,
+    673.6,
+    1016.1,
+    689.2
+   ],
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 0,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 992,
+    "x1": 995,
+    "top": 679,
+    "bot": 760,
+    "len_sp": 6.13
+   },
+   "interval": "third below the written head (staff step 0 -> 2)",
+   "hole_step_local": 2.25,
+   "hole_box_page_px": [
+    996,
+    689,
+    1001,
+    693
+   ],
+   "hole_size_sp": [
+    0.37,
+    0.3
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    991,
+    682,
+    1008,
+    700
+   ],
+   "ring_size_sp": [
+    1.27,
+    1.35
+   ],
+   "staff_space_px": 13.38,
+   "stem_cover": 1.0,
+   "touch_rows": 4,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     919,
+     645,
+     1080,
+     774
+    ],
+    "painted_white_rows": [],
+    "scale": 2.9895,
+    "tile_px": [
+     481,
+     386
+    ],
+    "rect_inner_px": [
+     215,
+     111,
+     265,
+     163
+    ],
+    "rect_outer_px": [
+     208,
+     104,
+     272,
+     170
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     208,
+     104,
+     272,
+     170
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1543,
+    572
+   ]
+  },
+  {
+   "number": 9,
+   "plate": "litolff",
+   "page": 2,
+   "staff": "staff/2/1/0",
+   "measure": "45",
+   "part": "P1",
+   "written_glyph": "glyph/2/1/0/11/2",
+   "written_box_page_px": [
+    2095.0,
+    2076.0,
+    2125.4,
+    2095.2
+   ],
+   "file_writes": {
+    "pitch": "Eb6",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "written_step": -6,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 2099,
+    "x1": 2102,
+    "top": 2081,
+    "bot": 2177,
+    "len_sp": 6.11
+   },
+   "interval": "third below the written head (staff step -6 -> -4)",
+   "hole_step_local": -4.06,
+   "hole_box_page_px": [
+    2102,
+    2107,
+    2111,
+    2113
+   ],
+   "hole_size_sp": [
+    0.57,
+    0.38
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    2097,
+    2099,
+    2119,
+    2121
+   ],
+   "ring_size_sp": [
+    1.39,
+    1.39
+   ],
+   "staff_space_px": 15.88,
+   "stem_cover": 1.0,
+   "touch_rows": 6,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2013,
+     2083,
+     2204,
+     2247
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5189,
+    "tile_px": [
+     481,
+     413
+    ],
+    "rect_inner_px": [
+     212,
+     40,
+     266,
+     95
+    ],
+    "rect_outer_px": [
+     205,
+     33,
+     273,
+     102
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     205,
+     33,
+     273,
+     102
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    1033
+   ]
+  },
+  {
+   "number": 10,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/1/1",
+   "measure": "169",
+   "part": "P2",
+   "written_glyph": "glyph/9/1/1/8/2",
+   "written_box_page_px": [
+    1984.4,
+    2362.9,
+    2010.4,
+    2385.0
+   ],
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 0,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 1985,
+    "x1": 1989,
+    "top": 2369,
+    "bot": 2443,
+    "len_sp": 4.76
+   },
+   "interval": "third below the written head (staff step 0 -> 2)",
+   "hole_step_local": 2.0,
+   "hole_box_page_px": [
+    1990,
+    2378,
+    2007,
+    2398
+   ],
+   "hole_size_sp": [
+    1.08,
+    1.27
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    1984,
+    2370,
+    2012,
+    2406
+   ],
+   "ring_size_sp": [
+    1.78,
+    2.29
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 1.0,
+   "touch_rows": 14,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     1904,
+     2337,
+     2093,
+     2478
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     358
+    ],
+    "rect_inner_px": [
+     203,
+     84,
+     273,
+     174
+    ],
+    "rect_outer_px": [
+     196,
+     77,
+     280,
+     181
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     196,
+     77,
+     280,
+     181
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    531,
+    1033
+   ]
+  },
+  {
+   "number": 11,
+   "plate": "litolff",
+   "page": 16,
+   "staff": "staff/16/0/1",
+   "measure": "244",
+   "part": "P2",
+   "written_glyph": "glyph/16/0/1/7/3",
+   "written_box_page_px": [
+    1384.1,
+    513.9,
+    1410.0,
+    541.9
+   ],
+   "file_writes": {
+    "pitch": "G5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -1,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 1385,
+    "x1": 1388,
+    "top": 524,
+    "bot": 605,
+    "len_sp": 5.25
+   },
+   "interval": "third below the written head (staff step -1 -> 1)",
+   "hole_step_local": 0.95,
+   "hole_box_page_px": [
+    1390,
+    538,
+    1406,
+    548
+   ],
+   "hole_size_sp": [
+    1.02,
+    0.64
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    1385,
+    530,
+    1413,
+    555
+   ],
+   "ring_size_sp": [
+    1.79,
+    1.6
+   ],
+   "staff_space_px": 15.62,
+   "stem_cover": 1.0,
+   "touch_rows": 10,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     1305,
+     493,
+     1492,
+     634
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5608,
+    "tile_px": [
+     479,
+     361
+    ],
+    "rect_inner_px": [
+     205,
+     95,
+     276,
+     158
+    ],
+    "rect_outer_px": [
+     198,
+     88,
+     283,
+     165
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     198,
+     88,
+     283,
+     165
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1037,
+    1033
+   ]
+  },
+  {
+   "number": 12,
+   "plate": "litolff",
+   "page": 4,
+   "staff": "staff/4/0/2",
+   "measure": "51",
+   "part": "P3",
+   "written_glyph": "glyph/4/0/2/2/0",
+   "written_box_page_px": [
+    792.0,
+    701.5,
+    818.1,
+    718.8
+   ],
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 0,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 794,
+    "x1": 798,
+    "top": 708,
+    "bot": 784,
+    "len_sp": 4.81
+   },
+   "interval": "third below the written head (staff step 0 -> 2)",
+   "hole_step_local": 2.0,
+   "hole_box_page_px": [
+    797,
+    718,
+    814,
+    738
+   ],
+   "hole_size_sp": [
+    1.06,
+    1.25
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    791,
+    710,
+    820,
+    746
+   ],
+   "ring_size_sp": [
+    1.81,
+    2.25
+   ],
+   "staff_space_px": 16.0,
+   "stem_cover": 1.0,
+   "touch_rows": 16,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     710,
+     669,
+     902,
+     814
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5,
+    "tile_px": [
+     480,
+     362
+    ],
+    "rect_inner_px": [
+     202,
+     102,
+     274,
+     191
+    ],
+    "rect_outer_px": [
+     195,
+     95,
+     281,
+     198
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     195,
+     95,
+     281,
+     198
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1543,
+    1033
+   ]
+  },
+  {
+   "number": 13,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/0/2",
+   "measure": "175",
+   "part": "P3",
+   "written_glyph": "glyph/10/0/2/2/5",
+   "written_box_page_px": [
+    823.3,
+    729.8,
+    851.0,
+    753.6
+   ],
+   "file_writes": {
+    "pitch": "C5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 3,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 845,
+    "x1": 848,
+    "top": 695,
+    "bot": 751,
+    "len_sp": 3.65
+   },
+   "interval": "third above the written head (staff step 3 -> 1)",
+   "hole_step_local": 0.74,
+   "hole_box_page_px": [
+    814,
+    707,
+    830,
+    717
+   ],
+   "hole_size_sp": [
+    1.02,
+    0.64
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    807,
+    702,
+    838,
+    723
+   ],
+   "ring_size_sp": [
+    1.98,
+    1.34
+   ],
+   "staff_space_px": 15.62,
+   "stem_cover": 1.0,
+   "touch_rows": 1,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     729,
+     671,
+     916,
+     812
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5608,
+    "tile_px": [
+     479,
+     361
+    ],
+    "rect_inner_px": [
+     200,
+     79,
+     278,
+     132
+    ],
+    "rect_outer_px": [
+     193,
+     72,
+     285,
+     139
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     193,
+     72,
+     285,
+     139
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    1521
+   ]
+  },
+  {
+   "number": 14,
+   "plate": "litolff",
+   "page": 9,
+   "staff": "staff/9/1/1",
+   "measure": "171",
+   "part": "P2",
+   "written_glyph": "glyph/9/1/1/10/1",
+   "written_box_page_px": [
+    2314.9,
+    2383.6,
+    2341.8,
+    2399.9
+   ],
+   "file_writes": {
+    "pitch": "D5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 2,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 2316,
+    "x1": 2319,
+    "top": 2368,
+    "bot": 2444,
+    "len_sp": 4.89
+   },
+   "interval": "third above the written head (staff step 2 -> 0)",
+   "hole_step_local": 0.0,
+   "hole_box_page_px": [
+    2319,
+    2366,
+    2337,
+    2382
+   ],
+   "hole_size_sp": [
+    1.14,
+    1.02
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    2313,
+    2361,
+    2341,
+    2390
+   ],
+   "ring_size_sp": [
+    1.78,
+    1.84
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 0.94,
+   "touch_rows": 12,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2232,
+     2337,
+     2421,
+     2478
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     358
+    ],
+    "rect_inner_px": [
+     206,
+     61,
+     276,
+     134
+    ],
+    "rect_outer_px": [
+     199,
+     54,
+     283,
+     141
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     199,
+     54,
+     283,
+     141
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    531,
+    1521
+   ]
+  },
+  {
+   "number": 15,
+   "plate": "litolff",
+   "page": 6,
+   "staff": "staff/6/0/3",
+   "measure": "82",
+   "part": "P4",
+   "written_glyph": "glyph/6/0/3/3/6",
+   "written_box_page_px": [
+    992.5,
+    833.9,
+    1017.7,
+    850.9
+   ],
+   "file_writes": {
+    "pitch": "D4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 1,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 994,
+    "x1": 997,
+    "top": 828,
+    "bot": 907,
+    "len_sp": 5.98
+   },
+   "interval": "third below the written head (staff step 1 -> 3)",
+   "hole_step_local": 3.15,
+   "hole_box_page_px": [
+    1003,
+    843,
+    1012,
+    850
+   ],
+   "hole_size_sp": [
+    0.67,
+    0.52
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    996,
+    836,
+    1017,
+    857
+   ],
+   "ring_size_sp": [
+    1.57,
+    1.57
+   ],
+   "staff_space_px": 13.38,
+   "stem_cover": 1.0,
+   "touch_rows": 7,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     926,
+     794,
+     1087,
+     923
+    ],
+    "painted_white_rows": [],
+    "scale": 2.9895,
+    "tile_px": [
+     481,
+     386
+    ],
+    "rect_inner_px": [
+     209,
+     126,
+     271,
+     187
+    ],
+    "rect_outer_px": [
+     202,
+     119,
+     278,
+     194
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     202,
+     119,
+     278,
+     194
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1037,
+    1521
+   ]
+  },
+  {
+   "number": 16,
+   "plate": "litolff",
+   "page": 8,
+   "staff": "staff/8/0/0",
+   "measure": "107",
+   "part": "P1",
+   "written_glyph": "glyph/8/0/0/2/2",
+   "written_box_page_px": [
+    692.5,
+    403.2,
+    718.7,
+    423.2
+   ],
+   "file_writes": {
+    "pitch": "A5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -2,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 695,
+    "x1": 698,
+    "top": 408,
+    "bot": 473,
+    "len_sp": 4.22
+   },
+   "interval": "third below the written head (staff step -2 -> 0)",
+   "hole_step_local": 0.19,
+   "hole_box_page_px": [
+    699,
+    418,
+    706,
+    422
+   ],
+   "hole_size_sp": [
+    0.45,
+    0.26
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    693,
+    410,
+    714,
+    430
+   ],
+   "ring_size_sp": [
+    1.34,
+    1.28
+   ],
+   "staff_space_px": 15.62,
+   "stem_cover": 1.0,
+   "touch_rows": 4,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     610,
+     384,
+     797,
+     525
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5608,
+    "tile_px": [
+     479,
+     361
+    ],
+    "rect_inner_px": [
+     213,
+     67,
+     265,
+     117
+    ],
+    "rect_outer_px": [
+     206,
+     60,
+     272,
+     124
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     206,
+     60,
+     272,
+     124
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1543,
+    1521
+   ]
+  },
+  {
+   "number": 17,
+   "plate": "litolff",
+   "page": 4,
+   "staff": "staff/4/0/1",
+   "measure": "51",
+   "part": "P2",
+   "written_glyph": "glyph/4/0/1/2/3",
+   "written_box_page_px": [
+    790.8,
+    534.3,
+    816.4,
+    556.2
+   ],
+   "file_writes": {
+    "pitch": "C6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -4,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 813,
+    "x1": 815,
+    "top": 505,
+    "bot": 552,
+    "len_sp": 3.25
+   },
+   "interval": "third below the written head (staff step -4 -> -2)",
+   "hole_step_local": -2.24,
+   "hole_box_page_px": [
+    796,
+    549,
+    803,
+    554
+   ],
+   "hole_size_sp": [
+    0.47,
+    0.34
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    792,
+    542,
+    810,
+    559
+   ],
+   "ring_size_sp": [
+    1.22,
+    1.15
+   ],
+   "staff_space_px": 14.75,
+   "stem_cover": 0.8,
+   "touch_rows": 4,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     712,
+     527,
+     889,
+     668
+    ],
+    "painted_white_rows": [],
+    "scale": 2.7119,
+    "tile_px": [
+     480,
+     382
+    ],
+    "rect_inner_px": [
+     217,
+     41,
+     265,
+     86
+    ],
+    "rect_outer_px": [
+     210,
+     34,
+     272,
+     93
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     210,
+     34,
+     272,
+     93
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    1982
+   ]
+  },
+  {
+   "number": 18,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/1/1",
+   "measure": "188",
+   "part": "P2",
+   "written_glyph": "glyph/10/1/1/1/1",
+   "written_box_page_px": [
+    654.8,
+    2225.2,
+    680.6,
+    2249.5
+   ],
+   "file_writes": {
+    "pitch": "G5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -1,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 655,
+    "x1": 659,
+    "top": 2235,
+    "bot": 2313,
+    "len_sp": 5.02
+   },
+   "interval": "third below the written head (staff step -1 -> 1)",
+   "hole_step_local": 0.99,
+   "hole_box_page_px": [
+    660,
+    2251,
+    675,
+    2262
+   ],
+   "hole_size_sp": [
+    0.95,
+    0.7
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    653,
+    2243,
+    682,
+    2268
+   ],
+   "ring_size_sp": [
+    1.84,
+    1.59
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 1.0,
+   "touch_rows": 11,
+   "refused_rescue_box_there": true,
+   "refused_boxes": [
+    [
+     "yolo_rescue_stem_head",
+     "dyad_ink:not_oval"
+    ]
+   ],
+   "tile": {
+    "crop_page_px": [
+     573,
+     2210,
+     762,
+     2351
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     358
+    ],
+    "rect_inner_px": [
+     203,
+     84,
+     276,
+     146
+    ],
+    "rect_outer_px": [
+     196,
+     77,
+     283,
+     153
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     196,
+     77,
+     283,
+     153
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    531,
+    1982
+   ]
+  },
+  {
+   "number": 19,
+   "plate": "litolff",
+   "page": 4,
+   "staff": "staff/4/1/7",
+   "measure": "71",
+   "part": "P8",
+   "written_glyph": "glyph/4/1/7/7/8",
+   "written_box_page_px": [
+    1468.0,
+    3155.0,
+    1492.2,
+    3177.4
+   ],
+   "file_writes": {
+    "pitch": "Ab4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 5,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 1467,
+    "x1": 1472,
+    "top": 3126,
+    "bot": 3595,
+    "len_sp": 29.61
+   },
+   "interval": "third above the written head (staff step 5 -> 3)",
+   "hole_step_local": 3.01,
+   "hole_box_page_px": [
+    1471,
+    3147,
+    1486,
+    3157
+   ],
+   "hole_size_sp": [
+    0.94,
+    0.63
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    1464,
+    3141,
+    1492,
+    3164
+   ],
+   "ring_size_sp": [
+    1.76,
+    1.45
+   ],
+   "staff_space_px": 15.88,
+   "stem_cover": 1.0,
+   "touch_rows": 10,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     1383,
+     3087,
+     1574,
+     3231
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5189,
+    "tile_px": [
+     481,
+     363
+    ],
+    "rect_inner_px": [
+     204,
+     136,
+     274,
+     193
+    ],
+    "rect_outer_px": [
+     197,
+     129,
+     281,
+     200
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     197,
+     129,
+     281,
+     200
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1037,
+    1982
+   ]
+  },
+  {
+   "number": 20,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/1/0",
+   "measure": "189",
+   "part": "P1",
+   "written_glyph": "glyph/10/1/0/2/8",
+   "written_box_page_px": [
+    780.3,
+    2043.6,
+    807.6,
+    2059.7
+   ],
+   "file_writes": {
+    "pitch": "Eb6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -6,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 783,
+    "x1": 787,
+    "top": 2049,
+    "bot": 2139,
+    "len_sp": 5.82
+   },
+   "interval": "third below the written head (staff step -6 -> -4)",
+   "hole_step_local": -3.78,
+   "hole_box_page_px": [
+    786,
+    2074,
+    794,
+    2079
+   ],
+   "hole_size_sp": [
+    0.51,
+    0.32
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    781,
+    2066,
+    802,
+    2087
+   ],
+   "ring_size_sp": [
+    1.34,
+    1.34
+   ],
+   "staff_space_px": 15.62,
+   "stem_cover": 1.0,
+   "touch_rows": 5,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     698,
+     2050,
+     885,
+     2208
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5608,
+    "tile_px": [
+     479,
+     405
+    ],
+    "rect_inner_px": [
+     213,
+     41,
+     265,
+     94
+    ],
+    "rect_outer_px": [
+     206,
+     34,
+     272,
+     101
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     206,
+     34,
+     272,
+     101
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1543,
+    1982
+   ]
+  },
+  {
+   "number": 21,
+   "plate": "litolff",
+   "page": 10,
+   "staff": "staff/10/1/0",
+   "measure": "195",
+   "part": "P1",
+   "written_glyph": "glyph/10/1/0/8/7",
+   "written_box_page_px": [
+    1741.4,
+    2030.1,
+    1765.8,
+    2053.5
+   ],
+   "file_writes": {
+    "pitch": "F#6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": -7,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 1743,
+    "x1": 1747,
+    "top": 2037,
+    "bot": 2141,
+    "len_sp": 6.72
+   },
+   "interval": "third below the written head (staff step -7 -> -5)",
+   "hole_step_local": -4.94,
+   "hole_box_page_px": [
+    1758,
+    2066,
+    1764,
+    2069
+   ],
+   "hole_size_sp": [
+    0.38,
+    0.19
+   ],
+   "hole_pieces": 1,
+   "hole_cut_by_line": false,
+   "ring_extent_page_px": [
+    1750,
+    2060,
+    1769,
+    2077
+   ],
+   "ring_size_sp": [
+    1.22,
+    1.09
+   ],
+   "staff_space_px": 15.62,
+   "stem_cover": 1.0,
+   "touch_rows": 3,
+   "refused_rescue_box_there": true,
+   "refused_boxes": [
+    [
+     "yolo_rescue_stem_head",
+     "dyad:same_ink_as_a_kept_candidate"
+    ],
+    [
+     "yolo_rescue_stem_head",
+     "dyad_ink:stem_not_at_the_ink_edge"
+    ]
+   ],
+   "tile": {
+    "crop_page_px": [
+     1666,
+     2044,
+     1853,
+     2208
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5608,
+    "tile_px": [
+     479,
+     420
+    ],
+    "rect_inner_px": [
+     215,
+     41,
+     263,
+     84
+    ],
+    "rect_outer_px": [
+     208,
+     34,
+     270,
+     91
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     208,
+     34,
+     270,
+     91
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    25,
+    2462
+   ]
+  },
+  {
+   "number": 22,
+   "plate": "litolff",
+   "page": 4,
+   "staff": "staff/4/1/1",
+   "measure": "69",
+   "part": "P2",
+   "written_glyph": "glyph/4/1/1/5/10",
+   "written_box_page_px": [
+    1209.2,
+    2281.6,
+    1236.6,
+    2301.3
+   ],
+   "file_writes": {
+    "pitch": "Ab5",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "written_step": -2,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 1212,
+    "x1": 1215,
+    "top": 2287,
+    "bot": 2378,
+    "len_sp": 5.84
+   },
+   "interval": "third below the written head (staff step -2 -> 0)",
+   "hole_step_local": 0.0,
+   "hole_box_page_px": [
+    1216,
+    2299,
+    1232,
+    2322
+   ],
+   "hole_size_sp": [
+    1.02,
+    1.46
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    1208,
+    2291,
+    1236,
+    2330
+   ],
+   "ring_size_sp": [
+    1.78,
+    2.48
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 1.0,
+   "touch_rows": 14,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     1128,
+     2275,
+     1317,
+     2417
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     361
+    ],
+    "rect_inner_px": [
+     203,
+     41,
+     273,
+     139
+    ],
+    "rect_outer_px": [
+     196,
+     34,
+     280,
+     146
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     196,
+     34,
+     280,
+     146
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    531,
+    2462
+   ]
+  },
+  {
+   "number": 23,
+   "plate": "litolff",
+   "page": 11,
+   "staff": "staff/11/0/1",
+   "measure": "211",
+   "part": "P2",
+   "written_glyph": "glyph/11/0/1/9/2",
+   "written_box_page_px": [
+    1508.8,
+    571.7,
+    1529.2,
+    586.6
+   ],
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "written_step": 0,
+   "stem": {
+    "side": "L",
+    "dir": "down",
+    "x0": 1508,
+    "x1": 1511,
+    "top": 581,
+    "bot": 651,
+    "len_sp": 4.51
+   },
+   "interval": "third below the written head (staff step 0 -> 2)",
+   "hole_step_local": 2.0,
+   "hole_box_page_px": [
+    1512,
+    585,
+    1530,
+    607
+   ],
+   "hole_size_sp": [
+    1.14,
+    1.4
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    1507,
+    577,
+    1536,
+    615
+   ],
+   "ring_size_sp": [
+    1.84,
+    2.41
+   ],
+   "staff_space_px": 15.75,
+   "stem_cover": 1.0,
+   "touch_rows": 15,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     1427,
+     544,
+     1616,
+     685
+    ],
+    "painted_white_rows": [],
+    "scale": 2.5397,
+    "tile_px": [
+     480,
+     358
+    ],
+    "rect_inner_px": [
+     203,
+     84,
+     276,
+     179
+    ],
+    "rect_outer_px": [
+     196,
+     77,
+     283,
+     186
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     196,
+     77,
+     283,
+     186
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1037,
+    2462
+   ]
+  },
+  {
+   "number": 24,
+   "plate": "litolff",
+   "page": 6,
+   "staff": "staff/6/1/11",
+   "measure": "101",
+   "part": "P12",
+   "written_glyph": "glyph/6/1/11/9/0",
+   "written_box_page_px": [
+    2099.7,
+    3606.8,
+    2127.1,
+    3631.6
+   ],
+   "file_writes": {
+    "pitch": "Bb2",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "written_step": 6,
+   "stem": {
+    "side": "R",
+    "dir": "up",
+    "x0": 2121,
+    "x1": 2126,
+    "top": 3566,
+    "bot": 3626,
+    "len_sp": 4.07
+   },
+   "interval": "third below the written head (staff step 6 -> 8)",
+   "hole_step_local": 8.0,
+   "hole_box_page_px": [
+    2107,
+    3614,
+    2123,
+    3627
+   ],
+   "hole_size_sp": [
+    1.07,
+    0.87
+   ],
+   "hole_pieces": 2,
+   "hole_cut_by_line": true,
+   "ring_extent_page_px": [
+    2099,
+    3606,
+    2128,
+    3632
+   ],
+   "ring_size_sp": [
+    1.93,
+    1.73
+   ],
+   "staff_space_px": 15.0,
+   "stem_cover": 1.0,
+   "touch_rows": 8,
+   "refused_rescue_box_there": false,
+   "refused_boxes": [],
+   "tile": {
+    "crop_page_px": [
+     2024,
+     3524,
+     2204,
+     3662
+    ],
+    "painted_white_rows": [],
+    "scale": 2.6667,
+    "tile_px": [
+     480,
+     368
+    ],
+    "rect_inner_px": [
+     200,
+     219,
+     276,
+     287
+    ],
+    "rect_outer_px": [
+     193,
+     212,
+     283,
+     294
+    ],
+    "line_px": 7,
+    "orange_exact": true,
+    "clipped": false,
+    "orange_outer_read_back": [
+     193,
+     212,
+     283,
+     294
+    ],
+    "read_back_matches": true
+   },
+   "tile_origin_in_sheet": [
+    1543,
+    2462
+   ]
+  }
+ ]
+}

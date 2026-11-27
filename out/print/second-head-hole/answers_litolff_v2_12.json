@@ -1,0 +1,153 @@
+{
+ "set": "Litolff: the 12 unjudged yes cases of the hole rule after the local-staff-line fix",
+ "date": "2026-11-26",
+ "question": "How many noteheads on that stem, and is the orange box on one of them?",
+ "answered_by": "Sean",
+ "verbatim": "One is a half note with two notes on the stem. Tile 2 is a half note with two notes on the stem. Tile 3 is a half note with two notes on the stem. Tile 4 is a half note with two notes on the stem. Tile 5 is a half note with two notes on the stem along with a tremolo slash. The box is wide and it also hits part of a sharp. Tile 6 is a unison half note. Tile 7 is a half note with two notes on the stem and a tremolo slash. Tile 8 is two half notes on the stem. Tile 9 is two half notes on the stem. Tile 10 is two half notes on the stem. Tile 11 is two half notes on the stem. Tile 12 is two half notes on the stem.",
+ "answers": {
+  "1": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/0/1/4",
+   "file_writes": {
+    "pitch": "Eb6",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": true
+  },
+  "2": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/2/1/2/13/0",
+   "file_writes": {
+    "pitch": "F4",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": true
+  },
+  "3": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/11/0/2/8/8",
+   "file_writes": {
+    "pitch": "Eb4",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "refused_rescue_box_there": true
+  },
+  "4": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/9/5/0",
+   "file_writes": {
+    "pitch": "G3",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": false
+  },
+  "5": {
+   "sean": "two half notes on the stem and a tremolo slash; the box is wide and also hits part of a sharp",
+   "rule_right": true,
+   "written_glyph": "glyph/6/1/8/11/10",
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": false
+  },
+  "6": {
+   "sean": "unison half note",
+   "rule_right": false,
+   "written_glyph": "glyph/11/0/2/4/6",
+   "file_writes": {
+    "pitch": "Eb3",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": false
+  },
+  "7": {
+   "sean": "two half notes on the stem and a tremolo slash",
+   "rule_right": true,
+   "written_glyph": "glyph/2/1/9/13/2",
+   "file_writes": {
+    "pitch": "C3",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": false
+  },
+  "8": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/10/1/2/2/3",
+   "file_writes": {
+    "pitch": "A4",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "refused_rescue_box_there": false
+  },
+  "9": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/4/0/2/1/9",
+   "file_writes": {
+    "pitch": "F5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": false
+  },
+  "10": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/2/1/1/11/3",
+   "file_writes": {
+    "pitch": "G5",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": true
+  },
+  "11": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/2/1/3/14/6",
+   "file_writes": {
+    "pitch": "C3",
+    "type": "half",
+    "dots": 0,
+    "color": "blue"
+   },
+   "refused_rescue_box_there": false
+  },
+  "12": {
+   "sean": "two half notes on the stem",
+   "rule_right": true,
+   "written_glyph": "glyph/6/0/3/11/2",
+   "file_writes": {
+    "pitch": "Bb3",
+    "type": "half",
+    "dots": 0,
+    "color": "plain"
+   },
+   "refused_rescue_box_there": true
+  }
+ }
+}
