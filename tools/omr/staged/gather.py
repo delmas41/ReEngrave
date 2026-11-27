@@ -1628,6 +1628,116 @@ def gather_dyad_head_rescue(log: Log, cells: Sequence[Any],
             print(f"  gather dyad heads {cell_key}: {n_filed} box(es) of {len(kept)} candidate(s)")
 
 
+def gather_second_head_hole(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]], *, progress: bool = False, pws: Any = None) -> None:
+    """ROADMAP 2.364 (flag `OMR_SECOND_HEAD_HOLE`, default OFF; the caller gates). STAGED GATHER; decides nothing.
+
+    The second head of a hollow third, read by its HOLE (`second_head_hole.second_heads`, the rule and its cause there): for each written
+    head box of a cell, the written head's own hole on the page raster (staff lines in), its stem from the pipeline's own CV stem reader
+    (the production call: `detect_lines` with the cell's notehead and mark boxes), and a head-sized hole one space along that stem in the
+    same column. A kept hole is APPENDED to the cell's `detections` under `READERS.RESCUE_STEM_HEAD` (`source` `second_head_hole`), its
+    box the ring's own ink, its class a half at the box's staff position, its score the rescue floor (no detector score: the ink read it).
+    ADJUDICATE writes it GUESSED (blue, `notehead_precision` reason `second_head_hole`); its position is `gather_notehead_positions`'
+    (it runs later, on every box in `detections`). Production boxes and every glyph index already filed are unchanged. A refused hole a
+    space from the written one is filed as an abstention with its reason and measures (a refusal says how close it came)."""
+    import numpy as np
+    from . import clef_pagewide as CP
+    from . import second_head_hole as SHH
+    from . import stem_end_heads as SEH
+    from ..line_detection import detect_lines, staged_stem_finder
+    from ..template_matcher import SymbolDetection
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    if page_binary is None:
+        return
+    ink = np.asarray(page_binary) == 0
+    for c in cells or ():
+        key = local.get(c.staff_index)
+        bbox = getattr(c, "bbox_page_px", None)
+        up = getattr(c, "upscale_factor", None)
+        grid = _cell_grid(c)
+        lines = CP.cell_lines_page(c)
+        if key is None or grid is None or not bbox or not up or not lines:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        cell_key = cell_sub.to_key()
+        frame = frame_cell(c.measure_index)
+        existing = list(detections.get(cell_key) or [])
+        heads = [(j, d) for j, d in enumerate(existing) if SEH.is_head(d.smufl_name)
+                 and not str(d.smufl_name).startswith(("noteheadWhole", "noteheadDoubleWhole"))]
+        if not heads:
+            continue
+        try:
+            stems = (detect_lines(c, candidates_out=None, noteheads=_notehead_boxes_for_cell(detections, cell_sub, c),
+                                  marks=_owner_marks_for_cell(detections, cell_sub), stem_finder=staged_stem_finder()) or {}).get("stems") or []
+        except Exception as exc:                                  # noqa: BLE001
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+                        reason=ABSTAIN.READER_UNAVAILABLE, error=type(exc).__name__, source=SHH.SOURCE)
+            continue
+        up = float(up)
+        stems_page = [[bbox[0] + s.x_canonical / up, bbox[1] + s.y_canonical / up,
+                       bbox[0] + (s.x_canonical + s.width_canonical) / up, bbox[1] + (s.y_canonical + s.height_canonical) / up]
+                      for s in stems]
+        head_boxes = [list(_page_box(c, d)) for _j, d in heads]
+        seen = list(head_boxes)
+        for c2 in cells:
+            k2 = local.get(c2.staff_index)
+            if c2.page_index != p or k2 is None or c2 is c:
+                continue
+            for d2 in detections.get(R.cell(p, k2[0], k2[1], c2.measure_index).to_key()) or ():
+                if SEH.is_head(d2.smufl_name):
+                    pb = _page_box(c2, d2)
+                    if pb is not None:
+                        seen.append(list(pb))
+        kept, refused = SHH.second_heads(ink, lines, head_boxes, stems_page, seen)
+        for rf in refused:
+            if "hole_c" not in rf:
+                continue                     # the written head itself was not read (no hole, no stem): nothing was proposed
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        why="second_head_hole:" + rf["why"], source=SHH.SOURCE,
+                        partner_glyph=R.glyph(p, sys_idx, st_idx, c.measure_index, heads[rf["partner"]][0]).to_key(),
+                        **{k: v for k, v in rf.items() if k in ("dy_sp", "dx_sp", "hole", "hole_w_sp", "hole_h_sp", "hole_area_sp2",
+                                                                 "hole_fill", "stem_cover", "touch_rows")})
+        lst = detections.get(cell_key)
+        if lst is None:
+            lst = []
+            detections[cell_key] = lst
+        n_filed = 0
+        filed: List[Tuple[float, float]] = []
+        for kb in kept:
+            bx0, by0, bx1, by1 = kb["box"]
+            hc = tuple(kb["hole_c"])
+            if any(abs(hc[0] - f[0]) < 1.0 and abs(hc[1] - f[1]) < 1.0 for f in filed):
+                continue                     # one hole a space from two written heads (a three-note stack): filed once
+            cx0, cy0, cx1, cy1 = (bx0 - bbox[0]) * up, (by0 - bbox[1]) * up, (bx1 - bbox[0]) * up, (by1 - bbox[1]) * up
+            name = SEH.ink_head_class("hollow", (cy0 + cy1) / 2.0, grid[0], grid[1])
+            nd = SymbolDetection(cell=c, smufl_name=name, category="notehead", x_canonical=int(round(cx0)), y_canonical=int(round(cy0)),
+                                 width_canonical=int(round(cx1 - cx0)), height_canonical=int(round(cy1 - cy0)), confidence=SEH.FLOOR)
+            pj, partner = heads[kb["partner"]]
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, len(lst))
+            st = stems_page[kb["stem"]]
+            box_detail: Dict[str, Any] = {
+                "category": "notehead", "source": SHH.SOURCE, "read_from": "page_ink_hole",
+                "partner_glyph": R.glyph(p, sys_idx, st_idx, c.measure_index, pj).to_key(), "partner_class": str(partner.smufl_name),
+                "stem_page_px": [round(v, 1) for v in st], "hole_page_px": kb.get("hole"), "ring_page_px": [bx0, by0, bx1, by1],
+                "dy_sp": kb.get("dy_sp"), "dx_sp": kb.get("dx_sp"), "hole_w_sp": kb.get("hole_w_sp"), "hole_h_sp": kb.get("hole_h_sp"),
+                "hole_fill": kb.get("hole_fill"), "touch_rows": kb.get("touch_rows"), "ink_fill": "hollow"}
+            page_box = _page_box(c, nd)
+            if page_box is not None:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1], x_center_page=(px0 + px1) / 2.0, y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX, (nd.smufl_name, nd.x_canonical, nd.y_canonical, nd.width_canonical, nd.height_canonical),
+                        reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(nd.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(nd.confidence), reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(nd.confidence))
+            log.observe(g, Q.NOTEHEAD_CLASS, nd.smufl_name, reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(nd.confidence))
+            lst.append(nd)
+            filed.append(hc)
+            n_filed += 1
+        if progress and n_filed:
+            print(f"  gather second head by hole {cell_key}: {n_filed} box(es)")
+
+
 def _staff_home_finder(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], p: int) -> Any:
     """Round 2 (lane-stem-end-head): `home_of(x, y, c)` -> the cell of page `p` whose STAFF LINES stand around the page point (its top
     line to its bottom line, half a space of slack: a head in the top or bottom space) and whose x span holds it, when that is NOT the
@@ -18044,6 +18154,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         from . import dyad_head_rescue as _DHR
         if detector is not None and _DHR.enabled():
             gather_dyad_head_rescue(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
+
+        # ROADMAP 2.364 (flag `OMR_SECOND_HEAD_HOLE`, default OFF): the second head of a hollow third, read by its hole. AFTER the dyad
+        # rescue (its boxes count as written heads and as seen), BEFORE every `detections` walker, for the rescue's reason: a kept box is
+        # appended in place, so `gather_notehead_positions` places it and the per-box readers measure it.
+        from . import second_head_hole as _SHH
+        if _SHH.enabled():
+            gather_second_head_hole(log, cells, local, detections, progress=progress, pws=pws)
 
         # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF, allow-list; landed OFF 2026-10-14). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests

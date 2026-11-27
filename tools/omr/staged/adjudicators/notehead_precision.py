@@ -3927,9 +3927,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     from .. import dyad_head_rescue as _DHR
     # ROADMAP 2.268 (flag `OMR_DYAD_HEAD_RESCUE`, ON): a chord's other head from a sub-cut candidate has the ink as its witness too, so any
     # claim on its ink (arc, word, accidental ...) refuses it, as for an ink-only stem-end head. OFF files no such box.
-    ink_only = _SEH.is_ink_only(box_row.detail) or _DHR.is_dyad(box_row.detail)
+    # ROADMAP 2.364 (flag `OMR_SECOND_HEAD_HOLE`, default OFF): the second head of a hollow third read by its hole is the ink's too -- the
+    # same claim refusals, as for the dyad rescue's head. OFF files no such box.
+    from .. import second_head_hole as _SHH
+    by_hole = _SHH.is_second_head(box_row.detail)
+    ink_only = _SEH.is_ink_only(box_row.detail) or _DHR.is_dyad(box_row.detail) or by_hole
     if ink_only:
-        seh_claim = _stem_end_ink_claimed(ev, box_row, skip_narrowed=_DHR.is_dyad(box_row.detail))
+        seh_claim = _stem_end_ink_claimed(ev, box_row, skip_narrowed=_DHR.is_dyad(box_row.detail) or by_hole)
         if seh_claim is not None:
             return seh_claim
     seh_split = _stem_end_box_ink_disagrees(ev, box_row)
@@ -4250,6 +4254,12 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if claim is not None and not claim.refuse:
         detail.update(claim.detail)
         return _claim_narrowing(claim, used, detail)
+    if by_hole:
+        # ROADMAP 2.364: the page ink's hole alone read it -- GUESSED (blue), NARROWED {a notehead, not one}, the notehead first so it is
+        # written, under its own reason so the file counts it apart (`export.SECOND_HEAD_HOLE_REASON`)
+        detail.update(read_by="second_head_hole", ink_fill="hollow", partner_glyph=(box_row.detail or {}).get("partner_glyph"))
+        return Ruling.narrow((R.Candidate(value=False, support=1.0), R.Candidate(value=True, support=1.0)), _SHH.REASON,
+                             used=tuple(used), **detail)
     if ink_only:
         # Sean's plain/blue rule: the ink alone read it (no detector box at production or 0.05) -- GUESSED (blue) until tiles earn plain,
         # NARROWED {a notehead, not one}, the notehead first so it is written

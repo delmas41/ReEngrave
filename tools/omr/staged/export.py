@@ -472,6 +472,8 @@ CLAIM_NARROWED_PREFIX = "claim_narrowed:"
 WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs",)
 #: lane-stem-end-head round 2: the ink-only stem-end head, NARROWED {a head, not one} by `notehead_precision`
 STEM_END_INK_ONLY_REASON = "stem_end_ink_only"
+#: ROADMAP 2.364: the second head of a hollow third read by its hole, NARROWED {a head, not one} by `notehead_precision` (written blue)
+SECOND_HEAD_HOLE_REASON = "second_head_hole"
 #: ROADMAP 2.238: a rest box holding a note's stem that the old rules kept, NARROWED by `family_precision` (written blue)
 REST_HOLDS_A_STEM_REASON = "rest_holds_a_stem"
 #: ROADMAP 2.240 step 3: a head whose page owner is GUESSED (written blue, both staves carried)
@@ -496,6 +498,11 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
                 "candidates": [{"value": "symbol", "support": 1.0}, {"value": "stem_ink", "support": 1.0}],
                 "chosen": {"value": "symbol"}}
     v = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
+    if v is not None and v.get("outcome") == "narrowed" and v.get("reason") == SECOND_HEAD_HOLE_REASON:
+        # ROADMAP 2.364 (flag OMR_SECOND_HEAD_HOLE, default OFF): the second head of a hollow third read by its hole alone -- GUESSED (blue)
+        return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                "candidates": [{"value": "symbol", "support": 1.0}, {"value": "not_a_head", "support": 1.0}],
+                "chosen": {"value": "symbol"}}
     if v is not None and v.get("outcome") == "narrowed" and v.get("reason") == STEM_END_INK_ONLY_REASON:
         # lane-stem-end-head round 2 (flag OMR_STEM_END_HEAD_INK): a head the page ink alone read at a stem end -- GUESSED (blue)
         # until Sean's tiles earn it plain; none is filed with the flag OFF

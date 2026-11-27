@@ -3087,7 +3087,7 @@ def _head_read(ev: Evidence, key: str) -> bool:
         # note a WORD's claimed area happens to cover is held in doubt only because the word was read first; its own head reading stands, and EXPORT
         # writes it (`guessed_by_rule:claim_narrowed:word`). An arc may end at it. A head a KEY's or another mark's claim narrowed stays no note.
         return True
-    if v.outcome is Outcome.NARROWED and str(v.reason or "") == "stem_end_ink_only":
+    if v.outcome is Outcome.NARROWED and str(v.reason or "") in ("stem_end_ink_only", "second_head_hole"):
         # ROADMAP 2.358 (i) (`OMR_ARC_END_AT_INK_HEAD`, default ON; the rule and its cause: `page_arc_bind`'s 2.358 block): a head the page ink alone
         # read at a stem end is written (blue) by EXPORT; an arc may end at it, and its ink is no "unread" second head at the arc's end
         from .. import page_arc_bind as _PB

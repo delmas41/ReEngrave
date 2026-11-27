@@ -1,0 +1,1238 @@
+[
+ {
+  "file": "braa03_single.npz",
+  "plate": "brahms",
+  "page": 0,
+  "glyph": "glyph/0/0/4/5/4",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   3938,
+   2940
+  ]
+ },
+ {
+  "file": "braa07_single.npz",
+  "plate": "brahms",
+  "page": 8,
+  "glyph": "glyph/8/1/9/4/5",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   2217,
+   6531
+  ]
+ },
+ {
+  "file": "braa10_single.npz",
+  "plate": "brahms",
+  "page": 8,
+  "glyph": "glyph/8/1/10/7/2",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   3284,
+   6812
+  ]
+ },
+ {
+  "file": "braa13_single.npz",
+  "plate": "brahms",
+  "page": 8,
+  "glyph": "glyph/8/1/9/5/8",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   2602,
+   6531
+  ]
+ },
+ {
+  "file": "braa19_single.npz",
+  "plate": "brahms",
+  "page": 8,
+  "glyph": "glyph/8/0/2/1/12",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1076,
+   1104
+  ]
+ },
+ {
+  "file": "braa15_single.npz",
+  "plate": "brahms",
+  "page": 12,
+  "glyph": "glyph/12/0/11/4/2",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1983,
+   2886
+  ]
+ },
+ {
+  "file": "braa16_single.npz",
+  "plate": "brahms",
+  "page": 12,
+  "glyph": "glyph/12/0/1/8/5",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   3155,
+   632
+  ]
+ },
+ {
+  "file": "braa18_single.npz",
+  "plate": "brahms",
+  "page": 12,
+  "glyph": "glyph/12/0/9/3/3",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1750,
+   2430
+  ]
+ },
+ {
+  "file": "braa20_single.npz",
+  "plate": "brahms",
+  "page": 12,
+  "glyph": "glyph/12/0/9/1/3",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1109,
+   2433
+  ]
+ },
+ {
+  "file": "braa22_single.npz",
+  "plate": "brahms",
+  "page": 12,
+  "glyph": "glyph/12/0/9/9/2",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   3467,
+   2425
+  ]
+ },
+ {
+  "file": "braa23_single.npz",
+  "plate": "brahms",
+  "page": 12,
+  "glyph": "glyph/12/0/11/3/0",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1752,
+   2886
+  ]
+ },
+ {
+  "file": "braa04_bass_clef.npz",
+  "plate": "brahms",
+  "page": 19,
+  "glyph": "glyph/19/0/12/3/9",
+  "expect": "NO",
+  "box": null,
+  "his_words": "a bass clef, or part of one",
+  "origin_page_px": [
+   2323,
+   3237
+  ]
+ },
+ {
+  "file": "braa05_lost_head.npz",
+  "plate": "brahms",
+  "page": 25,
+  "glyph": "glyph/25/1/1/4/11",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on that stem",
+  "origin_page_px": [
+   2702,
+   4548
+  ]
+ },
+ {
+  "file": "lita03_lost_head.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/0/14/5",
+  "expect": "YES",
+  "box": null,
+  "his_words": "half, 2 heads",
+  "origin_page_px": [
+   2382,
+   2001
+  ]
+ },
+ {
+  "file": "lc03_good_box.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/1/2/2",
+  "expect": "YES@box",
+  "box": [
+   99.55999999999995,
+   80.76000000000022,
+   127.72000000000003,
+   103.32000000000016
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   673,
+   2193
+  ]
+ },
+ {
+  "file": "lc17_good_box.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/9/12/0",
+  "expect": "YES@box",
+  "box": [
+   99.0300000000002,
+   124.76000000000022,
+   125.84000000000015,
+   151.9000000000001
+  ],
+  "his_words": "",
+  "origin_page_px": [
+   2114,
+   3348
+  ]
+ },
+ {
+  "file": "lc02_sliver.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/1/14/3",
+  "expect": "NO@box",
+  "box": [
+   99.67999999999984,
+   74.15999999999985,
+   125.44000000000005,
+   89.51999999999998
+  ],
+  "his_words": "a little bit low",
+  "origin_page_px": [
+   2357,
+   2198
+  ]
+ },
+ {
+  "file": "hs09_two_heads.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/0/11/2",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   1999,
+   2012
+  ]
+ },
+ {
+  "file": "v2_02_two_heads.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/2/13/0",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   2248,
+   2349
+  ]
+ },
+ {
+  "file": "v2_07_two_heads.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/9/13/2",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem and a tremolo slash",
+  "origin_page_px": [
+   2243,
+   3351
+  ]
+ },
+ {
+  "file": "v2_10_two_heads.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/1/11/3",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   1998,
+   2189
+  ]
+ },
+ {
+  "file": "v2_11_two_heads.npz",
+  "plate": "litolff",
+  "page": 2,
+  "glyph": "glyph/2/1/3/14/6",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   2381,
+   2499
+  ]
+ },
+ {
+  "file": "lc15_not_a_head.npz",
+  "plate": "litolff",
+  "page": 4,
+  "glyph": "glyph/4/0/10/11/3",
+  "expect": "NO@box",
+  "box": [
+   94.11999999999989,
+   82.44000000000005,
+   116.96000000000004,
+   90.0
+  ],
+  "his_words": "a ledger line",
+  "origin_page_px": [
+   1994,
+   1788
+  ]
+ },
+ {
+  "file": "hs12_two_heads.npz",
+  "plate": "litolff",
+  "page": 4,
+  "glyph": "glyph/4/0/2/2/0",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   691,
+   636
+  ]
+ },
+ {
+  "file": "hs17_single_half_note.npz",
+  "plate": "litolff",
+  "page": 4,
+  "glyph": "glyph/4/0/1/2/3",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single half note",
+  "origin_page_px": [
+   693,
+   471
+  ]
+ },
+ {
+  "file": "hs19_not_a_head.npz",
+  "plate": "litolff",
+  "page": 4,
+  "glyph": "glyph/4/1/7/7/8",
+  "expect": "NO",
+  "box": null,
+  "his_words": "not a head: a space in the staff",
+  "origin_page_px": [
+   1368,
+   3063
+  ]
+ },
+ {
+  "file": "hs22_two_heads.npz",
+  "plate": "litolff",
+  "page": 4,
+  "glyph": "glyph/4/1/1/5/10",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   1112,
+   2218
+  ]
+ },
+ {
+  "file": "v2_09_two_heads.npz",
+  "plate": "litolff",
+  "page": 4,
+  "glyph": "glyph/4/0/2/1/9",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   519,
+   639
+  ]
+ },
+ {
+  "file": "lita18_lost_head.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/0/2/11/3",
+  "expect": "YES",
+  "box": null,
+  "his_words": "half, 2 heads",
+  "origin_page_px": [
+   2199,
+   612
+  ]
+ },
+ {
+  "file": "lc21_good_box.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/0/2/9/5",
+  "expect": "YES@box",
+  "box": [
+   96.92000000000007,
+   89.29999999999995,
+   125.74000000000001,
+   109.77999999999997
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   1853,
+   615
+  ]
+ },
+ {
+  "file": "lc08_not_a_head.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/1/6/11/3",
+  "expect": "NO@box",
+  "box": [
+   65.34999999999991,
+   75.59000000000015,
+   132.44000000000005,
+   89.92000000000007
+  ],
+  "his_words": "a staff line",
+  "origin_page_px": [
+   2351,
+   2833
+  ]
+ },
+ {
+  "file": "lc14_not_a_head.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/1/6/10/7",
+  "expect": "NO@box",
+  "box": [
+   112.44000000000005,
+   123.51999999999998,
+   125.98999999999978,
+   133.76000000000022
+  ],
+  "his_words": "top part of an f dynamic",
+  "origin_page_px": [
+   2179,
+   2832
+  ]
+ },
+ {
+  "file": "lc22_sliver.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/0/5/5/2",
+  "expect": "NO@box",
+  "box": [
+   102.3599999999999,
+   63.51999999999998,
+   121.55999999999995,
+   68.0
+  ],
+  "his_words": "part of a half note, the very top edge, too small",
+  "origin_page_px": [
+   1200,
+   1092
+  ]
+ },
+ {
+  "file": "hs03_two_heads.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/1/10/11/0",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   2362,
+   3373
+  ]
+ },
+ {
+  "file": "hs05_single_half_note.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/1/11/10/3",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single half note",
+  "origin_page_px": [
+   2180,
+   3512
+  ]
+ },
+ {
+  "file": "hs08_two_heads.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/0/2/3/4",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   892,
+   610
+  ]
+ },
+ {
+  "file": "hs15_two_heads.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/0/3/3/6",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   894,
+   770
+  ]
+ },
+ {
+  "file": "hs24_single_half_note.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/1/11/9/0",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single half note",
+  "origin_page_px": [
+   2003,
+   3509
+  ]
+ },
+ {
+  "file": "v2_05_two_heads.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/1/8/11/10",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem and a tremolo slash; the box is wide and also hits part of a sharp",
+  "origin_page_px": [
+   2362,
+   3112
+  ]
+ },
+ {
+  "file": "v2_12_two_heads.npz",
+  "plate": "litolff",
+  "page": 6,
+  "glyph": "glyph/6/0/3/11/2",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   2195,
+   763
+  ]
+ },
+ {
+  "file": "litb08_lost_head.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/3/2/1",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on that stem",
+  "origin_page_px": [
+   598,
+   761
+  ]
+ },
+ {
+  "file": "lc04_good_box.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/1/0/4/0",
+  "expect": "YES@box",
+  "box": [
+   96.75,
+   91.83999999999992,
+   122.74000000000001,
+   114.82999999999993
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   812,
+   1815
+  ]
+ },
+ {
+  "file": "lc10_good_box.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/2/17/3",
+  "expect": "YES@box",
+  "box": [
+   98.0,
+   60.379999999999995,
+   123.03999999999996,
+   81.79999999999995
+  ],
+  "his_words": "good (number lost in dictation; OUR placing)",
+  "origin_page_px": [
+   2006,
+   651
+  ]
+ },
+ {
+  "file": "lc16_good_box.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/3/15/4",
+  "expect": "YES@box",
+  "box": [
+   100.8900000000001,
+   82.42999999999995,
+   123.25,
+   108.58000000000004
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   1818,
+   757
+  ]
+ },
+ {
+  "file": "lc19_good_box.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/2/15/7",
+  "expect": "YES@box",
+  "box": [
+   99.83999999999992,
+   83.90999999999997,
+   124.41000000000008,
+   108.48000000000002
+  ],
+  "his_words": "good, big, on the top (heard as a second '18'; OUR placing)",
+  "origin_page_px": [
+   1817,
+   647
+  ]
+ },
+ {
+  "file": "lc18_not_a_head.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/0/19/2",
+  "expect": "NO@box",
+  "box": [
+   95.44000000000005,
+   83.19,
+   126.4699999999998,
+   90.43
+  ],
+  "his_words": "a ledger line",
+  "origin_page_px": [
+   2234,
+   297
+  ]
+ },
+ {
+  "file": "lc09_sliver.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/1/6/10/0",
+  "expect": "NO@box",
+  "box": [
+   99.55999999999995,
+   144.0,
+   123.07999999999993,
+   148.48000000000002
+  ],
+  "his_words": "too small",
+  "origin_page_px": [
+   1308,
+   2842
+  ]
+ },
+ {
+  "file": "lc13_sliver.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/7/12/4",
+  "expect": "NO@box",
+  "box": [
+   97.13000000000011,
+   133.0,
+   119.65000000000009,
+   137.72000000000003
+  ],
+  "his_words": "too small, just the bottom end",
+  "origin_page_px": [
+   1523,
+   1419
+  ]
+ },
+ {
+  "file": "lita07_single.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/1/7/3/2",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   748,
+   2985
+  ]
+ },
+ {
+  "file": "lita09_single.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/5/10/4",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1323,
+   1122
+  ]
+ },
+ {
+  "file": "lita15_single.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/1/9/8/0",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1141,
+   3298
+  ]
+ },
+ {
+  "file": "lita16_single.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/7/12/4",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1523,
+   1419
+  ]
+ },
+ {
+  "file": "hs04_two_heads.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/3/5/3",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   850,
+   776
+  ]
+ },
+ {
+  "file": "hs16_unison_half_note.npz",
+  "plate": "litolff",
+  "page": 8,
+  "glyph": "glyph/8/0/0/2/2",
+  "expect": "NO",
+  "box": null,
+  "his_words": "unison half note",
+  "origin_page_px": [
+   595,
+   340
+  ]
+ },
+ {
+  "file": "lc05_not_a_head.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/0/7/2/3",
+  "expect": "NO@box",
+  "box": [
+   94.50999999999999,
+   33.24000000000001,
+   131.37,
+   43.0
+  ],
+  "his_words": "'part of a ...' (word lost in dictation)",
+  "origin_page_px": [
+   754,
+   1328
+  ]
+ },
+ {
+  "file": "lita14_single.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/1/1/6/13",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1490,
+   2313
+  ]
+ },
+ {
+  "file": "lita21_single.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/1/1/5/1",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1279,
+   2313
+  ]
+ },
+ {
+  "file": "lita22_single.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/0/8/7/4",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1306,
+   1461
+  ]
+ },
+ {
+  "file": "hs01_unison_half_note.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/0/0/13/2",
+  "expect": "NO",
+  "box": null,
+  "his_words": "unison half note",
+  "origin_page_px": [
+   2239,
+   358
+  ]
+ },
+ {
+  "file": "hs10_two_heads.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/1/1/8/2",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   1887,
+   2299
+  ]
+ },
+ {
+  "file": "hs14_two_heads.npz",
+  "plate": "litolff",
+  "page": 9,
+  "glyph": "glyph/9/1/1/10/1",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   2218,
+   2310
+  ]
+ },
+ {
+  "file": "lita02_lost_head.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/0/0/10",
+  "expect": "YES",
+  "box": null,
+  "his_words": "half, 2 heads",
+  "origin_page_px": [
+   431,
+   1983
+  ]
+ },
+ {
+  "file": "lc06_good_box.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/3/1/8",
+  "expect": "YES@box",
+  "box": [
+   98.01999999999998,
+   76.76000000000022,
+   123.07000000000005,
+   96.92000000000007
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   559,
+   2449
+  ]
+ },
+ {
+  "file": "lc07_good_box.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/1/8/8",
+  "expect": "YES@box",
+  "box": [
+   107.46000000000004,
+   67.88000000000011,
+   125.8900000000001,
+   93.55000000000018
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   1642,
+   2166
+  ]
+ },
+ {
+  "file": "lc12_good_box.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/9/2/2",
+  "expect": "YES@box",
+  "box": [
+   98.96000000000004,
+   147.0,
+   133.51999999999998,
+   162.51999999999998
+  ],
+  "his_words": "good",
+  "origin_page_px": [
+   693,
+   3344
+  ]
+ },
+ {
+  "file": "hs02_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/1/11/6",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   2094,
+   2152
+  ]
+ },
+ {
+  "file": "hs06_unison_half_note.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/0/4/1/6",
+  "expect": "NO",
+  "box": null,
+  "his_words": "unison half note",
+  "origin_page_px": [
+   574,
+   954
+  ]
+ },
+ {
+  "file": "hs07_single_half_note.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/0/2/1/5",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single half note",
+  "origin_page_px": [
+   569,
+   655
+  ]
+ },
+ {
+  "file": "hs13_not_a_head.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/0/2/2/5",
+  "expect": "NO",
+  "box": null,
+  "his_words": "not a head: part of an arc",
+  "origin_page_px": [
+   726,
+   653
+  ]
+ },
+ {
+  "file": "hs18_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/1/1/1",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   557,
+   2162
+  ]
+ },
+ {
+  "file": "hs20_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/0/2/8",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   685,
+   1981
+  ]
+ },
+ {
+  "file": "hs21_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/0/8/7",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   1645,
+   1968
+  ]
+ },
+ {
+  "file": "v2_01_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/0/1/4",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   557,
+   1982
+  ]
+ },
+ {
+  "file": "v2_04_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/9/5/0",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   1129,
+   3344
+  ]
+ },
+ {
+  "file": "v2_08_two_heads.npz",
+  "plate": "litolff",
+  "page": 10,
+  "glyph": "glyph/10/1/2/2/3",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   688,
+   2313
+  ]
+ },
+ {
+  "file": "lc20_not_a_head.npz",
+  "plate": "litolff",
+  "page": 11,
+  "glyph": "glyph/11/0/3/3/3",
+  "expect": "NO@box",
+  "box": [
+   109.86000000000001,
+   148.11,
+   130.64999999999998,
+   166.69000000000005
+  ],
+  "his_words": "a dynamic",
+  "origin_page_px": [
+   766,
+   827
+  ]
+ },
+ {
+  "file": "lita19_single.npz",
+  "plate": "litolff",
+  "page": 11,
+  "glyph": "glyph/11/0/7/5/3",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   962,
+   1379
+  ]
+ },
+ {
+  "file": "hs23_two_heads.npz",
+  "plate": "litolff",
+  "page": 11,
+  "glyph": "glyph/11/0/1/9/2",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   1408,
+   508
+  ]
+ },
+ {
+  "file": "v2_03_two_heads.npz",
+  "plate": "litolff",
+  "page": 11,
+  "glyph": "glyph/11/0/2/8/8",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two half notes on the stem",
+  "origin_page_px": [
+   1305,
+   652
+  ]
+ },
+ {
+  "file": "v2_06_unison.npz",
+  "plate": "litolff",
+  "page": 11,
+  "glyph": "glyph/11/0/2/4/6",
+  "expect": "NO",
+  "box": null,
+  "his_words": "unison half note",
+  "origin_page_px": [
+   848,
+   667
+  ]
+ },
+ {
+  "file": "lc11_sliver.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/0/8/7/6",
+  "expect": "NO@box",
+  "box": [
+   102.81999999999994,
+   129.0,
+   133.05999999999995,
+   138.76999999999998
+  ],
+  "his_words": "too small, just on an edge",
+  "origin_page_px": [
+   1291,
+   1441
+  ]
+ },
+ {
+  "file": "lita04_single.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/0/8/6/0",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1143,
+   1441
+  ]
+ },
+ {
+  "file": "lita08_single.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/1/2/1/5",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   609,
+   2290
+  ]
+ },
+ {
+  "file": "lita10_single.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/0/9/4/1",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   915,
+   1570
+  ]
+ },
+ {
+  "file": "lita11_single.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/0/8/12/5",
+  "expect": "NO",
+  "box": null,
+  "his_words": "single",
+  "origin_page_px": [
+   1910,
+   1441
+  ]
+ },
+ {
+  "file": "lita20_unison.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/0/1/5/0",
+  "expect": "NO",
+  "box": null,
+  "his_words": "half, unison",
+  "origin_page_px": [
+   1052,
+   454
+  ]
+ },
+ {
+  "file": "hs11_two_heads.npz",
+  "plate": "litolff",
+  "page": 16,
+  "glyph": "glyph/16/0/1/7/3",
+  "expect": "YES",
+  "box": null,
+  "his_words": "two heads on the stem",
+  "origin_page_px": [
+   1286,
+   450
+  ]
+ }
+]
