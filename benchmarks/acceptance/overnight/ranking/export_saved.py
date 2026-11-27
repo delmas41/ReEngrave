@@ -36,6 +36,8 @@ def main(argv):
     xml, report, census = CM.tapped_export(res, strip=False, only_pages=count_pages)
     # ROADMAP 2.338: the old tie boxes whose box witnesses a page run (one arc, never two), from the record, beside the report for `arcs_count`
     report[CM.ON_RUNS_KEY] = CM.old_boxes_on_page_runs(r, count_pages)
+    # ROADMAP 2.360: the arcs read in two halves across a system break (one arc, never two), from the record, beside the report for `arcs_count`
+    report[CM.HALVES_KEY] = CM.system_break_halves(r, count_pages)
     sym = L.parse_symbols(xml, boxes)
     hosts, loose, red_n, blue_n, nnw = CV.counted_symbols(sym["hosts"], sym["loose"], report, count_pages)
     red = report.get("bars_written_red") or {}
