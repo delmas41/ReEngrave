@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-26 -- 2.360 LANDED (no flag): the ranking counts only real losses (`tools/omr/staged/counted_marks.py`, `export_saved`)
+Counting only, STAGED EXPORT readout. Old tie-pairing refusals, the second half of an arc across a system break, boxes on a written note's dot and boxes on a written rest are named apart instead of counted as lost ties/notes; too-narrow boxes with nothing identifiable stay counted. 20261123-night, 8 pages per plate: ties+slurs not written Litolff 47.6 -> 36.8, Brahms 60.1 -> 32.8; notes not written Litolff 31.0 -> 30.8, Brahms 45.6 -> 31.8. Committed 20261123-night ranking files keep the old counting.
+
 ## 2026-11-26 -- 2.356 LANDED (no new flag): the whole-movement crash at Brahms page 21 (`tools/omr/staged/adjudicators/rhythm.py`, `_bar_lengths_for`)
 
 2.346 put rest refusals into the meter's bar-sum basis; the rest rule stands on the meter and overturned one, so `Log.record` raised `UphillConsequence` in `reinstate_rest_between_staves`. A bar holding a rest contested between two staves is now left out of the meter's bar sum (under `OMR_BAR_SUM_SKIPS_REFUSED`). Tests: `test_staged_uphill_rest_between_staves_2_356.py` (real Brahms 21/0 fixture), `test_staged_cause_reads_effect_2_356.py`. Both saved whole-movement records re-adjudicate/evaluate/export clean; no overnight gather run. Open: `reconcile_chord_duration` basis omits the meter; rest rule's `_voice_count` read is unlisted.
