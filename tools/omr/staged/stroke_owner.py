@@ -352,7 +352,12 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
     if not cs:
         return Ownership(o, "unclaimed")
     rows = tuple(dict.fromkeys(str(c["row"]) for c in cs if c["row"]))
-    first = cs[0]
+    # ROADMAP 2.365 (`OMR_BEAM_INK_NOT_HELD`): a claim refused because the stroke is a beam's ink (`BEAM_WHY`) does not stand first, even an area's;
+    # with the flag OFF no candidate carries that word and this is `cs[0]`
+    standing = [c for c in cs if not str(c.get("why", "")).startswith(BEAM_WHY)]
+    if not standing:
+        return Ownership(o, "refused_claims", candidates=tuple(cs), by="beam", row_ids=rows)
+    first = standing[0]
     if first["how"] == "area" and tier_index[str(first["family"])] == 0:
         return Ownership(o, "decided", str(first["family"]), (str(first["key"]),), tuple(cs), "area", rows)
     fits = [c for c in cs if c["fit"] != "no"]
@@ -523,14 +528,102 @@ def accidental_not_whole(strokes: Sequence[Ink], claims: Sequence[Claim]) -> Dic
     return out
 
 
+# ── ROADMAP 2.365 (flag `OMR_BEAM_INK_NOT_HELD`, default OFF): a beam's ink is not held by another mark's claim ──────────────────────────────
+#: CAUSE (lane 2.365 step 0, the 20261127-night records): 30 real notes (Sean's tiles 3-8, 11, 14, 17, 19-22, 24 and 9 judged eighths) went unwritten
+#: because the beam over their stems was held by a claim that never asked what a beam is -- an accidental box's ATTACHED stroke (the attached pass
+#: skipped 2.202f), a head box over a short beam piece, a word's or a dynamic's AREA (tier 0, no shape test; the word "Lh" was OCR reading the beam),
+#: or a page-wide arc trace that ran along the beam. The beam count then rightly refused "no beam" over claimed ink (rule 8) and the notes stayed
+#: quarter-or-eighth.
+#: THE RULE, as a musician says it: a beam is one thick straight stroke that joins the ends of two or more stems from one side. No box, area or
+#: trace of another mark holds that ink; it goes to the beam count. Sean 2026-11-18 (claiming): "We use the boxes to identify something, but then
+#: claim only the ink. And when joining things or separating things, we use the ink to distinguish or connect, not the boxes." Sean 2026-11-27,
+#: answering whether two stem ends joined is enough to call ink a beam where a hairpin arm also has a stem at each end (tile 15): "Beams are
+#: thicker and are a single stroke a second beam on the staff runs mostly parallel. A hair pin is a specific. Symbol with thinner ink that forms a
+#: v shape on its side.... I wouldn't use that language specifically but that helps me visually". OUR READING (not his words): a beam is one thick
+#: stroke joining stem ends; a hairpin is thinner ink in two arms that meet at a point.
+#: NEVER: a staff line or any line that runs on to a barline at both ends, a letter (not straight, or one stem only), a stroke one stem merely
+#: ends on (stays as today: the note stays narrowed), a stem that CROSSES the stroke (a hairpin or a slur a stem runs through), and never a
+#: hairpin trace's stroke: the stroke map sums a column's ink, so the two thin arms of a hairpin near its point read as one beam-thick stroke
+#: (tile 15: two 0.2-0.3 sp arms recorded 0.50; measured on the 600 dpi page, lane 2.365) -- the record cannot tell those apart, so a hairpin
+#: trace keeps its claim until the stroke map records a column's single run (a GATHER fact, not built here).
+#: "Thick" and "a stem" are the landed beam reader's own sizes (`beam_strokes.BEAM_MIN_THICKNESS_SP`, 2.202's measured gap between beams and thin
+#: spans; `STEM_MAX_SPACES`, a vertical longer than that is a barline or a system edge; `BEAM_SHAPE_MAX_ANGLE`); nothing here is tuned to the tiles.
+ENV_BEAM_INK = "OMR_BEAM_INK_NOT_HELD"
+#: the reason word a released claim carries (`_settle` skips it, even an area's)
+BEAM_WHY = "beam_joins_stem_ends"
+#: the claimants a beam's ink is released from: every mark's box, area or trace except the header column and the barline (a convention says
+#: nothing else is printed there) and the hairpin trace (above)
+BEAM_RELEASED_FROM = ("word", "arc_trace", "head", "ledger", "accidental", "arc", "hairpin", "dynamic", "mark", "dot", "text", "rest", "whole_rest")
+
+
+def beam_ink_enabled() -> bool:
+    """`OMR_BEAM_INK_NOT_HELD` (ROADMAP 2.365), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
+    import os
+    return os.environ.get(ENV_BEAM_INK, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def stem_ends_on(s: Ink, by_ord: Dict[int, Ink]) -> Dict[str, List[int]]:
+    """`{"above": [...], "below": [...]}`: the stems whose ink touches `s` and END on it -- a vertical no longer than a stem (`STEM_MAX_SPACES`) whose
+    top end has the stroke in its tip window (the stem hangs BELOW it) or whose bottom end does (the stem stands ABOVE it). The tip window is the beam
+    count's own (`beam_strokes`: from `TIP_OUTWARD_SPACES` beyond the stem's end to `STACK_FIRST_SPACES` inward, the first level's reach), so "ends
+    on" means what the beam count will read. A vertical that runs on past the stroke's outer edge by more than `TIP_OUTWARD_SPACES` crosses it and
+    ends on nothing (a stem through a hairpin or a slur). Pure."""
+    from .beam_strokes import STACK_FIRST_SPACES, STEM_MAX_SPACES, TIP_OUTWARD_SPACES
+    out: Dict[str, List[int]] = {"above": [], "below": []}
+    sp = s.space_px if s.space_px > 0 else 1.0
+    out_px, in_px = TIP_OUTWARD_SPACES * sp, STACK_FIRST_SPACES * sp
+    y0, y1 = s.box[1], s.box[1] + s.box[3]
+    for j, _c in s.touches:
+        v = by_ord.get(j)
+        if v is None or v.kind != "vertical" or v.length > STEM_MAX_SPACES:
+            continue
+        vt, vb = v.box[1], v.box[1] + v.box[3]
+        if vb > y1 and vt >= y0 - out_px and y0 <= vt + in_px:
+            out["below"].append(j)                     # its top end is at the stroke; it runs on downward
+        elif vt < y0 and vb <= y1 + out_px and y1 >= vb - in_px:
+            out["above"].append(j)                     # its bottom end is at the stroke; it runs on upward
+    return out
+
+
+def _distinct_stems(js: Sequence[int], by_ord: Dict[int, Ink]) -> int:
+    """How many of the verticals `js` are different stems: their columns do not overlap (one stem cut in two pieces is one stem)."""
+    spans = sorted((by_ord[j].box[0], by_ord[j].box[0] + by_ord[j].box[2]) for j in js)
+    n, right = 0, None
+    for a, b in spans:
+        if right is None or a > right:
+            n += 1
+            right = b
+        else:
+            right = max(right, b)
+    return n
+
+
+def beam_joins_stem_ends(s: Ink, by_ord: Dict[int, Ink]) -> bool:
+    """ROADMAP 2.365: is stroke `s` a beam by what a beam IS -- one thick straight stroke joining the ends of two or more stems from one side, never
+    running on to a barline at both ends (module note above). Pure."""
+    from .beam_strokes import BEAM_MIN_THICKNESS_SP, BEAM_SHAPE_MAX_ANGLE, STEM_MAX_SPACES
+    if s.kind != "horizontal" or s.thickness < BEAM_MIN_THICKNESS_SP or abs(s.angle) > BEAM_SHAPE_MAX_ANGLE:
+        return False
+    rules = [j for j, _c in s.touches if by_ord.get(j) is not None and by_ord[j].kind == "vertical" and by_ord[j].length > STEM_MAX_SPACES]
+    if len(rules) >= 2:
+        return False                                   # a line running bar to bar (a staff line the erase left): never a beam
+    ends = stem_ends_on(s, by_ord)
+    return any(_distinct_stems(js, by_ord) >= 2 for js in ends.values())
+
+
 def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
-                acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None) -> Dict[int, Ownership]:
+                acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None,
+                beam_ink_free: bool = False) -> Dict[int, Ownership]:
     """`{ordinal: Ownership}` for every stroke of one cell. `claims` = the cell's detector boxes (any family: consumers and non-marks are
     dropped here) and its area claims. `tiers` is the claim order -- a parameter only so a control can break it. Deterministic.
 
     `vetoes` (2.238, `OMR_OWNER_SHAPE`; None = the 2.205 behaviour exactly): `{box key: Veto}` -- those claims lose every stroke they cover
-    to the named rival (or to the consumers), BEFORE the claim order is read (a vetoed head is no head a later tier "runs into")."""
+    to the named rival (or to the consumers), BEFORE the claim order is read (a vetoed head is no head a later tier "runs into").
+
+    `beam_ink_free` (2.365, `OMR_BEAM_INK_NOT_HELD`; False = the behaviour before it exactly): a stroke that is a beam by `beam_joins_stem_ends` is
+    refused to every claimant of `BEAM_RELEASED_FROM` (fit `no`, why `BEAM_WHY`) and is never ATTACHED; and the attached pass applies 2.202f."""
     by_ord = {s.ordinal: s for s in strokes}
+    beams = {o for o, s in by_ord.items() if beam_joins_stem_ends(s, by_ord)} if beam_ink_free else set()
     tier_index = {f: i for i, t in enumerate(tiers) for f in t}
     live = sorted((c for c in claims if c.family in tier_index), key=lambda c: (tier_index[c.family], c.key))
     crossing = {o for o in by_ord if _crosses_a_stem(by_ord[o], by_ord)}
@@ -569,6 +662,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                     fit, why = "no", "not_glyph_sized:%s:%s" % (acc_small[(c.key, o)], why)
                 if veto is not None:
                     fit, why = "no", "veto:%s:%s" % (veto.rule, why)
+                if o in beams and c.family in BEAM_RELEASED_FROM:
+                    fit, why = "no", "%s:%s" % (BEAM_WHY, why)        # 2.365: a beam's ink is the beam count's, never this claim's
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
                                 "how": "area" if c.area else "cover", "row": c.row_id})
                 if c.members:
@@ -580,6 +675,10 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
 
     out: Dict[int, Ownership] = {o: _settle(o, cand, tier_index) for o in by_ord}
 
+    if beam_ink_free:
+        # 2.365: the attached pass tests 2.202f as the cover path does (a bar longer than an accidental's that runs into a note is the note's ink)
+        heads_now = {o for o, w in out.items() if w.family == "head"}
+        note_ink = heads_now | {o for o, v in by_ord.items() if v.kind == "vertical" and any(j in heads_now for j, _c in v.touches)}
     # ATTACHED (module doc): one pass, in claim order, so it is deterministic. A stroke a HEAD owns is never attached to another mark.
     for c in live:
         if c.area:
@@ -595,7 +694,13 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
             n = sum(1 for j, _ct in s.touches if j in owned)
             if n < ATTACH_MIN_TOUCHES:
                 continue
-            fit, why = shape_fit(c.family, s, c.cls)
+            if beam_ink_free:
+                if o in beams and c.family in BEAM_RELEASED_FROM:
+                    continue                                  # 2.365: a beam's ink is never attached to another mark
+                fit, why = shape_fit(c.family, s, c.cls, touches_a_note=o in note_ink or any(j in note_ink for j, _ct in s.touches),
+                                     acc_bar_clear_of_note=acc_bar_clear_of_note)
+            else:
+                fit, why = shape_fit(c.family, s, c.cls)
             if fit == "no":
                 # a stroke the family can never be does not join it by touching it: a STEM touching the two halves of a head the staff-line
                 # erase split is the note's stem, not the head's ink (measured 2.205: without this, 647 / 143 finder stems went to heads)

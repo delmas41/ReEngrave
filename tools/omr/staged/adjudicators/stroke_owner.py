@@ -474,7 +474,7 @@ def _settle_view(view: Dict[str, Any], vetoes: Optional[Dict[str, SO.Veto]]) -> 
     from .rhythm import beams_from_strokes_enabled
     view = dict(view, shaped=vetoes is not None, vetoes=vetoes)
     view["owned"] = SO.own_strokes(view["inks"], view["claims"], tiers=view["tiers"], acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
-                                   vetoes=vetoes)
+                                   vetoes=vetoes, beam_ink_free=SO.beam_ink_enabled())       # 2.365 (flag OFF: as before)
     return view
 
 

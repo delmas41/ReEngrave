@@ -175,6 +175,12 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
                 continue
             key = (str(c["key"]), str(c.get("how", "")))
             if key in sn:
+                # ROADMAP 2.365 (`OMR_BEAM_INK_NOT_HELD`): a view that saw the stroke join its stems' ends refused this claim on it; that refusal
+                # stands over a view (a neighbour's crop) that could not see the stems. Flag OFF: no candidate carries the word.
+                if str(c.get("why", "")).startswith(SO.BEAM_WHY):
+                    for k_, e in enumerate(cs):
+                        if (str(e["key"]), str(e.get("how", ""))) == key and not str(e.get("why", "")).startswith(SO.BEAM_WHY):
+                            cs[k_] = dict(c)
                 continue
             sn.add(key)
             cs.append(dict(c))
