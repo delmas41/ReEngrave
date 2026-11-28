@@ -6,6 +6,8 @@ owner (`claim_readout.owner_verdicts`) and the one beam count (`beam_strokes.bea
 
 Sean's answers (`out/print/tip-ink/answers_24.json`, 2026-11-27; and the 9 judged earlier on `out/print/step0-notes/`, all real eighths):
   * "a beam": tiles 3-8, 11, 14, 17, 20-22 and the judged eighths on the same strokes -> ON the beam is free and the count reads ONE beam;
+    except a beam a HEAD box also claims (Litolff p2 13/1, Brahms p25 0/9/0: judged eighths) -- kept held ON (11 real heads on the touched
+    pages met the stem-end test; a false head's refusal is filed later in ADJUDICATE, a different stage);
     OFF it is held and the count is narrowed `claimed_ink_at_tip` (each control fails against the old behaviour).
   * "a staff line" (1, 10, 18), "a D from diminished" (2, 12), "an F from SF" (13), "a hairpin" (15, 16) -> ON exactly as OFF.
   * "the corner of a beam ... too small" (9, 23) -> ON as OFF (a sliver one stem ends on stays held).
@@ -25,18 +27,15 @@ FLAG = "OMR_BEAM_INK_NOT_HELD"
 #: (plate, page, system, staff, cell, stroke ordinal): the beam strokes Sean called a beam (tiles / earlier judged eighths) and the claimant OFF
 BEAMS = {
     ("litolff", 2, 0, 0, 1, 0): "accidental",      # tiles 5, 6, 7 -- an accidental box's attached stroke
-    ("litolff", 2, 1, 5, 13, 15): "head",          # judged eighths; the 2.318 r4 case "Litolff p2 13/1, the beam of a stem claimed as a head"
     ("litolff", 5, 0, 4, 2, 6): "word",            # tiles 3, 17, 20, 22 -- the OCR word "Lh" over the beam
     ("litolff", 6, 0, 1, 10, 7): "accidental",     # tiles 11, 21
     ("brahms", 1, 0, 0, 4, 51): "arc_trace",       # tiles 4, 8, 14
-    ("brahms", 25, 0, 9, 0, 22): "head",           # judged eighth
 }
 #: the notes on those beams (glyph keys) -> ON the count reads one beam
 BEAM_NOTES = {
-    "litolff": ["glyph/2/0/0/1/0", "glyph/2/0/0/1/1", "glyph/2/0/0/1/3", "glyph/2/0/0/1/4", "glyph/2/0/0/1/15", "glyph/2/1/5/13/0", "glyph/2/1/5/13/1",
-                "glyph/2/1/5/13/2", "glyph/2/1/5/13/4", "glyph/5/0/4/2/1", "glyph/5/0/4/2/2", "glyph/5/0/4/2/3", "glyph/5/0/4/2/4", "glyph/5/0/4/2/5",
+    "litolff": ["glyph/2/0/0/1/0", "glyph/2/0/0/1/1", "glyph/2/0/0/1/3", "glyph/2/0/0/1/4", "glyph/2/0/0/1/15", "glyph/5/0/4/2/1", "glyph/5/0/4/2/2", "glyph/5/0/4/2/3", "glyph/5/0/4/2/4", "glyph/5/0/4/2/5",
                 "glyph/5/0/4/2/6", "glyph/6/0/1/10/0", "glyph/6/0/1/10/3", "glyph/6/0/1/10/5"],
-    "brahms": ["glyph/1/0/0/4/9", "glyph/1/0/0/4/11", "glyph/1/0/0/4/13", "glyph/1/0/0/4/33", "glyph/25/0/9/0/6"],
+    "brahms": ["glyph/1/0/0/4/9", "glyph/1/0/0/4/11", "glyph/1/0/0/4/13", "glyph/1/0/0/4/33"],
 }
 #: strokes that must stay exactly as today: Sean's right refusals, the corners, and the beam under a hairpin trace
 STAY = {
@@ -48,11 +47,14 @@ STAY = {
     ("litolff", 8, 1, 1, 0, 27): "corner of a beam (tile 9; 2.318 r6 case p8 1/1/0)",
     ("litolff", 13, 1, 8, 8, 21): "corner of a beam (tile 23)",
     ("litolff", 13, 1, 10, 0, 56): "beam under a hairpin trace (tiles 19, 24): not released, a GATHER fact",
+    ("litolff", 2, 1, 5, 13, 15): "beam under a false head box (judged eighths; the 2.318 r4 case p2 13/1): a head's claim is never released here",
+    ("brahms", 25, 0, 9, 0, 22): "beam under a false head box (judged eighth): waits for the head's own refusal (a later stage)",
 }
 STAY_NOTES = {
     "litolff": ["glyph/8/1/1/0/2", "glyph/8/1/1/0/10", "glyph/12/0/2/6/0", "glyph/12/0/2/6/1", "glyph/12/0/2/6/2", "glyph/12/0/2/6/4",
-                "glyph/13/1/8/8/2", "glyph/13/1/8/8/14", "glyph/13/1/10/0/3", "glyph/13/1/10/0/4", "glyph/13/1/10/0/5", "glyph/14/1/8/10/3"],
-    "brahms": ["glyph/6/0/3/7/7", "glyph/6/1/1/8/0", "glyph/6/1/1/8/5", "glyph/13/1/2/4/1", "glyph/13/1/2/4/6"],
+                "glyph/13/1/8/8/2", "glyph/13/1/8/8/14", "glyph/13/1/10/0/3", "glyph/13/1/10/0/4", "glyph/13/1/10/0/5", "glyph/14/1/8/10/3",
+                "glyph/2/1/5/13/0", "glyph/2/1/5/13/1", "glyph/2/1/5/13/2", "glyph/2/1/5/13/4"],
+    "brahms": ["glyph/25/0/9/0/6", "glyph/6/0/3/7/7", "glyph/6/1/1/8/0", "glyph/6/1/1/8/5", "glyph/13/1/2/4/1", "glyph/13/1/2/4/6"],
 }
 #: the stem side the record read for each note where it read ONE stem (20261127-night `one_beam_count` witness); two stems: None, as the count reads it
 _UP = {"glyph/2/1/5/13/0", "glyph/2/1/5/13/1", "glyph/2/1/5/13/4", "glyph/6/0/1/10/0", "glyph/6/0/1/10/3", "glyph/6/0/1/10/5", "glyph/1/0/0/4/9",
