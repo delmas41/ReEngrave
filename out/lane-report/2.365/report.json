@@ -1,0 +1,351 @@
+{
+ "flags": [
+  [
+   "OMR_BEAM_INK_NOT_HELD",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    5,
+    6,
+    8,
+    12,
+    13,
+    14
+   ],
+   "counts": {
+    "note": {
+     "gained": 11,
+     "lost": 1,
+     "changed": 0
+    },
+    "flag": {
+     "gained": 9,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 6,
+     "lost": 1,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 3,
+     "lost": 0,
+     "changed": 0
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 1
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 1
+    },
+    "dynamic": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "words": {
+     "gained": 4,
+     "lost": 3,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5244,
+    5254
+   ],
+   "paired": 5243,
+   "red_bars": [
+    156,
+    154
+   ],
+   "notes_not_written": [
+    2234,
+    2224
+   ],
+   "control": {
+    "reproduces": "off",
+    "off": {
+     "stored": 8387,
+     "same": 8387,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 8387,
+     "same": 8371,
+     "differ": 16,
+     "first_differ": [
+      "glyph/2/0/0/1/0",
+      "glyph/2/0/0/1/1",
+      "glyph/2/0/0/1/15",
+      "glyph/2/0/0/1/3",
+      "glyph/2/0/0/1/4",
+      "glyph/5/0/4/2/1",
+      "glyph/5/0/4/2/2",
+      "glyph/5/0/4/2/3",
+      "glyph/5/0/4/2/4",
+      "glyph/5/0/4/2/5"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "still_wrong": [],
+    "scored": 275,
+    "matched": {
+     "off": {
+      "key": 404,
+      "place": 12,
+      "place_moved_id": 2,
+      "place_no_mark": 15
+     },
+     "on": {
+      "key": 404,
+      "place": 12,
+      "place_moved_id": 2,
+      "place_no_mark": 15
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    432.3,
+    434.7
+   ],
+   "unjudged": {
+    "n": 38,
+    "judged": 0,
+    "no_place": 4,
+    "by_kind": {
+     "note": 12,
+     "flag": 9,
+     "blue": 7,
+     "beam": 3,
+     "pitch": 1,
+     "value": 1,
+     "dynamic": 1,
+     "words": 4
+    },
+    "places": [
+     "litolff p2 2/0/0/1  blue gained guessed",
+     "litolff p2 2/0/0/1  blue gained guessed",
+     "litolff p2 2/0/0/1  blue gained guessed",
+     "litolff p2 2/0/0/1  blue gained guessed",
+     "litolff p2 2/0/0/1  dynamic gained p",
+     "litolff p2 2/0/0/1  flag gained eighth",
+     "litolff p2 2/0/0/1  flag gained eighth",
+     "litolff p2 2/0/0/1  flag gained eighth",
+     "litolff p2 2/0/0/1  flag gained eighth",
+     "litolff p2 2/0/0/1  note gained eighth",
+     "litolff p2 2/0/0/1  note gained eighth",
+     "litolff p2 2/0/0/1  note gained eighth",
+     "litolff p2 2/0/0/1  note gained eighth",
+     "litolff p2 2/0/0/1  words gained cr\u00e9sc.",
+     "litolff p5 5/0/4/2  beam gained begin",
+     "litolff p5 5/0/4/2  beam gained continue",
+     "litolff p5 5/0/4/2  beam gained end",
+     "litolff p5 5/0/4/2  blue lost guessed",
+     "litolff p5 5/0/4/2  flag gained eighth",
+     "litolff p5 5/0/4/2  flag gained eighth",
+     "litolff p5 5/0/4/2  flag gained eighth",
+     "litolff p5 5/0/4/2  note gained eighth",
+     "litolff p5 5/0/4/2  note gained eighth",
+     "litolff p5 5/0/4/2  note gained eighth",
+     "litolff p5 5/0/4/2  note gained eighth",
+     "litolff p5 5/0/4/2  note gained eighth",
+     "litolff p5 5/0/4/2  note gained eighth",
+     "litolff p6 6/0/0/10  note lost quarter",
+     "litolff p6 6/0/0/10  words gained unread note",
+     "litolff p6 6/0/0/10  words gained unread note",
+     "litolff p6 6/0/1/10  blue gained guessed",
+     "litolff p6 6/0/1/10  blue gained guessed",
+     "litolff p6 6/0/1/10  flag gained eighth",
+     "litolff p6 6/0/1/10  flag gained eighth",
+     "litolff p6 6/0/1/10  note gained eighth",
+     "litolff p6 6/0/1/10  pitch changed F5 (was D4)",
+     "litolff p6 6/0/1/10  value changed eighth (was quarter)",
+     "litolff p6 6/0/1/10  words gained unread"
+    ]
+   }
+  },
+  "brahms": {
+   "pages": [
+    1,
+    6,
+    13,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 4,
+     "lost": 0,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 1
+    },
+    "slur": {
+     "gained": 4,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "flag": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "wedge": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 7,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    3574,
+    3578
+   ],
+   "paired": 3574,
+   "red_bars": [
+    72,
+    73
+   ],
+   "notes_not_written": [
+    2086,
+    2082
+   ],
+   "control": {
+    "reproduces": "off",
+    "off": {
+     "stored": 7204,
+     "same": 7204,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 7204,
+     "same": 7199,
+     "differ": 5,
+     "first_differ": [
+      "glyph/1/0/0/4/11",
+      "glyph/1/0/0/4/13",
+      "glyph/1/0/0/4/33",
+      "glyph/1/0/0/4/42",
+      "glyph/1/0/0/4/9"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "still_wrong": [],
+    "scored": 263,
+    "matched": {
+     "off": {
+      "key": 383,
+      "place_no_mark": 28,
+      "place": 6,
+      "place_moved_id": 2
+     },
+     "on": {
+      "key": 383,
+      "place_no_mark": 28,
+      "place": 6,
+      "place_moved_id": 2
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    364.9,
+    364.2
+   ],
+   "unjudged": {
+    "n": 21,
+    "judged": 3,
+    "no_place": 1,
+    "by_kind": {
+     "accidental": 2,
+     "slur": 4,
+     "note": 3,
+     "beam": 2,
+     "flag": 2,
+     "wedge": 1,
+     "words": 7
+    },
+    "places": [
+     "brahms p1 1/0/0/4  accidental gained natural",
+     "brahms p1 1/0/0/4  accidental gained natural",
+     "brahms p1 1/0/0/4  beam gained continue",
+     "brahms p1 1/0/0/4  beam changed continue (was begin)",
+     "brahms p1 1/0/0/4  flag gained eighth",
+     "brahms p1 1/0/0/4  flag gained eighth",
+     "brahms p1 1/0/0/4  note gained eighth",
+     "brahms p1 1/0/0/4  note gained eighth",
+     "brahms p1 1/0/0/4  note gained eighth",
+     "brahms p1 1/0/0/4  slur gained start",
+     "brahms p1 1/0/0/4  slur gained start",
+     "brahms p1 1/0/0/4  slur gained stop",
+     "brahms p1 1/0/0/4  slur gained stop",
+     "brahms p1 1/0/0/4  wedge gained crescendo",
+     "brahms p1 1/0/0/4  words lost slur to unread note",
+     "brahms p1 1/0/0/4  words lost slur to unread note",
+     "brahms p1 1/0/0/4  words lost unread note",
+     "brahms p1 1/0/0/4  words lost unread note",
+     "brahms p1 1/0/0/4  words lost unread note",
+     "brahms p1 1/0/0/4  words lost unread note",
+     "brahms p1 1/0/0/4  words lost unread note"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_BEAM_INK_NOT_HELD: read in staged/page_ledger.py, staged/stroke_owner.py -> ADJUDICATE..EXPORT",
+  "NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-reengrave-manager-20261124-12f953/35f75218-68a4-4d67-aae9-7c7cdda49059/scratchpad/sample-2365.json (a development control)"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 863.5
+}

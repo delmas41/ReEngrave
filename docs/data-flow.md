@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 219 flag predicates; 27 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 220 flag predicates; 27 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -475,7 +475,6 @@ The small number printed above a system.
 - **decided by** (ADJUDICATE): `adjudicate_printed_bar_number` -> `printed_bar_number`
 - **read by GATHER** (1): `gather.py:gather_page_claims`
 - **read by EXPORT** (1): `export.py:_printed_bar_number_check`
-- **flags on its readers' paths** (as the code resolves them today): `bar_number_text.surya_available()=OFF`
 - **open gaps**: none derived
 
 ### Instrument name -- `--mark instrument`
@@ -1652,8 +1651,7 @@ Which edition and movement this is; scanned or engraved.
 
 ### `printed_bar_number` (Q.PRINTED_BAR_NUMBER) -- LIVE
 
-- `printed_bar_number` filed by: GATHER `gather.py:gather_printed_bar_numbers`
-- `printed_bar_number` filed OFF by default: `gather.py:_printed_bar_numbers_surya` (after `if not BNT.surya_available(): return` (True by default))
+- `printed_bar_number` filed by: GATHER `gather.py:gather_printed_bar_numbers`, GATHER `gather.py:_printed_bar_numbers_surya`
 - `printed_bar_number` decided by: ADJUDICATE `adjudicators/text.py:adjudicate_printed_bar_number`
 - `printed_bar_number` abstained by (not a producer): `gather.py:_printed_bar_numbers_surya`, `gather.py:_printed_bar_numbers_surya._unavailable`, `gather.py:gather_printed_bar_numbers`
 - `printed_bar_number` declared in `wants` (not a read): `adjudicate_printed_bar_number`

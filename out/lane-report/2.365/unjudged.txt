@@ -1,0 +1,59 @@
+litolff p2 2/0/0/1  blue gained guessed
+litolff p2 2/0/0/1  blue gained guessed
+litolff p2 2/0/0/1  blue gained guessed
+litolff p2 2/0/0/1  blue gained guessed
+litolff p2 2/0/0/1  dynamic gained p
+litolff p2 2/0/0/1  flag gained eighth
+litolff p2 2/0/0/1  flag gained eighth
+litolff p2 2/0/0/1  flag gained eighth
+litolff p2 2/0/0/1  flag gained eighth
+litolff p2 2/0/0/1  note gained eighth
+litolff p2 2/0/0/1  note gained eighth
+litolff p2 2/0/0/1  note gained eighth
+litolff p2 2/0/0/1  note gained eighth
+litolff p2 2/0/0/1  words gained crésc.
+litolff p5 5/0/4/2  beam gained begin
+litolff p5 5/0/4/2  beam gained continue
+litolff p5 5/0/4/2  beam gained end
+litolff p5 5/0/4/2  blue lost guessed
+litolff p5 5/0/4/2  flag gained eighth
+litolff p5 5/0/4/2  flag gained eighth
+litolff p5 5/0/4/2  flag gained eighth
+litolff p5 5/0/4/2  note gained eighth
+litolff p5 5/0/4/2  note gained eighth
+litolff p5 5/0/4/2  note gained eighth
+litolff p5 5/0/4/2  note gained eighth
+litolff p5 5/0/4/2  note gained eighth
+litolff p5 5/0/4/2  note gained eighth
+litolff p6 6/0/0/10  note lost quarter
+litolff p6 6/0/0/10  words gained unread note
+litolff p6 6/0/0/10  words gained unread note
+litolff p6 6/0/1/10  blue gained guessed
+litolff p6 6/0/1/10  blue gained guessed
+litolff p6 6/0/1/10  flag gained eighth
+litolff p6 6/0/1/10  flag gained eighth
+litolff p6 6/0/1/10  note gained eighth
+litolff p6 6/0/1/10  pitch changed F5 (was D4)
+litolff p6 6/0/1/10  value changed eighth (was quarter)
+litolff p6 6/0/1/10  words gained unread
+brahms p1 1/0/0/4  accidental gained natural
+brahms p1 1/0/0/4  accidental gained natural
+brahms p1 1/0/0/4  beam gained continue
+brahms p1 1/0/0/4  beam changed continue (was begin)
+brahms p1 1/0/0/4  flag gained eighth
+brahms p1 1/0/0/4  flag gained eighth
+brahms p1 1/0/0/4  note gained eighth
+brahms p1 1/0/0/4  note gained eighth
+brahms p1 1/0/0/4  note gained eighth
+brahms p1 1/0/0/4  slur gained start
+brahms p1 1/0/0/4  slur gained start
+brahms p1 1/0/0/4  slur gained stop
+brahms p1 1/0/0/4  slur gained stop
+brahms p1 1/0/0/4  wedge gained crescendo
+brahms p1 1/0/0/4  words lost slur to unread note
+brahms p1 1/0/0/4  words lost slur to unread note
+brahms p1 1/0/0/4  words lost unread note
+brahms p1 1/0/0/4  words lost unread note
+brahms p1 1/0/0/4  words lost unread note
+brahms p1 1/0/0/4  words lost unread note
+brahms p1 1/0/0/4  words lost unread note
