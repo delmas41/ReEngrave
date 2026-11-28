@@ -186,6 +186,7 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
             cs.append(dict(c))
     out: Dict[int, Any] = {}
     for pid, cs in cands.items():
+        cs[:] = SO.release_beam_claims(cs)          # ROADMAP 2.365 (flag OFF: no view carries the beam mark; unchanged)
         cs.sort(key=lambda c: (ti.get(str(c["family"]), 0 if c.get("how") == "area" else 99), str(c["key"])))
         out[pid] = SO._settle(pid, {pid: cs}, {**ti, **{str(c["family"]): 0 for c in cs if str(c["family"]) not in ti}})
     census["linked"] = len(members)

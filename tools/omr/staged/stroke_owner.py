@@ -554,6 +554,20 @@ BEAM_WHY = "beam_joins_stem_ends"
 #: the claimants a beam's ink is released from: every mark's box, area or trace except the header column and the barline (a convention says
 #: nothing else is printed there) and the hairpin trace (above)
 BEAM_RELEASED_FROM = ("word", "arc_trace", "head", "ledger", "accidental", "arc", "hairpin", "dynamic", "mark", "dot", "text", "rest", "whole_rest")
+#: the candidate a beam stroke carries (never a claimant: `_settle` skips it; it says THIS view saw a beam here)
+BEAM_MARK = {"key": "beam_ink", "family": "beam", "cls": "", "fit": "no", "why": BEAM_WHY, "how": "beam_ink", "row": ""}
+
+
+def release_beam_claims(cs: List[Dict[str, object]]) -> List[Dict[str, object]]:
+    """2.365: a page stroke's pooled candidates with every released claim refused when ANY view marked the stroke a beam (`BEAM_MARK`). Pure."""
+    if not any(c.get("how") == BEAM_MARK["how"] for c in cs):
+        return cs
+    out = []
+    for c in cs:
+        if c.get("family") in BEAM_RELEASED_FROM and not str(c.get("why", "")).startswith(BEAM_WHY):
+            c = dict(c, fit="no", why="%s:%s" % (BEAM_WHY, c.get("why", "")))
+        out.append(c)
+    return out
 
 
 def beam_ink_enabled() -> bool:
@@ -598,17 +612,44 @@ def _distinct_stems(js: Sequence[int], by_ord: Dict[int, Ink]) -> int:
     return n
 
 
-def beam_joins_stem_ends(s: Ink, by_ord: Dict[int, Ink]) -> bool:
-    """ROADMAP 2.365: is stroke `s` a beam by what a beam IS -- one thick straight stroke joining the ends of two or more stems from one side, never
-    running on to a barline at both ends (module note above). Pure."""
+def _head_at_far_end(v: Ink, side: str, s: Ink, by_ord: Dict[int, Ink], head_ink: set) -> bool:
+    """Stem `v` ends on stroke `s` (`side`: "below" = it hangs below `s`); does a head's ink (`head_ink`, not `s` itself) touch it at its OTHER end
+    (within the same tip window, `beam_strokes.STACK_FIRST_SPACES` along the stem from that end)?"""
+    from .beam_strokes import STACK_FIRST_SPACES, TIP_OUTWARD_SPACES
+    sp = v.space_px if v.space_px > 0 else 1.0
+    far = v.box[1] + v.box[3] if side == "below" else v.box[1]
+    lo, hi = (far - STACK_FIRST_SPACES * sp, far + TIP_OUTWARD_SPACES * sp) if side == "below" else (far - TIP_OUTWARD_SPACES * sp, far + STACK_FIRST_SPACES * sp)
+    for j, _c in v.touches:
+        h = by_ord.get(j)
+        if j == s.ordinal or j not in head_ink or h is None:
+            continue
+        if h.box[1] <= hi and h.box[1] + h.box[3] >= lo:
+            return True
+    return False
+
+
+def beam_joins_stem_ends(s: Ink, by_ord: Dict[int, Ink], head_ink: Optional[set] = None) -> bool:
+    """ROADMAP 2.365: is stroke `s` a beam by what a beam IS -- one thick straight stroke joining two or more stems at the end AWAY from their
+    heads (a head at the other end of at least one of them: `head_ink`, the strokes a head owns), from one side, never running on to a barline
+    at both ends (module note above). `head_ink` None: the head test is not asked (a pure shape test). Pure.
+
+    The head test is the boundary with a chord: noteheads fused into one thick straight piece at the stems' ends (Litolff p13 1/8/8, two heads
+    side by side on their stems' tops) also join stem ends from one side; a beam is at the other end of those stems from their heads, a head
+    is not. Likewise the crossbars of an `ff` join the letters' own verticals, which carry no head."""
     from .beam_strokes import BEAM_MIN_THICKNESS_SP, BEAM_SHAPE_MAX_ANGLE, STEM_MAX_SPACES
     if s.kind != "horizontal" or s.thickness < BEAM_MIN_THICKNESS_SP or abs(s.angle) > BEAM_SHAPE_MAX_ANGLE:
         return False
     rules = [j for j, _c in s.touches if by_ord.get(j) is not None and by_ord[j].kind == "vertical" and by_ord[j].length > STEM_MAX_SPACES]
     if len(rules) >= 2:
         return False                                   # a line running bar to bar (a staff line the erase left): never a beam
-    ends = stem_ends_on(s, by_ord)
-    return any(_distinct_stems(js, by_ord) >= 2 for js in ends.values())
+    for side, js in stem_ends_on(s, by_ord).items():
+        if _distinct_stems(js, by_ord) < 2:
+            continue
+        # the notes hang from it: a head at the OTHER end of its stems (one is enough -- a chord's heads fused into one piece at a stem's end
+        # may have no head claim of their own: Litolff p5 0/4/2, two of the three stems end in such a piece)
+        if head_ink is None or any(_head_at_far_end(by_ord[j], side, s, by_ord, head_ink) for j in js):
+            return True
+    return False
 
 
 def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
@@ -623,7 +664,12 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
     `beam_ink_free` (2.365, `OMR_BEAM_INK_NOT_HELD`; False = the behaviour before it exactly): a stroke that is a beam by `beam_joins_stem_ends` is
     refused to every claimant of `BEAM_RELEASED_FROM` (fit `no`, why `BEAM_WHY`) and is never ATTACHED; and the attached pass applies 2.202f."""
     by_ord = {s.ordinal: s for s in strokes}
-    beams = {o for o, s in by_ord.items() if beam_joins_stem_ends(s, by_ord)} if beam_ink_free else set()
+    beams: set = set()
+    if beam_ink_free:
+        # the heads first, by the claim order as it stands (the settle without this rule): a beam is at the other end of its stems from them
+        base = own_strokes(strokes, claims, tiers, acc_bar_clear_of_note=acc_bar_clear_of_note, vetoes=vetoes)
+        head_ink = {o for o, w in base.items() if w.family == "head"}
+        beams = {o for o, s in by_ord.items() if beam_joins_stem_ends(s, by_ord, head_ink)}
     tier_index = {f: i for i, t in enumerate(tiers) for f in t}
     live = sorted((c for c in claims if c.family in tier_index), key=lambda c: (tier_index[c.family], c.key))
     crossing = {o for o in by_ord if _crosses_a_stem(by_ord[o], by_ord)}
@@ -673,6 +719,10 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                     cand[o].append({"key": veto.rival_key, "family": veto.rival_family, "cls": veto.rival_cls, "fit": "clear",
                                     "why": "named:%s" % veto.rule, "how": "named", "row": veto.row_id})
 
+    for o in sorted(beams):
+        # 2.365: the beam fact itself, for the page's one settle: a neighbour's padded crop may hold a claim on this stroke without seeing the
+        # stems' far ends; this view saw them (`page_ledger.pool` refuses every released claim on a page stroke one view marked)
+        cand[o].append(dict(BEAM_MARK))
     out: Dict[int, Ownership] = {o: _settle(o, cand, tier_index) for o in by_ord}
 
     if beam_ink_free:
@@ -697,7 +747,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
             if beam_ink_free:
                 if o in beams and c.family in BEAM_RELEASED_FROM:
                     continue                                  # 2.365: a beam's ink is never attached to another mark
-                fit, why = shape_fit(c.family, s, c.cls, touches_a_note=o in note_ink or any(j in note_ink for j, _ct in s.touches),
+                # 2.202f only (an accidental's bar): the other families' attached pieces are tested as before
+                fit, why = shape_fit(c.family, s, c.cls, touches_a_note=c.family == "accidental" and (o in note_ink or any(j in note_ink for j, _ct in s.touches)),
                                      acc_bar_clear_of_note=acc_bar_clear_of_note)
             else:
                 fit, why = shape_fit(c.family, s, c.cls)

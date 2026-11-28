@@ -147,6 +147,32 @@ def test_off_is_the_record_s_own_verdict():
         assert _state(plate, key[1:], "0")[0] in ("decided", "merged")
 
 
+#: thick straight ink two stem-like verticals end on that is NOT a beam (lane 2.365's look at the page, not Sean's): the crossbars of an `ff`
+#: (Litolff p8 1/0/0) and two noteheads fused side by side on their stems' tops (Litolff p13 1/8/8). The shape alone calls each a beam; the
+#: head test (a head at the other end of the stems) does not -- the control that fails without it.
+NOT_BEAMS = {("litolff", 8, 1, 0, 0, 36): "dynamic", ("litolff", 8, 1, 0, 0, 42): "dynamic", ("litolff", 13, 1, 8, 8, 19): "head"}
+
+
+def test_ff_crossbars_and_fused_heads_are_not_beams():
+    from tools.omr.staged import stroke_owner as SO
+    from tools.omr.staged.adjudicators import stroke_owner as A
+    from tools.omr.staged.record import STROKE_GLYPH_BASE
+
+    class _Row:
+        def __init__(self, o):
+            self.value, self.detail, self.id = o["value"], o["detail"], o["id"]
+            self.subject = type("S", (), {"glyph": int(o["subject"].split("/")[5])})()
+    shape_only = 0
+    for key, fam in NOT_BEAMS.items():
+        plate, ck, od = key[0], key[1:5], key[5]
+        assert _state(plate, key[1:], "0") [1] == fam and _state(plate, key[1:], "1") == _state(plate, key[1:], "0"), key
+        rows = [_Row(o) for o in _rows()[plate]["observations"] if o["quantity"] == "stroke" and o["subject"].startswith("glyph/%d/%d/%d/%d/" % ck)]
+        inks, _ = A._inks(rows)
+        by = {i.ordinal: i for i in inks}
+        shape_only += SO.beam_joins_stem_ends(by[od], by)
+    assert shape_only >= 2          # without the head test at least the ff bar and the fused heads read as beams
+
+
 def test_beam_rule_is_structural():
     """`beam_joins_stem_ends` on hand-made ink: two stems ending under a thick bar is a beam; a stem crossing it, one stem, a thin bar, a bar
     touching two barlines are not."""
